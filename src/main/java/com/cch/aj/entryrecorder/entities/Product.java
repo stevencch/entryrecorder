@@ -42,7 +42,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Product.findByAdditiveCId", query = "SELECT p FROM Product p WHERE p.additiveCId = :additiveCId"),
     @NamedQuery(name = "Product.findByAdditiveAPercentage", query = "SELECT p FROM Product p WHERE p.additiveAPercentage = :additiveAPercentage"),
     @NamedQuery(name = "Product.findByAdditiveBPercentage", query = "SELECT p FROM Product p WHERE p.additiveBPercentage = :additiveBPercentage"),
-    @NamedQuery(name = "Product.findByAdditiveCPercentage", query = "SELECT p FROM Product p WHERE p.additiveCPercentage = :additiveCPercentage")})
+    @NamedQuery(name = "Product.findByAdditiveCPercentage", query = "SELECT p FROM Product p WHERE p.additiveCPercentage = :additiveCPercentage"),
+    @NamedQuery(name = "Product.findByImage1", query = "SELECT p FROM Product p WHERE p.image1 = :image1"),
+    @NamedQuery(name = "Product.findByImage2", query = "SELECT p FROM Product p WHERE p.image2 = :image2"),
+    @NamedQuery(name = "Product.findByImage3", query = "SELECT p FROM Product p WHERE p.image3 = :image3")})
 public class Product implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -95,6 +98,15 @@ public class Product implements Serializable {
     @Basic(optional = false)
     @Column(name = "AdditiveCPercentage")
     private String additiveCPercentage;
+    @Basic(optional = false)
+    @Column(name = "Image1")
+    private String image1;
+    @Basic(optional = false)
+    @Column(name = "Image2")
+    private String image2;
+    @Basic(optional = false)
+    @Column(name = "Image3")
+    private String image3;
 
     public Product() {
     }
@@ -103,7 +115,7 @@ public class Product implements Serializable {
         this.id = id;
     }
 
-    public Product(Integer id, String code, String description, int mouldId, float weightMin, float weightMax, int threadId, boolean bung, boolean pierced, int polymerId, int additiveAId, int additiveBId, int additiveCId, String additiveAPercentage, String additiveBPercentage, String additiveCPercentage) {
+    public Product(Integer id, String code, String description, int mouldId, float weightMin, float weightMax, int threadId, boolean bung, boolean pierced, int polymerId, int additiveAId, int additiveBId, int additiveCId, String additiveAPercentage, String additiveBPercentage, String additiveCPercentage, String image1, String image2, String image3) {
         this.id = id;
         this.code = code;
         this.description = description;
@@ -120,6 +132,9 @@ public class Product implements Serializable {
         this.additiveAPercentage = additiveAPercentage;
         this.additiveBPercentage = additiveBPercentage;
         this.additiveCPercentage = additiveCPercentage;
+        this.image1 = image1;
+        this.image2 = image2;
+        this.image3 = image3;
     }
 
     public Integer getId() {
@@ -248,6 +263,30 @@ public class Product implements Serializable {
 
     public void setAdditiveCPercentage(String additiveCPercentage) {
         this.additiveCPercentage = additiveCPercentage;
+    }
+
+    public String getImage1() {
+        return image1;
+    }
+
+    public void setImage1(String image1) {
+        this.image1 = image1;
+    }
+
+    public String getImage2() {
+        return image2;
+    }
+
+    public void setImage2(String image2) {
+        this.image2 = image2;
+    }
+
+    public String getImage3() {
+        return image3;
+    }
+
+    public void setImage3(String image3) {
+        this.image3 = image3;
     }
 
     @Override
