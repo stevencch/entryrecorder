@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="com.cch.aj_EntryRecorder_jar_1.0-SNAPSHOTPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>com.cch.aj.entryrecorder.entities.Machine</class>
+    <class>com.cch.aj.entryrecorder.entities.Mouldsetting</class>
+    <class>com.cch.aj.entryrecorder.entities.Polymer</class>
+    <class>com.cch.aj.entryrecorder.entities.Additive</class>
+    <class>com.cch.aj.entryrecorder.entities.Mould</class>
+    <class>com.cch.aj.entryrecorder.entities.Product</class>
+    <class>com.cch.aj.entryrecorder.entities.Record</class>
+    <class>com.cch.aj.entryrecorder.entities.Entry</class>
+    <class>com.cch.aj.entryrecorder.entities.Staff</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/ajrecorder?zeroDateTimeBehavior=convertToNull"/>
+      <property name="javax.persistence.jdbc.user" value="cch"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.password" value="123123"/>
+    </properties>
+  </persistence-unit>
+</persistence>
