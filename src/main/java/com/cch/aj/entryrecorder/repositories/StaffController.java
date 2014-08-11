@@ -16,7 +16,7 @@ import javax.persistence.EntityManager;
  *
  * @author Administrator
  */
-public interface StaffContoller extends Serializable {
+public interface StaffController extends Serializable {
 
     void create(Staff staff);
 

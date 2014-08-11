@@ -6,7 +6,7 @@
 
 package com.cch.aj.entryrecorder.repositories.impl;
 
-import com.cch.aj.entryrecorder.repositories.StaffContoller;
+import com.cch.aj.entryrecorder.repositories.StaffController;
 import com.cch.aj.entryrecorder.entities.Staff;
 import com.cch.aj.entryrecorder.repositories.impl.exceptions.NonexistentEntityException;
 import java.io.Serializable;
@@ -22,7 +22,7 @@ import javax.persistence.criteria.Root;
  *
  * @author Administrator
  */
-public class StaffJpaController implements StaffContoller {
+public class StaffJpaController implements StaffController {
 
     public StaffJpaController(EntityManagerFactory emf) {
         this.emf = emf;

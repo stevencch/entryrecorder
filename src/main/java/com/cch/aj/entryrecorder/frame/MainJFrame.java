@@ -17,6 +17,7 @@ public class MainJFrame extends javax.swing.JFrame {
      */
     public MainJFrame() {
         initComponents();
+        new SettingsJFrame().setVisible(true);
     }
 
     /**
