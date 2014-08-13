@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Administrator
+ * @author chacao
  */
 @Entity
 @Table(name = "mould")
@@ -104,213 +104,146 @@ public class Mould implements Serializable {
     @Basic(optional = false)
     @Column(name = "Id")
     private Integer id;
-    @Basic(optional = false)
     @Column(name = "Name")
     private String name;
     @Basic(optional = false)
     @Column(name = "Code")
     private String code;
-    @Basic(optional = false)
     @Column(name = "Volumn")
     private String volumn;
-    @Basic(optional = false)
     @Column(name = "Manufacturer")
     private String manufacturer;
-    @Basic(optional = false)
     @Column(name = "Year")
     private String year;
-    @Basic(optional = false)
     @Column(name = "ImageDrawing")
     private String imageDrawing;
-    @Basic(optional = false)
     @Column(name = "ImageNonDg")
     private String imageNonDg;
-    @Basic(optional = false)
     @Column(name = "ImageDg")
     private String imageDg;
-    @Basic(optional = false)
     @Column(name = "ImageBoreA")
     private String imageBoreA;
-    @Basic(optional = false)
     @Column(name = "ImageBoreB")
     private String imageBoreB;
-    @Basic(optional = false)
     @Column(name = "ImageNeck")
     private String imageNeck;
-    @Basic(optional = false)
     @Column(name = "ImageTap")
     private String imageTap;
-    @Basic(optional = false)
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "WeightNonDgMin")
-    private float weightNonDgMin;
-    @Basic(optional = false)
+    private Float weightNonDgMin;
     @Column(name = "WeightNonDgMax")
-    private float weightNonDgMax;
-    @Basic(optional = false)
+    private Float weightNonDgMax;
     @Column(name = "WeightDgMin")
-    private float weightDgMin;
-    @Basic(optional = false)
+    private Float weightDgMin;
     @Column(name = "WeightDgMax")
-    private float weightDgMax;
-    @Basic(optional = false)
+    private Float weightDgMax;
     @Column(name = "TapPositionMin")
-    private float tapPositionMin;
-    @Basic(optional = false)
+    private Float tapPositionMin;
     @Column(name = "TapPositionMax")
-    private float tapPositionMax;
-    @Basic(optional = false)
+    private Float tapPositionMax;
     @Column(name = "WallNonDgUnderHandleMin")
-    private float wallNonDgUnderHandleMin;
-    @Basic(optional = false)
+    private Float wallNonDgUnderHandleMin;
     @Column(name = "WallNonDgUnderHandleMax")
-    private float wallNonDgUnderHandleMax;
-    @Basic(optional = false)
+    private Float wallNonDgUnderHandleMax;
     @Column(name = "WallNonDgBaseMin")
-    private float wallNonDgBaseMin;
-    @Basic(optional = false)
+    private Float wallNonDgBaseMin;
     @Column(name = "WallNonDgBaseMax")
-    private float wallNonDgBaseMax;
-    @Basic(optional = false)
+    private Float wallNonDgBaseMax;
     @Column(name = "WallNonDgClosureMin")
-    private float wallNonDgClosureMin;
-    @Basic(optional = false)
+    private Float wallNonDgClosureMin;
     @Column(name = "WallNonDgClosureMax")
-    private float wallNonDgClosureMax;
-    @Basic(optional = false)
+    private Float wallNonDgClosureMax;
     @Column(name = "WallNonDgHandleBungMin")
-    private float wallNonDgHandleBungMin;
-    @Basic(optional = false)
+    private Float wallNonDgHandleBungMin;
     @Column(name = "WallNonDgHandleBungMax")
-    private float wallNonDgHandleBungMax;
-    @Basic(optional = false)
+    private Float wallNonDgHandleBungMax;
     @Column(name = "WallNonDgHandleLeftMin")
-    private float wallNonDgHandleLeftMin;
-    @Basic(optional = false)
+    private Float wallNonDgHandleLeftMin;
     @Column(name = "WallNonDgHandleLeftMax")
-    private float wallNonDgHandleLeftMax;
-    @Basic(optional = false)
+    private Float wallNonDgHandleLeftMax;
     @Column(name = "WallNonDgHandleRightMin")
-    private float wallNonDgHandleRightMin;
-    @Basic(optional = false)
+    private Float wallNonDgHandleRightMin;
     @Column(name = "WallNonDgHandleRightMax")
-    private float wallNonDgHandleRightMax;
-    @Basic(optional = false)
+    private Float wallNonDgHandleRightMax;
     @Column(name = "WallDgUnderHandleMin")
-    private float wallDgUnderHandleMin;
-    @Basic(optional = false)
+    private Float wallDgUnderHandleMin;
     @Column(name = "WallDgUnderHandleMax")
-    private float wallDgUnderHandleMax;
-    @Basic(optional = false)
+    private Float wallDgUnderHandleMax;
     @Column(name = "WallDgBaseMin")
-    private float wallDgBaseMin;
-    @Basic(optional = false)
+    private Float wallDgBaseMin;
     @Column(name = "WallDgBaseMax")
-    private float wallDgBaseMax;
-    @Basic(optional = false)
+    private Float wallDgBaseMax;
     @Column(name = "WallDgClosureMin")
-    private float wallDgClosureMin;
-    @Basic(optional = false)
+    private Float wallDgClosureMin;
     @Column(name = "WallDgClosureMax")
-    private float wallDgClosureMax;
-    @Basic(optional = false)
+    private Float wallDgClosureMax;
     @Column(name = "WallDgHandleBungMin")
-    private float wallDgHandleBungMin;
-    @Basic(optional = false)
+    private Float wallDgHandleBungMin;
     @Column(name = "WallDgHandleBungMax")
-    private float wallDgHandleBungMax;
-    @Basic(optional = false)
+    private Float wallDgHandleBungMax;
     @Column(name = "WallDgHandleLeftMin")
-    private float wallDgHandleLeftMin;
-    @Basic(optional = false)
+    private Float wallDgHandleLeftMin;
     @Column(name = "WallDgHandleLeftMax")
-    private float wallDgHandleLeftMax;
-    @Basic(optional = false)
+    private Float wallDgHandleLeftMax;
     @Column(name = "WallDgHandRightMin")
-    private float wallDgHandRightMin;
-    @Basic(optional = false)
+    private Float wallDgHandRightMin;
     @Column(name = "WallDgHandleRightMax")
-    private float wallDgHandleRightMax;
-    @Basic(optional = false)
+    private Float wallDgHandleRightMax;
     @Column(name = "ThreadBoreASize1")
     private String threadBoreASize1;
-    @Basic(optional = false)
     @Column(name = "ThreadBoreASize2")
     private String threadBoreASize2;
-    @Basic(optional = false)
     @Column(name = "ThreadBoreASize3")
     private String threadBoreASize3;
-    @Basic(optional = false)
     @Column(name = "ThreadBoreBSize1")
     private String threadBoreBSize1;
-    @Basic(optional = false)
     @Column(name = "ThreadBoreBSize2")
     private String threadBoreBSize2;
-    @Basic(optional = false)
     @Column(name = "ThreadBoreBSize3")
     private String threadBoreBSize3;
-    @Basic(optional = false)
     @Column(name = "ThreadBoreAMin1")
-    private float threadBoreAMin1;
-    @Basic(optional = false)
+    private Float threadBoreAMin1;
     @Column(name = "ThreadBoreAMin2")
-    private float threadBoreAMin2;
-    @Basic(optional = false)
+    private Float threadBoreAMin2;
     @Column(name = "ThreadBoreAMin3")
-    private float threadBoreAMin3;
-    @Basic(optional = false)
+    private Float threadBoreAMin3;
     @Column(name = "ThreadBoreAMax1")
-    private float threadBoreAMax1;
-    @Basic(optional = false)
+    private Float threadBoreAMax1;
     @Column(name = "ThreadBoreAMax2")
-    private float threadBoreAMax2;
-    @Basic(optional = false)
+    private Float threadBoreAMax2;
     @Column(name = "ThreadBoreAMax3")
-    private float threadBoreAMax3;
-    @Basic(optional = false)
+    private Float threadBoreAMax3;
     @Column(name = "ThreadBoreBMin1")
-    private float threadBoreBMin1;
-    @Basic(optional = false)
+    private Float threadBoreBMin1;
     @Column(name = "ThreadBoreBMin2")
-    private float threadBoreBMin2;
-    @Basic(optional = false)
+    private Float threadBoreBMin2;
     @Column(name = "ThreadBoreBMin3")
-    private float threadBoreBMin3;
-    @Basic(optional = false)
+    private Float threadBoreBMin3;
     @Column(name = "ThreadBoreBMax1")
-    private float threadBoreBMax1;
-    @Basic(optional = false)
+    private Float threadBoreBMax1;
     @Column(name = "ThreadBoreBMax2")
-    private float threadBoreBMax2;
-    @Basic(optional = false)
+    private Float threadBoreBMax2;
     @Column(name = "ThreadBoreBMax3")
-    private float threadBoreBMax3;
-    @Basic(optional = false)
+    private Float threadBoreBMax3;
     @Column(name = "ThreadNeckSize1")
     private String threadNeckSize1;
-    @Basic(optional = false)
     @Column(name = "ThreadNeckSize2")
     private String threadNeckSize2;
-    @Basic(optional = false)
     @Column(name = "ThreadNeckSize3")
     private String threadNeckSize3;
-    @Basic(optional = false)
     @Column(name = "ThreadNeckMin1")
-    private float threadNeckMin1;
-    @Basic(optional = false)
+    private Float threadNeckMin1;
     @Column(name = "ThreadNeckMin2")
-    private float threadNeckMin2;
-    @Basic(optional = false)
+    private Float threadNeckMin2;
     @Column(name = "ThreadNeckMin3")
-    private float threadNeckMin3;
-    @Basic(optional = false)
+    private Float threadNeckMin3;
     @Column(name = "ThreadNeckMax1")
-    private float threadNeckMax1;
-    @Basic(optional = false)
+    private Float threadNeckMax1;
     @Column(name = "ThreadNeckMax2")
-    private float threadNeckMax2;
-    @Basic(optional = false)
+    private Float threadNeckMax2;
     @Column(name = "ThreadNeckMax3")
-    private float threadNeckMax3;
+    private Float threadNeckMax3;
 
     public Mould() {
     }
@@ -319,77 +252,9 @@ public class Mould implements Serializable {
         this.id = id;
     }
 
-    public Mould(Integer id, String name, String code, String volumn, String manufacturer, String year, String imageDrawing, String imageNonDg, String imageDg, String imageBoreA, String imageBoreB, String imageNeck, String imageTap, float weightNonDgMin, float weightNonDgMax, float weightDgMin, float weightDgMax, float tapPositionMin, float tapPositionMax, float wallNonDgUnderHandleMin, float wallNonDgUnderHandleMax, float wallNonDgBaseMin, float wallNonDgBaseMax, float wallNonDgClosureMin, float wallNonDgClosureMax, float wallNonDgHandleBungMin, float wallNonDgHandleBungMax, float wallNonDgHandleLeftMin, float wallNonDgHandleLeftMax, float wallNonDgHandleRightMin, float wallNonDgHandleRightMax, float wallDgUnderHandleMin, float wallDgUnderHandleMax, float wallDgBaseMin, float wallDgBaseMax, float wallDgClosureMin, float wallDgClosureMax, float wallDgHandleBungMin, float wallDgHandleBungMax, float wallDgHandleLeftMin, float wallDgHandleLeftMax, float wallDgHandRightMin, float wallDgHandleRightMax, String threadBoreASize1, String threadBoreASize2, String threadBoreASize3, String threadBoreBSize1, String threadBoreBSize2, String threadBoreBSize3, float threadBoreAMin1, float threadBoreAMin2, float threadBoreAMin3, float threadBoreAMax1, float threadBoreAMax2, float threadBoreAMax3, float threadBoreBMin1, float threadBoreBMin2, float threadBoreBMin3, float threadBoreBMax1, float threadBoreBMax2, float threadBoreBMax3, String threadNeckSize1, String threadNeckSize2, String threadNeckSize3, float threadNeckMin1, float threadNeckMin2, float threadNeckMin3, float threadNeckMax1, float threadNeckMax2, float threadNeckMax3) {
+    public Mould(Integer id, String code) {
         this.id = id;
-        this.name = name;
         this.code = code;
-        this.volumn = volumn;
-        this.manufacturer = manufacturer;
-        this.year = year;
-        this.imageDrawing = imageDrawing;
-        this.imageNonDg = imageNonDg;
-        this.imageDg = imageDg;
-        this.imageBoreA = imageBoreA;
-        this.imageBoreB = imageBoreB;
-        this.imageNeck = imageNeck;
-        this.imageTap = imageTap;
-        this.weightNonDgMin = weightNonDgMin;
-        this.weightNonDgMax = weightNonDgMax;
-        this.weightDgMin = weightDgMin;
-        this.weightDgMax = weightDgMax;
-        this.tapPositionMin = tapPositionMin;
-        this.tapPositionMax = tapPositionMax;
-        this.wallNonDgUnderHandleMin = wallNonDgUnderHandleMin;
-        this.wallNonDgUnderHandleMax = wallNonDgUnderHandleMax;
-        this.wallNonDgBaseMin = wallNonDgBaseMin;
-        this.wallNonDgBaseMax = wallNonDgBaseMax;
-        this.wallNonDgClosureMin = wallNonDgClosureMin;
-        this.wallNonDgClosureMax = wallNonDgClosureMax;
-        this.wallNonDgHandleBungMin = wallNonDgHandleBungMin;
-        this.wallNonDgHandleBungMax = wallNonDgHandleBungMax;
-        this.wallNonDgHandleLeftMin = wallNonDgHandleLeftMin;
-        this.wallNonDgHandleLeftMax = wallNonDgHandleLeftMax;
-        this.wallNonDgHandleRightMin = wallNonDgHandleRightMin;
-        this.wallNonDgHandleRightMax = wallNonDgHandleRightMax;
-        this.wallDgUnderHandleMin = wallDgUnderHandleMin;
-        this.wallDgUnderHandleMax = wallDgUnderHandleMax;
-        this.wallDgBaseMin = wallDgBaseMin;
-        this.wallDgBaseMax = wallDgBaseMax;
-        this.wallDgClosureMin = wallDgClosureMin;
-        this.wallDgClosureMax = wallDgClosureMax;
-        this.wallDgHandleBungMin = wallDgHandleBungMin;
-        this.wallDgHandleBungMax = wallDgHandleBungMax;
-        this.wallDgHandleLeftMin = wallDgHandleLeftMin;
-        this.wallDgHandleLeftMax = wallDgHandleLeftMax;
-        this.wallDgHandRightMin = wallDgHandRightMin;
-        this.wallDgHandleRightMax = wallDgHandleRightMax;
-        this.threadBoreASize1 = threadBoreASize1;
-        this.threadBoreASize2 = threadBoreASize2;
-        this.threadBoreASize3 = threadBoreASize3;
-        this.threadBoreBSize1 = threadBoreBSize1;
-        this.threadBoreBSize2 = threadBoreBSize2;
-        this.threadBoreBSize3 = threadBoreBSize3;
-        this.threadBoreAMin1 = threadBoreAMin1;
-        this.threadBoreAMin2 = threadBoreAMin2;
-        this.threadBoreAMin3 = threadBoreAMin3;
-        this.threadBoreAMax1 = threadBoreAMax1;
-        this.threadBoreAMax2 = threadBoreAMax2;
-        this.threadBoreAMax3 = threadBoreAMax3;
-        this.threadBoreBMin1 = threadBoreBMin1;
-        this.threadBoreBMin2 = threadBoreBMin2;
-        this.threadBoreBMin3 = threadBoreBMin3;
-        this.threadBoreBMax1 = threadBoreBMax1;
-        this.threadBoreBMax2 = threadBoreBMax2;
-        this.threadBoreBMax3 = threadBoreBMax3;
-        this.threadNeckSize1 = threadNeckSize1;
-        this.threadNeckSize2 = threadNeckSize2;
-        this.threadNeckSize3 = threadNeckSize3;
-        this.threadNeckMin1 = threadNeckMin1;
-        this.threadNeckMin2 = threadNeckMin2;
-        this.threadNeckMin3 = threadNeckMin3;
-        this.threadNeckMax1 = threadNeckMax1;
-        this.threadNeckMax2 = threadNeckMax2;
-        this.threadNeckMax3 = threadNeckMax3;
     }
 
     public Integer getId() {
@@ -496,243 +361,243 @@ public class Mould implements Serializable {
         this.imageTap = imageTap;
     }
 
-    public float getWeightNonDgMin() {
+    public Float getWeightNonDgMin() {
         return weightNonDgMin;
     }
 
-    public void setWeightNonDgMin(float weightNonDgMin) {
+    public void setWeightNonDgMin(Float weightNonDgMin) {
         this.weightNonDgMin = weightNonDgMin;
     }
 
-    public float getWeightNonDgMax() {
+    public Float getWeightNonDgMax() {
         return weightNonDgMax;
     }
 
-    public void setWeightNonDgMax(float weightNonDgMax) {
+    public void setWeightNonDgMax(Float weightNonDgMax) {
         this.weightNonDgMax = weightNonDgMax;
     }
 
-    public float getWeightDgMin() {
+    public Float getWeightDgMin() {
         return weightDgMin;
     }
 
-    public void setWeightDgMin(float weightDgMin) {
+    public void setWeightDgMin(Float weightDgMin) {
         this.weightDgMin = weightDgMin;
     }
 
-    public float getWeightDgMax() {
+    public Float getWeightDgMax() {
         return weightDgMax;
     }
 
-    public void setWeightDgMax(float weightDgMax) {
+    public void setWeightDgMax(Float weightDgMax) {
         this.weightDgMax = weightDgMax;
     }
 
-    public float getTapPositionMin() {
+    public Float getTapPositionMin() {
         return tapPositionMin;
     }
 
-    public void setTapPositionMin(float tapPositionMin) {
+    public void setTapPositionMin(Float tapPositionMin) {
         this.tapPositionMin = tapPositionMin;
     }
 
-    public float getTapPositionMax() {
+    public Float getTapPositionMax() {
         return tapPositionMax;
     }
 
-    public void setTapPositionMax(float tapPositionMax) {
+    public void setTapPositionMax(Float tapPositionMax) {
         this.tapPositionMax = tapPositionMax;
     }
 
-    public float getWallNonDgUnderHandleMin() {
+    public Float getWallNonDgUnderHandleMin() {
         return wallNonDgUnderHandleMin;
     }
 
-    public void setWallNonDgUnderHandleMin(float wallNonDgUnderHandleMin) {
+    public void setWallNonDgUnderHandleMin(Float wallNonDgUnderHandleMin) {
         this.wallNonDgUnderHandleMin = wallNonDgUnderHandleMin;
     }
 
-    public float getWallNonDgUnderHandleMax() {
+    public Float getWallNonDgUnderHandleMax() {
         return wallNonDgUnderHandleMax;
     }
 
-    public void setWallNonDgUnderHandleMax(float wallNonDgUnderHandleMax) {
+    public void setWallNonDgUnderHandleMax(Float wallNonDgUnderHandleMax) {
         this.wallNonDgUnderHandleMax = wallNonDgUnderHandleMax;
     }
 
-    public float getWallNonDgBaseMin() {
+    public Float getWallNonDgBaseMin() {
         return wallNonDgBaseMin;
     }
 
-    public void setWallNonDgBaseMin(float wallNonDgBaseMin) {
+    public void setWallNonDgBaseMin(Float wallNonDgBaseMin) {
         this.wallNonDgBaseMin = wallNonDgBaseMin;
     }
 
-    public float getWallNonDgBaseMax() {
+    public Float getWallNonDgBaseMax() {
         return wallNonDgBaseMax;
     }
 
-    public void setWallNonDgBaseMax(float wallNonDgBaseMax) {
+    public void setWallNonDgBaseMax(Float wallNonDgBaseMax) {
         this.wallNonDgBaseMax = wallNonDgBaseMax;
     }
 
-    public float getWallNonDgClosureMin() {
+    public Float getWallNonDgClosureMin() {
         return wallNonDgClosureMin;
     }
 
-    public void setWallNonDgClosureMin(float wallNonDgClosureMin) {
+    public void setWallNonDgClosureMin(Float wallNonDgClosureMin) {
         this.wallNonDgClosureMin = wallNonDgClosureMin;
     }
 
-    public float getWallNonDgClosureMax() {
+    public Float getWallNonDgClosureMax() {
         return wallNonDgClosureMax;
     }
 
-    public void setWallNonDgClosureMax(float wallNonDgClosureMax) {
+    public void setWallNonDgClosureMax(Float wallNonDgClosureMax) {
         this.wallNonDgClosureMax = wallNonDgClosureMax;
     }
 
-    public float getWallNonDgHandleBungMin() {
+    public Float getWallNonDgHandleBungMin() {
         return wallNonDgHandleBungMin;
     }
 
-    public void setWallNonDgHandleBungMin(float wallNonDgHandleBungMin) {
+    public void setWallNonDgHandleBungMin(Float wallNonDgHandleBungMin) {
         this.wallNonDgHandleBungMin = wallNonDgHandleBungMin;
     }
 
-    public float getWallNonDgHandleBungMax() {
+    public Float getWallNonDgHandleBungMax() {
         return wallNonDgHandleBungMax;
     }
 
-    public void setWallNonDgHandleBungMax(float wallNonDgHandleBungMax) {
+    public void setWallNonDgHandleBungMax(Float wallNonDgHandleBungMax) {
         this.wallNonDgHandleBungMax = wallNonDgHandleBungMax;
     }
 
-    public float getWallNonDgHandleLeftMin() {
+    public Float getWallNonDgHandleLeftMin() {
         return wallNonDgHandleLeftMin;
     }
 
-    public void setWallNonDgHandleLeftMin(float wallNonDgHandleLeftMin) {
+    public void setWallNonDgHandleLeftMin(Float wallNonDgHandleLeftMin) {
         this.wallNonDgHandleLeftMin = wallNonDgHandleLeftMin;
     }
 
-    public float getWallNonDgHandleLeftMax() {
+    public Float getWallNonDgHandleLeftMax() {
         return wallNonDgHandleLeftMax;
     }
 
-    public void setWallNonDgHandleLeftMax(float wallNonDgHandleLeftMax) {
+    public void setWallNonDgHandleLeftMax(Float wallNonDgHandleLeftMax) {
         this.wallNonDgHandleLeftMax = wallNonDgHandleLeftMax;
     }
 
-    public float getWallNonDgHandleRightMin() {
+    public Float getWallNonDgHandleRightMin() {
         return wallNonDgHandleRightMin;
     }
 
-    public void setWallNonDgHandleRightMin(float wallNonDgHandleRightMin) {
+    public void setWallNonDgHandleRightMin(Float wallNonDgHandleRightMin) {
         this.wallNonDgHandleRightMin = wallNonDgHandleRightMin;
     }
 
-    public float getWallNonDgHandleRightMax() {
+    public Float getWallNonDgHandleRightMax() {
         return wallNonDgHandleRightMax;
     }
 
-    public void setWallNonDgHandleRightMax(float wallNonDgHandleRightMax) {
+    public void setWallNonDgHandleRightMax(Float wallNonDgHandleRightMax) {
         this.wallNonDgHandleRightMax = wallNonDgHandleRightMax;
     }
 
-    public float getWallDgUnderHandleMin() {
+    public Float getWallDgUnderHandleMin() {
         return wallDgUnderHandleMin;
     }
 
-    public void setWallDgUnderHandleMin(float wallDgUnderHandleMin) {
+    public void setWallDgUnderHandleMin(Float wallDgUnderHandleMin) {
         this.wallDgUnderHandleMin = wallDgUnderHandleMin;
     }
 
-    public float getWallDgUnderHandleMax() {
+    public Float getWallDgUnderHandleMax() {
         return wallDgUnderHandleMax;
     }
 
-    public void setWallDgUnderHandleMax(float wallDgUnderHandleMax) {
+    public void setWallDgUnderHandleMax(Float wallDgUnderHandleMax) {
         this.wallDgUnderHandleMax = wallDgUnderHandleMax;
     }
 
-    public float getWallDgBaseMin() {
+    public Float getWallDgBaseMin() {
         return wallDgBaseMin;
     }
 
-    public void setWallDgBaseMin(float wallDgBaseMin) {
+    public void setWallDgBaseMin(Float wallDgBaseMin) {
         this.wallDgBaseMin = wallDgBaseMin;
     }
 
-    public float getWallDgBaseMax() {
+    public Float getWallDgBaseMax() {
         return wallDgBaseMax;
     }
 
-    public void setWallDgBaseMax(float wallDgBaseMax) {
+    public void setWallDgBaseMax(Float wallDgBaseMax) {
         this.wallDgBaseMax = wallDgBaseMax;
     }
 
-    public float getWallDgClosureMin() {
+    public Float getWallDgClosureMin() {
         return wallDgClosureMin;
     }
 
-    public void setWallDgClosureMin(float wallDgClosureMin) {
+    public void setWallDgClosureMin(Float wallDgClosureMin) {
         this.wallDgClosureMin = wallDgClosureMin;
     }
 
-    public float getWallDgClosureMax() {
+    public Float getWallDgClosureMax() {
         return wallDgClosureMax;
     }
 
-    public void setWallDgClosureMax(float wallDgClosureMax) {
+    public void setWallDgClosureMax(Float wallDgClosureMax) {
         this.wallDgClosureMax = wallDgClosureMax;
     }
 
-    public float getWallDgHandleBungMin() {
+    public Float getWallDgHandleBungMin() {
         return wallDgHandleBungMin;
     }
 
-    public void setWallDgHandleBungMin(float wallDgHandleBungMin) {
+    public void setWallDgHandleBungMin(Float wallDgHandleBungMin) {
         this.wallDgHandleBungMin = wallDgHandleBungMin;
     }
 
-    public float getWallDgHandleBungMax() {
+    public Float getWallDgHandleBungMax() {
         return wallDgHandleBungMax;
     }
 
-    public void setWallDgHandleBungMax(float wallDgHandleBungMax) {
+    public void setWallDgHandleBungMax(Float wallDgHandleBungMax) {
         this.wallDgHandleBungMax = wallDgHandleBungMax;
     }
 
-    public float getWallDgHandleLeftMin() {
+    public Float getWallDgHandleLeftMin() {
         return wallDgHandleLeftMin;
     }
 
-    public void setWallDgHandleLeftMin(float wallDgHandleLeftMin) {
+    public void setWallDgHandleLeftMin(Float wallDgHandleLeftMin) {
         this.wallDgHandleLeftMin = wallDgHandleLeftMin;
     }
 
-    public float getWallDgHandleLeftMax() {
+    public Float getWallDgHandleLeftMax() {
         return wallDgHandleLeftMax;
     }
 
-    public void setWallDgHandleLeftMax(float wallDgHandleLeftMax) {
+    public void setWallDgHandleLeftMax(Float wallDgHandleLeftMax) {
         this.wallDgHandleLeftMax = wallDgHandleLeftMax;
     }
 
-    public float getWallDgHandRightMin() {
+    public Float getWallDgHandRightMin() {
         return wallDgHandRightMin;
     }
 
-    public void setWallDgHandRightMin(float wallDgHandRightMin) {
+    public void setWallDgHandRightMin(Float wallDgHandRightMin) {
         this.wallDgHandRightMin = wallDgHandRightMin;
     }
 
-    public float getWallDgHandleRightMax() {
+    public Float getWallDgHandleRightMax() {
         return wallDgHandleRightMax;
     }
 
-    public void setWallDgHandleRightMax(float wallDgHandleRightMax) {
+    public void setWallDgHandleRightMax(Float wallDgHandleRightMax) {
         this.wallDgHandleRightMax = wallDgHandleRightMax;
     }
 
@@ -784,99 +649,99 @@ public class Mould implements Serializable {
         this.threadBoreBSize3 = threadBoreBSize3;
     }
 
-    public float getThreadBoreAMin1() {
+    public Float getThreadBoreAMin1() {
         return threadBoreAMin1;
     }
 
-    public void setThreadBoreAMin1(float threadBoreAMin1) {
+    public void setThreadBoreAMin1(Float threadBoreAMin1) {
         this.threadBoreAMin1 = threadBoreAMin1;
     }
 
-    public float getThreadBoreAMin2() {
+    public Float getThreadBoreAMin2() {
         return threadBoreAMin2;
     }
 
-    public void setThreadBoreAMin2(float threadBoreAMin2) {
+    public void setThreadBoreAMin2(Float threadBoreAMin2) {
         this.threadBoreAMin2 = threadBoreAMin2;
     }
 
-    public float getThreadBoreAMin3() {
+    public Float getThreadBoreAMin3() {
         return threadBoreAMin3;
     }
 
-    public void setThreadBoreAMin3(float threadBoreAMin3) {
+    public void setThreadBoreAMin3(Float threadBoreAMin3) {
         this.threadBoreAMin3 = threadBoreAMin3;
     }
 
-    public float getThreadBoreAMax1() {
+    public Float getThreadBoreAMax1() {
         return threadBoreAMax1;
     }
 
-    public void setThreadBoreAMax1(float threadBoreAMax1) {
+    public void setThreadBoreAMax1(Float threadBoreAMax1) {
         this.threadBoreAMax1 = threadBoreAMax1;
     }
 
-    public float getThreadBoreAMax2() {
+    public Float getThreadBoreAMax2() {
         return threadBoreAMax2;
     }
 
-    public void setThreadBoreAMax2(float threadBoreAMax2) {
+    public void setThreadBoreAMax2(Float threadBoreAMax2) {
         this.threadBoreAMax2 = threadBoreAMax2;
     }
 
-    public float getThreadBoreAMax3() {
+    public Float getThreadBoreAMax3() {
         return threadBoreAMax3;
     }
 
-    public void setThreadBoreAMax3(float threadBoreAMax3) {
+    public void setThreadBoreAMax3(Float threadBoreAMax3) {
         this.threadBoreAMax3 = threadBoreAMax3;
     }
 
-    public float getThreadBoreBMin1() {
+    public Float getThreadBoreBMin1() {
         return threadBoreBMin1;
     }
 
-    public void setThreadBoreBMin1(float threadBoreBMin1) {
+    public void setThreadBoreBMin1(Float threadBoreBMin1) {
         this.threadBoreBMin1 = threadBoreBMin1;
     }
 
-    public float getThreadBoreBMin2() {
+    public Float getThreadBoreBMin2() {
         return threadBoreBMin2;
     }
 
-    public void setThreadBoreBMin2(float threadBoreBMin2) {
+    public void setThreadBoreBMin2(Float threadBoreBMin2) {
         this.threadBoreBMin2 = threadBoreBMin2;
     }
 
-    public float getThreadBoreBMin3() {
+    public Float getThreadBoreBMin3() {
         return threadBoreBMin3;
     }
 
-    public void setThreadBoreBMin3(float threadBoreBMin3) {
+    public void setThreadBoreBMin3(Float threadBoreBMin3) {
         this.threadBoreBMin3 = threadBoreBMin3;
     }
 
-    public float getThreadBoreBMax1() {
+    public Float getThreadBoreBMax1() {
         return threadBoreBMax1;
     }
 
-    public void setThreadBoreBMax1(float threadBoreBMax1) {
+    public void setThreadBoreBMax1(Float threadBoreBMax1) {
         this.threadBoreBMax1 = threadBoreBMax1;
     }
 
-    public float getThreadBoreBMax2() {
+    public Float getThreadBoreBMax2() {
         return threadBoreBMax2;
     }
 
-    public void setThreadBoreBMax2(float threadBoreBMax2) {
+    public void setThreadBoreBMax2(Float threadBoreBMax2) {
         this.threadBoreBMax2 = threadBoreBMax2;
     }
 
-    public float getThreadBoreBMax3() {
+    public Float getThreadBoreBMax3() {
         return threadBoreBMax3;
     }
 
-    public void setThreadBoreBMax3(float threadBoreBMax3) {
+    public void setThreadBoreBMax3(Float threadBoreBMax3) {
         this.threadBoreBMax3 = threadBoreBMax3;
     }
 
@@ -904,51 +769,51 @@ public class Mould implements Serializable {
         this.threadNeckSize3 = threadNeckSize3;
     }
 
-    public float getThreadNeckMin1() {
+    public Float getThreadNeckMin1() {
         return threadNeckMin1;
     }
 
-    public void setThreadNeckMin1(float threadNeckMin1) {
+    public void setThreadNeckMin1(Float threadNeckMin1) {
         this.threadNeckMin1 = threadNeckMin1;
     }
 
-    public float getThreadNeckMin2() {
+    public Float getThreadNeckMin2() {
         return threadNeckMin2;
     }
 
-    public void setThreadNeckMin2(float threadNeckMin2) {
+    public void setThreadNeckMin2(Float threadNeckMin2) {
         this.threadNeckMin2 = threadNeckMin2;
     }
 
-    public float getThreadNeckMin3() {
+    public Float getThreadNeckMin3() {
         return threadNeckMin3;
     }
 
-    public void setThreadNeckMin3(float threadNeckMin3) {
+    public void setThreadNeckMin3(Float threadNeckMin3) {
         this.threadNeckMin3 = threadNeckMin3;
     }
 
-    public float getThreadNeckMax1() {
+    public Float getThreadNeckMax1() {
         return threadNeckMax1;
     }
 
-    public void setThreadNeckMax1(float threadNeckMax1) {
+    public void setThreadNeckMax1(Float threadNeckMax1) {
         this.threadNeckMax1 = threadNeckMax1;
     }
 
-    public float getThreadNeckMax2() {
+    public Float getThreadNeckMax2() {
         return threadNeckMax2;
     }
 
-    public void setThreadNeckMax2(float threadNeckMax2) {
+    public void setThreadNeckMax2(Float threadNeckMax2) {
         this.threadNeckMax2 = threadNeckMax2;
     }
 
-    public float getThreadNeckMax3() {
+    public Float getThreadNeckMax3() {
         return threadNeckMax3;
     }
 
-    public void setThreadNeckMax3(float threadNeckMax3) {
+    public void setThreadNeckMax3(Float threadNeckMax3) {
         this.threadNeckMax3 = threadNeckMax3;
     }
 

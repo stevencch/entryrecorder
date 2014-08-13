@@ -8,8 +8,11 @@ package com.cch.aj.entryrecorder.frame;
 import com.cch.aj.entryrecorder.common.ComboBoxItem;
 import com.cch.aj.entryrecorder.common.ComboBoxItemConvertor;
 import com.cch.aj.entryrecorder.common.ComboBoxRender;
+import com.cch.aj.entryrecorder.entities.Machine;
 import com.cch.aj.entryrecorder.entities.Staff;
+import com.cch.aj.entryrecorder.services.MachineService;
 import com.cch.aj.entryrecorder.services.StaffService;
+import com.cch.aj.entryrecorder.services.impl.MachineServiceImpl;
 import com.cch.aj.entryrecorder.services.impl.StaffServiceImpl;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,6 +32,7 @@ import javax.swing.JOptionPane;
 public class SettingsJFrame extends javax.swing.JFrame {
 
     private StaffService staffService = new StaffServiceImpl();
+    private MachineService machineService = new MachineServiceImpl();
 
     /**
      * Creates new form SettingsJFrame
@@ -44,20 +48,44 @@ public class SettingsJFrame extends javax.swing.JFrame {
 
     private void UpdateTabStaff(int id) {
         List<Staff> staffs = this.staffService.GetAllStaffs();
-
-        List<ComboBoxItem<Staff>> staffNames = staffs.stream().map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getName(), x.getId())).collect(Collectors.toList());
-        ComboBoxItem[] staffNamesArray = staffNames.toArray(new ComboBoxItem[staffNames.size()]);
-        this.cbStaff.setModel(new DefaultComboBoxModel(staffNamesArray));
-        int selectedIndex = id;
-        if (id != 0) {
-            ComboBoxItem<Staff> currentStaffName = staffNames.stream().filter(x -> x.getId() == id).findFirst().get();
-            selectedIndex = staffNames.indexOf(currentStaffName);
+        if (staffs.size() > 0) {
+            List<ComboBoxItem<Staff>> staffNames = staffs.stream().map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getName(), x.getId())).collect(Collectors.toList());
+            ComboBoxItem[] staffNamesArray = staffNames.toArray(new ComboBoxItem[staffNames.size()]);
+            this.cbStaff.setModel(new DefaultComboBoxModel(staffNamesArray));
+            int selectedIndex = id;
+            if (id != 0) {
+                ComboBoxItem<Staff> currentStaffName = staffNames.stream().filter(x -> x.getId() == id).findFirst().get();
+                selectedIndex = staffNames.indexOf(currentStaffName);
+            }
+            this.cbStaff.setSelectedIndex(selectedIndex);
+            Staff currentStaff = ((ComboBoxItem<Staff>) this.cbStaff.getSelectedItem()).getItem();
+            //
+            this.cbStaffJob.setSelectedItem(currentStaff.getJobType());
+            this.txtStaffName.setText(currentStaff.getName());
         }
-        this.cbStaff.setSelectedIndex(selectedIndex);
-        Staff currentStaff = ((ComboBoxItem<Staff>) this.cbStaff.getSelectedItem()).getItem();
-        //
-        this.cbStaffJob.setSelectedItem(currentStaff.getJobType());
-        this.txtStaffName.setText(currentStaff.getName());
+    }
+
+    private void UpdateTabMachine(int id) {
+        List<Machine> machines = this.machineService.GetAllMachines();
+        if (machines.size() > 0) {
+            List<ComboBoxItem<Machine>> machineNames = machines.stream().map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, "Machine " + x.getMachineNo(), x.getId())).collect(Collectors.toList());
+            ComboBoxItem[] machineNamesArray = machineNames.toArray(new ComboBoxItem[machineNames.size()]);
+            this.cbMachine.setModel(new DefaultComboBoxModel(machineNamesArray));
+            int selectedIndex = id;
+            if (id != 0) {
+                ComboBoxItem<Machine> currentMachineName = machineNames.stream().filter(x -> x.getId() == id).findFirst().get();
+                selectedIndex = machineNames.indexOf(currentMachineName);
+            }
+            this.cbMachine.setSelectedIndex(selectedIndex);
+            Machine currentMachine = ((ComboBoxItem<Machine>) this.cbMachine.getSelectedItem()).getItem();
+            //
+            this.txtMachineCapacity.setText(currentMachine.getCapacity());
+            this.txtMachineDesc.setText(currentMachine.getDescription());
+            this.txtMachineManufa.setText(currentMachine.getManufacturer());
+            this.txtMachineNo.setText(currentMachine.getMachineNo());
+            this.txtMachineSerial.setText(currentMachine.getSerialNo());
+            this.txtMachineYear.setText(currentMachine.getYear());
+        }
     }
 
     /**
@@ -73,12 +101,12 @@ public class SettingsJFrame extends javax.swing.JFrame {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel19 = new javax.swing.JPanel();
         jPanel20 = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
-        jComboBox3 = new javax.swing.JComboBox();
-        jButton4 = new javax.swing.JButton();
+        btnMachineNew = new javax.swing.JButton();
+        cbMachine = new javax.swing.JComboBox();
+        btnMachineDelete = new javax.swing.JButton();
         jPanel21 = new javax.swing.JPanel();
-        jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
+        btnMachineUndo = new javax.swing.JButton();
+        btnMachineSave = new javax.swing.JButton();
         jLabel92 = new javax.swing.JLabel();
         jPanel22 = new javax.swing.JPanel();
         jLabel93 = new javax.swing.JLabel();
@@ -87,12 +115,12 @@ public class SettingsJFrame extends javax.swing.JFrame {
         jLabel96 = new javax.swing.JLabel();
         jLabel97 = new javax.swing.JLabel();
         jLabel98 = new javax.swing.JLabel();
-        jTextField109 = new javax.swing.JTextField();
-        jTextField110 = new javax.swing.JTextField();
-        jTextField111 = new javax.swing.JTextField();
-        jTextField112 = new javax.swing.JTextField();
-        jTextField113 = new javax.swing.JTextField();
-        jTextField114 = new javax.swing.JTextField();
+        txtMachineNo = new javax.swing.JTextField();
+        txtMachineDesc = new javax.swing.JTextField();
+        txtMachineManufa = new javax.swing.JTextField();
+        txtMachineYear = new javax.swing.JTextField();
+        txtMachineSerial = new javax.swing.JTextField();
+        txtMachineCapacity = new javax.swing.JTextField();
         jPanel16 = new javax.swing.JPanel();
         jTabbedPane3 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
@@ -301,10 +329,10 @@ public class SettingsJFrame extends javax.swing.JFrame {
         jPanel30 = new javax.swing.JPanel();
         btnStaffNew = new javax.swing.JButton();
         cbStaff = new javax.swing.JComboBox();
-        jButton18 = new javax.swing.JButton();
+        btnStaffDelete = new javax.swing.JButton();
         jPanel31 = new javax.swing.JPanel();
-        jButton19 = new javax.swing.JButton();
-        jButton20 = new javax.swing.JButton();
+        btnStaffUndo = new javax.swing.JButton();
+        btnStaffSave = new javax.swing.JButton();
         jLabel101 = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         jLabel78 = new javax.swing.JLabel();
@@ -320,27 +348,42 @@ public class SettingsJFrame extends javax.swing.JFrame {
 
         jPanel20.setLayout(new java.awt.GridBagLayout());
 
-        jButton3.setText("New");
+        btnMachineNew.setText("New");
+        btnMachineNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMachineNewActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.weightx = 0.25;
-        jPanel20.add(jButton3, gridBagConstraints);
+        jPanel20.add(btnMachineNew, gridBagConstraints);
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbMachine.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbMachineActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.5;
-        jPanel20.add(jComboBox3, gridBagConstraints);
+        jPanel20.add(cbMachine, gridBagConstraints);
 
-        jButton4.setText("Insert");
+        btnMachineDelete.setText("Delete");
+        btnMachineDelete.setToolTipText("");
+        btnMachineDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMachineDeleteActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.weightx = 0.25;
-        jPanel20.add(jButton4, gridBagConstraints);
+        jPanel20.add(btnMachineDelete, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -353,19 +396,29 @@ public class SettingsJFrame extends javax.swing.JFrame {
 
         jPanel21.setLayout(new java.awt.GridBagLayout());
 
-        jButton7.setText("Undo");
+        btnMachineUndo.setText("Undo");
+        btnMachineUndo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMachineUndoActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.weightx = 0.25;
-        jPanel21.add(jButton7, gridBagConstraints);
+        jPanel21.add(btnMachineUndo, gridBagConstraints);
 
-        jButton8.setText("Save");
+        btnMachineSave.setText("Save");
+        btnMachineSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMachineSaveActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.weightx = 0.25;
-        jPanel21.add(jButton8, gridBagConstraints);
+        jPanel21.add(btnMachineSave, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -450,7 +503,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 9;
         gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(6, 0, 6, 29);
-        jPanel22.add(jTextField109, gridBagConstraints);
+        jPanel22.add(txtMachineNo, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -459,7 +512,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 9;
         gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(6, 0, 6, 29);
-        jPanel22.add(jTextField110, gridBagConstraints);
+        jPanel22.add(txtMachineDesc, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
@@ -468,7 +521,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 9;
         gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(6, 0, 6, 29);
-        jPanel22.add(jTextField111, gridBagConstraints);
+        jPanel22.add(txtMachineManufa, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
@@ -477,7 +530,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 9;
         gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(6, 0, 6, 29);
-        jPanel22.add(jTextField112, gridBagConstraints);
+        jPanel22.add(txtMachineYear, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
@@ -486,7 +539,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 9;
         gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(6, 0, 6, 29);
-        jPanel22.add(jTextField113, gridBagConstraints);
+        jPanel22.add(txtMachineSerial, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 5;
@@ -495,7 +548,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 9;
         gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(6, 0, 6, 29);
-        jPanel22.add(jTextField114, gridBagConstraints);
+        jPanel22.add(txtMachineCapacity, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -2413,7 +2466,6 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.weightx = 0.25;
         jPanel30.add(btnStaffNew, gridBagConstraints);
 
-        cbStaff.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cbStaff.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbStaffActionPerformed(evt);
@@ -2426,17 +2478,17 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.weightx = 0.5;
         jPanel30.add(cbStaff, gridBagConstraints);
 
-        jButton18.setText("Delete");
-        jButton18.addActionListener(new java.awt.event.ActionListener() {
+        btnStaffDelete.setText("Delete");
+        btnStaffDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton18ActionPerformed(evt);
+                btnStaffDeleteActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.weightx = 0.25;
-        jPanel30.add(jButton18, gridBagConstraints);
+        jPanel30.add(btnStaffDelete, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -2449,29 +2501,29 @@ public class SettingsJFrame extends javax.swing.JFrame {
 
         jPanel31.setLayout(new java.awt.GridBagLayout());
 
-        jButton19.setText("Undo");
-        jButton19.addActionListener(new java.awt.event.ActionListener() {
+        btnStaffUndo.setText("Undo");
+        btnStaffUndo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton19ActionPerformed(evt);
+                btnStaffUndoActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.weightx = 0.25;
-        jPanel31.add(jButton19, gridBagConstraints);
+        jPanel31.add(btnStaffUndo, gridBagConstraints);
 
-        jButton20.setText("Save");
-        jButton20.addActionListener(new java.awt.event.ActionListener() {
+        btnStaffSave.setText("Save");
+        btnStaffSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton20ActionPerformed(evt);
+                btnStaffSaveActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.weightx = 0.25;
-        jPanel31.add(jButton20, gridBagConstraints);
+        jPanel31.add(btnStaffSave, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -2589,16 +2641,16 @@ public class SettingsJFrame extends javax.swing.JFrame {
         this.txtStaffName.setText(currentStaff.getName());
     }//GEN-LAST:event_cbStaffActionPerformed
 
-    private void jButton20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton20ActionPerformed
+    private void btnStaffSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStaffSaveActionPerformed
         // TODO add your handling code here:
         Staff currentStaff = ((ComboBoxItem<Staff>) this.cbStaff.getSelectedItem()).getItem();
         currentStaff.setJobType((String) this.cbStaffJob.getSelectedItem());
         currentStaff.setName(this.txtStaffName.getText());
         this.staffService.UpdateStaff(currentStaff);
         this.UpdateTabStaff(currentStaff.getId());
-    }//GEN-LAST:event_jButton20ActionPerformed
+    }//GEN-LAST:event_btnStaffSaveActionPerformed
 
-    private void jButton18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton18ActionPerformed
+    private void btnStaffDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStaffDeleteActionPerformed
         // TODO add your handling code here:
         int result = JOptionPane.showConfirmDialog(this, "Are you sure to delete this item", "Warning", JOptionPane.OK_CANCEL_OPTION);
         if (result == 0) {
@@ -2606,13 +2658,60 @@ public class SettingsJFrame extends javax.swing.JFrame {
             this.staffService.DeleteStaff(currentStaff.getId());
             this.UpdateTabStaff(0);
         }
-    }//GEN-LAST:event_jButton18ActionPerformed
+    }//GEN-LAST:event_btnStaffDeleteActionPerformed
 
-    private void jButton19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton19ActionPerformed
+    private void btnStaffUndoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStaffUndoActionPerformed
         // TODO add your handling code here:
         Staff currentStaff = ((ComboBoxItem<Staff>) this.cbStaff.getSelectedItem()).getItem();
         this.UpdateTabStaff(currentStaff.getId());
-    }//GEN-LAST:event_jButton19ActionPerformed
+    }//GEN-LAST:event_btnStaffUndoActionPerformed
+
+    private void cbMachineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbMachineActionPerformed
+        // TODO add your handling code here:
+        Machine currentItem = ((ComboBoxItem<Machine>) this.cbMachine.getSelectedItem()).getItem();
+        //
+        this.txtMachineCapacity.setText(currentItem.getCapacity());
+        this.txtMachineDesc.setText(currentItem.getDescription());
+        this.txtMachineManufa.setText(currentItem.getManufacturer());
+        this.txtMachineNo.setText(currentItem.getMachineNo());
+        this.txtMachineSerial.setText(currentItem.getSerialNo());
+        this.txtMachineYear.setText(currentItem.getYear());
+    }//GEN-LAST:event_cbMachineActionPerformed
+
+    private void btnMachineNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMachineNewActionPerformed
+        // TODO add your handling code here:
+        int newId = this.machineService.CreateMachine();
+        UpdateTabMachine(newId);
+    }//GEN-LAST:event_btnMachineNewActionPerformed
+
+    private void btnMachineDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMachineDeleteActionPerformed
+        // TODO add your handling code here:
+        int result = JOptionPane.showConfirmDialog(this, "Are you sure to delete this item", "Warning", JOptionPane.OK_CANCEL_OPTION);
+        if (result == 0) {
+            Machine currentMachine = ((ComboBoxItem<Machine>) this.cbMachine.getSelectedItem()).getItem();
+            this.machineService.DeleteMachine(currentMachine.getId());
+            this.UpdateTabMachine(0);
+        }
+    }//GEN-LAST:event_btnMachineDeleteActionPerformed
+
+    private void btnMachineSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMachineSaveActionPerformed
+        // TODO add your handling code here:
+        Machine currentMachine = ((ComboBoxItem<Machine>) this.cbMachine.getSelectedItem()).getItem();
+        currentMachine.setCapacity(this.txtMachineCapacity.getText());
+        currentMachine.setDescription(this.txtMachineDesc.getText());
+        currentMachine.setMachineNo(this.txtMachineNo.getText());
+        currentMachine.setManufacturer(this.txtMachineManufa.getText());
+        currentMachine.setSerialNo(this.txtMachineSerial.getText());
+        currentMachine.setYear(this.txtMachineYear.getText());
+        this.machineService.UpdateMachine(currentMachine);
+        this.UpdateTabMachine(currentMachine.getId());
+    }//GEN-LAST:event_btnMachineSaveActionPerformed
+
+    private void btnMachineUndoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMachineUndoActionPerformed
+        // TODO add your handling code here:
+        Machine currentMachine = ((ComboBoxItem<Machine>) this.cbMachine.getSelectedItem()).getItem();
+        this.UpdateTabMachine(currentMachine.getId());
+    }//GEN-LAST:event_btnMachineUndoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2650,7 +2749,15 @@ public class SettingsJFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnMachineDelete;
+    private javax.swing.JButton btnMachineNew;
+    private javax.swing.JButton btnMachineSave;
+    private javax.swing.JButton btnMachineUndo;
+    private javax.swing.JButton btnStaffDelete;
     private javax.swing.JButton btnStaffNew;
+    private javax.swing.JButton btnStaffSave;
+    private javax.swing.JButton btnStaffUndo;
+    private javax.swing.JComboBox cbMachine;
     private javax.swing.JComboBox cbStaff;
     private javax.swing.JComboBox cbStaffJob;
     private javax.swing.JButton jButton1;
@@ -2661,16 +2768,9 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton15;
     private javax.swing.JButton jButton16;
-    private javax.swing.JButton jButton18;
-    private javax.swing.JButton jButton19;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton20;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox10;
@@ -2679,7 +2779,6 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private javax.swing.JComboBox jComboBox13;
     private javax.swing.JComboBox jComboBox14;
     private javax.swing.JComboBox jComboBox2;
-    private javax.swing.JComboBox jComboBox3;
     private javax.swing.JComboBox jComboBox4;
     private javax.swing.JComboBox jComboBox5;
     private javax.swing.JComboBox jComboBox6;
@@ -2810,13 +2909,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private javax.swing.JTabbedPane jTabbedPane4;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField10;
-    private javax.swing.JTextField jTextField109;
     private javax.swing.JTextField jTextField11;
-    private javax.swing.JTextField jTextField110;
-    private javax.swing.JTextField jTextField111;
-    private javax.swing.JTextField jTextField112;
-    private javax.swing.JTextField jTextField113;
-    private javax.swing.JTextField jTextField114;
     private javax.swing.JTextField jTextField12;
     private javax.swing.JTextField jTextField13;
     private javax.swing.JTextField jTextField14;
@@ -2890,6 +2983,12 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField78;
     private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextField9;
+    private javax.swing.JTextField txtMachineCapacity;
+    private javax.swing.JTextField txtMachineDesc;
+    private javax.swing.JTextField txtMachineManufa;
+    private javax.swing.JTextField txtMachineNo;
+    private javax.swing.JTextField txtMachineSerial;
+    private javax.swing.JTextField txtMachineYear;
     private javax.swing.JTextField txtStaffName;
     // End of variables declaration//GEN-END:variables
 

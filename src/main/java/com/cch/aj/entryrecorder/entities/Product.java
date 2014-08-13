@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Administrator
+ * @author chacao
  */
 @Entity
 @Table(name = "product")
@@ -56,55 +56,40 @@ public class Product implements Serializable {
     @Basic(optional = false)
     @Column(name = "Code")
     private String code;
-    @Basic(optional = false)
     @Column(name = "Description")
     private String description;
     @Basic(optional = false)
     @Column(name = "MouldId")
     private int mouldId;
-    @Basic(optional = false)
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "WeightMin")
-    private float weightMin;
-    @Basic(optional = false)
+    private Float weightMin;
     @Column(name = "WeightMax")
-    private float weightMax;
-    @Basic(optional = false)
+    private Float weightMax;
     @Column(name = "ThreadId")
-    private int threadId;
-    @Basic(optional = false)
+    private Integer threadId;
     @Column(name = "Bung")
-    private boolean bung;
-    @Basic(optional = false)
+    private Boolean bung;
     @Column(name = "Pierced")
-    private boolean pierced;
-    @Basic(optional = false)
+    private Boolean pierced;
     @Column(name = "PolymerId")
-    private int polymerId;
-    @Basic(optional = false)
+    private Integer polymerId;
     @Column(name = "AdditiveAId")
-    private int additiveAId;
-    @Basic(optional = false)
+    private Integer additiveAId;
     @Column(name = "AdditiveBId")
-    private int additiveBId;
-    @Basic(optional = false)
+    private Integer additiveBId;
     @Column(name = "AdditiveCId")
-    private int additiveCId;
-    @Basic(optional = false)
+    private Integer additiveCId;
     @Column(name = "AdditiveAPercentage")
     private String additiveAPercentage;
-    @Basic(optional = false)
     @Column(name = "AdditiveBPercentage")
     private String additiveBPercentage;
-    @Basic(optional = false)
     @Column(name = "AdditiveCPercentage")
     private String additiveCPercentage;
-    @Basic(optional = false)
     @Column(name = "Image1")
     private String image1;
-    @Basic(optional = false)
     @Column(name = "Image2")
     private String image2;
-    @Basic(optional = false)
     @Column(name = "Image3")
     private String image3;
 
@@ -115,26 +100,10 @@ public class Product implements Serializable {
         this.id = id;
     }
 
-    public Product(Integer id, String code, String description, int mouldId, float weightMin, float weightMax, int threadId, boolean bung, boolean pierced, int polymerId, int additiveAId, int additiveBId, int additiveCId, String additiveAPercentage, String additiveBPercentage, String additiveCPercentage, String image1, String image2, String image3) {
+    public Product(Integer id, String code, int mouldId) {
         this.id = id;
         this.code = code;
-        this.description = description;
         this.mouldId = mouldId;
-        this.weightMin = weightMin;
-        this.weightMax = weightMax;
-        this.threadId = threadId;
-        this.bung = bung;
-        this.pierced = pierced;
-        this.polymerId = polymerId;
-        this.additiveAId = additiveAId;
-        this.additiveBId = additiveBId;
-        this.additiveCId = additiveCId;
-        this.additiveAPercentage = additiveAPercentage;
-        this.additiveBPercentage = additiveBPercentage;
-        this.additiveCPercentage = additiveCPercentage;
-        this.image1 = image1;
-        this.image2 = image2;
-        this.image3 = image3;
     }
 
     public Integer getId() {
@@ -169,75 +138,75 @@ public class Product implements Serializable {
         this.mouldId = mouldId;
     }
 
-    public float getWeightMin() {
+    public Float getWeightMin() {
         return weightMin;
     }
 
-    public void setWeightMin(float weightMin) {
+    public void setWeightMin(Float weightMin) {
         this.weightMin = weightMin;
     }
 
-    public float getWeightMax() {
+    public Float getWeightMax() {
         return weightMax;
     }
 
-    public void setWeightMax(float weightMax) {
+    public void setWeightMax(Float weightMax) {
         this.weightMax = weightMax;
     }
 
-    public int getThreadId() {
+    public Integer getThreadId() {
         return threadId;
     }
 
-    public void setThreadId(int threadId) {
+    public void setThreadId(Integer threadId) {
         this.threadId = threadId;
     }
 
-    public boolean getBung() {
+    public Boolean getBung() {
         return bung;
     }
 
-    public void setBung(boolean bung) {
+    public void setBung(Boolean bung) {
         this.bung = bung;
     }
 
-    public boolean getPierced() {
+    public Boolean getPierced() {
         return pierced;
     }
 
-    public void setPierced(boolean pierced) {
+    public void setPierced(Boolean pierced) {
         this.pierced = pierced;
     }
 
-    public int getPolymerId() {
+    public Integer getPolymerId() {
         return polymerId;
     }
 
-    public void setPolymerId(int polymerId) {
+    public void setPolymerId(Integer polymerId) {
         this.polymerId = polymerId;
     }
 
-    public int getAdditiveAId() {
+    public Integer getAdditiveAId() {
         return additiveAId;
     }
 
-    public void setAdditiveAId(int additiveAId) {
+    public void setAdditiveAId(Integer additiveAId) {
         this.additiveAId = additiveAId;
     }
 
-    public int getAdditiveBId() {
+    public Integer getAdditiveBId() {
         return additiveBId;
     }
 
-    public void setAdditiveBId(int additiveBId) {
+    public void setAdditiveBId(Integer additiveBId) {
         this.additiveBId = additiveBId;
     }
 
-    public int getAdditiveCId() {
+    public Integer getAdditiveCId() {
         return additiveCId;
     }
 
-    public void setAdditiveCId(int additiveCId) {
+    public void setAdditiveCId(Integer additiveCId) {
         this.additiveCId = additiveCId;
     }
 

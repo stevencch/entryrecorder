@@ -7,8 +7,8 @@
 package com.cch.aj.entryrecorder.repositories.impl;
 
 import com.cch.aj.entryrecorder.repositories.MachineController;
+import com.cch.aj.entryrecorder.common.exceptions.NonexistentEntityException;
 import com.cch.aj.entryrecorder.entities.Machine;
-import com.cch.aj.entryrecorder.repositories.impl.exceptions.NonexistentEntityException;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -20,7 +20,7 @@ import javax.persistence.criteria.Root;
 
 /**
  *
- * @author Administrator
+ * @author chacao
  */
 public class MachineJpaController implements MachineController {
 

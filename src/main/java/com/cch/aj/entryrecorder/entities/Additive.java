@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Administrator
+ * @author chacao
  */
 @Entity
 @Table(name = "additive")
@@ -41,10 +41,8 @@ public class Additive implements Serializable {
     @Basic(optional = false)
     @Column(name = "Company")
     private String company;
-    @Basic(optional = false)
     @Column(name = "Grade")
     private String grade;
-    @Basic(optional = false)
     @Column(name = "Description")
     private String description;
 
@@ -55,11 +53,9 @@ public class Additive implements Serializable {
         this.id = id;
     }
 
-    public Additive(Integer id, String company, String grade, String description) {
+    public Additive(Integer id, String company) {
         this.id = id;
         this.company = company;
-        this.grade = grade;
-        this.description = description;
     }
 
     public Integer getId() {

@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Administrator
+ * @author chacao
  */
 @Entity
 @Table(name = "machine")
@@ -32,7 +32,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Machine.findByDescription", query = "SELECT m FROM Machine m WHERE m.description = :description"),
     @NamedQuery(name = "Machine.findByYear", query = "SELECT m FROM Machine m WHERE m.year = :year"),
     @NamedQuery(name = "Machine.findBySerialNo", query = "SELECT m FROM Machine m WHERE m.serialNo = :serialNo"),
-    @NamedQuery(name = "Machine.findByCapacity", query = "SELECT m FROM Machine m WHERE m.capacity = :capacity")})
+    @NamedQuery(name = "Machine.findByCapacity", query = "SELECT m FROM Machine m WHERE m.capacity = :capacity"),
+    @NamedQuery(name = "Machine.findByManufacturer", query = "SELECT m FROM Machine m WHERE m.manufacturer = :manufacturer")})
 public class Machine implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -43,18 +44,16 @@ public class Machine implements Serializable {
     @Basic(optional = false)
     @Column(name = "MachineNo")
     private String machineNo;
-    @Basic(optional = false)
     @Column(name = "Description")
     private String description;
-    @Basic(optional = false)
     @Column(name = "Year")
     private String year;
-    @Basic(optional = false)
     @Column(name = "SerialNo")
     private String serialNo;
-    @Basic(optional = false)
     @Column(name = "Capacity")
     private String capacity;
+    @Column(name = "Manufacturer")
+    private String manufacturer;
 
     public Machine() {
     }
@@ -63,13 +62,9 @@ public class Machine implements Serializable {
         this.id = id;
     }
 
-    public Machine(Integer id, String machineNo, String description, String year, String serialNo, String capacity) {
+    public Machine(Integer id, String machineNo) {
         this.id = id;
         this.machineNo = machineNo;
-        this.description = description;
-        this.year = year;
-        this.serialNo = serialNo;
-        this.capacity = capacity;
     }
 
     public Integer getId() {
@@ -118,6 +113,14 @@ public class Machine implements Serializable {
 
     public void setCapacity(String capacity) {
         this.capacity = capacity;
+    }
+
+    public String getManufacturer() {
+        return manufacturer;
+    }
+
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
     }
 
     @Override

@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Administrator
+ * @author chacao
  */
 @Entity
 @Table(name = "record")
@@ -47,19 +47,17 @@ public class Record implements Serializable {
     @Basic(optional = false)
     @Column(name = "Key")
     private String key;
-    @Basic(optional = false)
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "NumberValue")
-    private float numberValue;
-    @Basic(optional = false)
+    private Float numberValue;
     @Column(name = "StringValue")
     private String stringValue;
     @Basic(optional = false)
     @Column(name = "CreatedTime")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdTime;
-    @Basic(optional = false)
     @Column(name = "StaffId")
-    private int staffId;
+    private Integer staffId;
     @Basic(optional = false)
     @Column(name = "EntryId")
     private int entryId;
@@ -71,13 +69,10 @@ public class Record implements Serializable {
         this.id = id;
     }
 
-    public Record(Integer id, String key, float numberValue, String stringValue, Date createdTime, int staffId, int entryId) {
+    public Record(Integer id, String key, Date createdTime, int entryId) {
         this.id = id;
         this.key = key;
-        this.numberValue = numberValue;
-        this.stringValue = stringValue;
         this.createdTime = createdTime;
-        this.staffId = staffId;
         this.entryId = entryId;
     }
 
@@ -97,11 +92,11 @@ public class Record implements Serializable {
         this.key = key;
     }
 
-    public float getNumberValue() {
+    public Float getNumberValue() {
         return numberValue;
     }
 
-    public void setNumberValue(float numberValue) {
+    public void setNumberValue(Float numberValue) {
         this.numberValue = numberValue;
     }
 
@@ -121,11 +116,11 @@ public class Record implements Serializable {
         this.createdTime = createdTime;
     }
 
-    public int getStaffId() {
+    public Integer getStaffId() {
         return staffId;
     }
 
-    public void setStaffId(int staffId) {
+    public void setStaffId(Integer staffId) {
         this.staffId = staffId;
     }
 

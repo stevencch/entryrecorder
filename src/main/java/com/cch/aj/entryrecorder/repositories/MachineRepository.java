@@ -4,12 +4,12 @@
  * and open the template in the editor.
  */
 
-package com.cch.aj.entryrecorder.services.impl;
+package com.cch.aj.entryrecorder.repositories;
 
 /**
  *
- * @author Administrator
+ * @author chacao
  */
-public class RecorderServiceImpl {
+public interface MachineRepository extends MachineController {
     
 }
