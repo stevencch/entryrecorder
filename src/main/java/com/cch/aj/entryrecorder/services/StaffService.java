@@ -17,4 +17,9 @@ public interface StaffService {
 
     List<Staff> GetAllStaffs();
     
+    int CreateNewStaff();
+
+    void UpdateStaff(Staff currentStaff);
+
+    public void DeleteStaff(Integer id);
 }

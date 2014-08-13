@@ -24,4 +24,33 @@ public class StaffServiceImpl implements StaffService {
     public List<Staff> GetAllStaffs(){
         return this.staffRepository.findStaffEntities();
     }
+
+    @Override
+    public int CreateNewStaff() {
+        Staff staff=new Staff();
+        staff.setName("Staff Name");
+        staff.setJobType("PROCESS WORKER");
+        this.staffRepository.create(staff);
+        return staff.getId();
+    }
+
+    @Override
+    public void UpdateStaff(Staff currentStaff) {
+        try{
+        this.staffRepository.edit(currentStaff);
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void DeleteStaff(Integer id) {
+        try{
+        this.staffRepository.destroy(id);
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+        }
+    }
 }

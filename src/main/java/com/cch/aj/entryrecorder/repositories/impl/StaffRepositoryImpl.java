@@ -29,7 +29,7 @@ public class StaffRepositoryImpl implements StaffRepository{
 
     @Override
     public void create(Staff staff) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.staffController.create(staff);
     }
 
     @Override
