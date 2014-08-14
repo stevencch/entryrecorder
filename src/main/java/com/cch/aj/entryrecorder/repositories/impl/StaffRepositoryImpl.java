@@ -7,64 +7,69 @@
 package com.cch.aj.entryrecorder.repositories.impl;
 
 import com.cch.aj.entryrecorder.entities.Staff;
-import com.cch.aj.entryrecorder.repositories.StaffController;
-import com.cch.aj.entryrecorder.repositories.StaffRepository;
+import com.cch.aj.entryrecorder.repositories.SettingRepository;
 import com.cch.aj.entryrecorder.repositories.impl.exceptions.NonexistentEntityException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+
+
 
 /**
  *
  * @author chacao
  */
-public class StaffRepositoryImpl implements StaffRepository{
+public class StaffRepositoryImpl implements SettingRepository<Staff>{
 
-    StaffController staffController;
+    StaffJpaController controller;
     
     public StaffRepositoryImpl(String dbConnectionString) {
         EntityManagerFactory emf=javax.persistence.Persistence.createEntityManagerFactory(dbConnectionString);
-        this.staffController=new StaffJpaController(emf);
+        this.controller=new StaffJpaController(emf);
     }
 
     @Override
-    public void create(Staff staff) {
-        this.staffController.create(staff);
+    public void create(Staff item) {
+        this.controller.create(item);
     }
 
     @Override
-    public void destroy(Integer id) throws NonexistentEntityException {
-        staffController.destroy(id);
+    public void destroy(Integer id) throws NonexistentEntityException
+    {
+        controller.destroy(id);
     }
 
     @Override
-    public void edit(Staff staff) throws NonexistentEntityException, Exception {
-        this.staffController.edit(staff);
+    public void edit(Staff item) throws NonexistentEntityException, Exception {
+        this.controller.edit(item);
     }
 
     @Override
-    public Staff findStaff(Integer id) {
-       return  this.staffController.findStaff(id);
+    public Staff findEntity(Integer id) {
+       return  this.controller.findStaff(id);
     }
 
     @Override
-    public List<Staff> findStaffEntities() {
-        return this.staffController.findStaffEntities();
+    public List<Staff> findEntities() {
+        return this.controller.findStaffEntities();
     }
 
     @Override
-    public List<Staff> findStaffEntities(int maxResults, int firstResult) {
-        return this.staffController.findStaffEntities(maxResults, firstResult);
+    public List<Staff> findEntities(int maxResults, int firstResult) {
+        return this.controller.findStaffEntities(maxResults, firstResult);
     }
 
     @Override
     public EntityManager getEntityManager() {
-        return this.staffController.getEntityManager();
+        return this.controller.getEntityManager();
     }
 
     @Override
-    public int getStaffCount() {
-        return this.staffController.getStaffCount();
+    public int getEntityCount() {
+        return this.controller.getStaffCount();
     }
+
     
 }

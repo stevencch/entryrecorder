@@ -6,19 +6,21 @@
 
 package com.cch.aj.entryrecorder.services;
 
+import com.cch.aj.entryrecorder.common.SettingEntity;
 import com.cch.aj.entryrecorder.entities.Machine;
 import java.util.List;
 
 /**
  *
  * @author chacao
+ * @param <T>
  */
-public interface MachineService {
-    List<Machine> GetAllMachines();
+public interface SettingService<T extends SettingEntity> {
+    List<T> GetAllEntities();
     
-    int CreateMachine();
+    Integer CreateEntity();
 
-    void UpdateMachine(Machine item);
+    void UpdateEntity(T item);
 
-    public void DeleteMachine(Integer id);
+    public void DeleteEntity(Integer id);
 }

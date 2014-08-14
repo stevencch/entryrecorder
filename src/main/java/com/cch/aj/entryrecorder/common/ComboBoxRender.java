@@ -19,8 +19,13 @@ public class ComboBoxRender extends JLabel implements ListCellRenderer {
 
     @Override
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        if(value!=null){
         ComboBoxItem itemData = (ComboBoxItem)value;
         setText(itemData.getName());
+        }
+        else{
+            return null;
+        }
         return this;
     }
     

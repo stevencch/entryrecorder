@@ -6,6 +6,7 @@
 
 package com.cch.aj.entryrecorder.entities;
 
+import com.cch.aj.entryrecorder.common.SettingEntity;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -34,7 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Machine.findBySerialNo", query = "SELECT m FROM Machine m WHERE m.serialNo = :serialNo"),
     @NamedQuery(name = "Machine.findByCapacity", query = "SELECT m FROM Machine m WHERE m.capacity = :capacity"),
     @NamedQuery(name = "Machine.findByManufacturer", query = "SELECT m FROM Machine m WHERE m.manufacturer = :manufacturer")})
-public class Machine implements Serializable {
+public class Machine implements Serializable,SettingEntity {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -146,6 +147,11 @@ public class Machine implements Serializable {
     @Override
     public String toString() {
         return "com.cch.aj.entryrecorder.entities.Machine[ id=" + id + " ]";
+    }
+
+    @Override
+    public void setDefaultValue() {
+        this.machineNo="New Machine No";
     }
     
 }

@@ -6,12 +6,10 @@
 
 package com.cch.aj.entryrecorder.repositories.impl;
 
-import com.cch.aj.entryrecorder.repositories.MachineController;
-import com.cch.aj.entryrecorder.common.exceptions.NonexistentEntityException;
+import com.cch.aj.entryrecorder.repositories.impl.exceptions.NonexistentEntityException;
 import com.cch.aj.entryrecorder.entities.Machine;
 import com.cch.aj.entryrecorder.entities.Staff;
-import com.cch.aj.entryrecorder.repositories.MachineRepository;
-import com.cch.aj.entryrecorder.repositories.StaffController;
+import com.cch.aj.entryrecorder.repositories.SettingRepository;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -20,9 +18,9 @@ import javax.persistence.EntityManagerFactory;
  *
  * @author chacao
  */
-public class MachineRepositoryImpl implements MachineRepository{
+public class MachineRepositoryImpl implements SettingRepository<Machine>{
 
-    MachineController controller;
+    MachineJpaController controller;
     
     public MachineRepositoryImpl(String dbConnectionString) {
         EntityManagerFactory emf=javax.persistence.Persistence.createEntityManagerFactory(dbConnectionString);
@@ -46,17 +44,17 @@ public class MachineRepositoryImpl implements MachineRepository{
     }
 
     @Override
-    public Machine findMachine(Integer id) {
+    public Machine findEntity(Integer id) {
        return  this.controller.findMachine(id);
     }
 
     @Override
-    public List<Machine> findMachineEntities() {
+    public List<Machine> findEntities() {
         return this.controller.findMachineEntities();
     }
 
     @Override
-    public List<Machine> findMachineEntities(int maxResults, int firstResult) {
+    public List<Machine> findEntities(int maxResults, int firstResult) {
         return this.controller.findMachineEntities(maxResults, firstResult);
     }
 
@@ -66,8 +64,9 @@ public class MachineRepositoryImpl implements MachineRepository{
     }
 
     @Override
-    public int getMachineCount() {
+    public int getEntityCount() {
         return this.controller.getMachineCount();
     }
+
     
 }

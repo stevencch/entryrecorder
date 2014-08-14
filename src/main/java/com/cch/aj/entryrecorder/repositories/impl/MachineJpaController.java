@@ -6,9 +6,8 @@
 
 package com.cch.aj.entryrecorder.repositories.impl;
 
-import com.cch.aj.entryrecorder.repositories.MachineController;
-import com.cch.aj.entryrecorder.common.exceptions.NonexistentEntityException;
 import com.cch.aj.entryrecorder.entities.Machine;
+import com.cch.aj.entryrecorder.repositories.impl.exceptions.NonexistentEntityException;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -22,19 +21,17 @@ import javax.persistence.criteria.Root;
  *
  * @author chacao
  */
-public class MachineJpaController implements MachineController {
+public class MachineJpaController implements Serializable {
 
     public MachineJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
 
-    @Override
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
-    @Override
     public void create(Machine machine) {
         EntityManager em = null;
         try {
@@ -49,7 +46,6 @@ public class MachineJpaController implements MachineController {
         }
     }
 
-    @Override
     public void edit(Machine machine) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
@@ -73,7 +69,6 @@ public class MachineJpaController implements MachineController {
         }
     }
 
-    @Override
     public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
@@ -95,12 +90,10 @@ public class MachineJpaController implements MachineController {
         }
     }
 
-    @Override
     public List<Machine> findMachineEntities() {
         return findMachineEntities(true, -1, -1);
     }
 
-    @Override
     public List<Machine> findMachineEntities(int maxResults, int firstResult) {
         return findMachineEntities(false, maxResults, firstResult);
     }
@@ -121,7 +114,6 @@ public class MachineJpaController implements MachineController {
         }
     }
 
-    @Override
     public Machine findMachine(Integer id) {
         EntityManager em = getEntityManager();
         try {
@@ -131,7 +123,6 @@ public class MachineJpaController implements MachineController {
         }
     }
 
-    @Override
     public int getMachineCount() {
         EntityManager em = getEntityManager();
         try {

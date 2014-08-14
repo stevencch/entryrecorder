@@ -6,7 +6,6 @@
 
 package com.cch.aj.entryrecorder.repositories.impl;
 
-import com.cch.aj.entryrecorder.repositories.ProductController;
 import com.cch.aj.entryrecorder.entities.Product;
 import com.cch.aj.entryrecorder.repositories.impl.exceptions.NonexistentEntityException;
 import java.io.Serializable;
@@ -20,21 +19,19 @@ import javax.persistence.criteria.Root;
 
 /**
  *
- * @author Administrator
+ * @author chacao
  */
-public class ProductJpaController implements ProductController {
+public class ProductJpaController implements Serializable {
 
     public ProductJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
 
-    @Override
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
-    @Override
     public void create(Product product) {
         EntityManager em = null;
         try {
@@ -49,7 +46,6 @@ public class ProductJpaController implements ProductController {
         }
     }
 
-    @Override
     public void edit(Product product) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
@@ -73,7 +69,6 @@ public class ProductJpaController implements ProductController {
         }
     }
 
-    @Override
     public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
@@ -95,12 +90,10 @@ public class ProductJpaController implements ProductController {
         }
     }
 
-    @Override
     public List<Product> findProductEntities() {
         return findProductEntities(true, -1, -1);
     }
 
-    @Override
     public List<Product> findProductEntities(int maxResults, int firstResult) {
         return findProductEntities(false, maxResults, firstResult);
     }
@@ -121,7 +114,6 @@ public class ProductJpaController implements ProductController {
         }
     }
 
-    @Override
     public Product findProduct(Integer id) {
         EntityManager em = getEntityManager();
         try {
@@ -131,7 +123,6 @@ public class ProductJpaController implements ProductController {
         }
     }
 
-    @Override
     public int getProductCount() {
         EntityManager em = getEntityManager();
         try {

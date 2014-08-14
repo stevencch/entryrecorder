@@ -4,12 +4,13 @@
  * and open the template in the editor.
  */
 
-package com.cch.aj.entryrecorder.repositories;
+package com.cch.aj.entryrecorder.common;
 
 /**
  *
  * @author chacao
  */
-public interface MachineRepository extends MachineController {
-    
+public interface SettingEntity {
+    void setDefaultValue();
+    Integer getId();
 }

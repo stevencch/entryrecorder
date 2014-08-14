@@ -6,7 +6,6 @@
 
 package com.cch.aj.entryrecorder.repositories.impl;
 
-import com.cch.aj.entryrecorder.repositories.RecordController;
 import com.cch.aj.entryrecorder.entities.Record;
 import com.cch.aj.entryrecorder.repositories.impl.exceptions.NonexistentEntityException;
 import java.io.Serializable;
@@ -20,21 +19,19 @@ import javax.persistence.criteria.Root;
 
 /**
  *
- * @author Administrator
+ * @author chacao
  */
-public class RecordJpaController implements RecordController {
+public class RecordJpaController implements Serializable {
 
     public RecordJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
 
-    @Override
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
-    @Override
     public void create(Record record) {
         EntityManager em = null;
         try {
@@ -49,7 +46,6 @@ public class RecordJpaController implements RecordController {
         }
     }
 
-    @Override
     public void edit(Record record) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
@@ -73,7 +69,6 @@ public class RecordJpaController implements RecordController {
         }
     }
 
-    @Override
     public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
@@ -95,12 +90,10 @@ public class RecordJpaController implements RecordController {
         }
     }
 
-    @Override
     public List<Record> findRecordEntities() {
         return findRecordEntities(true, -1, -1);
     }
 
-    @Override
     public List<Record> findRecordEntities(int maxResults, int firstResult) {
         return findRecordEntities(false, maxResults, firstResult);
     }
@@ -121,7 +114,6 @@ public class RecordJpaController implements RecordController {
         }
     }
 
-    @Override
     public Record findRecord(Integer id) {
         EntityManager em = getEntityManager();
         try {
@@ -131,7 +123,6 @@ public class RecordJpaController implements RecordController {
         }
     }
 
-    @Override
     public int getRecordCount() {
         EntityManager em = getEntityManager();
         try {

@@ -6,7 +6,6 @@
 
 package com.cch.aj.entryrecorder.repositories.impl;
 
-import com.cch.aj.entryrecorder.repositories.EntryController;
 import com.cch.aj.entryrecorder.entities.Entry;
 import com.cch.aj.entryrecorder.repositories.impl.exceptions.NonexistentEntityException;
 import java.io.Serializable;
@@ -20,21 +19,19 @@ import javax.persistence.criteria.Root;
 
 /**
  *
- * @author Administrator
+ * @author chacao
  */
-public class EntryJpaController implements EntryController {
+public class EntryJpaController implements Serializable {
 
     public EntryJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
 
-    @Override
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
-    @Override
     public void create(Entry entry) {
         EntityManager em = null;
         try {
@@ -49,7 +46,6 @@ public class EntryJpaController implements EntryController {
         }
     }
 
-    @Override
     public void edit(Entry entry) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
@@ -73,7 +69,6 @@ public class EntryJpaController implements EntryController {
         }
     }
 
-    @Override
     public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
@@ -95,12 +90,10 @@ public class EntryJpaController implements EntryController {
         }
     }
 
-    @Override
     public List<Entry> findEntryEntities() {
         return findEntryEntities(true, -1, -1);
     }
 
-    @Override
     public List<Entry> findEntryEntities(int maxResults, int firstResult) {
         return findEntryEntities(false, maxResults, firstResult);
     }
@@ -121,7 +114,6 @@ public class EntryJpaController implements EntryController {
         }
     }
 
-    @Override
     public Entry findEntry(Integer id) {
         EntityManager em = getEntityManager();
         try {
@@ -131,7 +123,6 @@ public class EntryJpaController implements EntryController {
         }
     }
 
-    @Override
     public int getEntryCount() {
         EntityManager em = getEntityManager();
         try {

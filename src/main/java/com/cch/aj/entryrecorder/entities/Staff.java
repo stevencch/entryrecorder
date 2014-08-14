@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.cch.aj.entryrecorder.entities;
 
+import com.cch.aj.entryrecorder.common.SettingEntity;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -30,7 +30,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Staff.findById", query = "SELECT s FROM Staff s WHERE s.id = :id"),
     @NamedQuery(name = "Staff.findByName", query = "SELECT s FROM Staff s WHERE s.name = :name"),
     @NamedQuery(name = "Staff.findByJobType", query = "SELECT s FROM Staff s WHERE s.jobType = :jobType")})
-public class Staff implements Serializable {
+public class Staff implements Serializable, SettingEntity {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -69,7 +70,7 @@ public class Staff implements Serializable {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName() {
         this.name = name;
     }
 
@@ -105,5 +106,10 @@ public class Staff implements Serializable {
     public String toString() {
         return "com.cch.aj.entryrecorder.entities.Staff[ id=" + id + " ]";
     }
-    
+
+    @Override
+    public void setDefaultValue() {
+        this.name = "New Staff";
+        this.jobType="PROCESS WORKER";
+    }
 }

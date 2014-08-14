@@ -6,7 +6,6 @@
 
 package com.cch.aj.entryrecorder.repositories.impl;
 
-import com.cch.aj.entryrecorder.repositories.PolymerController;
 import com.cch.aj.entryrecorder.entities.Polymer;
 import com.cch.aj.entryrecorder.repositories.impl.exceptions.NonexistentEntityException;
 import java.io.Serializable;
@@ -20,21 +19,19 @@ import javax.persistence.criteria.Root;
 
 /**
  *
- * @author Administrator
+ * @author chacao
  */
-public class PolymerJpaController implements PolymerController {
+public class PolymerJpaController implements Serializable {
 
     public PolymerJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
 
-    @Override
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
-    @Override
     public void create(Polymer polymer) {
         EntityManager em = null;
         try {
@@ -49,7 +46,6 @@ public class PolymerJpaController implements PolymerController {
         }
     }
 
-    @Override
     public void edit(Polymer polymer) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
@@ -73,7 +69,6 @@ public class PolymerJpaController implements PolymerController {
         }
     }
 
-    @Override
     public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
@@ -95,12 +90,10 @@ public class PolymerJpaController implements PolymerController {
         }
     }
 
-    @Override
     public List<Polymer> findPolymerEntities() {
         return findPolymerEntities(true, -1, -1);
     }
 
-    @Override
     public List<Polymer> findPolymerEntities(int maxResults, int firstResult) {
         return findPolymerEntities(false, maxResults, firstResult);
     }
@@ -121,7 +114,6 @@ public class PolymerJpaController implements PolymerController {
         }
     }
 
-    @Override
     public Polymer findPolymer(Integer id) {
         EntityManager em = getEntityManager();
         try {
@@ -131,7 +123,6 @@ public class PolymerJpaController implements PolymerController {
         }
     }
 
-    @Override
     public int getPolymerCount() {
         EntityManager em = getEntityManager();
         try {

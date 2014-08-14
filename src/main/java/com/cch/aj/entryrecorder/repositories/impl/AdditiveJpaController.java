@@ -6,7 +6,6 @@
 
 package com.cch.aj.entryrecorder.repositories.impl;
 
-import com.cch.aj.entryrecorder.repositories.AdditiveController;
 import com.cch.aj.entryrecorder.entities.Additive;
 import com.cch.aj.entryrecorder.repositories.impl.exceptions.NonexistentEntityException;
 import java.io.Serializable;
@@ -20,21 +19,19 @@ import javax.persistence.criteria.Root;
 
 /**
  *
- * @author Administrator
+ * @author chacao
  */
-public class AdditiveJpaController implements AdditiveController {
+public class AdditiveJpaController implements Serializable {
 
     public AdditiveJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
 
-    @Override
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
-    @Override
     public void create(Additive additive) {
         EntityManager em = null;
         try {
@@ -49,7 +46,6 @@ public class AdditiveJpaController implements AdditiveController {
         }
     }
 
-    @Override
     public void edit(Additive additive) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
@@ -73,7 +69,6 @@ public class AdditiveJpaController implements AdditiveController {
         }
     }
 
-    @Override
     public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
@@ -95,12 +90,10 @@ public class AdditiveJpaController implements AdditiveController {
         }
     }
 
-    @Override
     public List<Additive> findAdditiveEntities() {
         return findAdditiveEntities(true, -1, -1);
     }
 
-    @Override
     public List<Additive> findAdditiveEntities(int maxResults, int firstResult) {
         return findAdditiveEntities(false, maxResults, firstResult);
     }
@@ -121,7 +114,6 @@ public class AdditiveJpaController implements AdditiveController {
         }
     }
 
-    @Override
     public Additive findAdditive(Integer id) {
         EntityManager em = getEntityManager();
         try {
@@ -131,7 +123,6 @@ public class AdditiveJpaController implements AdditiveController {
         }
     }
 
-    @Override
     public int getAdditiveCount() {
         EntityManager em = getEntityManager();
         try {

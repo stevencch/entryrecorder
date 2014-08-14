@@ -6,7 +6,6 @@
 
 package com.cch.aj.entryrecorder.repositories.impl;
 
-import com.cch.aj.entryrecorder.repositories.StaffController;
 import com.cch.aj.entryrecorder.entities.Staff;
 import com.cch.aj.entryrecorder.repositories.impl.exceptions.NonexistentEntityException;
 import java.io.Serializable;
@@ -20,21 +19,19 @@ import javax.persistence.criteria.Root;
 
 /**
  *
- * @author Administrator
+ * @author chacao
  */
-public class StaffJpaController implements StaffController {
+public class StaffJpaController implements Serializable {
 
     public StaffJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
 
-    @Override
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
-    @Override
     public void create(Staff staff) {
         EntityManager em = null;
         try {
@@ -49,7 +46,6 @@ public class StaffJpaController implements StaffController {
         }
     }
 
-    @Override
     public void edit(Staff staff) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
@@ -73,7 +69,6 @@ public class StaffJpaController implements StaffController {
         }
     }
 
-    @Override
     public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
@@ -95,12 +90,10 @@ public class StaffJpaController implements StaffController {
         }
     }
 
-    @Override
     public List<Staff> findStaffEntities() {
         return findStaffEntities(true, -1, -1);
     }
 
-    @Override
     public List<Staff> findStaffEntities(int maxResults, int firstResult) {
         return findStaffEntities(false, maxResults, firstResult);
     }
@@ -121,7 +114,6 @@ public class StaffJpaController implements StaffController {
         }
     }
 
-    @Override
     public Staff findStaff(Integer id) {
         EntityManager em = getEntityManager();
         try {
@@ -131,7 +123,6 @@ public class StaffJpaController implements StaffController {
         }
     }
 
-    @Override
     public int getStaffCount() {
         EntityManager em = getEntityManager();
         try {

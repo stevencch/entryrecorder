@@ -6,7 +6,6 @@
 
 package com.cch.aj.entryrecorder.repositories.impl;
 
-import com.cch.aj.entryrecorder.repositories.MouldController;
 import com.cch.aj.entryrecorder.entities.Mould;
 import com.cch.aj.entryrecorder.repositories.impl.exceptions.NonexistentEntityException;
 import java.io.Serializable;
@@ -20,21 +19,19 @@ import javax.persistence.criteria.Root;
 
 /**
  *
- * @author Administrator
+ * @author chacao
  */
-public class MouldJpaController implements MouldController {
+public class MouldJpaController implements Serializable {
 
     public MouldJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
 
-    @Override
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
-    @Override
     public void create(Mould mould) {
         EntityManager em = null;
         try {
@@ -49,7 +46,6 @@ public class MouldJpaController implements MouldController {
         }
     }
 
-    @Override
     public void edit(Mould mould) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
@@ -73,7 +69,6 @@ public class MouldJpaController implements MouldController {
         }
     }
 
-    @Override
     public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
@@ -95,12 +90,10 @@ public class MouldJpaController implements MouldController {
         }
     }
 
-    @Override
     public List<Mould> findMouldEntities() {
         return findMouldEntities(true, -1, -1);
     }
 
-    @Override
     public List<Mould> findMouldEntities(int maxResults, int firstResult) {
         return findMouldEntities(false, maxResults, firstResult);
     }
@@ -121,7 +114,6 @@ public class MouldJpaController implements MouldController {
         }
     }
 
-    @Override
     public Mould findMould(Integer id) {
         EntityManager em = getEntityManager();
         try {
@@ -131,7 +123,6 @@ public class MouldJpaController implements MouldController {
         }
     }
 
-    @Override
     public int getMouldCount() {
         EntityManager em = getEntityManager();
         try {

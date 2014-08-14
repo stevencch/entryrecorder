@@ -10,10 +10,8 @@ import com.cch.aj.entryrecorder.common.ComboBoxItemConvertor;
 import com.cch.aj.entryrecorder.common.ComboBoxRender;
 import com.cch.aj.entryrecorder.entities.Machine;
 import com.cch.aj.entryrecorder.entities.Staff;
-import com.cch.aj.entryrecorder.services.MachineService;
-import com.cch.aj.entryrecorder.services.StaffService;
-import com.cch.aj.entryrecorder.services.impl.MachineServiceImpl;
-import com.cch.aj.entryrecorder.services.impl.StaffServiceImpl;
+import com.cch.aj.entryrecorder.services.SettingService;
+import com.cch.aj.entryrecorder.services.impl.SettingServiceImpl;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
@@ -31,8 +29,8 @@ import javax.swing.JOptionPane;
  */
 public class SettingsJFrame extends javax.swing.JFrame {
 
-    private StaffService staffService = new StaffServiceImpl();
-    private MachineService machineService = new MachineServiceImpl();
+    private SettingService staffService = new SettingServiceImpl<Staff>(Staff.class);
+    private SettingService machineService = new SettingServiceImpl<Machine>(Machine.class);
 
     /**
      * Creates new form SettingsJFrame
@@ -43,11 +41,15 @@ public class SettingsJFrame extends javax.swing.JFrame {
         //load staff
         this.cbStaff.setRenderer(new ComboBoxRender());
         UpdateTabStaff(0);
+        //load Machine
+        this.cbMachine.setRenderer(new ComboBoxRender());
+        UpdateTabMachine(0);
+        
 
     }
 
     private void UpdateTabStaff(int id) {
-        List<Staff> staffs = this.staffService.GetAllStaffs();
+        List<Staff> staffs = this.staffService.GetAllEntities();
         if (staffs.size() > 0) {
             List<ComboBoxItem<Staff>> staffNames = staffs.stream().map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getName(), x.getId())).collect(Collectors.toList());
             ComboBoxItem[] staffNamesArray = staffNames.toArray(new ComboBoxItem[staffNames.size()]);
@@ -63,10 +65,14 @@ public class SettingsJFrame extends javax.swing.JFrame {
             this.cbStaffJob.setSelectedItem(currentStaff.getJobType());
             this.txtStaffName.setText(currentStaff.getName());
         }
+        else{
+            this.cbStaff.setModel(new DefaultComboBoxModel(new ComboBoxItem[]{}));
+            this.txtStaffName.setText("");
+        }
     }
 
     private void UpdateTabMachine(int id) {
-        List<Machine> machines = this.machineService.GetAllMachines();
+        List<Machine> machines = this.machineService.GetAllEntities();
         if (machines.size() > 0) {
             List<ComboBoxItem<Machine>> machineNames = machines.stream().map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, "Machine " + x.getMachineNo(), x.getId())).collect(Collectors.toList());
             ComboBoxItem[] machineNamesArray = machineNames.toArray(new ComboBoxItem[machineNames.size()]);
@@ -86,8 +92,18 @@ public class SettingsJFrame extends javax.swing.JFrame {
             this.txtMachineSerial.setText(currentMachine.getSerialNo());
             this.txtMachineYear.setText(currentMachine.getYear());
         }
+        else{
+            this.cbMachine.setModel(new DefaultComboBoxModel(new ComboBoxItem[]{}));
+            this.txtMachineCapacity.setText("");
+            this.txtMachineDesc.setText("");
+            this.txtMachineManufa.setText("");
+            this.txtMachineNo.setText("");
+            this.txtMachineSerial.setText("");
+            this.txtMachineYear.setText("");
+        }
     }
 
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -299,32 +315,41 @@ public class SettingsJFrame extends javax.swing.JFrame {
         jTextField66 = new javax.swing.JTextField();
         jComboBox14 = new javax.swing.JComboBox();
         jTextField67 = new javax.swing.JTextField();
-        jPanel23 = new javax.swing.JPanel();
-        jTabbedPane4 = new javax.swing.JTabbedPane();
-        jPanel9 = new javax.swing.JPanel();
-        jLabel47 = new javax.swing.JLabel();
-        jTextField55 = new javax.swing.JTextField();
-        jLabel49 = new javax.swing.JLabel();
-        jTextField56 = new javax.swing.JTextField();
-        jLabel50 = new javax.swing.JLabel();
-        jTextField57 = new javax.swing.JTextField();
-        jLabel73 = new javax.swing.JLabel();
-        jPanel11 = new javax.swing.JPanel();
-        jLabel74 = new javax.swing.JLabel();
-        jTextField68 = new javax.swing.JTextField();
-        jLabel75 = new javax.swing.JLabel();
-        jTextField69 = new javax.swing.JTextField();
-        jLabel76 = new javax.swing.JLabel();
-        jTextField70 = new javax.swing.JTextField();
-        jLabel77 = new javax.swing.JLabel();
-        jPanel15 = new javax.swing.JPanel();
-        jButton9 = new javax.swing.JButton();
-        jComboBox4 = new javax.swing.JComboBox();
-        jButton10 = new javax.swing.JButton();
-        jPanel24 = new javax.swing.JPanel();
-        jButton11 = new javax.swing.JButton();
-        jButton12 = new javax.swing.JButton();
-        jLabel99 = new javax.swing.JLabel();
+        jTabbedPane5 = new javax.swing.JTabbedPane();
+        jPanel10 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        txtPolymerGrade = new javax.swing.JTextField();
+        txtPolymerCompany = new javax.swing.JTextField();
+        jLabel81 = new javax.swing.JLabel();
+        jLabel79 = new javax.swing.JLabel();
+        txtPolymerDesc = new javax.swing.JTextField();
+        jLabel82 = new javax.swing.JLabel();
+        jLabel88 = new javax.swing.JLabel();
+        jPanel18 = new javax.swing.JPanel();
+        btnPolymerNew = new javax.swing.JButton();
+        cbPolymer = new javax.swing.JComboBox();
+        btnPolymerDelete = new javax.swing.JButton();
+        jPanel34 = new javax.swing.JPanel();
+        btnPolymerUndo = new javax.swing.JButton();
+        btnPolymerSave = new javax.swing.JButton();
+        jLabel105 = new javax.swing.JLabel();
+        jPanel14 = new javax.swing.JPanel();
+        jPanel7 = new javax.swing.JPanel();
+        txtAdditiveGrade = new javax.swing.JTextField();
+        txtAdditiveCompany = new javax.swing.JTextField();
+        jLabel106 = new javax.swing.JLabel();
+        jLabel107 = new javax.swing.JLabel();
+        txtAdditiveDesc = new javax.swing.JTextField();
+        jLabel108 = new javax.swing.JLabel();
+        jLabel109 = new javax.swing.JLabel();
+        jPanel35 = new javax.swing.JPanel();
+        btnAdditiveNew = new javax.swing.JButton();
+        cbAdditive = new javax.swing.JComboBox();
+        btnAdditiveDelete = new javax.swing.JButton();
+        jPanel36 = new javax.swing.JPanel();
+        btnAdditiveUndo = new javax.swing.JButton();
+        btnAdditiveSave = new javax.swing.JButton();
+        jLabel110 = new javax.swing.JLabel();
         jPanel29 = new javax.swing.JPanel();
         jPanel30 = new javax.swing.JPanel();
         btnStaffNew = new javax.swing.JButton();
@@ -1698,8 +1723,6 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.weightx = 0.25;
         jPanel5.add(jButton1, gridBagConstraints);
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -2224,44 +2247,9 @@ public class SettingsJFrame extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Product", jPanel25);
 
-        jPanel23.setLayout(new java.awt.GridBagLayout());
+        jPanel10.setLayout(new java.awt.GridBagLayout());
 
-        jPanel9.setLayout(new java.awt.GridBagLayout());
-
-        jLabel47.setText("COMPANY");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.ipadx = 18;
-        gridBagConstraints.ipady = 4;
-        gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.insets = new java.awt.Insets(11, 0, 5, 0);
-        jPanel9.add(jLabel47, gridBagConstraints);
-
-        jTextField55.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField55ActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.ipadx = 27;
-        gridBagConstraints.ipady = 4;
-        gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.insets = new java.awt.Insets(11, 0, 5, 89);
-        jPanel9.add(jTextField55, gridBagConstraints);
-
-        jLabel49.setText("GRADE");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.ipadx = 18;
-        gridBagConstraints.ipady = 4;
-        gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.insets = new java.awt.Insets(2, 0, 4, 0);
-        jPanel9.add(jLabel49, gridBagConstraints);
+        jPanel6.setLayout(new java.awt.GridBagLayout());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
@@ -2270,17 +2258,36 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(2, 0, 4, 89);
-        jPanel9.add(jTextField56, gridBagConstraints);
+        jPanel6.add(txtPolymerGrade, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 27;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(11, 0, 5, 89);
+        jPanel6.add(txtPolymerCompany, gridBagConstraints);
 
-        jLabel50.setText("DESCRIPTION");
+        jLabel81.setText("GRADE");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.ipadx = 18;
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.insets = new java.awt.Insets(2, 0, 19, 0);
-        jPanel9.add(jLabel50, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(2, 0, 4, 0);
+        jPanel6.add(jLabel81, gridBagConstraints);
+
+        jLabel79.setText("COMPANY");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipadx = 18;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(11, 0, 5, 0);
+        jPanel6.add(jLabel79, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
@@ -2289,54 +2296,124 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(2, 0, 19, 89);
-        jPanel9.add(jTextField57, gridBagConstraints);
+        jPanel6.add(txtPolymerDesc, gridBagConstraints);
 
-        jLabel73.setText("POLYMER");
+        jLabel82.setText("DESCRIPTION");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.ipadx = 18;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 0, 19, 0);
+        jPanel6.add(jLabel82, gridBagConstraints);
+
+        jLabel88.setText("POLYMER");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.insets = new java.awt.Insets(12, 8, 8, 8);
-        jPanel9.add(jLabel73, gridBagConstraints);
+        jPanel6.add(jLabel88, gridBagConstraints);
 
-        jTabbedPane4.addTab("POLYMER", jPanel9);
-
-        jPanel11.setLayout(new java.awt.GridBagLayout());
-
-        jLabel74.setText("COMPANY");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.ipadx = 18;
-        gridBagConstraints.ipady = 4;
-        gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.insets = new java.awt.Insets(11, 0, 5, 0);
-        jPanel11.add(jLabel74, gridBagConstraints);
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
+        jPanel10.add(jPanel6, gridBagConstraints);
 
-        jTextField68.addActionListener(new java.awt.event.ActionListener() {
+        jPanel18.setLayout(new java.awt.GridBagLayout());
+
+        btnPolymerNew.setText("New");
+        btnPolymerNew.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField68ActionPerformed(evt);
+                btnPolymerNewActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.ipadx = 27;
-        gridBagConstraints.ipady = 4;
-        gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.insets = new java.awt.Insets(11, 0, 5, 89);
-        jPanel11.add(jTextField68, gridBagConstraints);
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.weightx = 0.25;
+        jPanel18.add(btnPolymerNew, gridBagConstraints);
 
-        jLabel75.setText("GRADE");
+        cbPolymer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbPolymerActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.5;
+        jPanel18.add(cbPolymer, gridBagConstraints);
+
+        btnPolymerDelete.setText("Delete");
+        btnPolymerDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPolymerDeleteActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.weightx = 0.25;
+        jPanel18.add(btnPolymerDelete, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
+        jPanel10.add(jPanel18, gridBagConstraints);
+
+        jPanel34.setLayout(new java.awt.GridBagLayout());
+
+        btnPolymerUndo.setText("Undo");
+        btnPolymerUndo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPolymerUndoActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.weightx = 0.25;
+        jPanel34.add(btnPolymerUndo, gridBagConstraints);
+
+        btnPolymerSave.setText("Save");
+        btnPolymerSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPolymerSaveActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.weightx = 0.25;
+        jPanel34.add(btnPolymerSave, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.weightx = 0.5;
+        jPanel34.add(jLabel105, gridBagConstraints);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.ipadx = 18;
-        gridBagConstraints.ipady = 4;
-        gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.insets = new java.awt.Insets(2, 0, 4, 0);
-        jPanel11.add(jLabel75, gridBagConstraints);
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
+        jPanel10.add(jPanel34, gridBagConstraints);
+
+        jTabbedPane5.addTab("Polymer", jPanel10);
+
+        jPanel14.setLayout(new java.awt.GridBagLayout());
+
+        jPanel7.setLayout(new java.awt.GridBagLayout());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
@@ -2345,17 +2422,36 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(2, 0, 4, 89);
-        jPanel11.add(jTextField69, gridBagConstraints);
+        jPanel7.add(txtAdditiveGrade, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 27;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(11, 0, 5, 89);
+        jPanel7.add(txtAdditiveCompany, gridBagConstraints);
 
-        jLabel76.setText("DESCRIPTION");
+        jLabel106.setText("GRADE");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.ipadx = 18;
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.insets = new java.awt.Insets(2, 0, 18, 0);
-        jPanel11.add(jLabel76, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(2, 0, 4, 0);
+        jPanel7.add(jLabel106, gridBagConstraints);
+
+        jLabel107.setText("COMPANY");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipadx = 18;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(11, 0, 5, 0);
+        jPanel7.add(jLabel107, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
@@ -2363,92 +2459,98 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipadx = 27;
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.insets = new java.awt.Insets(2, 0, 18, 89);
-        jPanel11.add(jTextField70, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(2, 0, 19, 89);
+        jPanel7.add(txtAdditiveDesc, gridBagConstraints);
 
-        jLabel77.setText("ADDITIVE");
+        jLabel108.setText("DESCRIPTION");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.ipadx = 18;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 0, 19, 0);
+        jPanel7.add(jLabel108, gridBagConstraints);
+
+        jLabel109.setText("ADDITIVE");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.insets = new java.awt.Insets(12, 8, 8, 8);
-        jPanel11.add(jLabel77, gridBagConstraints);
-
-        jTabbedPane4.addTab("ADDITIVE", jPanel11);
+        jPanel7.add(jLabel109, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
-        jPanel23.add(jTabbedPane4, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
+        jPanel14.add(jPanel7, gridBagConstraints);
 
-        jPanel15.setLayout(new java.awt.GridBagLayout());
+        jPanel35.setLayout(new java.awt.GridBagLayout());
 
-        jButton9.setText("New");
+        btnAdditiveNew.setText("New");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.weightx = 0.25;
-        jPanel15.add(jButton9, gridBagConstraints);
+        jPanel35.add(btnAdditiveNew, gridBagConstraints);
 
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.5;
-        jPanel15.add(jComboBox4, gridBagConstraints);
+        jPanel35.add(cbAdditive, gridBagConstraints);
 
-        jButton10.setText("Delete");
+        btnAdditiveDelete.setText("Delete");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.weightx = 0.25;
-        jPanel15.add(jButton10, gridBagConstraints);
+        jPanel35.add(btnAdditiveDelete, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
-        jPanel23.add(jPanel15, gridBagConstraints);
+        jPanel14.add(jPanel35, gridBagConstraints);
 
-        jPanel24.setLayout(new java.awt.GridBagLayout());
+        jPanel36.setLayout(new java.awt.GridBagLayout());
 
-        jButton11.setText("Undo");
+        btnAdditiveUndo.setText("Undo");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.weightx = 0.25;
-        jPanel24.add(jButton11, gridBagConstraints);
+        jPanel36.add(btnAdditiveUndo, gridBagConstraints);
 
-        jButton12.setText("Save");
+        btnAdditiveSave.setText("Save");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.weightx = 0.25;
-        jPanel24.add(jButton12, gridBagConstraints);
+        jPanel36.add(btnAdditiveSave, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.weightx = 0.5;
-        jPanel24.add(jLabel99, gridBagConstraints);
+        jPanel36.add(jLabel110, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
-        jPanel23.add(jPanel24, gridBagConstraints);
+        jPanel14.add(jPanel36, gridBagConstraints);
 
-        jTabbedPane1.addTab("Raw Material", jPanel23);
+        jTabbedPane5.addTab("Additive", jPanel14);
+
+        jTabbedPane1.addTab("Raw Material", jTabbedPane5);
 
         jPanel29.setLayout(new java.awt.GridBagLayout());
 
@@ -2575,7 +2677,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(14, 0, 6, 20);
         jPanel12.add(jLabel90, gridBagConstraints);
 
-        cbStaffJob.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "PROCESS WORK", "TECHNICIAN", "SUPERVISOR" }));
+        cbStaffJob.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "PROCESS WORKER", "TECHNICIAN", "SUPERVISOR" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -2615,21 +2717,13 @@ public class SettingsJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
-    private void jTextField55ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField55ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField55ActionPerformed
-
-    private void jTextField68ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField68ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField68ActionPerformed
-
     private void txtStaffNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtStaffNameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtStaffNameActionPerformed
 
     private void btnStaffNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStaffNewActionPerformed
         // TODO add your handling code here:
-        int newId = this.staffService.CreateNewStaff();
+        int newId = this.staffService.CreateEntity();
         UpdateTabStaff(newId);
     }//GEN-LAST:event_btnStaffNewActionPerformed
 
@@ -2645,8 +2739,8 @@ public class SettingsJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         Staff currentStaff = ((ComboBoxItem<Staff>) this.cbStaff.getSelectedItem()).getItem();
         currentStaff.setJobType((String) this.cbStaffJob.getSelectedItem());
-        currentStaff.setName(this.txtStaffName.getText());
-        this.staffService.UpdateStaff(currentStaff);
+        currentStaff.setDefaultValue();
+        this.staffService.UpdateEntity(currentStaff);
         this.UpdateTabStaff(currentStaff.getId());
     }//GEN-LAST:event_btnStaffSaveActionPerformed
 
@@ -2655,7 +2749,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         int result = JOptionPane.showConfirmDialog(this, "Are you sure to delete this item", "Warning", JOptionPane.OK_CANCEL_OPTION);
         if (result == 0) {
             Staff currentStaff = ((ComboBoxItem<Staff>) this.cbStaff.getSelectedItem()).getItem();
-            this.staffService.DeleteStaff(currentStaff.getId());
+            this.staffService.DeleteEntity(currentStaff.getId());
             this.UpdateTabStaff(0);
         }
     }//GEN-LAST:event_btnStaffDeleteActionPerformed
@@ -2680,7 +2774,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
 
     private void btnMachineNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMachineNewActionPerformed
         // TODO add your handling code here:
-        int newId = this.machineService.CreateMachine();
+        int newId = this.machineService.CreateEntity();
         UpdateTabMachine(newId);
     }//GEN-LAST:event_btnMachineNewActionPerformed
 
@@ -2689,7 +2783,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         int result = JOptionPane.showConfirmDialog(this, "Are you sure to delete this item", "Warning", JOptionPane.OK_CANCEL_OPTION);
         if (result == 0) {
             Machine currentMachine = ((ComboBoxItem<Machine>) this.cbMachine.getSelectedItem()).getItem();
-            this.machineService.DeleteMachine(currentMachine.getId());
+            this.machineService.DeleteEntity(currentMachine.getId());
             this.UpdateTabMachine(0);
         }
     }//GEN-LAST:event_btnMachineDeleteActionPerformed
@@ -2703,7 +2797,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         currentMachine.setManufacturer(this.txtMachineManufa.getText());
         currentMachine.setSerialNo(this.txtMachineSerial.getText());
         currentMachine.setYear(this.txtMachineYear.getText());
-        this.machineService.UpdateMachine(currentMachine);
+        this.machineService.UpdateEntity(currentMachine);
         this.UpdateTabMachine(currentMachine.getId());
     }//GEN-LAST:event_btnMachineSaveActionPerformed
 
@@ -2712,6 +2806,26 @@ public class SettingsJFrame extends javax.swing.JFrame {
         Machine currentMachine = ((ComboBoxItem<Machine>) this.cbMachine.getSelectedItem()).getItem();
         this.UpdateTabMachine(currentMachine.getId());
     }//GEN-LAST:event_btnMachineUndoActionPerformed
+
+    private void cbPolymerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbPolymerActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbPolymerActionPerformed
+
+    private void btnPolymerNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPolymerNewActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnPolymerNewActionPerformed
+
+    private void btnPolymerDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPolymerDeleteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnPolymerDeleteActionPerformed
+
+    private void btnPolymerSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPolymerSaveActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnPolymerSaveActionPerformed
+
+    private void btnPolymerUndoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPolymerUndoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnPolymerUndoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2749,21 +2863,28 @@ public class SettingsJFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdditiveDelete;
+    private javax.swing.JButton btnAdditiveNew;
+    private javax.swing.JButton btnAdditiveSave;
+    private javax.swing.JButton btnAdditiveUndo;
     private javax.swing.JButton btnMachineDelete;
     private javax.swing.JButton btnMachineNew;
     private javax.swing.JButton btnMachineSave;
     private javax.swing.JButton btnMachineUndo;
+    private javax.swing.JButton btnPolymerDelete;
+    private javax.swing.JButton btnPolymerNew;
+    private javax.swing.JButton btnPolymerSave;
+    private javax.swing.JButton btnPolymerUndo;
     private javax.swing.JButton btnStaffDelete;
     private javax.swing.JButton btnStaffNew;
     private javax.swing.JButton btnStaffSave;
     private javax.swing.JButton btnStaffUndo;
+    private javax.swing.JComboBox cbAdditive;
     private javax.swing.JComboBox cbMachine;
+    private javax.swing.JComboBox cbPolymer;
     private javax.swing.JComboBox cbStaff;
     private javax.swing.JComboBox cbStaffJob;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton15;
@@ -2771,7 +2892,6 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton9;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox10;
     private javax.swing.JComboBox jComboBox11;
@@ -2779,7 +2899,6 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private javax.swing.JComboBox jComboBox13;
     private javax.swing.JComboBox jComboBox14;
     private javax.swing.JComboBox jComboBox2;
-    private javax.swing.JComboBox jComboBox4;
     private javax.swing.JComboBox jComboBox5;
     private javax.swing.JComboBox jComboBox6;
     private javax.swing.JComboBox jComboBox7;
@@ -2789,7 +2908,13 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel100;
     private javax.swing.JLabel jLabel101;
+    private javax.swing.JLabel jLabel105;
+    private javax.swing.JLabel jLabel106;
+    private javax.swing.JLabel jLabel107;
+    private javax.swing.JLabel jLabel108;
+    private javax.swing.JLabel jLabel109;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel110;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
@@ -2828,11 +2953,8 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel44;
     private javax.swing.JLabel jLabel45;
     private javax.swing.JLabel jLabel46;
-    private javax.swing.JLabel jLabel47;
     private javax.swing.JLabel jLabel48;
-    private javax.swing.JLabel jLabel49;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel50;
     private javax.swing.JLabel jLabel51;
     private javax.swing.JLabel jLabel52;
     private javax.swing.JLabel jLabel53;
@@ -2857,19 +2979,18 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel70;
     private javax.swing.JLabel jLabel71;
     private javax.swing.JLabel jLabel72;
-    private javax.swing.JLabel jLabel73;
-    private javax.swing.JLabel jLabel74;
-    private javax.swing.JLabel jLabel75;
-    private javax.swing.JLabel jLabel76;
-    private javax.swing.JLabel jLabel77;
     private javax.swing.JLabel jLabel78;
+    private javax.swing.JLabel jLabel79;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel80;
+    private javax.swing.JLabel jLabel81;
+    private javax.swing.JLabel jLabel82;
     private javax.swing.JLabel jLabel83;
     private javax.swing.JLabel jLabel84;
     private javax.swing.JLabel jLabel85;
     private javax.swing.JLabel jLabel86;
     private javax.swing.JLabel jLabel87;
+    private javax.swing.JLabel jLabel88;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel jLabel90;
     private javax.swing.JLabel jLabel92;
@@ -2879,19 +3000,17 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel96;
     private javax.swing.JLabel jLabel97;
     private javax.swing.JLabel jLabel98;
-    private javax.swing.JLabel jLabel99;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel12;
-    private javax.swing.JPanel jPanel15;
+    private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel16;
+    private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel22;
-    private javax.swing.JPanel jPanel23;
-    private javax.swing.JPanel jPanel24;
     private javax.swing.JPanel jPanel25;
     private javax.swing.JPanel jPanel26;
     private javax.swing.JPanel jPanel27;
@@ -2900,13 +3019,17 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel30;
     private javax.swing.JPanel jPanel31;
+    private javax.swing.JPanel jPanel34;
+    private javax.swing.JPanel jPanel35;
+    private javax.swing.JPanel jPanel36;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane3;
-    private javax.swing.JTabbedPane jTabbedPane4;
+    private javax.swing.JTabbedPane jTabbedPane5;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField10;
     private javax.swing.JTextField jTextField11;
@@ -2957,9 +3080,6 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField52;
     private javax.swing.JTextField jTextField53;
     private javax.swing.JTextField jTextField54;
-    private javax.swing.JTextField jTextField55;
-    private javax.swing.JTextField jTextField56;
-    private javax.swing.JTextField jTextField57;
     private javax.swing.JTextField jTextField58;
     private javax.swing.JTextField jTextField59;
     private javax.swing.JTextField jTextField6;
@@ -2971,10 +3091,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField65;
     private javax.swing.JTextField jTextField66;
     private javax.swing.JTextField jTextField67;
-    private javax.swing.JTextField jTextField68;
-    private javax.swing.JTextField jTextField69;
     private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField70;
     private javax.swing.JTextField jTextField73;
     private javax.swing.JTextField jTextField74;
     private javax.swing.JTextField jTextField75;
@@ -2983,12 +3100,18 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField78;
     private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextField9;
+    private javax.swing.JTextField txtAdditiveCompany;
+    private javax.swing.JTextField txtAdditiveDesc;
+    private javax.swing.JTextField txtAdditiveGrade;
     private javax.swing.JTextField txtMachineCapacity;
     private javax.swing.JTextField txtMachineDesc;
     private javax.swing.JTextField txtMachineManufa;
     private javax.swing.JTextField txtMachineNo;
     private javax.swing.JTextField txtMachineSerial;
     private javax.swing.JTextField txtMachineYear;
+    private javax.swing.JTextField txtPolymerCompany;
+    private javax.swing.JTextField txtPolymerDesc;
+    private javax.swing.JTextField txtPolymerGrade;
     private javax.swing.JTextField txtStaffName;
     // End of variables declaration//GEN-END:variables
 
