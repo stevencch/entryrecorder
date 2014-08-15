@@ -10,12 +10,14 @@ import com.cch.aj.entryrecorder.entities.Additive;
 import com.cch.aj.entryrecorder.entities.Machine;
 import com.cch.aj.entryrecorder.entities.Mould;
 import com.cch.aj.entryrecorder.entities.Polymer;
+import com.cch.aj.entryrecorder.entities.Product;
 import com.cch.aj.entryrecorder.entities.Staff;
 import com.cch.aj.entryrecorder.repositories.SettingRepository;
 import com.cch.aj.entryrecorder.repositories.impl.AdditiveRepositoryImpl;
 import com.cch.aj.entryrecorder.repositories.impl.MachineRepositoryImpl;
 import com.cch.aj.entryrecorder.repositories.impl.MouldRepositoryImpl;
 import com.cch.aj.entryrecorder.repositories.impl.PolymerRepositoryImpl;
+import com.cch.aj.entryrecorder.repositories.impl.ProductRepositoryImpl;
 import com.cch.aj.entryrecorder.repositories.impl.StaffRepositoryImpl;
 import com.cch.aj.entryrecorder.services.SettingService;
 import java.lang.reflect.ParameterizedType;
@@ -57,6 +59,9 @@ public class SettingServiceImpl<T extends SettingEntity> implements SettingServi
         if (type == Mould.class) {
             this.repository = new MouldRepositoryImpl(this._connectionString);
         }
+        if (type == Product.class) {
+            this.repository = new ProductRepositoryImpl(this._connectionString);
+        }
     }
 
     @Override
@@ -92,6 +97,11 @@ public class SettingServiceImpl<T extends SettingEntity> implements SettingServi
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    @Override
+    public T FindEntity(Integer id) {
+        return (T) this.repository.findEntity(id);
     }
 
 }

@@ -23,4 +23,6 @@ public interface SettingService<T extends SettingEntity> {
     void UpdateEntity(T item);
 
     public void DeleteEntity(Integer id);
+    
+    T FindEntity(Integer id);
 }

@@ -6,6 +6,7 @@
 
 package com.cch.aj.entryrecorder.entities;
 
+import com.cch.aj.entryrecorder.common.SettingEntity;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -46,7 +47,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Product.findByImage1", query = "SELECT p FROM Product p WHERE p.image1 = :image1"),
     @NamedQuery(name = "Product.findByImage2", query = "SELECT p FROM Product p WHERE p.image2 = :image2"),
     @NamedQuery(name = "Product.findByImage3", query = "SELECT p FROM Product p WHERE p.image3 = :image3")})
-public class Product implements Serializable {
+public class Product implements Serializable,SettingEntity {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -281,6 +282,11 @@ public class Product implements Serializable {
     @Override
     public String toString() {
         return "com.cch.aj.entryrecorder.entities.Product[ id=" + id + " ]";
+    }
+
+    @Override
+    public void setDefaultValue() {
+        this.code="Product Code";
     }
     
 }
