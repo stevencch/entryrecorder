@@ -6,6 +6,7 @@
 
 package com.cch.aj.entryrecorder.entities;
 
+import com.cch.aj.entryrecorder.common.SettingEntity;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -31,7 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Additive.findByCompany", query = "SELECT a FROM Additive a WHERE a.company = :company"),
     @NamedQuery(name = "Additive.findByGrade", query = "SELECT a FROM Additive a WHERE a.grade = :grade"),
     @NamedQuery(name = "Additive.findByDescription", query = "SELECT a FROM Additive a WHERE a.description = :description")})
-public class Additive implements Serializable {
+public class Additive implements Serializable, SettingEntity {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -115,4 +116,9 @@ public class Additive implements Serializable {
         return "com.cch.aj.entryrecorder.entities.Additive[ id=" + id + " ]";
     }
     
+    @Override
+    public void setDefaultValue() {
+        this.company="Company A";
+        this.grade="AAA";
+    }
 }

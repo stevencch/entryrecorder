@@ -6,10 +6,16 @@
 package com.cch.aj.entryrecorder.services.impl;
 
 import com.cch.aj.entryrecorder.common.SettingEntity;
+import com.cch.aj.entryrecorder.entities.Additive;
 import com.cch.aj.entryrecorder.entities.Machine;
+import com.cch.aj.entryrecorder.entities.Mould;
+import com.cch.aj.entryrecorder.entities.Polymer;
 import com.cch.aj.entryrecorder.entities.Staff;
 import com.cch.aj.entryrecorder.repositories.SettingRepository;
+import com.cch.aj.entryrecorder.repositories.impl.AdditiveRepositoryImpl;
 import com.cch.aj.entryrecorder.repositories.impl.MachineRepositoryImpl;
+import com.cch.aj.entryrecorder.repositories.impl.MouldRepositoryImpl;
+import com.cch.aj.entryrecorder.repositories.impl.PolymerRepositoryImpl;
 import com.cch.aj.entryrecorder.repositories.impl.StaffRepositoryImpl;
 import com.cch.aj.entryrecorder.services.SettingService;
 import java.lang.reflect.ParameterizedType;
@@ -41,6 +47,15 @@ public class SettingServiceImpl<T extends SettingEntity> implements SettingServi
         }
         if (type == Staff.class) {
             this.repository = new StaffRepositoryImpl(this._connectionString);
+        }
+        if (type == Polymer.class) {
+            this.repository = new PolymerRepositoryImpl(this._connectionString);
+        }
+        if (type == Additive.class) {
+            this.repository = new AdditiveRepositoryImpl(this._connectionString);
+        }
+        if (type == Mould.class) {
+            this.repository = new MouldRepositoryImpl(this._connectionString);
         }
     }
 

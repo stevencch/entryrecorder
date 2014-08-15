@@ -6,6 +6,7 @@
 
 package com.cch.aj.entryrecorder.entities;
 
+import com.cch.aj.entryrecorder.common.SettingEntity;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -97,7 +98,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Mould.findByThreadNeckMax1", query = "SELECT m FROM Mould m WHERE m.threadNeckMax1 = :threadNeckMax1"),
     @NamedQuery(name = "Mould.findByThreadNeckMax2", query = "SELECT m FROM Mould m WHERE m.threadNeckMax2 = :threadNeckMax2"),
     @NamedQuery(name = "Mould.findByThreadNeckMax3", query = "SELECT m FROM Mould m WHERE m.threadNeckMax3 = :threadNeckMax3")})
-public class Mould implements Serializable {
+public class Mould implements Serializable,SettingEntity {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -840,6 +841,11 @@ public class Mould implements Serializable {
     @Override
     public String toString() {
         return "com.cch.aj.entryrecorder.entities.Mould[ id=" + id + " ]";
+    }
+
+    @Override
+    public void setDefaultValue() {
+        this.code="Mould Code";
     }
     
 }

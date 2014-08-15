@@ -8,7 +8,10 @@ package com.cch.aj.entryrecorder.frame;
 import com.cch.aj.entryrecorder.common.ComboBoxItem;
 import com.cch.aj.entryrecorder.common.ComboBoxItemConvertor;
 import com.cch.aj.entryrecorder.common.ComboBoxRender;
+import com.cch.aj.entryrecorder.entities.Additive;
 import com.cch.aj.entryrecorder.entities.Machine;
+import com.cch.aj.entryrecorder.entities.Mould;
+import com.cch.aj.entryrecorder.entities.Polymer;
 import com.cch.aj.entryrecorder.entities.Staff;
 import com.cch.aj.entryrecorder.services.SettingService;
 import com.cch.aj.entryrecorder.services.impl.SettingServiceImpl;
@@ -31,6 +34,9 @@ public class SettingsJFrame extends javax.swing.JFrame {
 
     private SettingService staffService = new SettingServiceImpl<Staff>(Staff.class);
     private SettingService machineService = new SettingServiceImpl<Machine>(Machine.class);
+    private SettingService polymerService = new SettingServiceImpl<Polymer>(Polymer.class);
+    private SettingService additiveService = new SettingServiceImpl<Additive>(Additive.class);
+    private SettingService mouldService = new SettingServiceImpl<Mould>(Mould.class);
 
     /**
      * Creates new form SettingsJFrame
@@ -44,7 +50,15 @@ public class SettingsJFrame extends javax.swing.JFrame {
         //load Machine
         this.cbMachine.setRenderer(new ComboBoxRender());
         UpdateTabMachine(0);
-        
+        //load Polymer
+        this.cbPolymer.setRenderer(new ComboBoxRender());
+        UpdateTabPolymer(0);
+        //load Additive
+        this.cbAdditive.setRenderer(new ComboBoxRender());
+        UpdateTabAdditive(0);
+        //load Mould
+        this.cbMould.setRenderer(new ComboBoxRender());
+        UpdateTabMould(0);
 
     }
 
@@ -64,8 +78,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
             //
             this.cbStaffJob.setSelectedItem(currentStaff.getJobType());
             this.txtStaffName.setText(currentStaff.getName());
-        }
-        else{
+        } else {
             this.cbStaff.setModel(new DefaultComboBoxModel(new ComboBoxItem[]{}));
             this.txtStaffName.setText("");
         }
@@ -91,8 +104,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
             this.txtMachineNo.setText(currentMachine.getMachineNo());
             this.txtMachineSerial.setText(currentMachine.getSerialNo());
             this.txtMachineYear.setText(currentMachine.getYear());
-        }
-        else{
+        } else {
             this.cbMachine.setModel(new DefaultComboBoxModel(new ComboBoxItem[]{}));
             this.txtMachineCapacity.setText("");
             this.txtMachineDesc.setText("");
@@ -103,7 +115,200 @@ public class SettingsJFrame extends javax.swing.JFrame {
         }
     }
 
-    
+    private void UpdateTabPolymer(int id) {
+        List<Polymer> polymers = this.polymerService.GetAllEntities();
+        if (polymers.size() > 0) {
+            List<ComboBoxItem<Polymer>> polymerNames = polymers.stream().map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getCompany() + " " + x.getGrade(), x.getId())).collect(Collectors.toList());
+            ComboBoxItem[] polymerNamesArray = polymerNames.toArray(new ComboBoxItem[polymerNames.size()]);
+            this.cbPolymer.setModel(new DefaultComboBoxModel(polymerNamesArray));
+            int selectedIndex = id;
+            if (id != 0) {
+                ComboBoxItem<Polymer> currentPolymerName = polymerNames.stream().filter(x -> x.getId() == id).findFirst().get();
+                selectedIndex = polymerNames.indexOf(currentPolymerName);
+            }
+            this.cbPolymer.setSelectedIndex(selectedIndex);
+            Polymer currentPolymer = ((ComboBoxItem<Polymer>) this.cbPolymer.getSelectedItem()).getItem();
+            //
+            this.txtPolymerCompany.setText(currentPolymer.getCompany());
+            this.txtPolymerDesc.setText(currentPolymer.getDescription());
+            this.txtPolymerGrade.setText(currentPolymer.getGrade());
+        } else {
+            this.cbPolymer.setModel(new DefaultComboBoxModel(new ComboBoxItem[]{}));
+            this.txtPolymerCompany.setText("");
+            this.txtPolymerDesc.setText("");
+            this.txtPolymerGrade.setText("");
+        }
+    }
+
+    private void UpdateTabAdditive(int id) {
+        List<Additive> additives = this.additiveService.GetAllEntities();
+        if (additives.size() > 0) {
+            List<ComboBoxItem<Additive>> additiveNames = additives.stream().map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getCompany() + " " + x.getGrade(), x.getId())).collect(Collectors.toList());
+            ComboBoxItem[] additiveNamesArray = additiveNames.toArray(new ComboBoxItem[additiveNames.size()]);
+            this.cbAdditive.setModel(new DefaultComboBoxModel(additiveNamesArray));
+            int selectedIndex = id;
+            if (id != 0) {
+                ComboBoxItem<Additive> currentAdditiveName = additiveNames.stream().filter(x -> x.getId() == id).findFirst().get();
+                selectedIndex = additiveNames.indexOf(currentAdditiveName);
+            }
+            this.cbAdditive.setSelectedIndex(selectedIndex);
+            Additive currentAdditive = ((ComboBoxItem<Additive>) this.cbAdditive.getSelectedItem()).getItem();
+            //
+            this.txtAdditiveCompany.setText(currentAdditive.getCompany());
+            this.txtAdditiveDesc.setText(currentAdditive.getDescription());
+            this.txtAdditiveGrade.setText(currentAdditive.getGrade());
+        } else {
+            this.cbAdditive.setModel(new DefaultComboBoxModel(new ComboBoxItem[]{}));
+            this.txtAdditiveCompany.setText("");
+            this.txtAdditiveDesc.setText("");
+            this.txtAdditiveGrade.setText("");
+        }
+    }
+
+    private void UpdateTabMould(int id) {
+        List<Mould> moulds = this.mouldService.GetAllEntities();
+        if (moulds.size() > 0) {
+            List<ComboBoxItem<Mould>> mouldNames = moulds.stream().map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getCode(), x.getId())).collect(Collectors.toList());
+            ComboBoxItem[] mouldNamesArray = mouldNames.toArray(new ComboBoxItem[mouldNames.size()]);
+            this.cbMould.setModel(new DefaultComboBoxModel(mouldNamesArray));
+            int selectedIndex = id;
+            if (id != 0) {
+                ComboBoxItem<Mould> currentMouldName = mouldNames.stream().filter(x -> x.getId() == id).findFirst().get();
+                selectedIndex = mouldNames.indexOf(currentMouldName);
+            }
+            this.cbMould.setSelectedIndex(selectedIndex);
+            Mould currentMould = ((ComboBoxItem<Mould>) this.cbMould.getSelectedItem()).getItem();
+            //
+            this.txtMouldBaseMax.setText(currentMould.getWallNonDgBaseMax().toString());
+            this.txtMouldBaseMin.setText(currentMould.getWallNonDgBaseMin().toString());
+            this.txtMouldClosureMax.setText(currentMould.getWallNonDgClosureMax().toString());
+            this.txtMouldClosureMin.setText(currentMould.getWallNonDgClosureMin().toString());
+            this.txtMouldCode.setText(currentMould.getCode());
+            this.txtMouldDgBaseMax.setText(currentMould.getWallDgBaseMax().toString());
+            this.txtMouldDgBaseMin.setText(currentMould.getWallDgBaseMin().toString());
+            this.txtMouldDgClosureMax.setText(currentMould.getWallDgClosureMax().toString());
+            this.txtMouldDgClosureMin.setText(currentMould.getWallDgClosureMin().toString());
+            this.txtMouldDgHandleBungMax.setText(currentMould.getWallDgHandleBungMax().toString());
+            this.txtMouldDgHandleBungMin.setText(currentMould.getWallDgHandleBungMin().toString());
+            this.txtMouldDgHandleLeftMax.setText(currentMould.getWallDgHandleLeftMax().toString());
+            this.txtMouldDgHandleLeftMin.setText(currentMould.getWallDgHandleLeftMin().toString());
+            this.txtMouldDgHandleRightMax.setText(currentMould.getWallDgHandleRightMax().toString());
+            this.txtMouldDgHandleRightMin.setText(currentMould.getWallDgHandRightMin().toString());
+            this.txtMouldDgUnderHandleMax.setText(currentMould.getWallDgUnderHandleMax().toString());
+            this.txtMouldDgUnderHandleMin.setText(currentMould.getWallDgUnderHandleMin().toString());
+            this.txtMouldHandleBungMax.setText(currentMould.getWallNonDgHandleBungMax().toString());
+            this.txtMouldHandleBungMin.setText(currentMould.getWallNonDgHandleBungMin().toString());
+            this.txtMouldHandleLeftMax.setText(currentMould.getWallNonDgHandleLeftMax().toString());
+            this.txtMouldHandleLeftMin.setText(currentMould.getWallNonDgHandleLeftMin().toString());
+            this.txtMouldHandleRightMax.setText(currentMould.getWallNonDgHandleRightMax().toString());
+            this.txtMouldHandleRightMin.setText(currentMould.getWallNonDgHandleRightMin().toString());
+            this.txtMouldManufacturer.setText(currentMould.getManufacturer());
+            this.txtMouldName.setText(currentMould.getName());
+            this.txtMouldNonDgMax.setText(currentMould.getWeightNonDgMax().toString());
+            this.txtMouldNonDgMin.setText(currentMould.getWeightNonDgMin().toString());
+            this.txtMouldSize1.setText(currentMould.getThreadNeckSize1());
+            this.txtMouldSize1Max.setText(currentMould.getThreadNeckMax1().toString());
+            this.txtMouldSize1Min.setText(currentMould.getThreadNeckMin1().toString());
+            this.txtMouldSize2.setText(currentMould.getThreadNeckSize2());
+            this.txtMouldSize2Max.setText(currentMould.getThreadNeckMax2().toString());
+            this.txtMouldSize2Min.setText(currentMould.getThreadNeckMin2().toString());
+            this.txtMouldSize3.setText(currentMould.getThreadNeckSize3());
+            this.txtMouldSize3Max.setText(currentMould.getThreadNeckMax3().toString());
+            this.txtMouldSize3Min.setText(currentMould.getThreadNeckMin3().toString());
+            this.txtMouldSizeA1.setText(currentMould.getThreadBoreASize1());
+            this.txtMouldSizeA1Max.setText(currentMould.getThreadBoreAMax1().toString());
+            this.txtMouldSizeA1Min.setText(currentMould.getThreadBoreAMin1().toString());
+            this.txtMouldSizeA2.setText(currentMould.getThreadBoreASize2());
+            this.txtMouldSizeA2Max.setText(currentMould.getThreadBoreAMax2().toString());
+            this.txtMouldSizeA2Min.setText(currentMould.getThreadBoreAMin2().toString());
+            this.txtMouldSizeA3.setText(currentMould.getThreadBoreASize3());
+            this.txtMouldSizeA3Max.setText(currentMould.getThreadBoreAMax3().toString());
+            this.txtMouldSizeA3Min.setText(currentMould.getThreadBoreAMin3().toString());
+            this.txtMouldSizeB1.setText(currentMould.getThreadBoreBSize1());
+            this.txtMouldSizeB1Max.setText(currentMould.getThreadBoreBMax1().toString());
+            this.txtMouldSizeB1Min.setText(currentMould.getThreadBoreBMin1().toString());
+            this.txtMouldSizeB2.setText(currentMould.getThreadBoreBSize2());
+            this.txtMouldSizeB2Max.setText(currentMould.getThreadBoreBMax2().toString());
+            this.txtMouldSizeB2Min.setText(currentMould.getThreadBoreBMin2().toString());
+            this.txtMouldSizeB3.setText(currentMould.getThreadBoreBSize3());
+            this.txtMouldSizeB3Max.setText(currentMould.getThreadBoreBMax3().toString());
+            this.txtMouldSizeB3Min.setText(currentMould.getThreadBoreBMin3().toString());
+            this.txtMouldTapMax.setText(currentMould.getTapPositionMax().toString());
+            this.txtMouldTapMin.setText(currentMould.getTapPositionMin().toString());
+            this.txtMouldUnderHandleMax.setText(currentMould.getWallNonDgUnderHandleMax().toString());
+            this.txtMouldUnderHandleMin.setText(currentMould.getWallNonDgUnderHandleMin().toString());
+            this.txtMouldVolume.setText(currentMould.getVolumn());
+            this.txtMouldWeightMax.setText(currentMould.getWeightDgMax().toString());
+            this.txtMouldWeightMin.setText(currentMould.getWeightDgMin().toString());
+            this.txtMouldYear.setText(currentMould.getYear());
+
+        } else {
+            this.cbMould.setModel(new DefaultComboBoxModel(new ComboBoxItem[]{}));
+            this.txtMouldBaseMin.setText("");
+            this.txtMouldClosureMax.setText("");
+            this.txtMouldClosureMin.setText("");
+            this.txtMouldCode.setText("");
+            this.txtMouldDgBaseMax.setText("");
+            this.txtMouldDgBaseMin.setText("");
+            this.txtMouldDgClosureMax.setText("");
+            this.txtMouldDgClosureMin.setText("");
+            this.txtMouldDgHandleBungMax.setText("");
+            this.txtMouldDgHandleBungMin.setText("");
+            this.txtMouldDgHandleLeftMax.setText("");
+            this.txtMouldDgHandleLeftMin.setText("");
+            this.txtMouldDgHandleRightMax.setText("");
+            this.txtMouldDgHandleRightMin.setText("");
+            this.txtMouldDgUnderHandleMax.setText("");
+            this.txtMouldDgUnderHandleMin.setText("");
+            this.txtMouldHandleBungMax.setText("");
+            this.txtMouldHandleBungMin.setText("");
+            this.txtMouldHandleLeftMax.setText("");
+            this.txtMouldHandleLeftMin.setText("");
+            this.txtMouldHandleRightMax.setText("");
+            this.txtMouldHandleRightMin.setText("");
+            this.txtMouldManufacturer.setText("");
+            this.txtMouldName.setText("");
+            this.txtMouldNonDgMax.setText("");
+            this.txtMouldNonDgMin.setText("");
+            this.txtMouldSize1.setText("");
+            this.txtMouldSize1Max.setText("");
+            this.txtMouldSize1Min.setText("");
+            this.txtMouldSize2.setText("");
+            this.txtMouldSize2Max.setText("");
+            this.txtMouldSize2Min.setText("");
+            this.txtMouldSize3.setText("");
+            this.txtMouldSize3Max.setText("");
+            this.txtMouldSize3Min.setText("");
+            this.txtMouldSizeA1.setText("");
+            this.txtMouldSizeA1Max.setText("");
+            this.txtMouldSizeA1Min.setText("");
+            this.txtMouldSizeA2.setText("");
+            this.txtMouldSizeA2Max.setText("");
+            this.txtMouldSizeA2Min.setText("");
+            this.txtMouldSizeA3.setText("");
+            this.txtMouldSizeA3Max.setText("");
+            this.txtMouldSizeA3Min.setText("");
+            this.txtMouldSizeB1.setText("");
+            this.txtMouldSizeB1Max.setText("");
+            this.txtMouldSizeB1Min.setText("");
+            this.txtMouldSizeB2.setText("");
+            this.txtMouldSizeB2Max.setText("");
+            this.txtMouldSizeB2Min.setText("");
+            this.txtMouldSizeB3.setText("");
+            this.txtMouldSizeB3Max.setText("");
+            this.txtMouldSizeB3Min.setText("");
+            this.txtMouldTapMax.setText("");
+            this.txtMouldTapMin.setText("");
+            this.txtMouldUnderHandleMax.setText("");
+            this.txtMouldUnderHandleMin.setText("");
+            this.txtMouldVolume.setText("");
+            this.txtMouldWeightMax.setText("");
+            this.txtMouldWeightMin.setText("");
+            this.txtMouldYear.setText("");
+
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -141,32 +346,30 @@ public class SettingsJFrame extends javax.swing.JFrame {
         jTabbedPane3 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtMouldName = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtMouldCode = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
-        jTextField8 = new javax.swing.JTextField();
+        txtMouldVolume = new javax.swing.JTextField();
+        txtMouldManufacturer = new javax.swing.JTextField();
+        txtMouldYear = new javax.swing.JTextField();
+        txtMouldNonDgMin = new javax.swing.JTextField();
+        txtMouldNonDgMax = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        jTextField9 = new javax.swing.JTextField();
+        txtMouldWeightMin = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
-        jTextField10 = new javax.swing.JTextField();
+        txtMouldWeightMax = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        jTextField11 = new javax.swing.JTextField();
+        txtMouldTapMin = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
-        jTextField12 = new javax.swing.JTextField();
+        txtMouldTapMax = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
@@ -177,18 +380,18 @@ public class SettingsJFrame extends javax.swing.JFrame {
         jLabel23 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
-        jTextField13 = new javax.swing.JTextField();
-        jTextField14 = new javax.swing.JTextField();
-        jTextField15 = new javax.swing.JTextField();
-        jTextField16 = new javax.swing.JTextField();
-        jTextField17 = new javax.swing.JTextField();
-        jTextField18 = new javax.swing.JTextField();
-        jTextField19 = new javax.swing.JTextField();
-        jTextField20 = new javax.swing.JTextField();
-        jTextField21 = new javax.swing.JTextField();
-        jTextField22 = new javax.swing.JTextField();
-        jTextField23 = new javax.swing.JTextField();
-        jTextField24 = new javax.swing.JTextField();
+        txtMouldUnderHandleMin = new javax.swing.JTextField();
+        txtMouldUnderHandleMax = new javax.swing.JTextField();
+        txtMouldBaseMin = new javax.swing.JTextField();
+        txtMouldBaseMax = new javax.swing.JTextField();
+        txtMouldClosureMin = new javax.swing.JTextField();
+        txtMouldClosureMax = new javax.swing.JTextField();
+        txtMouldHandleBungMin = new javax.swing.JTextField();
+        txtMouldHandleBungMax = new javax.swing.JTextField();
+        txtMouldHandleLeftMin = new javax.swing.JTextField();
+        txtMouldHandleLeftMax = new javax.swing.JTextField();
+        txtMouldHandleRightMin = new javax.swing.JTextField();
+        txtMouldHandleRightMax = new javax.swing.JTextField();
         jPanel8 = new javax.swing.JPanel();
         jLabel26 = new javax.swing.JLabel();
         jLabel27 = new javax.swing.JLabel();
@@ -199,18 +402,18 @@ public class SettingsJFrame extends javax.swing.JFrame {
         jLabel32 = new javax.swing.JLabel();
         jLabel33 = new javax.swing.JLabel();
         jLabel34 = new javax.swing.JLabel();
-        jTextField25 = new javax.swing.JTextField();
-        jTextField26 = new javax.swing.JTextField();
-        jTextField27 = new javax.swing.JTextField();
-        jTextField28 = new javax.swing.JTextField();
-        jTextField29 = new javax.swing.JTextField();
-        jTextField30 = new javax.swing.JTextField();
-        jTextField31 = new javax.swing.JTextField();
-        jTextField32 = new javax.swing.JTextField();
-        jTextField33 = new javax.swing.JTextField();
-        jTextField34 = new javax.swing.JTextField();
-        jTextField35 = new javax.swing.JTextField();
-        jTextField36 = new javax.swing.JTextField();
+        txtMouldDgUnderHandleMin = new javax.swing.JTextField();
+        txtMouldDgUnderHandleMax = new javax.swing.JTextField();
+        txtMouldDgBaseMin = new javax.swing.JTextField();
+        txtMouldDgBaseMax = new javax.swing.JTextField();
+        txtMouldDgClosureMin = new javax.swing.JTextField();
+        txtMouldDgClosureMax = new javax.swing.JTextField();
+        txtMouldDgHandleBungMin = new javax.swing.JTextField();
+        txtMouldDgHandleBungMax = new javax.swing.JTextField();
+        txtMouldDgHandleLeftMin = new javax.swing.JTextField();
+        txtMouldDgHandleLeftMax = new javax.swing.JTextField();
+        txtMouldDgHandleRightMin = new javax.swing.JTextField();
+        txtMouldDgHandleRightMax = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jLabel35 = new javax.swing.JLabel();
         jLabel36 = new javax.swing.JLabel();
@@ -224,97 +427,112 @@ public class SettingsJFrame extends javax.swing.JFrame {
         jLabel44 = new javax.swing.JLabel();
         jLabel45 = new javax.swing.JLabel();
         jLabel46 = new javax.swing.JLabel();
-        jTextField37 = new javax.swing.JTextField();
-        jTextField38 = new javax.swing.JTextField();
-        jTextField39 = new javax.swing.JTextField();
-        jTextField40 = new javax.swing.JTextField();
-        jTextField41 = new javax.swing.JTextField();
-        jTextField42 = new javax.swing.JTextField();
-        jTextField43 = new javax.swing.JTextField();
-        jTextField44 = new javax.swing.JTextField();
-        jTextField45 = new javax.swing.JTextField();
-        jTextField46 = new javax.swing.JTextField();
-        jTextField47 = new javax.swing.JTextField();
-        jTextField48 = new javax.swing.JTextField();
-        jTextField49 = new javax.swing.JTextField();
-        jTextField50 = new javax.swing.JTextField();
-        jTextField51 = new javax.swing.JTextField();
-        jTextField52 = new javax.swing.JTextField();
-        jTextField53 = new javax.swing.JTextField();
-        jTextField54 = new javax.swing.JTextField();
+        txtMouldSizeA1 = new javax.swing.JTextField();
+        txtMouldSizeA1Min = new javax.swing.JTextField();
+        txtMouldSizeA1Max = new javax.swing.JTextField();
+        txtMouldSizeA2 = new javax.swing.JTextField();
+        txtMouldSizeA2Min = new javax.swing.JTextField();
+        txtMouldSizeA2Max = new javax.swing.JTextField();
+        txtMouldSizeA3 = new javax.swing.JTextField();
+        txtMouldSizeA3Min = new javax.swing.JTextField();
+        txtMouldSizeA3Max = new javax.swing.JTextField();
+        txtMouldSizeB1 = new javax.swing.JTextField();
+        txtMouldSizeB1Min = new javax.swing.JTextField();
+        txtMouldSizeB1Max = new javax.swing.JTextField();
+        txtMouldSizeB2 = new javax.swing.JTextField();
+        txtMouldSizeB2Min = new javax.swing.JTextField();
+        txtMouldSizeB2Max = new javax.swing.JTextField();
+        txtMouldSizeB3 = new javax.swing.JTextField();
+        txtMouldSizeB3Min = new javax.swing.JTextField();
+        txtMouldSizeB3Max = new javax.swing.JTextField();
         jLabel48 = new javax.swing.JLabel();
         jLabel51 = new javax.swing.JLabel();
         jLabel52 = new javax.swing.JLabel();
         jLabel80 = new javax.swing.JLabel();
         jLabel83 = new javax.swing.JLabel();
         jLabel84 = new javax.swing.JLabel();
-        jTextField58 = new javax.swing.JTextField();
-        jTextField59 = new javax.swing.JTextField();
-        jTextField60 = new javax.swing.JTextField();
-        jTextField73 = new javax.swing.JTextField();
-        jTextField74 = new javax.swing.JTextField();
-        jTextField75 = new javax.swing.JTextField();
-        jTextField76 = new javax.swing.JTextField();
-        jTextField77 = new javax.swing.JTextField();
-        jTextField78 = new javax.swing.JTextField();
+        txtMouldSize1 = new javax.swing.JTextField();
+        txtMouldSize1Min = new javax.swing.JTextField();
+        txtMouldSize1Max = new javax.swing.JTextField();
+        txtMouldSize2 = new javax.swing.JTextField();
+        txtMouldSize2Min = new javax.swing.JTextField();
+        txtMouldSize2Max = new javax.swing.JTextField();
+        txtMouldSize3 = new javax.swing.JTextField();
+        txtMouldSize3Min = new javax.swing.JTextField();
+        txtMouldSize3Max = new javax.swing.JTextField();
         jLabel85 = new javax.swing.JLabel();
         jLabel86 = new javax.swing.JLabel();
         jLabel87 = new javax.swing.JLabel();
+        jPanel9 = new javax.swing.JPanel();
+        jLabel73 = new javax.swing.JLabel();
+        jLabel74 = new javax.swing.JLabel();
+        jLabel75 = new javax.swing.JLabel();
+        jLabel76 = new javax.swing.JLabel();
+        jLabel77 = new javax.swing.JLabel();
+        jLabel89 = new javax.swing.JLabel();
+        txtMouldDrawingImage = new javax.swing.JTextField();
+        txtMouldNonDgImage = new javax.swing.JTextField();
+        txtMouldDgImage = new javax.swing.JTextField();
+        txtMouldBoreAImage = new javax.swing.JTextField();
+        txtMouldBoreBImage = new javax.swing.JTextField();
+        txtMouldNeckImage = new javax.swing.JTextField();
+        jLabel47 = new javax.swing.JLabel();
+        txtMouldTapImage = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jComboBox2 = new javax.swing.JComboBox();
-        jButton2 = new javax.swing.JButton();
+        btnMouldNew = new javax.swing.JButton();
+        cbMould = new javax.swing.JComboBox();
+        btnMouldDelete = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
-        jButton6 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        btnMouldUndo = new javax.swing.JButton();
+        btnMouldSave = new javax.swing.JButton();
         jLabel16 = new javax.swing.JLabel();
         jPanel25 = new javax.swing.JPanel();
         jPanel26 = new javax.swing.JPanel();
-        jButton13 = new javax.swing.JButton();
-        jComboBox5 = new javax.swing.JComboBox();
-        jButton14 = new javax.swing.JButton();
+        btnProductNew = new javax.swing.JButton();
+        cbProduct = new javax.swing.JComboBox();
+        btnProductDelete = new javax.swing.JButton();
         jPanel27 = new javax.swing.JPanel();
-        jButton15 = new javax.swing.JButton();
-        jButton16 = new javax.swing.JButton();
+        btnProductUndo = new javax.swing.JButton();
+        btnProductSave = new javax.swing.JButton();
         jLabel100 = new javax.swing.JLabel();
         jPanel28 = new javax.swing.JPanel();
         jLabel53 = new javax.swing.JLabel();
-        jTextField61 = new javax.swing.JTextField();
+        txtProductCode = new javax.swing.JTextField();
         jLabel54 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
+        cbProductBung = new javax.swing.JComboBox();
         jLabel55 = new javax.swing.JLabel();
-        jTextField62 = new javax.swing.JTextField();
+        txtProductDesc = new javax.swing.JTextField();
         jLabel56 = new javax.swing.JLabel();
-        jComboBox6 = new javax.swing.JComboBox();
+        cbProductPierced = new javax.swing.JComboBox();
         jLabel57 = new javax.swing.JLabel();
-        jComboBox7 = new javax.swing.JComboBox();
+        cbProductMould = new javax.swing.JComboBox();
         jLabel58 = new javax.swing.JLabel();
-        jComboBox8 = new javax.swing.JComboBox();
+        cbProductPolymer = new javax.swing.JComboBox();
         jLabel59 = new javax.swing.JLabel();
-        jComboBox9 = new javax.swing.JComboBox();
+        cbProductDg = new javax.swing.JComboBox();
         jLabel60 = new javax.swing.JLabel();
         jLabel61 = new javax.swing.JLabel();
         jLabel62 = new javax.swing.JLabel();
-        jTextField63 = new javax.swing.JTextField();
+        txtProductWeightMin = new javax.swing.JTextField();
         jLabel63 = new javax.swing.JLabel();
-        jTextField64 = new javax.swing.JTextField();
+        txtProductWeightMax = new javax.swing.JTextField();
         jLabel64 = new javax.swing.JLabel();
         jLabel65 = new javax.swing.JLabel();
         jLabel66 = new javax.swing.JLabel();
-        jComboBox10 = new javax.swing.JComboBox();
-        jComboBox11 = new javax.swing.JComboBox();
+        cbProductBore = new javax.swing.JComboBox();
+        cbProductNeck = new javax.swing.JComboBox();
         jLabel67 = new javax.swing.JLabel();
         jLabel68 = new javax.swing.JLabel();
         jLabel69 = new javax.swing.JLabel();
         jLabel70 = new javax.swing.JLabel();
         jLabel71 = new javax.swing.JLabel();
         jLabel72 = new javax.swing.JLabel();
-        jComboBox12 = new javax.swing.JComboBox();
-        jTextField65 = new javax.swing.JTextField();
-        jComboBox13 = new javax.swing.JComboBox();
-        jTextField66 = new javax.swing.JTextField();
-        jComboBox14 = new javax.swing.JComboBox();
-        jTextField67 = new javax.swing.JTextField();
+        cbProductAdditive1 = new javax.swing.JComboBox();
+        txtProductPerc1 = new javax.swing.JTextField();
+        cbProductAdditive2 = new javax.swing.JComboBox();
+        txtProductPerc2 = new javax.swing.JTextField();
+        cbProductAdditive3 = new javax.swing.JComboBox();
+        txtProductPerc3 = new javax.swing.JTextField();
         jTabbedPane5 = new javax.swing.JTabbedPane();
         jPanel10 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
@@ -598,9 +816,9 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(15, 0, 4, 0);
         jPanel2.add(jLabel1, gridBagConstraints);
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        txtMouldName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                txtMouldNameActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -611,7 +829,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(15, 0, 4, 0);
-        jPanel2.add(jTextField1, gridBagConstraints);
+        jPanel2.add(txtMouldName, gridBagConstraints);
 
         jLabel2.setText("PRODUCT WEIGHT DG");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -641,7 +859,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(2, 0, 4, 0);
-        jPanel2.add(jTextField2, gridBagConstraints);
+        jPanel2.add(txtMouldCode, gridBagConstraints);
 
         jLabel4.setText("VOLUME");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -673,20 +891,10 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 0, 4, 0);
         jPanel2.add(jLabel6, gridBagConstraints);
 
-        jLabel7.setText("DRAWING");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.ipadx = 18;
-        gridBagConstraints.ipady = 4;
-        gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.insets = new java.awt.Insets(2, 0, 4, 0);
-        jPanel2.add(jLabel7, gridBagConstraints);
-
         jLabel8.setText("PRODUCT WEIGHT FOR NON-DG");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.ipadx = 18;
         gridBagConstraints.ipady = 4;
@@ -697,7 +905,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         jLabel9.setText("MIN");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.ipadx = 18;
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.5;
@@ -707,7 +915,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         jLabel10.setText("MAX");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridy = 7;
         gridBagConstraints.ipadx = 18;
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.5;
@@ -721,7 +929,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(2, 0, 4, 0);
-        jPanel2.add(jTextField3, gridBagConstraints);
+        jPanel2.add(txtMouldVolume, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
@@ -730,7 +938,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(2, 0, 4, 0);
-        jPanel2.add(jTextField4, gridBagConstraints);
+        jPanel2.add(txtMouldManufacturer, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
@@ -739,16 +947,16 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(2, 0, 4, 0);
-        jPanel2.add(jTextField5, gridBagConstraints);
+        jPanel2.add(txtMouldYear, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 18;
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(2, 0, 4, 0);
-        jPanel2.add(jTextField6, gridBagConstraints);
+        jPanel2.add(txtMouldNonDgMin, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 7;
@@ -756,17 +964,8 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipadx = 18;
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.insets = new java.awt.Insets(2, 0, 4, 0);
-        jPanel2.add(jTextField7, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 8;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.ipadx = 18;
-        gridBagConstraints.ipady = 4;
-        gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(2, 0, 16, 0);
-        jPanel2.add(jTextField8, gridBagConstraints);
+        jPanel2.add(txtMouldNonDgMax, gridBagConstraints);
 
         jLabel11.setText("MIN");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -785,7 +984,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(2, 0, 4, 22);
-        jPanel2.add(jTextField9, gridBagConstraints);
+        jPanel2.add(txtMouldWeightMin, gridBagConstraints);
 
         jLabel12.setText("MAX");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -804,7 +1003,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(2, 0, 4, 22);
-        jPanel2.add(jTextField10, gridBagConstraints);
+        jPanel2.add(txtMouldWeightMax, gridBagConstraints);
 
         jLabel13.setText("TAP POSITION");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -834,7 +1033,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(2, 0, 4, 22);
-        jPanel2.add(jTextField11, gridBagConstraints);
+        jPanel2.add(txtMouldTapMin, gridBagConstraints);
 
         jLabel15.setText("MAX");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -853,7 +1052,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(2, 0, 4, 22);
-        jPanel2.add(jTextField12, gridBagConstraints);
+        jPanel2.add(txtMouldTapMax, gridBagConstraints);
 
         jTabbedPane3.addTab("General", jPanel2);
 
@@ -909,7 +1108,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 0);
         jPanel3.add(jLabel21, gridBagConstraints);
 
-        jLabel22.setText("CLOSEURE SIDE");
+        jLabel22.setText("CLOSURE SIDE");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
@@ -956,7 +1155,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 44);
-        jPanel3.add(jTextField13, gridBagConstraints);
+        jPanel3.add(txtMouldUnderHandleMin, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
@@ -965,7 +1164,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
-        jPanel3.add(jTextField14, gridBagConstraints);
+        jPanel3.add(txtMouldUnderHandleMax, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
@@ -974,7 +1173,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 44);
-        jPanel3.add(jTextField15, gridBagConstraints);
+        jPanel3.add(txtMouldBaseMin, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
@@ -983,7 +1182,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
-        jPanel3.add(jTextField16, gridBagConstraints);
+        jPanel3.add(txtMouldBaseMax, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
@@ -992,7 +1191,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 44);
-        jPanel3.add(jTextField17, gridBagConstraints);
+        jPanel3.add(txtMouldClosureMin, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
@@ -1001,7 +1200,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
-        jPanel3.add(jTextField18, gridBagConstraints);
+        jPanel3.add(txtMouldClosureMax, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
@@ -1010,7 +1209,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 44);
-        jPanel3.add(jTextField19, gridBagConstraints);
+        jPanel3.add(txtMouldHandleBungMin, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 4;
@@ -1019,7 +1218,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
-        jPanel3.add(jTextField20, gridBagConstraints);
+        jPanel3.add(txtMouldHandleBungMax, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 5;
@@ -1028,7 +1227,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 44);
-        jPanel3.add(jTextField21, gridBagConstraints);
+        jPanel3.add(txtMouldHandleLeftMin, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 5;
@@ -1037,7 +1236,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
-        jPanel3.add(jTextField22, gridBagConstraints);
+        jPanel3.add(txtMouldHandleLeftMax, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 6;
@@ -1046,7 +1245,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 44);
-        jPanel3.add(jTextField23, gridBagConstraints);
+        jPanel3.add(txtMouldHandleRightMin, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 6;
@@ -1055,7 +1254,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
-        jPanel3.add(jTextField24, gridBagConstraints);
+        jPanel3.add(txtMouldHandleRightMax, gridBagConstraints);
 
         jTabbedPane3.addTab("Wall Non-DG", jPanel3);
 
@@ -1071,7 +1270,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 0);
         jPanel8.add(jLabel26, gridBagConstraints);
 
-        jLabel27.setText("MIX");
+        jLabel27.setText("MIN");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -1158,7 +1357,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 44);
-        jPanel8.add(jTextField25, gridBagConstraints);
+        jPanel8.add(txtMouldDgUnderHandleMin, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
@@ -1167,7 +1366,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
-        jPanel8.add(jTextField26, gridBagConstraints);
+        jPanel8.add(txtMouldDgUnderHandleMax, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
@@ -1176,7 +1375,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 44);
-        jPanel8.add(jTextField27, gridBagConstraints);
+        jPanel8.add(txtMouldDgBaseMin, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
@@ -1185,7 +1384,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
-        jPanel8.add(jTextField28, gridBagConstraints);
+        jPanel8.add(txtMouldDgBaseMax, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
@@ -1194,7 +1393,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 44);
-        jPanel8.add(jTextField29, gridBagConstraints);
+        jPanel8.add(txtMouldDgClosureMin, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
@@ -1203,7 +1402,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
-        jPanel8.add(jTextField30, gridBagConstraints);
+        jPanel8.add(txtMouldDgClosureMax, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
@@ -1212,7 +1411,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 44);
-        jPanel8.add(jTextField31, gridBagConstraints);
+        jPanel8.add(txtMouldDgHandleBungMin, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 4;
@@ -1221,7 +1420,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
-        jPanel8.add(jTextField32, gridBagConstraints);
+        jPanel8.add(txtMouldDgHandleBungMax, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 5;
@@ -1230,7 +1429,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 44);
-        jPanel8.add(jTextField33, gridBagConstraints);
+        jPanel8.add(txtMouldDgHandleLeftMin, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 5;
@@ -1239,7 +1438,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
-        jPanel8.add(jTextField34, gridBagConstraints);
+        jPanel8.add(txtMouldDgHandleLeftMax, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 6;
@@ -1248,7 +1447,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 44);
-        jPanel8.add(jTextField35, gridBagConstraints);
+        jPanel8.add(txtMouldDgHandleRightMin, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 6;
@@ -1257,7 +1456,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
-        jPanel8.add(jTextField36, gridBagConstraints);
+        jPanel8.add(txtMouldDgHandleRightMax, gridBagConstraints);
 
         jTabbedPane3.addTab("Wall DG", jPanel8);
 
@@ -1390,7 +1589,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 2;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(3, 10, 3, 10);
-        jPanel4.add(jTextField37, gridBagConstraints);
+        jPanel4.add(txtMouldSizeA1, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
@@ -1399,7 +1598,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 2;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(3, 10, 3, 10);
-        jPanel4.add(jTextField38, gridBagConstraints);
+        jPanel4.add(txtMouldSizeA1Min, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 1;
@@ -1408,7 +1607,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 2;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(3, 10, 3, 20);
-        jPanel4.add(jTextField39, gridBagConstraints);
+        jPanel4.add(txtMouldSizeA1Max, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
@@ -1417,7 +1616,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 2;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(3, 10, 3, 10);
-        jPanel4.add(jTextField40, gridBagConstraints);
+        jPanel4.add(txtMouldSizeA2, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
@@ -1426,7 +1625,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 2;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(3, 10, 3, 10);
-        jPanel4.add(jTextField41, gridBagConstraints);
+        jPanel4.add(txtMouldSizeA2Min, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 2;
@@ -1435,7 +1634,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 2;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(3, 10, 3, 20);
-        jPanel4.add(jTextField42, gridBagConstraints);
+        jPanel4.add(txtMouldSizeA2Max, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
@@ -1444,7 +1643,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 2;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(3, 10, 3, 10);
-        jPanel4.add(jTextField43, gridBagConstraints);
+        jPanel4.add(txtMouldSizeA3, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
@@ -1453,7 +1652,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 2;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(3, 10, 3, 10);
-        jPanel4.add(jTextField44, gridBagConstraints);
+        jPanel4.add(txtMouldSizeA3Min, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 3;
@@ -1462,7 +1661,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 2;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(3, 10, 3, 20);
-        jPanel4.add(jTextField45, gridBagConstraints);
+        jPanel4.add(txtMouldSizeA3Max, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 5;
@@ -1471,7 +1670,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 2;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(3, 10, 3, 10);
-        jPanel4.add(jTextField46, gridBagConstraints);
+        jPanel4.add(txtMouldSizeB1, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 5;
@@ -1480,7 +1679,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 2;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(3, 10, 3, 10);
-        jPanel4.add(jTextField47, gridBagConstraints);
+        jPanel4.add(txtMouldSizeB1Min, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 5;
@@ -1489,7 +1688,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 2;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(3, 10, 3, 20);
-        jPanel4.add(jTextField48, gridBagConstraints);
+        jPanel4.add(txtMouldSizeB1Max, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 6;
@@ -1498,7 +1697,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 2;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(3, 10, 3, 10);
-        jPanel4.add(jTextField49, gridBagConstraints);
+        jPanel4.add(txtMouldSizeB2, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 6;
@@ -1507,7 +1706,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 2;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(3, 10, 3, 10);
-        jPanel4.add(jTextField50, gridBagConstraints);
+        jPanel4.add(txtMouldSizeB2Min, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 6;
@@ -1516,7 +1715,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 2;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(3, 10, 3, 20);
-        jPanel4.add(jTextField51, gridBagConstraints);
+        jPanel4.add(txtMouldSizeB2Max, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 7;
@@ -1525,7 +1724,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 2;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(3, 10, 3, 10);
-        jPanel4.add(jTextField52, gridBagConstraints);
+        jPanel4.add(txtMouldSizeB3, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 7;
@@ -1534,7 +1733,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 2;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(3, 10, 3, 10);
-        jPanel4.add(jTextField53, gridBagConstraints);
+        jPanel4.add(txtMouldSizeB3Min, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 7;
@@ -1543,7 +1742,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 2;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(3, 10, 3, 20);
-        jPanel4.add(jTextField54, gridBagConstraints);
+        jPanel4.add(txtMouldSizeB3Max, gridBagConstraints);
 
         jLabel48.setText("NECK HEIGHT");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -1612,7 +1811,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 2;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(3, 10, 3, 10);
-        jPanel4.add(jTextField58, gridBagConstraints);
+        jPanel4.add(txtMouldSize1, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 9;
@@ -1621,7 +1820,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 2;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(3, 10, 3, 10);
-        jPanel4.add(jTextField59, gridBagConstraints);
+        jPanel4.add(txtMouldSize1Min, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 9;
@@ -1630,7 +1829,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 2;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(3, 10, 3, 20);
-        jPanel4.add(jTextField60, gridBagConstraints);
+        jPanel4.add(txtMouldSize1Max, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 10;
@@ -1639,7 +1838,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 2;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(3, 10, 3, 10);
-        jPanel4.add(jTextField73, gridBagConstraints);
+        jPanel4.add(txtMouldSize2, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 10;
@@ -1648,7 +1847,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 2;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(3, 10, 3, 10);
-        jPanel4.add(jTextField74, gridBagConstraints);
+        jPanel4.add(txtMouldSize2Min, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 10;
@@ -1657,7 +1856,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 2;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(3, 10, 3, 20);
-        jPanel4.add(jTextField75, gridBagConstraints);
+        jPanel4.add(txtMouldSize2Max, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 11;
@@ -1666,7 +1865,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 2;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(3, 10, 3, 10);
-        jPanel4.add(jTextField76, gridBagConstraints);
+        jPanel4.add(txtMouldSize3, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 11;
@@ -1675,7 +1874,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 2;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(3, 10, 3, 10);
-        jPanel4.add(jTextField77, gridBagConstraints);
+        jPanel4.add(txtMouldSize3Min, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 11;
@@ -1684,7 +1883,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 2;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(3, 10, 3, 20);
-        jPanel4.add(jTextField78, gridBagConstraints);
+        jPanel4.add(txtMouldSize3Max, gridBagConstraints);
 
         jLabel85.setText("THREAD SIZE A");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -1706,6 +1905,141 @@ public class SettingsJFrame extends javax.swing.JFrame {
 
         jTabbedPane3.addTab("Thread", jPanel4);
 
+        jPanel9.setLayout(new java.awt.GridBagLayout());
+
+        jLabel73.setText("Drawing Image");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipadx = 2;
+        gridBagConstraints.ipady = 2;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 10);
+        jPanel9.add(jLabel73, gridBagConstraints);
+
+        jLabel74.setText("Non DG Image");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipadx = 2;
+        gridBagConstraints.ipady = 2;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 10);
+        jPanel9.add(jLabel74, gridBagConstraints);
+
+        jLabel75.setText("DG Image");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.ipadx = 2;
+        gridBagConstraints.ipady = 2;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 10);
+        jPanel9.add(jLabel75, gridBagConstraints);
+
+        jLabel76.setText("Bore A Image");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.ipadx = 2;
+        gridBagConstraints.ipady = 2;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 10);
+        jPanel9.add(jLabel76, gridBagConstraints);
+
+        jLabel77.setText("Bore B Image");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.ipadx = 2;
+        gridBagConstraints.ipady = 2;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 10);
+        jPanel9.add(jLabel77, gridBagConstraints);
+
+        jLabel89.setText("Neck Image");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.ipadx = 2;
+        gridBagConstraints.ipady = 2;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 10);
+        jPanel9.add(jLabel89, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 2;
+        gridBagConstraints.ipady = 2;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 18);
+        jPanel9.add(txtMouldDrawingImage, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 2;
+        gridBagConstraints.ipady = 2;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 18);
+        jPanel9.add(txtMouldNonDgImage, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 2;
+        gridBagConstraints.ipady = 2;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 18);
+        jPanel9.add(txtMouldDgImage, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 2;
+        gridBagConstraints.ipady = 2;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 18);
+        jPanel9.add(txtMouldBoreAImage, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 2;
+        gridBagConstraints.ipady = 2;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 18);
+        jPanel9.add(txtMouldBoreBImage, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 2;
+        gridBagConstraints.ipady = 2;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 18);
+        jPanel9.add(txtMouldNeckImage, gridBagConstraints);
+
+        jLabel47.setText("Tap Image");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.ipadx = 2;
+        gridBagConstraints.ipady = 2;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 10);
+        jPanel9.add(jLabel47, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 2;
+        gridBagConstraints.ipady = 2;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 18);
+        jPanel9.add(txtMouldTapImage, gridBagConstraints);
+
+        jTabbedPane3.addTab("Image", jPanel9);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -1717,25 +2051,41 @@ public class SettingsJFrame extends javax.swing.JFrame {
 
         jPanel5.setLayout(new java.awt.GridBagLayout());
 
-        jButton1.setText("New");
+        btnMouldNew.setText("New");
+        btnMouldNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMouldNewActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.weightx = 0.25;
-        jPanel5.add(jButton1, gridBagConstraints);
+        jPanel5.add(btnMouldNew, gridBagConstraints);
+
+        cbMould.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbMouldActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.5;
-        jPanel5.add(jComboBox2, gridBagConstraints);
+        jPanel5.add(cbMould, gridBagConstraints);
 
-        jButton2.setText("Delete");
+        btnMouldDelete.setText("Delete");
+        btnMouldDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMouldDeleteActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.weightx = 0.25;
-        jPanel5.add(jButton2, gridBagConstraints);
+        jPanel5.add(btnMouldDelete, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -1748,19 +2098,29 @@ public class SettingsJFrame extends javax.swing.JFrame {
 
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
-        jButton6.setText("Undo");
+        btnMouldUndo.setText("Undo");
+        btnMouldUndo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMouldUndoActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.weightx = 0.25;
-        jPanel1.add(jButton6, gridBagConstraints);
+        jPanel1.add(btnMouldUndo, gridBagConstraints);
 
-        jButton5.setText("Save");
+        btnMouldSave.setText("Save");
+        btnMouldSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMouldSaveActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.weightx = 0.25;
-        jPanel1.add(jButton5, gridBagConstraints);
+        jPanel1.add(btnMouldSave, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -1782,27 +2142,25 @@ public class SettingsJFrame extends javax.swing.JFrame {
 
         jPanel26.setLayout(new java.awt.GridBagLayout());
 
-        jButton13.setText("New");
+        btnProductNew.setText("New");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.weightx = 0.25;
-        jPanel26.add(jButton13, gridBagConstraints);
-
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel26.add(btnProductNew, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.5;
-        jPanel26.add(jComboBox5, gridBagConstraints);
+        jPanel26.add(cbProduct, gridBagConstraints);
 
-        jButton14.setText("Delete");
+        btnProductDelete.setText("Delete");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.weightx = 0.25;
-        jPanel26.add(jButton14, gridBagConstraints);
+        jPanel26.add(btnProductDelete, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -1815,19 +2173,19 @@ public class SettingsJFrame extends javax.swing.JFrame {
 
         jPanel27.setLayout(new java.awt.GridBagLayout());
 
-        jButton15.setText("Undo");
+        btnProductUndo.setText("Undo");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.weightx = 0.25;
-        jPanel27.add(jButton15, gridBagConstraints);
+        jPanel27.add(btnProductUndo, gridBagConstraints);
 
-        jButton16.setText("Save");
+        btnProductSave.setText("Save");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.weightx = 0.25;
-        jPanel27.add(jButton16, gridBagConstraints);
+        jPanel27.add(btnProductSave, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -1863,7 +2221,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 9);
-        jPanel28.add(jTextField61, gridBagConstraints);
+        jPanel28.add(txtProductCode, gridBagConstraints);
 
         jLabel54.setText("BUNG REQUIRED");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -1876,7 +2234,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 46, 2, 9);
         jPanel28.add(jLabel54, gridBagConstraints);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbProductBung.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
@@ -1885,7 +2243,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 25);
-        jPanel28.add(jComboBox1, gridBagConstraints);
+        jPanel28.add(cbProductBung, gridBagConstraints);
 
         jLabel55.setText("DESCRIPTION");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -1905,7 +2263,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 9);
-        jPanel28.add(jTextField62, gridBagConstraints);
+        jPanel28.add(txtProductDesc, gridBagConstraints);
 
         jLabel56.setText("PIERCED");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -1918,7 +2276,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 46, 2, 9);
         jPanel28.add(jLabel56, gridBagConstraints);
 
-        jComboBox6.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbProductPierced.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 1;
@@ -1927,7 +2285,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 25);
-        jPanel28.add(jComboBox6, gridBagConstraints);
+        jPanel28.add(cbProductPierced, gridBagConstraints);
 
         jLabel57.setText("MOULD");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -1940,7 +2298,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 9);
         jPanel28.add(jLabel57, gridBagConstraints);
 
-        jComboBox7.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbProductMould.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
@@ -1949,7 +2307,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 9);
-        jPanel28.add(jComboBox7, gridBagConstraints);
+        jPanel28.add(cbProductMould, gridBagConstraints);
 
         jLabel58.setText("POLYMER TYPE");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -1962,7 +2320,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 46, 2, 9);
         jPanel28.add(jLabel58, gridBagConstraints);
 
-        jComboBox8.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbProductPolymer.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 2;
@@ -1971,7 +2329,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 25);
-        jPanel28.add(jComboBox8, gridBagConstraints);
+        jPanel28.add(cbProductPolymer, gridBagConstraints);
 
         jLabel59.setText("DG OR NON-DG");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -1984,7 +2342,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 9);
         jPanel28.add(jLabel59, gridBagConstraints);
 
-        jComboBox9.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbProductDg.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
@@ -1993,7 +2351,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 9);
-        jPanel28.add(jComboBox9, gridBagConstraints);
+        jPanel28.add(cbProductDg, gridBagConstraints);
 
         jLabel60.setText("ADDITIVE");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2035,7 +2393,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 9);
-        jPanel28.add(jTextField63, gridBagConstraints);
+        jPanel28.add(txtProductWeightMin, gridBagConstraints);
 
         jLabel63.setText("MAX");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2055,7 +2413,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 9);
-        jPanel28.add(jTextField64, gridBagConstraints);
+        jPanel28.add(txtProductWeightMax, gridBagConstraints);
 
         jLabel64.setText("THREAD TYPE");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2090,7 +2448,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 9);
         jPanel28.add(jLabel66, gridBagConstraints);
 
-        jComboBox10.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbProductBore.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 8;
@@ -2099,9 +2457,9 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 9);
-        jPanel28.add(jComboBox10, gridBagConstraints);
+        jPanel28.add(cbProductBore, gridBagConstraints);
 
-        jComboBox11.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbProductNeck.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 9;
@@ -2110,7 +2468,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 9);
-        jPanel28.add(jComboBox11, gridBagConstraints);
+        jPanel28.add(cbProductNeck, gridBagConstraints);
 
         jLabel67.setText("TYPE 1");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2178,7 +2536,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 46, 2, 9);
         jPanel28.add(jLabel72, gridBagConstraints);
 
-        jComboBox12.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbProductAdditive1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 4;
@@ -2187,7 +2545,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 25);
-        jPanel28.add(jComboBox12, gridBagConstraints);
+        jPanel28.add(cbProductAdditive1, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 5;
@@ -2196,9 +2554,9 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 25);
-        jPanel28.add(jTextField65, gridBagConstraints);
+        jPanel28.add(txtProductPerc1, gridBagConstraints);
 
-        jComboBox13.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbProductAdditive2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 6;
@@ -2207,7 +2565,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 25);
-        jPanel28.add(jComboBox13, gridBagConstraints);
+        jPanel28.add(cbProductAdditive2, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 7;
@@ -2216,9 +2574,9 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 25);
-        jPanel28.add(jTextField66, gridBagConstraints);
+        jPanel28.add(txtProductPerc2, gridBagConstraints);
 
-        jComboBox14.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbProductAdditive3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 8;
@@ -2227,7 +2585,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 25);
-        jPanel28.add(jComboBox14, gridBagConstraints);
+        jPanel28.add(cbProductAdditive3, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 9;
@@ -2236,7 +2594,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 25);
-        jPanel28.add(jTextField67, gridBagConstraints);
+        jPanel28.add(txtProductPerc3, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -2491,12 +2849,22 @@ public class SettingsJFrame extends javax.swing.JFrame {
         jPanel35.setLayout(new java.awt.GridBagLayout());
 
         btnAdditiveNew.setText("New");
+        btnAdditiveNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdditiveNewActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.weightx = 0.25;
         jPanel35.add(btnAdditiveNew, gridBagConstraints);
 
+        cbAdditive.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbAdditiveActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -2505,6 +2873,11 @@ public class SettingsJFrame extends javax.swing.JFrame {
         jPanel35.add(cbAdditive, gridBagConstraints);
 
         btnAdditiveDelete.setText("Delete");
+        btnAdditiveDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdditiveDeleteActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
@@ -2522,6 +2895,11 @@ public class SettingsJFrame extends javax.swing.JFrame {
         jPanel36.setLayout(new java.awt.GridBagLayout());
 
         btnAdditiveUndo.setText("Undo");
+        btnAdditiveUndo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdditiveUndoActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
@@ -2529,6 +2907,11 @@ public class SettingsJFrame extends javax.swing.JFrame {
         jPanel36.add(btnAdditiveUndo, gridBagConstraints);
 
         btnAdditiveSave.setText("Save");
+        btnAdditiveSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdditiveSaveActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -2713,9 +3096,9 @@ public class SettingsJFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void txtMouldNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMouldNameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txtMouldNameActionPerformed
 
     private void txtStaffNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtStaffNameActionPerformed
         // TODO add your handling code here:
@@ -2808,24 +3191,232 @@ public class SettingsJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMachineUndoActionPerformed
 
     private void cbPolymerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbPolymerActionPerformed
-        // TODO add your handling code here:
+        Polymer currentItem = ((ComboBoxItem<Polymer>) this.cbPolymer.getSelectedItem()).getItem();
+        //
+        this.txtPolymerCompany.setText(currentItem.getCompany());
+        this.txtPolymerDesc.setText(currentItem.getDescription());
+        this.txtPolymerGrade.setText(currentItem.getGrade());
     }//GEN-LAST:event_cbPolymerActionPerformed
 
     private void btnPolymerNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPolymerNewActionPerformed
-        // TODO add your handling code here:
+        int newId = this.polymerService.CreateEntity();
+        UpdateTabPolymer(newId);
     }//GEN-LAST:event_btnPolymerNewActionPerformed
 
     private void btnPolymerDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPolymerDeleteActionPerformed
-        // TODO add your handling code here:
+        int result = JOptionPane.showConfirmDialog(this, "Are you sure to delete this item", "Warning", JOptionPane.OK_CANCEL_OPTION);
+        if (result == 0) {
+            Polymer currentPolymer = ((ComboBoxItem<Polymer>) this.cbPolymer.getSelectedItem()).getItem();
+            this.polymerService.DeleteEntity(currentPolymer.getId());
+            this.UpdateTabPolymer(0);
+        }
     }//GEN-LAST:event_btnPolymerDeleteActionPerformed
 
     private void btnPolymerSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPolymerSaveActionPerformed
-        // TODO add your handling code here:
+        Polymer currentPolymer = ((ComboBoxItem<Polymer>) this.cbPolymer.getSelectedItem()).getItem();
+        currentPolymer.setCompany(this.txtPolymerCompany.getText());
+        currentPolymer.setDescription(this.txtPolymerDesc.getText());
+        currentPolymer.setGrade(this.txtPolymerGrade.getText());
+        this.polymerService.UpdateEntity(currentPolymer);
+        this.UpdateTabPolymer(currentPolymer.getId());
     }//GEN-LAST:event_btnPolymerSaveActionPerformed
 
     private void btnPolymerUndoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPolymerUndoActionPerformed
-        // TODO add your handling code here:
+        Polymer currentPolymer = ((ComboBoxItem<Polymer>) this.cbPolymer.getSelectedItem()).getItem();
+        this.UpdateTabPolymer(currentPolymer.getId());
     }//GEN-LAST:event_btnPolymerUndoActionPerformed
+
+    private void btnAdditiveNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdditiveNewActionPerformed
+        int newId = this.additiveService.CreateEntity();
+        UpdateTabAdditive(newId);
+    }//GEN-LAST:event_btnAdditiveNewActionPerformed
+
+    private void btnAdditiveDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdditiveDeleteActionPerformed
+        int result = JOptionPane.showConfirmDialog(this, "Are you sure to delete this item", "Warning", JOptionPane.OK_CANCEL_OPTION);
+        if (result == 0) {
+            Additive currentAdditive = ((ComboBoxItem<Additive>) this.cbAdditive.getSelectedItem()).getItem();
+            this.additiveService.DeleteEntity(currentAdditive.getId());
+            this.UpdateTabAdditive(0);
+        }
+    }//GEN-LAST:event_btnAdditiveDeleteActionPerformed
+
+    private void btnAdditiveSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdditiveSaveActionPerformed
+        Additive currentAdditive = ((ComboBoxItem<Additive>) this.cbAdditive.getSelectedItem()).getItem();
+        currentAdditive.setCompany(this.txtAdditiveCompany.getText());
+        currentAdditive.setDescription(this.txtAdditiveDesc.getText());
+        currentAdditive.setGrade(this.txtAdditiveGrade.getText());
+        this.additiveService.UpdateEntity(currentAdditive);
+        this.UpdateTabAdditive(currentAdditive.getId());
+    }//GEN-LAST:event_btnAdditiveSaveActionPerformed
+
+    private void btnAdditiveUndoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdditiveUndoActionPerformed
+        Additive currentAdditive = ((ComboBoxItem<Additive>) this.cbMachine.getSelectedItem()).getItem();
+        this.UpdateTabMachine(currentAdditive.getId());
+    }//GEN-LAST:event_btnAdditiveUndoActionPerformed
+
+    private void cbAdditiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbAdditiveActionPerformed
+        Additive currentItem = ((ComboBoxItem<Additive>) this.cbAdditive.getSelectedItem()).getItem();
+        //
+        this.txtAdditiveCompany.setText(currentItem.getCompany());
+        this.txtAdditiveDesc.setText(currentItem.getDescription());
+        this.txtAdditiveGrade.setText(currentItem.getGrade());
+    }//GEN-LAST:event_cbAdditiveActionPerformed
+
+    private void cbMouldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbMouldActionPerformed
+        Mould currentItem = ((ComboBoxItem<Mould>) this.cbMould.getSelectedItem()).getItem();
+        //
+        this.txtMouldBaseMax.setText(currentItem.getWallNonDgBaseMax().toString());
+        this.txtMouldBaseMin.setText(currentItem.getWallNonDgBaseMin().toString());
+        this.txtMouldClosureMax.setText(currentItem.getWallNonDgClosureMax().toString());
+        this.txtMouldClosureMin.setText(currentItem.getWallNonDgClosureMin().toString());
+        this.txtMouldCode.setText(currentItem.getCode().toString());
+        this.txtMouldDgBaseMax.setText(currentItem.getWallDgBaseMax().toString());
+        this.txtMouldDgBaseMin.setText(currentItem.getWallDgBaseMin().toString());
+        this.txtMouldDgClosureMax.setText(currentItem.getWallDgClosureMax().toString());
+        this.txtMouldDgClosureMin.setText(currentItem.getWallDgClosureMin().toString());
+        this.txtMouldDgHandleBungMax.setText(currentItem.getWallDgHandleBungMax().toString());
+        this.txtMouldDgHandleBungMin.setText(currentItem.getWallDgHandleBungMin().toString());
+        this.txtMouldDgHandleLeftMax.setText(currentItem.getWallDgHandleLeftMax().toString());
+        this.txtMouldDgHandleLeftMin.setText(currentItem.getWallDgHandleLeftMin().toString());
+        this.txtMouldDgHandleRightMax.setText(currentItem.getWallDgHandleRightMax().toString());
+        this.txtMouldDgHandleRightMin.setText(currentItem.getWallDgHandRightMin().toString());
+        this.txtMouldDgUnderHandleMax.setText(currentItem.getWallDgUnderHandleMax().toString());
+        this.txtMouldDgUnderHandleMin.setText(currentItem.getWallDgUnderHandleMin().toString());
+        this.txtMouldHandleBungMax.setText(currentItem.getWallNonDgHandleBungMax().toString());
+        this.txtMouldHandleBungMin.setText(currentItem.getWallNonDgHandleBungMin().toString());
+        this.txtMouldHandleLeftMax.setText(currentItem.getWallNonDgHandleLeftMax().toString());
+        this.txtMouldHandleLeftMin.setText(currentItem.getWallNonDgHandleLeftMin().toString());
+        this.txtMouldHandleRightMax.setText(currentItem.getWallNonDgHandleRightMax().toString());
+        this.txtMouldHandleRightMin.setText(currentItem.getWallNonDgHandleRightMin().toString());
+        this.txtMouldManufacturer.setText(currentItem.getManufacturer().toString());
+        this.txtMouldName.setText(currentItem.getName().toString());
+        this.txtMouldNonDgMax.setText(currentItem.getWeightNonDgMax().toString());
+        this.txtMouldNonDgMin.setText(currentItem.getWeightNonDgMin().toString());
+        this.txtMouldSize1.setText(currentItem.getThreadNeckSize1().toString());
+        this.txtMouldSize1Max.setText(currentItem.getThreadNeckMax1().toString());
+        this.txtMouldSize1Min.setText(currentItem.getThreadNeckMin1().toString());
+        this.txtMouldSize2.setText(currentItem.getThreadNeckSize2().toString());
+        this.txtMouldSize2Max.setText(currentItem.getThreadNeckMax2().toString());
+        this.txtMouldSize2Min.setText(currentItem.getThreadNeckMin2().toString());
+        this.txtMouldSize3.setText(currentItem.getThreadNeckSize3().toString());
+        this.txtMouldSize3Max.setText(currentItem.getThreadNeckMax3().toString());
+        this.txtMouldSize3Min.setText(currentItem.getThreadNeckMin3().toString());
+        this.txtMouldSizeA1.setText(currentItem.getThreadBoreASize1().toString());
+        this.txtMouldSizeA1Max.setText(currentItem.getThreadBoreAMax1().toString());
+        this.txtMouldSizeA1Min.setText(currentItem.getThreadBoreAMin1().toString());
+        this.txtMouldSizeA2.setText(currentItem.getThreadBoreASize2().toString());
+        this.txtMouldSizeA2Max.setText(currentItem.getThreadBoreAMax2().toString());
+        this.txtMouldSizeA2Min.setText(currentItem.getThreadBoreAMin2().toString());
+        this.txtMouldSizeA3.setText(currentItem.getThreadBoreASize3().toString());
+        this.txtMouldSizeA3Max.setText(currentItem.getThreadBoreAMax3().toString());
+        this.txtMouldSizeA3Min.setText(currentItem.getThreadBoreAMin3().toString());
+        this.txtMouldSizeB1.setText(currentItem.getThreadBoreBSize1().toString());
+        this.txtMouldSizeB1Max.setText(currentItem.getThreadBoreBMax1().toString());
+        this.txtMouldSizeB1Min.setText(currentItem.getThreadBoreBMin1().toString());
+        this.txtMouldSizeB2.setText(currentItem.getThreadBoreBSize2().toString());
+        this.txtMouldSizeB2Max.setText(currentItem.getThreadBoreBMax2().toString());
+        this.txtMouldSizeB2Min.setText(currentItem.getThreadBoreBMin2().toString());
+        this.txtMouldSizeB3.setText(currentItem.getThreadBoreBSize3().toString());
+        this.txtMouldSizeB3Max.setText(currentItem.getThreadBoreBMax3().toString());
+        this.txtMouldSizeB3Min.setText(currentItem.getThreadBoreBMin3().toString());
+        this.txtMouldTapMax.setText(currentItem.getTapPositionMax().toString());
+        this.txtMouldTapMin.setText(currentItem.getTapPositionMin().toString());
+        this.txtMouldUnderHandleMax.setText(currentItem.getWallNonDgUnderHandleMax().toString());
+        this.txtMouldUnderHandleMin.setText(currentItem.getWallNonDgUnderHandleMin().toString());
+        this.txtMouldVolume.setText(currentItem.getVolumn().toString());
+        this.txtMouldWeightMax.setText(currentItem.getWeightDgMax().toString());
+        this.txtMouldWeightMin.setText(currentItem.getWeightDgMin().toString());
+        this.txtMouldYear.setText(currentItem.getYear().toString());
+
+    }//GEN-LAST:event_cbMouldActionPerformed
+
+    private void btnMouldNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMouldNewActionPerformed
+        int newId = this.mouldService.CreateEntity();
+        UpdateTabMould(newId);
+    }//GEN-LAST:event_btnMouldNewActionPerformed
+
+    private void btnMouldDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMouldDeleteActionPerformed
+        int result = JOptionPane.showConfirmDialog(this, "Are you sure to delete this item", "Warning", JOptionPane.OK_CANCEL_OPTION);
+        if (result == 0) {
+            Mould currentMould = ((ComboBoxItem<Mould>) this.cbMould.getSelectedItem()).getItem();
+            this.mouldService.DeleteEntity(currentMould.getId());
+            this.UpdateTabMould(0);
+        }
+    }//GEN-LAST:event_btnMouldDeleteActionPerformed
+
+    private void btnMouldSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMouldSaveActionPerformed
+        Mould currentMould = ((ComboBoxItem<Mould>) this.cbAdditive.getSelectedItem()).getItem();
+        currentMould.setWallNonDgBaseMax(Float.parseFloat(this.txtMouldBaseMax.getText()));
+        currentMould.setWallNonDgBaseMin(Float.parseFloat(this.txtMouldBaseMin.getText()));
+        currentMould.setWallNonDgClosureMax(Float.parseFloat(this.txtMouldClosureMax.getText()));
+        currentMould.setWallNonDgClosureMin(Float.parseFloat(this.txtMouldClosureMin.getText()));
+        currentMould.setCode(this.txtMouldCode.getText());
+        currentMould.setWallDgBaseMax(Float.parseFloat(this.txtMouldDgBaseMax.getText()));
+        currentMould.setWallDgBaseMin(Float.parseFloat(this.txtMouldDgBaseMin.getText()));
+        currentMould.setWallDgClosureMax(Float.parseFloat(this.txtMouldDgClosureMax.getText()));
+        currentMould.setWallDgClosureMin(Float.parseFloat(this.txtMouldDgClosureMin.getText()));
+        currentMould.setWallDgHandleBungMax(Float.parseFloat(this.txtMouldDgHandleBungMax.getText()));
+        currentMould.setWallDgHandleBungMin(Float.parseFloat(this.txtMouldDgHandleBungMin.getText()));
+        currentMould.setWallDgHandleLeftMax(Float.parseFloat(this.txtMouldDgHandleLeftMax.getText()));
+        currentMould.setWallDgHandleLeftMin(Float.parseFloat(this.txtMouldDgHandleLeftMin.getText()));
+        currentMould.setWallDgHandleRightMax(Float.parseFloat(this.txtMouldDgHandleRightMax.getText()));
+        currentMould.setWallDgHandRightMin(Float.parseFloat(this.txtMouldDgHandleRightMin.getText()));
+        currentMould.setWallDgUnderHandleMax(Float.parseFloat(this.txtMouldDgUnderHandleMax.getText()));
+        currentMould.setWallDgUnderHandleMin(Float.parseFloat(this.txtMouldDgUnderHandleMin.getText()));
+        currentMould.setWallNonDgHandleBungMax(Float.parseFloat(this.txtMouldHandleBungMax.getText()));
+        currentMould.setWallNonDgHandleBungMin(Float.parseFloat(this.txtMouldHandleBungMin.getText()));
+        currentMould.setWallNonDgHandleLeftMax(Float.parseFloat(this.txtMouldHandleLeftMax.getText()));
+        currentMould.setWallNonDgHandleLeftMin(Float.parseFloat(this.txtMouldHandleLeftMin.getText()));
+        currentMould.setWallNonDgHandleRightMax(Float.parseFloat(this.txtMouldHandleRightMax.getText()));
+        currentMould.setWallNonDgHandleRightMin(Float.parseFloat(this.txtMouldHandleRightMin.getText()));
+        currentMould.setManufacturer(this.txtMouldManufacturer.getText());
+        currentMould.setName(this.txtMouldName.getText());
+        currentMould.setWeightNonDgMax(Float.parseFloat(this.txtMouldNonDgMax.getText()));
+        currentMould.setWeightNonDgMin(Float.parseFloat(this.txtMouldNonDgMin.getText()));
+        currentMould.setThreadNeckSize1(this.txtMouldSize1.getText());
+        currentMould.setThreadNeckMax1(Float.parseFloat(this.txtMouldSize1Max.getText()));
+        currentMould.setThreadNeckMin1(Float.parseFloat(this.txtMouldSize1Min.getText()));
+        currentMould.setThreadNeckSize2(this.txtMouldSize2.getText());
+        currentMould.setThreadNeckMax2(Float.parseFloat(this.txtMouldSize2Max.getText()));
+        currentMould.setThreadNeckMin2(Float.parseFloat(this.txtMouldSize2Min.getText()));
+        currentMould.setThreadNeckSize3(this.txtMouldSize3.getText());
+        currentMould.setThreadNeckMax3(Float.parseFloat(this.txtMouldSize3Max.getText()));
+        currentMould.setThreadNeckMin3(Float.parseFloat(this.txtMouldSize3Min.getText()));
+        currentMould.setThreadBoreASize1(this.txtMouldSizeA1.getText());
+        currentMould.setThreadBoreAMax1(Float.parseFloat(this.txtMouldSizeA1Max.getText()));
+        currentMould.setThreadBoreAMin1(Float.parseFloat(this.txtMouldSizeA1Min.getText()));
+        currentMould.setThreadBoreASize2(this.txtMouldSizeA2.getText());
+        currentMould.setThreadBoreAMax2(Float.parseFloat(this.txtMouldSizeA2Max.getText()));
+        currentMould.setThreadBoreAMin2(Float.parseFloat(this.txtMouldSizeA2Min.getText()));
+        currentMould.setThreadBoreASize3(this.txtMouldSizeA3.getText());
+        currentMould.setThreadBoreAMax3(Float.parseFloat(this.txtMouldSizeA3Max.getText()));
+        currentMould.setThreadBoreAMin3(Float.parseFloat(this.txtMouldSizeA3Min.getText()));
+        currentMould.setThreadBoreBSize1(this.txtMouldSizeB1.getText());
+        currentMould.setThreadBoreBMax1(Float.parseFloat(this.txtMouldSizeB1Max.getText()));
+        currentMould.setThreadBoreBMin1(Float.parseFloat(this.txtMouldSizeB1Min.getText()));
+        currentMould.setThreadBoreBSize2(this.txtMouldSizeB2.getText());
+        currentMould.setThreadBoreBMax2(Float.parseFloat(this.txtMouldSizeB2Max.getText()));
+        currentMould.setThreadBoreBMin2(Float.parseFloat(this.txtMouldSizeB2Min.getText()));
+        currentMould.setThreadBoreBSize3(this.txtMouldSizeB3.getText());
+        currentMould.setThreadBoreBMax3(Float.parseFloat(this.txtMouldSizeB3Max.getText()));
+        currentMould.setThreadBoreBMin3(Float.parseFloat(this.txtMouldSizeB3Min.getText()));
+        currentMould.setTapPositionMax(Float.parseFloat(this.txtMouldTapMax.getText()));
+        currentMould.setTapPositionMin(Float.parseFloat(this.txtMouldTapMin.getText()));
+        currentMould.setWallNonDgUnderHandleMax(Float.parseFloat(this.txtMouldUnderHandleMax.getText()));
+        currentMould.setWallNonDgUnderHandleMin(Float.parseFloat(this.txtMouldUnderHandleMin.getText()));
+        currentMould.setVolumn(this.txtMouldVolume.getText());
+        currentMould.setWeightDgMax(Float.parseFloat(this.txtMouldWeightMax.getText()));
+        currentMould.setWeightDgMin(Float.parseFloat(this.txtMouldWeightMin.getText()));
+        currentMould.setYear(this.txtMouldYear.getText());
+
+        this.additiveService.UpdateEntity(currentMould);
+        this.UpdateTabAdditive(currentMould.getId());
+    }//GEN-LAST:event_btnMouldSaveActionPerformed
+
+    private void btnMouldUndoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMouldUndoActionPerformed
+        Mould currentMould = ((ComboBoxItem<Mould>) this.cbMachine.getSelectedItem()).getItem();
+        this.UpdateTabMachine(currentMould.getId());
+    }//GEN-LAST:event_btnMouldUndoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2871,39 +3462,39 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnMachineNew;
     private javax.swing.JButton btnMachineSave;
     private javax.swing.JButton btnMachineUndo;
+    private javax.swing.JButton btnMouldDelete;
+    private javax.swing.JButton btnMouldNew;
+    private javax.swing.JButton btnMouldSave;
+    private javax.swing.JButton btnMouldUndo;
     private javax.swing.JButton btnPolymerDelete;
     private javax.swing.JButton btnPolymerNew;
     private javax.swing.JButton btnPolymerSave;
     private javax.swing.JButton btnPolymerUndo;
+    private javax.swing.JButton btnProductDelete;
+    private javax.swing.JButton btnProductNew;
+    private javax.swing.JButton btnProductSave;
+    private javax.swing.JButton btnProductUndo;
     private javax.swing.JButton btnStaffDelete;
     private javax.swing.JButton btnStaffNew;
     private javax.swing.JButton btnStaffSave;
     private javax.swing.JButton btnStaffUndo;
     private javax.swing.JComboBox cbAdditive;
     private javax.swing.JComboBox cbMachine;
+    private javax.swing.JComboBox cbMould;
     private javax.swing.JComboBox cbPolymer;
+    private javax.swing.JComboBox cbProduct;
+    private javax.swing.JComboBox cbProductAdditive1;
+    private javax.swing.JComboBox cbProductAdditive2;
+    private javax.swing.JComboBox cbProductAdditive3;
+    private javax.swing.JComboBox cbProductBore;
+    private javax.swing.JComboBox cbProductBung;
+    private javax.swing.JComboBox cbProductDg;
+    private javax.swing.JComboBox cbProductMould;
+    private javax.swing.JComboBox cbProductNeck;
+    private javax.swing.JComboBox cbProductPierced;
+    private javax.swing.JComboBox cbProductPolymer;
     private javax.swing.JComboBox cbStaff;
     private javax.swing.JComboBox cbStaffJob;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton13;
-    private javax.swing.JButton jButton14;
-    private javax.swing.JButton jButton15;
-    private javax.swing.JButton jButton16;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JComboBox jComboBox10;
-    private javax.swing.JComboBox jComboBox11;
-    private javax.swing.JComboBox jComboBox12;
-    private javax.swing.JComboBox jComboBox13;
-    private javax.swing.JComboBox jComboBox14;
-    private javax.swing.JComboBox jComboBox2;
-    private javax.swing.JComboBox jComboBox5;
-    private javax.swing.JComboBox jComboBox6;
-    private javax.swing.JComboBox jComboBox7;
-    private javax.swing.JComboBox jComboBox8;
-    private javax.swing.JComboBox jComboBox9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel100;
@@ -2953,6 +3544,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel44;
     private javax.swing.JLabel jLabel45;
     private javax.swing.JLabel jLabel46;
+    private javax.swing.JLabel jLabel47;
     private javax.swing.JLabel jLabel48;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel51;
@@ -2975,10 +3567,14 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel67;
     private javax.swing.JLabel jLabel68;
     private javax.swing.JLabel jLabel69;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel70;
     private javax.swing.JLabel jLabel71;
     private javax.swing.JLabel jLabel72;
+    private javax.swing.JLabel jLabel73;
+    private javax.swing.JLabel jLabel74;
+    private javax.swing.JLabel jLabel75;
+    private javax.swing.JLabel jLabel76;
+    private javax.swing.JLabel jLabel77;
     private javax.swing.JLabel jLabel78;
     private javax.swing.JLabel jLabel79;
     private javax.swing.JLabel jLabel8;
@@ -2991,6 +3587,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel86;
     private javax.swing.JLabel jLabel87;
     private javax.swing.JLabel jLabel88;
+    private javax.swing.JLabel jLabel89;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel jLabel90;
     private javax.swing.JLabel jLabel92;
@@ -3027,79 +3624,10 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane3;
     private javax.swing.JTabbedPane jTabbedPane5;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField10;
-    private javax.swing.JTextField jTextField11;
-    private javax.swing.JTextField jTextField12;
-    private javax.swing.JTextField jTextField13;
-    private javax.swing.JTextField jTextField14;
-    private javax.swing.JTextField jTextField15;
-    private javax.swing.JTextField jTextField16;
-    private javax.swing.JTextField jTextField17;
-    private javax.swing.JTextField jTextField18;
-    private javax.swing.JTextField jTextField19;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField20;
-    private javax.swing.JTextField jTextField21;
-    private javax.swing.JTextField jTextField22;
-    private javax.swing.JTextField jTextField23;
-    private javax.swing.JTextField jTextField24;
-    private javax.swing.JTextField jTextField25;
-    private javax.swing.JTextField jTextField26;
-    private javax.swing.JTextField jTextField27;
-    private javax.swing.JTextField jTextField28;
-    private javax.swing.JTextField jTextField29;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField30;
-    private javax.swing.JTextField jTextField31;
-    private javax.swing.JTextField jTextField32;
-    private javax.swing.JTextField jTextField33;
-    private javax.swing.JTextField jTextField34;
-    private javax.swing.JTextField jTextField35;
-    private javax.swing.JTextField jTextField36;
-    private javax.swing.JTextField jTextField37;
-    private javax.swing.JTextField jTextField38;
-    private javax.swing.JTextField jTextField39;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField40;
-    private javax.swing.JTextField jTextField41;
-    private javax.swing.JTextField jTextField42;
-    private javax.swing.JTextField jTextField43;
-    private javax.swing.JTextField jTextField44;
-    private javax.swing.JTextField jTextField45;
-    private javax.swing.JTextField jTextField46;
-    private javax.swing.JTextField jTextField47;
-    private javax.swing.JTextField jTextField48;
-    private javax.swing.JTextField jTextField49;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField50;
-    private javax.swing.JTextField jTextField51;
-    private javax.swing.JTextField jTextField52;
-    private javax.swing.JTextField jTextField53;
-    private javax.swing.JTextField jTextField54;
-    private javax.swing.JTextField jTextField58;
-    private javax.swing.JTextField jTextField59;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField60;
-    private javax.swing.JTextField jTextField61;
-    private javax.swing.JTextField jTextField62;
-    private javax.swing.JTextField jTextField63;
-    private javax.swing.JTextField jTextField64;
-    private javax.swing.JTextField jTextField65;
-    private javax.swing.JTextField jTextField66;
-    private javax.swing.JTextField jTextField67;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField73;
-    private javax.swing.JTextField jTextField74;
-    private javax.swing.JTextField jTextField75;
-    private javax.swing.JTextField jTextField76;
-    private javax.swing.JTextField jTextField77;
-    private javax.swing.JTextField jTextField78;
-    private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField9;
     private javax.swing.JTextField txtAdditiveCompany;
     private javax.swing.JTextField txtAdditiveDesc;
     private javax.swing.JTextField txtAdditiveGrade;
@@ -3109,9 +3637,85 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private javax.swing.JTextField txtMachineNo;
     private javax.swing.JTextField txtMachineSerial;
     private javax.swing.JTextField txtMachineYear;
+    private javax.swing.JTextField txtMouldBaseMax;
+    private javax.swing.JTextField txtMouldBaseMin;
+    private javax.swing.JTextField txtMouldBoreAImage;
+    private javax.swing.JTextField txtMouldBoreBImage;
+    private javax.swing.JTextField txtMouldClosureMax;
+    private javax.swing.JTextField txtMouldClosureMin;
+    private javax.swing.JTextField txtMouldCode;
+    private javax.swing.JTextField txtMouldDgBaseMax;
+    private javax.swing.JTextField txtMouldDgBaseMin;
+    private javax.swing.JTextField txtMouldDgClosureMax;
+    private javax.swing.JTextField txtMouldDgClosureMin;
+    private javax.swing.JTextField txtMouldDgHandleBungMax;
+    private javax.swing.JTextField txtMouldDgHandleBungMin;
+    private javax.swing.JTextField txtMouldDgHandleLeftMax;
+    private javax.swing.JTextField txtMouldDgHandleLeftMin;
+    private javax.swing.JTextField txtMouldDgHandleRightMax;
+    private javax.swing.JTextField txtMouldDgHandleRightMin;
+    private javax.swing.JTextField txtMouldDgImage;
+    private javax.swing.JTextField txtMouldDgUnderHandleMax;
+    private javax.swing.JTextField txtMouldDgUnderHandleMin;
+    private javax.swing.JTextField txtMouldDrawingImage;
+    private javax.swing.JTextField txtMouldHandleBungMax;
+    private javax.swing.JTextField txtMouldHandleBungMin;
+    private javax.swing.JTextField txtMouldHandleLeftMax;
+    private javax.swing.JTextField txtMouldHandleLeftMin;
+    private javax.swing.JTextField txtMouldHandleRightMax;
+    private javax.swing.JTextField txtMouldHandleRightMin;
+    private javax.swing.JTextField txtMouldManufacturer;
+    private javax.swing.JTextField txtMouldName;
+    private javax.swing.JTextField txtMouldNeckImage;
+    private javax.swing.JTextField txtMouldNonDgImage;
+    private javax.swing.JTextField txtMouldNonDgMax;
+    private javax.swing.JTextField txtMouldNonDgMin;
+    private javax.swing.JTextField txtMouldSize1;
+    private javax.swing.JTextField txtMouldSize1Max;
+    private javax.swing.JTextField txtMouldSize1Min;
+    private javax.swing.JTextField txtMouldSize2;
+    private javax.swing.JTextField txtMouldSize2Max;
+    private javax.swing.JTextField txtMouldSize2Min;
+    private javax.swing.JTextField txtMouldSize3;
+    private javax.swing.JTextField txtMouldSize3Max;
+    private javax.swing.JTextField txtMouldSize3Min;
+    private javax.swing.JTextField txtMouldSizeA1;
+    private javax.swing.JTextField txtMouldSizeA1Max;
+    private javax.swing.JTextField txtMouldSizeA1Min;
+    private javax.swing.JTextField txtMouldSizeA2;
+    private javax.swing.JTextField txtMouldSizeA2Max;
+    private javax.swing.JTextField txtMouldSizeA2Min;
+    private javax.swing.JTextField txtMouldSizeA3;
+    private javax.swing.JTextField txtMouldSizeA3Max;
+    private javax.swing.JTextField txtMouldSizeA3Min;
+    private javax.swing.JTextField txtMouldSizeB1;
+    private javax.swing.JTextField txtMouldSizeB1Max;
+    private javax.swing.JTextField txtMouldSizeB1Min;
+    private javax.swing.JTextField txtMouldSizeB2;
+    private javax.swing.JTextField txtMouldSizeB2Max;
+    private javax.swing.JTextField txtMouldSizeB2Min;
+    private javax.swing.JTextField txtMouldSizeB3;
+    private javax.swing.JTextField txtMouldSizeB3Max;
+    private javax.swing.JTextField txtMouldSizeB3Min;
+    private javax.swing.JTextField txtMouldTapImage;
+    private javax.swing.JTextField txtMouldTapMax;
+    private javax.swing.JTextField txtMouldTapMin;
+    private javax.swing.JTextField txtMouldUnderHandleMax;
+    private javax.swing.JTextField txtMouldUnderHandleMin;
+    private javax.swing.JTextField txtMouldVolume;
+    private javax.swing.JTextField txtMouldWeightMax;
+    private javax.swing.JTextField txtMouldWeightMin;
+    private javax.swing.JTextField txtMouldYear;
     private javax.swing.JTextField txtPolymerCompany;
     private javax.swing.JTextField txtPolymerDesc;
     private javax.swing.JTextField txtPolymerGrade;
+    private javax.swing.JTextField txtProductCode;
+    private javax.swing.JTextField txtProductDesc;
+    private javax.swing.JTextField txtProductPerc1;
+    private javax.swing.JTextField txtProductPerc2;
+    private javax.swing.JTextField txtProductPerc3;
+    private javax.swing.JTextField txtProductWeightMax;
+    private javax.swing.JTextField txtProductWeightMin;
     private javax.swing.JTextField txtStaffName;
     // End of variables declaration//GEN-END:variables
 

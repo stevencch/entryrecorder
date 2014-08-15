@@ -6,6 +6,7 @@
 
 package com.cch.aj.entryrecorder.entities;
 
+import com.cch.aj.entryrecorder.common.SettingEntity;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -31,7 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Polymer.findByCompany", query = "SELECT p FROM Polymer p WHERE p.company = :company"),
     @NamedQuery(name = "Polymer.findByGrade", query = "SELECT p FROM Polymer p WHERE p.grade = :grade"),
     @NamedQuery(name = "Polymer.findByDescription", query = "SELECT p FROM Polymer p WHERE p.description = :description")})
-public class Polymer implements Serializable {
+public class Polymer implements Serializable, SettingEntity {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -113,6 +114,12 @@ public class Polymer implements Serializable {
     @Override
     public String toString() {
         return "com.cch.aj.entryrecorder.entities.Polymer[ id=" + id + " ]";
+    }
+
+    @Override
+    public void setDefaultValue() {
+        this.company="Company A";
+        this.grade="AAA";
     }
     
 }
