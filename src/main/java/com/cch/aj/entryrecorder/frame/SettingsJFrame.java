@@ -174,19 +174,13 @@ public class SettingsJFrame extends javax.swing.JFrame {
     }
 
     private void UpdateTabMould(int id) {
+        int selectedIndex = FillMouldComboBox( id);
         List<Mould> moulds = this.mouldService.GetAllEntities();
         if (moulds.size() > 0) {
-            List<ComboBoxItem<Mould>> mouldNames = moulds.stream().map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getCode(), x.getId())).collect(Collectors.toList());
-            ComboBoxItem[] mouldNamesArray = mouldNames.toArray(new ComboBoxItem[mouldNames.size()]);
-            this.cbMould.setModel(new DefaultComboBoxModel(mouldNamesArray));
-            int selectedIndex = id;
-            if (id != 0) {
-                ComboBoxItem<Mould> currentMouldName = mouldNames.stream().filter(x -> x.getId() == id).findFirst().get();
-                selectedIndex = mouldNames.indexOf(currentMouldName);
-                this.settingMouldId = currentMouldName.getId();
-            }
+
             this.cbMould.setSelectedIndex(selectedIndex);
             Mould currentMould = ((ComboBoxItem<Mould>) this.cbMould.getSelectedItem()).getItem();
+            this.settingMouldId = currentMould.getId();
             //
             this.UpdateMouldUI(currentMould);
 
@@ -196,7 +190,25 @@ public class SettingsJFrame extends javax.swing.JFrame {
         }
     }
 
+    private int FillMouldComboBox(int id) {
+        int result = -1;
+        List<Mould> moulds = this.mouldService.GetAllEntities();
+        if (moulds.size() > 0) {
+            List<ComboBoxItem<Mould>> mouldNames = moulds.stream().map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getCode(), x.getId())).collect(Collectors.toList());
+            ComboBoxItem[] mouldNamesArray = mouldNames.toArray(new ComboBoxItem[mouldNames.size()]);
+            this.cbMould.setModel(new DefaultComboBoxModel(mouldNamesArray));
+            if (id != 0) {
+                ComboBoxItem<Mould> currentMouldName = mouldNames.stream().filter(x -> x.getId() == id).findFirst().get();
+                result = mouldNames.indexOf(currentMouldName);
+            }
+        }
+        return result;
+    }
+
     private void UpdateTabProduct(int id) {
+        //MouldId
+
+        //product
         List<Product> allProducts = this.productService.GetAllEntities();
         if (allProducts.size() > 0) {
             List<Product> products = allProducts.stream().filter(x -> x.getMouldId() == this.settingMouldId).collect(Collectors.toList());
@@ -222,6 +234,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
             this.cbProduct.setModel(new DefaultComboBoxModel(new ComboBoxItem[]{}));
             this.UpdateProductUI(new Product());
         }
+
     }
 
     /**
@@ -2219,6 +2232,8 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(2, 46, 2, 9);
         jPanel28.add(jLabel56, gridBagConstraints);
+
+        cbProductPierced.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "YES", "NO" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 1;
@@ -2279,6 +2294,8 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 9);
         jPanel28.add(jLabel59, gridBagConstraints);
+
+        cbProductDg.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "YES", "NO" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
