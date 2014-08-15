@@ -179,133 +179,11 @@ public class SettingsJFrame extends javax.swing.JFrame {
             this.cbMould.setSelectedIndex(selectedIndex);
             Mould currentMould = ((ComboBoxItem<Mould>) this.cbMould.getSelectedItem()).getItem();
             //
-            this.txtMouldBaseMax.setText(currentMould.getWallNonDgBaseMax().toString());
-            this.txtMouldBaseMin.setText(currentMould.getWallNonDgBaseMin().toString());
-            this.txtMouldClosureMax.setText(currentMould.getWallNonDgClosureMax().toString());
-            this.txtMouldClosureMin.setText(currentMould.getWallNonDgClosureMin().toString());
-            this.txtMouldCode.setText(currentMould.getCode());
-            this.txtMouldDgBaseMax.setText(currentMould.getWallDgBaseMax().toString());
-            this.txtMouldDgBaseMin.setText(currentMould.getWallDgBaseMin().toString());
-            this.txtMouldDgClosureMax.setText(currentMould.getWallDgClosureMax().toString());
-            this.txtMouldDgClosureMin.setText(currentMould.getWallDgClosureMin().toString());
-            this.txtMouldDgHandleBungMax.setText(currentMould.getWallDgHandleBungMax().toString());
-            this.txtMouldDgHandleBungMin.setText(currentMould.getWallDgHandleBungMin().toString());
-            this.txtMouldDgHandleLeftMax.setText(currentMould.getWallDgHandleLeftMax().toString());
-            this.txtMouldDgHandleLeftMin.setText(currentMould.getWallDgHandleLeftMin().toString());
-            this.txtMouldDgHandleRightMax.setText(currentMould.getWallDgHandleRightMax().toString());
-            this.txtMouldDgHandleRightMin.setText(currentMould.getWallDgHandRightMin().toString());
-            this.txtMouldDgUnderHandleMax.setText(currentMould.getWallDgUnderHandleMax().toString());
-            this.txtMouldDgUnderHandleMin.setText(currentMould.getWallDgUnderHandleMin().toString());
-            this.txtMouldHandleBungMax.setText(currentMould.getWallNonDgHandleBungMax().toString());
-            this.txtMouldHandleBungMin.setText(currentMould.getWallNonDgHandleBungMin().toString());
-            this.txtMouldHandleLeftMax.setText(currentMould.getWallNonDgHandleLeftMax().toString());
-            this.txtMouldHandleLeftMin.setText(currentMould.getWallNonDgHandleLeftMin().toString());
-            this.txtMouldHandleRightMax.setText(currentMould.getWallNonDgHandleRightMax().toString());
-            this.txtMouldHandleRightMin.setText(currentMould.getWallNonDgHandleRightMin().toString());
-            this.txtMouldManufacturer.setText(currentMould.getManufacturer());
-            this.txtMouldName.setText(currentMould.getName());
-            this.txtMouldNonDgMax.setText(currentMould.getWeightNonDgMax().toString());
-            this.txtMouldNonDgMin.setText(currentMould.getWeightNonDgMin().toString());
-            this.txtMouldSize1.setText(currentMould.getThreadNeckSize1());
-            this.txtMouldSize1Max.setText(currentMould.getThreadNeckMax1().toString());
-            this.txtMouldSize1Min.setText(currentMould.getThreadNeckMin1().toString());
-            this.txtMouldSize2.setText(currentMould.getThreadNeckSize2());
-            this.txtMouldSize2Max.setText(currentMould.getThreadNeckMax2().toString());
-            this.txtMouldSize2Min.setText(currentMould.getThreadNeckMin2().toString());
-            this.txtMouldSize3.setText(currentMould.getThreadNeckSize3());
-            this.txtMouldSize3Max.setText(currentMould.getThreadNeckMax3().toString());
-            this.txtMouldSize3Min.setText(currentMould.getThreadNeckMin3().toString());
-            this.txtMouldSizeA1.setText(currentMould.getThreadBoreASize1());
-            this.txtMouldSizeA1Max.setText(currentMould.getThreadBoreAMax1().toString());
-            this.txtMouldSizeA1Min.setText(currentMould.getThreadBoreAMin1().toString());
-            this.txtMouldSizeA2.setText(currentMould.getThreadBoreASize2());
-            this.txtMouldSizeA2Max.setText(currentMould.getThreadBoreAMax2().toString());
-            this.txtMouldSizeA2Min.setText(currentMould.getThreadBoreAMin2().toString());
-            this.txtMouldSizeA3.setText(currentMould.getThreadBoreASize3());
-            this.txtMouldSizeA3Max.setText(currentMould.getThreadBoreAMax3().toString());
-            this.txtMouldSizeA3Min.setText(currentMould.getThreadBoreAMin3().toString());
-            this.txtMouldSizeB1.setText(currentMould.getThreadBoreBSize1());
-            this.txtMouldSizeB1Max.setText(currentMould.getThreadBoreBMax1().toString());
-            this.txtMouldSizeB1Min.setText(currentMould.getThreadBoreBMin1().toString());
-            this.txtMouldSizeB2.setText(currentMould.getThreadBoreBSize2());
-            this.txtMouldSizeB2Max.setText(currentMould.getThreadBoreBMax2().toString());
-            this.txtMouldSizeB2Min.setText(currentMould.getThreadBoreBMin2().toString());
-            this.txtMouldSizeB3.setText(currentMould.getThreadBoreBSize3());
-            this.txtMouldSizeB3Max.setText(currentMould.getThreadBoreBMax3().toString());
-            this.txtMouldSizeB3Min.setText(currentMould.getThreadBoreBMin3().toString());
-            this.txtMouldTapMax.setText(currentMould.getTapPositionMax().toString());
-            this.txtMouldTapMin.setText(currentMould.getTapPositionMin().toString());
-            this.txtMouldUnderHandleMax.setText(currentMould.getWallNonDgUnderHandleMax().toString());
-            this.txtMouldUnderHandleMin.setText(currentMould.getWallNonDgUnderHandleMin().toString());
-            this.txtMouldVolume.setText(currentMould.getVolumn());
-            this.txtMouldWeightMax.setText(currentMould.getWeightDgMax().toString());
-            this.txtMouldWeightMin.setText(currentMould.getWeightDgMin().toString());
-            this.txtMouldYear.setText(currentMould.getYear());
+            this.UpdateMouldUI(currentMould);
 
         } else {
             this.cbMould.setModel(new DefaultComboBoxModel(new ComboBoxItem[]{}));
-            this.txtMouldBaseMin.setText("");
-            this.txtMouldClosureMax.setText("");
-            this.txtMouldClosureMin.setText("");
-            this.txtMouldCode.setText("");
-            this.txtMouldDgBaseMax.setText("");
-            this.txtMouldDgBaseMin.setText("");
-            this.txtMouldDgClosureMax.setText("");
-            this.txtMouldDgClosureMin.setText("");
-            this.txtMouldDgHandleBungMax.setText("");
-            this.txtMouldDgHandleBungMin.setText("");
-            this.txtMouldDgHandleLeftMax.setText("");
-            this.txtMouldDgHandleLeftMin.setText("");
-            this.txtMouldDgHandleRightMax.setText("");
-            this.txtMouldDgHandleRightMin.setText("");
-            this.txtMouldDgUnderHandleMax.setText("");
-            this.txtMouldDgUnderHandleMin.setText("");
-            this.txtMouldHandleBungMax.setText("");
-            this.txtMouldHandleBungMin.setText("");
-            this.txtMouldHandleLeftMax.setText("");
-            this.txtMouldHandleLeftMin.setText("");
-            this.txtMouldHandleRightMax.setText("");
-            this.txtMouldHandleRightMin.setText("");
-            this.txtMouldManufacturer.setText("");
-            this.txtMouldName.setText("");
-            this.txtMouldNonDgMax.setText("");
-            this.txtMouldNonDgMin.setText("");
-            this.txtMouldSize1.setText("");
-            this.txtMouldSize1Max.setText("");
-            this.txtMouldSize1Min.setText("");
-            this.txtMouldSize2.setText("");
-            this.txtMouldSize2Max.setText("");
-            this.txtMouldSize2Min.setText("");
-            this.txtMouldSize3.setText("");
-            this.txtMouldSize3Max.setText("");
-            this.txtMouldSize3Min.setText("");
-            this.txtMouldSizeA1.setText("");
-            this.txtMouldSizeA1Max.setText("");
-            this.txtMouldSizeA1Min.setText("");
-            this.txtMouldSizeA2.setText("");
-            this.txtMouldSizeA2Max.setText("");
-            this.txtMouldSizeA2Min.setText("");
-            this.txtMouldSizeA3.setText("");
-            this.txtMouldSizeA3Max.setText("");
-            this.txtMouldSizeA3Min.setText("");
-            this.txtMouldSizeB1.setText("");
-            this.txtMouldSizeB1Max.setText("");
-            this.txtMouldSizeB1Min.setText("");
-            this.txtMouldSizeB2.setText("");
-            this.txtMouldSizeB2Max.setText("");
-            this.txtMouldSizeB2Min.setText("");
-            this.txtMouldSizeB3.setText("");
-            this.txtMouldSizeB3Max.setText("");
-            this.txtMouldSizeB3Min.setText("");
-            this.txtMouldTapMax.setText("");
-            this.txtMouldTapMin.setText("");
-            this.txtMouldUnderHandleMax.setText("");
-            this.txtMouldUnderHandleMin.setText("");
-            this.txtMouldVolume.setText("");
-            this.txtMouldWeightMax.setText("");
-            this.txtMouldWeightMin.setText("");
-            this.txtMouldYear.setText("");
-
+            this.UpdateMouldUI(new Mould());
         }
     }
 
@@ -3250,7 +3128,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAdditiveSaveActionPerformed
 
     private void btnAdditiveUndoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdditiveUndoActionPerformed
-        Additive currentAdditive = ((ComboBoxItem<Additive>) this.cbMachine.getSelectedItem()).getItem();
+        Additive currentAdditive = ((ComboBoxItem<Additive>) this.cbAdditive.getSelectedItem()).getItem();
         this.UpdateTabMachine(currentAdditive.getId());
     }//GEN-LAST:event_btnAdditiveUndoActionPerformed
 
@@ -3264,71 +3142,77 @@ public class SettingsJFrame extends javax.swing.JFrame {
 
     private void cbMouldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbMouldActionPerformed
         Mould currentItem = ((ComboBoxItem<Mould>) this.cbMould.getSelectedItem()).getItem();
-        //
-        this.txtMouldBaseMax.setText(currentItem.getWallNonDgBaseMax().toString());
-        this.txtMouldBaseMin.setText(currentItem.getWallNonDgBaseMin().toString());
-        this.txtMouldClosureMax.setText(currentItem.getWallNonDgClosureMax().toString());
-        this.txtMouldClosureMin.setText(currentItem.getWallNonDgClosureMin().toString());
-        this.txtMouldCode.setText(currentItem.getCode().toString());
-        this.txtMouldDgBaseMax.setText(currentItem.getWallDgBaseMax().toString());
-        this.txtMouldDgBaseMin.setText(currentItem.getWallDgBaseMin().toString());
-        this.txtMouldDgClosureMax.setText(currentItem.getWallDgClosureMax().toString());
-        this.txtMouldDgClosureMin.setText(currentItem.getWallDgClosureMin().toString());
-        this.txtMouldDgHandleBungMax.setText(currentItem.getWallDgHandleBungMax().toString());
-        this.txtMouldDgHandleBungMin.setText(currentItem.getWallDgHandleBungMin().toString());
-        this.txtMouldDgHandleLeftMax.setText(currentItem.getWallDgHandleLeftMax().toString());
-        this.txtMouldDgHandleLeftMin.setText(currentItem.getWallDgHandleLeftMin().toString());
-        this.txtMouldDgHandleRightMax.setText(currentItem.getWallDgHandleRightMax().toString());
-        this.txtMouldDgHandleRightMin.setText(currentItem.getWallDgHandRightMin().toString());
-        this.txtMouldDgUnderHandleMax.setText(currentItem.getWallDgUnderHandleMax().toString());
-        this.txtMouldDgUnderHandleMin.setText(currentItem.getWallDgUnderHandleMin().toString());
-        this.txtMouldHandleBungMax.setText(currentItem.getWallNonDgHandleBungMax().toString());
-        this.txtMouldHandleBungMin.setText(currentItem.getWallNonDgHandleBungMin().toString());
-        this.txtMouldHandleLeftMax.setText(currentItem.getWallNonDgHandleLeftMax().toString());
-        this.txtMouldHandleLeftMin.setText(currentItem.getWallNonDgHandleLeftMin().toString());
-        this.txtMouldHandleRightMax.setText(currentItem.getWallNonDgHandleRightMax().toString());
-        this.txtMouldHandleRightMin.setText(currentItem.getWallNonDgHandleRightMin().toString());
-        this.txtMouldManufacturer.setText(currentItem.getManufacturer().toString());
-        this.txtMouldName.setText(currentItem.getName().toString());
-        this.txtMouldNonDgMax.setText(currentItem.getWeightNonDgMax().toString());
-        this.txtMouldNonDgMin.setText(currentItem.getWeightNonDgMin().toString());
-        this.txtMouldSize1.setText(currentItem.getThreadNeckSize1().toString());
-        this.txtMouldSize1Max.setText(currentItem.getThreadNeckMax1().toString());
-        this.txtMouldSize1Min.setText(currentItem.getThreadNeckMin1().toString());
-        this.txtMouldSize2.setText(currentItem.getThreadNeckSize2().toString());
-        this.txtMouldSize2Max.setText(currentItem.getThreadNeckMax2().toString());
-        this.txtMouldSize2Min.setText(currentItem.getThreadNeckMin2().toString());
-        this.txtMouldSize3.setText(currentItem.getThreadNeckSize3().toString());
-        this.txtMouldSize3Max.setText(currentItem.getThreadNeckMax3().toString());
-        this.txtMouldSize3Min.setText(currentItem.getThreadNeckMin3().toString());
-        this.txtMouldSizeA1.setText(currentItem.getThreadBoreASize1().toString());
-        this.txtMouldSizeA1Max.setText(currentItem.getThreadBoreAMax1().toString());
-        this.txtMouldSizeA1Min.setText(currentItem.getThreadBoreAMin1().toString());
-        this.txtMouldSizeA2.setText(currentItem.getThreadBoreASize2().toString());
-        this.txtMouldSizeA2Max.setText(currentItem.getThreadBoreAMax2().toString());
-        this.txtMouldSizeA2Min.setText(currentItem.getThreadBoreAMin2().toString());
-        this.txtMouldSizeA3.setText(currentItem.getThreadBoreASize3().toString());
-        this.txtMouldSizeA3Max.setText(currentItem.getThreadBoreAMax3().toString());
-        this.txtMouldSizeA3Min.setText(currentItem.getThreadBoreAMin3().toString());
-        this.txtMouldSizeB1.setText(currentItem.getThreadBoreBSize1().toString());
-        this.txtMouldSizeB1Max.setText(currentItem.getThreadBoreBMax1().toString());
-        this.txtMouldSizeB1Min.setText(currentItem.getThreadBoreBMin1().toString());
-        this.txtMouldSizeB2.setText(currentItem.getThreadBoreBSize2().toString());
-        this.txtMouldSizeB2Max.setText(currentItem.getThreadBoreBMax2().toString());
-        this.txtMouldSizeB2Min.setText(currentItem.getThreadBoreBMin2().toString());
-        this.txtMouldSizeB3.setText(currentItem.getThreadBoreBSize3().toString());
-        this.txtMouldSizeB3Max.setText(currentItem.getThreadBoreBMax3().toString());
-        this.txtMouldSizeB3Min.setText(currentItem.getThreadBoreBMin3().toString());
-        this.txtMouldTapMax.setText(currentItem.getTapPositionMax().toString());
-        this.txtMouldTapMin.setText(currentItem.getTapPositionMin().toString());
-        this.txtMouldUnderHandleMax.setText(currentItem.getWallNonDgUnderHandleMax().toString());
-        this.txtMouldUnderHandleMin.setText(currentItem.getWallNonDgUnderHandleMin().toString());
-        this.txtMouldVolume.setText(currentItem.getVolumn().toString());
-        this.txtMouldWeightMax.setText(currentItem.getWeightDgMax().toString());
-        this.txtMouldWeightMin.setText(currentItem.getWeightDgMin().toString());
-        this.txtMouldYear.setText(currentItem.getYear().toString());
+        UpdateMouldUI(currentItem);
+
 
     }//GEN-LAST:event_cbMouldActionPerformed
+
+    private void UpdateMouldUI(Mould currentMould) {
+        //
+        this.txtMouldBaseMax.setText(currentMould.getWallNonDgBaseMax() == null ? "" : currentMould.getWallNonDgBaseMax().toString());
+        this.txtMouldBaseMin.setText(currentMould.getWallNonDgBaseMin() == null ? "" : currentMould.getWallNonDgBaseMin().toString());
+        this.txtMouldClosureMax.setText(currentMould.getWallNonDgClosureMax() == null ? "" : currentMould.getWallNonDgClosureMax().toString());
+        this.txtMouldClosureMin.setText(currentMould.getWallNonDgClosureMin() == null ? "" : currentMould.getWallNonDgClosureMin().toString());
+        this.txtMouldCode.setText(currentMould.getCode() == null ? "" : currentMould.getCode().toString());
+        this.txtMouldDgBaseMax.setText(currentMould.getWallDgBaseMax() == null ? "" : currentMould.getWallDgBaseMax().toString());
+        this.txtMouldDgBaseMin.setText(currentMould.getWallDgBaseMin() == null ? "" : currentMould.getWallDgBaseMin().toString());
+        this.txtMouldDgClosureMax.setText(currentMould.getWallDgClosureMax() == null ? "" : currentMould.getWallDgClosureMax().toString());
+        this.txtMouldDgClosureMin.setText(currentMould.getWallDgClosureMin() == null ? "" : currentMould.getWallDgClosureMin().toString());
+        this.txtMouldDgHandleBungMax.setText(currentMould.getWallDgHandleBungMax() == null ? "" : currentMould.getWallDgHandleBungMax().toString());
+        this.txtMouldDgHandleBungMin.setText(currentMould.getWallDgHandleBungMin() == null ? "" : currentMould.getWallDgHandleBungMin().toString());
+        this.txtMouldDgHandleLeftMax.setText(currentMould.getWallDgHandleLeftMax() == null ? "" : currentMould.getWallDgHandleLeftMax().toString());
+        this.txtMouldDgHandleLeftMin.setText(currentMould.getWallDgHandleLeftMin() == null ? "" : currentMould.getWallDgHandleLeftMin().toString());
+        this.txtMouldDgHandleRightMax.setText(currentMould.getWallDgHandleRightMax() == null ? "" : currentMould.getWallDgHandleRightMax().toString());
+        this.txtMouldDgHandleRightMin.setText(currentMould.getWallDgHandRightMin() == null ? "" : currentMould.getWallDgHandRightMin().toString());
+        this.txtMouldDgUnderHandleMax.setText(currentMould.getWallDgUnderHandleMax() == null ? "" : currentMould.getWallDgUnderHandleMax().toString());
+        this.txtMouldDgUnderHandleMin.setText(currentMould.getWallDgUnderHandleMin() == null ? "" : currentMould.getWallDgUnderHandleMin().toString());
+        this.txtMouldHandleBungMax.setText(currentMould.getWallNonDgHandleBungMax() == null ? "" : currentMould.getWallNonDgHandleBungMax().toString());
+        this.txtMouldHandleBungMin.setText(currentMould.getWallNonDgHandleBungMin() == null ? "" : currentMould.getWallNonDgHandleBungMin().toString());
+        this.txtMouldHandleLeftMax.setText(currentMould.getWallNonDgHandleLeftMax() == null ? "" : currentMould.getWallNonDgHandleLeftMax().toString());
+        this.txtMouldHandleLeftMin.setText(currentMould.getWallNonDgHandleLeftMin() == null ? "" : currentMould.getWallNonDgHandleLeftMin().toString());
+        this.txtMouldHandleRightMax.setText(currentMould.getWallNonDgHandleRightMax() == null ? "" : currentMould.getWallNonDgHandleRightMax().toString());
+        this.txtMouldHandleRightMin.setText(currentMould.getWallNonDgHandleRightMin() == null ? "" : currentMould.getWallNonDgHandleRightMin().toString());
+        this.txtMouldManufacturer.setText(currentMould.getManufacturer() == null ? "" : currentMould.getManufacturer().toString());
+        this.txtMouldName.setText(currentMould.getName() == null ? "" : currentMould.getName().toString());
+        this.txtMouldNonDgMax.setText(currentMould.getWeightNonDgMax() == null ? "" : currentMould.getWeightNonDgMax().toString());
+        this.txtMouldNonDgMin.setText(currentMould.getWeightNonDgMin() == null ? "" : currentMould.getWeightNonDgMin().toString());
+        this.txtMouldSize1.setText(currentMould.getThreadNeckSize1() == null ? "" : currentMould.getThreadNeckSize1().toString());
+        this.txtMouldSize1Max.setText(currentMould.getThreadNeckMax1() == null ? "" : currentMould.getThreadNeckMax1().toString());
+        this.txtMouldSize1Min.setText(currentMould.getThreadNeckMin1() == null ? "" : currentMould.getThreadNeckMin1().toString());
+        this.txtMouldSize2.setText(currentMould.getThreadNeckSize2() == null ? "" : currentMould.getThreadNeckSize2().toString());
+        this.txtMouldSize2Max.setText(currentMould.getThreadNeckMax2() == null ? "" : currentMould.getThreadNeckMax2().toString());
+        this.txtMouldSize2Min.setText(currentMould.getThreadNeckMin2() == null ? "" : currentMould.getThreadNeckMin2().toString());
+        this.txtMouldSize3.setText(currentMould.getThreadNeckSize3() == null ? "" : currentMould.getThreadNeckSize3().toString());
+        this.txtMouldSize3Max.setText(currentMould.getThreadNeckMax3() == null ? "" : currentMould.getThreadNeckMax3().toString());
+        this.txtMouldSize3Min.setText(currentMould.getThreadNeckMin3() == null ? "" : currentMould.getThreadNeckMin3().toString());
+        this.txtMouldSizeA1.setText(currentMould.getThreadBoreASize1() == null ? "" : currentMould.getThreadBoreASize1().toString());
+        this.txtMouldSizeA1Max.setText(currentMould.getThreadBoreAMax1() == null ? "" : currentMould.getThreadBoreAMax1().toString());
+        this.txtMouldSizeA1Min.setText(currentMould.getThreadBoreAMin1() == null ? "" : currentMould.getThreadBoreAMin1().toString());
+        this.txtMouldSizeA2.setText(currentMould.getThreadBoreASize2() == null ? "" : currentMould.getThreadBoreASize2().toString());
+        this.txtMouldSizeA2Max.setText(currentMould.getThreadBoreAMax2() == null ? "" : currentMould.getThreadBoreAMax2().toString());
+        this.txtMouldSizeA2Min.setText(currentMould.getThreadBoreAMin2() == null ? "" : currentMould.getThreadBoreAMin2().toString());
+        this.txtMouldSizeA3.setText(currentMould.getThreadBoreASize3() == null ? "" : currentMould.getThreadBoreASize3().toString());
+        this.txtMouldSizeA3Max.setText(currentMould.getThreadBoreAMax3() == null ? "" : currentMould.getThreadBoreAMax3().toString());
+        this.txtMouldSizeA3Min.setText(currentMould.getThreadBoreAMin3() == null ? "" : currentMould.getThreadBoreAMin3().toString());
+        this.txtMouldSizeB1.setText(currentMould.getThreadBoreBSize1() == null ? "" : currentMould.getThreadBoreBSize1().toString());
+        this.txtMouldSizeB1Max.setText(currentMould.getThreadBoreBMax1() == null ? "" : currentMould.getThreadBoreBMax1().toString());
+        this.txtMouldSizeB1Min.setText(currentMould.getThreadBoreBMin1() == null ? "" : currentMould.getThreadBoreBMin1().toString());
+        this.txtMouldSizeB2.setText(currentMould.getThreadBoreBSize2() == null ? "" : currentMould.getThreadBoreBSize2().toString());
+        this.txtMouldSizeB2Max.setText(currentMould.getThreadBoreBMax2() == null ? "" : currentMould.getThreadBoreBMax2().toString());
+        this.txtMouldSizeB2Min.setText(currentMould.getThreadBoreBMin2() == null ? "" : currentMould.getThreadBoreBMin2().toString());
+        this.txtMouldSizeB3.setText(currentMould.getThreadBoreBSize3() == null ? "" : currentMould.getThreadBoreBSize3().toString());
+        this.txtMouldSizeB3Max.setText(currentMould.getThreadBoreBMax3() == null ? "" : currentMould.getThreadBoreBMax3().toString());
+        this.txtMouldSizeB3Min.setText(currentMould.getThreadBoreBMin3() == null ? "" : currentMould.getThreadBoreBMin3().toString());
+        this.txtMouldTapMax.setText(currentMould.getTapPositionMax() == null ? "" : currentMould.getTapPositionMax().toString());
+        this.txtMouldTapMin.setText(currentMould.getTapPositionMin() == null ? "" : currentMould.getTapPositionMin().toString());
+        this.txtMouldUnderHandleMax.setText(currentMould.getWallNonDgUnderHandleMax() == null ? "" : currentMould.getWallNonDgUnderHandleMax().toString());
+        this.txtMouldUnderHandleMin.setText(currentMould.getWallNonDgUnderHandleMin() == null ? "" : currentMould.getWallNonDgUnderHandleMin().toString());
+        this.txtMouldVolume.setText(currentMould.getVolumn() == null ? "" : currentMould.getVolumn().toString());
+        this.txtMouldWeightMax.setText(currentMould.getWeightDgMax() == null ? "" : currentMould.getWeightDgMax().toString());
+        this.txtMouldWeightMin.setText(currentMould.getWeightDgMin() == null ? "" : currentMould.getWeightDgMin().toString());
+        this.txtMouldYear.setText(currentMould.getYear() == null ? "" : currentMould.getYear().toString());
+
+    }
 
     private void btnMouldNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMouldNewActionPerformed
         int newId = this.mouldService.CreateEntity();
@@ -3345,76 +3229,201 @@ public class SettingsJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMouldDeleteActionPerformed
 
     private void btnMouldSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMouldSaveActionPerformed
-        Mould currentMould = ((ComboBoxItem<Mould>) this.cbAdditive.getSelectedItem()).getItem();
-        currentMould.setWallNonDgBaseMax(Float.parseFloat(this.txtMouldBaseMax.getText()));
-        currentMould.setWallNonDgBaseMin(Float.parseFloat(this.txtMouldBaseMin.getText()));
-        currentMould.setWallNonDgClosureMax(Float.parseFloat(this.txtMouldClosureMax.getText()));
-        currentMould.setWallNonDgClosureMin(Float.parseFloat(this.txtMouldClosureMin.getText()));
-        currentMould.setCode(this.txtMouldCode.getText());
-        currentMould.setWallDgBaseMax(Float.parseFloat(this.txtMouldDgBaseMax.getText()));
-        currentMould.setWallDgBaseMin(Float.parseFloat(this.txtMouldDgBaseMin.getText()));
-        currentMould.setWallDgClosureMax(Float.parseFloat(this.txtMouldDgClosureMax.getText()));
-        currentMould.setWallDgClosureMin(Float.parseFloat(this.txtMouldDgClosureMin.getText()));
-        currentMould.setWallDgHandleBungMax(Float.parseFloat(this.txtMouldDgHandleBungMax.getText()));
-        currentMould.setWallDgHandleBungMin(Float.parseFloat(this.txtMouldDgHandleBungMin.getText()));
-        currentMould.setWallDgHandleLeftMax(Float.parseFloat(this.txtMouldDgHandleLeftMax.getText()));
-        currentMould.setWallDgHandleLeftMin(Float.parseFloat(this.txtMouldDgHandleLeftMin.getText()));
-        currentMould.setWallDgHandleRightMax(Float.parseFloat(this.txtMouldDgHandleRightMax.getText()));
-        currentMould.setWallDgHandRightMin(Float.parseFloat(this.txtMouldDgHandleRightMin.getText()));
-        currentMould.setWallDgUnderHandleMax(Float.parseFloat(this.txtMouldDgUnderHandleMax.getText()));
-        currentMould.setWallDgUnderHandleMin(Float.parseFloat(this.txtMouldDgUnderHandleMin.getText()));
-        currentMould.setWallNonDgHandleBungMax(Float.parseFloat(this.txtMouldHandleBungMax.getText()));
-        currentMould.setWallNonDgHandleBungMin(Float.parseFloat(this.txtMouldHandleBungMin.getText()));
-        currentMould.setWallNonDgHandleLeftMax(Float.parseFloat(this.txtMouldHandleLeftMax.getText()));
-        currentMould.setWallNonDgHandleLeftMin(Float.parseFloat(this.txtMouldHandleLeftMin.getText()));
-        currentMould.setWallNonDgHandleRightMax(Float.parseFloat(this.txtMouldHandleRightMax.getText()));
-        currentMould.setWallNonDgHandleRightMin(Float.parseFloat(this.txtMouldHandleRightMin.getText()));
-        currentMould.setManufacturer(this.txtMouldManufacturer.getText());
-        currentMould.setName(this.txtMouldName.getText());
-        currentMould.setWeightNonDgMax(Float.parseFloat(this.txtMouldNonDgMax.getText()));
-        currentMould.setWeightNonDgMin(Float.parseFloat(this.txtMouldNonDgMin.getText()));
-        currentMould.setThreadNeckSize1(this.txtMouldSize1.getText());
-        currentMould.setThreadNeckMax1(Float.parseFloat(this.txtMouldSize1Max.getText()));
-        currentMould.setThreadNeckMin1(Float.parseFloat(this.txtMouldSize1Min.getText()));
-        currentMould.setThreadNeckSize2(this.txtMouldSize2.getText());
-        currentMould.setThreadNeckMax2(Float.parseFloat(this.txtMouldSize2Max.getText()));
-        currentMould.setThreadNeckMin2(Float.parseFloat(this.txtMouldSize2Min.getText()));
-        currentMould.setThreadNeckSize3(this.txtMouldSize3.getText());
-        currentMould.setThreadNeckMax3(Float.parseFloat(this.txtMouldSize3Max.getText()));
-        currentMould.setThreadNeckMin3(Float.parseFloat(this.txtMouldSize3Min.getText()));
-        currentMould.setThreadBoreASize1(this.txtMouldSizeA1.getText());
-        currentMould.setThreadBoreAMax1(Float.parseFloat(this.txtMouldSizeA1Max.getText()));
-        currentMould.setThreadBoreAMin1(Float.parseFloat(this.txtMouldSizeA1Min.getText()));
-        currentMould.setThreadBoreASize2(this.txtMouldSizeA2.getText());
-        currentMould.setThreadBoreAMax2(Float.parseFloat(this.txtMouldSizeA2Max.getText()));
-        currentMould.setThreadBoreAMin2(Float.parseFloat(this.txtMouldSizeA2Min.getText()));
-        currentMould.setThreadBoreASize3(this.txtMouldSizeA3.getText());
-        currentMould.setThreadBoreAMax3(Float.parseFloat(this.txtMouldSizeA3Max.getText()));
-        currentMould.setThreadBoreAMin3(Float.parseFloat(this.txtMouldSizeA3Min.getText()));
-        currentMould.setThreadBoreBSize1(this.txtMouldSizeB1.getText());
-        currentMould.setThreadBoreBMax1(Float.parseFloat(this.txtMouldSizeB1Max.getText()));
-        currentMould.setThreadBoreBMin1(Float.parseFloat(this.txtMouldSizeB1Min.getText()));
-        currentMould.setThreadBoreBSize2(this.txtMouldSizeB2.getText());
-        currentMould.setThreadBoreBMax2(Float.parseFloat(this.txtMouldSizeB2Max.getText()));
-        currentMould.setThreadBoreBMin2(Float.parseFloat(this.txtMouldSizeB2Min.getText()));
-        currentMould.setThreadBoreBSize3(this.txtMouldSizeB3.getText());
-        currentMould.setThreadBoreBMax3(Float.parseFloat(this.txtMouldSizeB3Max.getText()));
-        currentMould.setThreadBoreBMin3(Float.parseFloat(this.txtMouldSizeB3Min.getText()));
-        currentMould.setTapPositionMax(Float.parseFloat(this.txtMouldTapMax.getText()));
-        currentMould.setTapPositionMin(Float.parseFloat(this.txtMouldTapMin.getText()));
-        currentMould.setWallNonDgUnderHandleMax(Float.parseFloat(this.txtMouldUnderHandleMax.getText()));
-        currentMould.setWallNonDgUnderHandleMin(Float.parseFloat(this.txtMouldUnderHandleMin.getText()));
-        currentMould.setVolumn(this.txtMouldVolume.getText());
-        currentMould.setWeightDgMax(Float.parseFloat(this.txtMouldWeightMax.getText()));
-        currentMould.setWeightDgMin(Float.parseFloat(this.txtMouldWeightMin.getText()));
-        currentMould.setYear(this.txtMouldYear.getText());
+        Mould currentMould = ((ComboBoxItem<Mould>) this.cbMould.getSelectedItem()).getItem();
 
-        this.additiveService.UpdateEntity(currentMould);
-        this.UpdateTabAdditive(currentMould.getId());
+        if(!this.txtMouldBaseMax.getText().equals("")) {
+            currentMould.setWallNonDgBaseMax(Float.parseFloat(this.txtMouldBaseMax.getText()));
+        }
+        if(!this.txtMouldBaseMin.getText().equals("")) {
+            currentMould.setWallNonDgBaseMin(Float.parseFloat(this.txtMouldBaseMin.getText()));
+        }
+        if(!this.txtMouldClosureMax.getText().equals("")) {
+            currentMould.setWallNonDgClosureMax(Float.parseFloat(this.txtMouldClosureMax.getText()));
+        }
+        if(!this.txtMouldClosureMin.getText().equals("")) {
+            currentMould.setWallNonDgClosureMin(Float.parseFloat(this.txtMouldClosureMin.getText()));
+        }
+        if(!this.txtMouldCode.getText().equals("")) {
+            currentMould.setCode(this.txtMouldCode.getText());
+        }
+        if(!this.txtMouldDgBaseMax.getText().equals("")) {
+            currentMould.setWallDgBaseMax(Float.parseFloat(this.txtMouldDgBaseMax.getText()));
+        }
+        if(!this.txtMouldDgBaseMin.getText().equals("")) {
+            currentMould.setWallDgBaseMin(Float.parseFloat(this.txtMouldDgBaseMin.getText()));
+        }
+        if(!this.txtMouldDgClosureMax.getText().equals("")) {
+            currentMould.setWallDgClosureMax(Float.parseFloat(this.txtMouldDgClosureMax.getText()));
+        }
+        if(!this.txtMouldDgClosureMin.getText().equals("")) {
+            currentMould.setWallDgClosureMin(Float.parseFloat(this.txtMouldDgClosureMin.getText()));
+        }
+        if(!this.txtMouldDgHandleBungMax.getText().equals("")) {
+            currentMould.setWallDgHandleBungMax(Float.parseFloat(this.txtMouldDgHandleBungMax.getText()));
+        }
+        if(!this.txtMouldDgHandleBungMin.getText().equals("")) {
+            currentMould.setWallDgHandleBungMin(Float.parseFloat(this.txtMouldDgHandleBungMin.getText()));
+        }
+        if(!this.txtMouldDgHandleLeftMax.getText().equals("")) {
+            currentMould.setWallDgHandleLeftMax(Float.parseFloat(this.txtMouldDgHandleLeftMax.getText()));
+        }
+        if(!this.txtMouldDgHandleLeftMin.getText().equals("")) {
+            currentMould.setWallDgHandleLeftMin(Float.parseFloat(this.txtMouldDgHandleLeftMin.getText()));
+        }
+        if(!this.txtMouldDgHandleRightMax.getText().equals("")) {
+            currentMould.setWallDgHandleRightMax(Float.parseFloat(this.txtMouldDgHandleRightMax.getText()));
+        }
+        if(!this.txtMouldDgHandleRightMin.getText().equals("")) {
+            currentMould.setWallDgHandRightMin(Float.parseFloat(this.txtMouldDgHandleRightMin.getText()));
+        }
+        if(!this.txtMouldDgUnderHandleMax.getText().equals("")) {
+            currentMould.setWallDgUnderHandleMax(Float.parseFloat(this.txtMouldDgUnderHandleMax.getText()));
+        }
+        if(!this.txtMouldDgUnderHandleMin.getText().equals("")) {
+            currentMould.setWallDgUnderHandleMin(Float.parseFloat(this.txtMouldDgUnderHandleMin.getText()));
+        }
+        if(!this.txtMouldHandleBungMax.getText().equals("")) {
+            currentMould.setWallNonDgHandleBungMax(Float.parseFloat(this.txtMouldHandleBungMax.getText()));
+        }
+        if(!this.txtMouldHandleBungMin.getText().equals("")) {
+            currentMould.setWallNonDgHandleBungMin(Float.parseFloat(this.txtMouldHandleBungMin.getText()));
+        }
+        if(!this.txtMouldHandleLeftMax.getText().equals("")) {
+            currentMould.setWallNonDgHandleLeftMax(Float.parseFloat(this.txtMouldHandleLeftMax.getText()));
+        }
+        if(!this.txtMouldHandleLeftMin.getText().equals("")) {
+            currentMould.setWallNonDgHandleLeftMin(Float.parseFloat(this.txtMouldHandleLeftMin.getText()));
+        }
+        if(!this.txtMouldHandleRightMax.getText().equals("")) {
+            currentMould.setWallNonDgHandleRightMax(Float.parseFloat(this.txtMouldHandleRightMax.getText()));
+        }
+        if(!this.txtMouldHandleRightMin.getText().equals("")) {
+            currentMould.setWallNonDgHandleRightMin(Float.parseFloat(this.txtMouldHandleRightMin.getText()));
+        }
+        if(!this.txtMouldManufacturer.getText().equals("")) {
+            currentMould.setManufacturer(this.txtMouldManufacturer.getText());
+        }
+        if(!this.txtMouldName.getText().equals("")) {
+            currentMould.setName(this.txtMouldName.getText());
+        }
+        if(!this.txtMouldNonDgMax.getText().equals("")) {
+            currentMould.setWeightNonDgMax(Float.parseFloat(this.txtMouldNonDgMax.getText()));
+        }
+        if(!this.txtMouldNonDgMin.getText().equals("")) {
+            currentMould.setWeightNonDgMin(Float.parseFloat(this.txtMouldNonDgMin.getText()));
+        }
+        if(!this.txtMouldSize1.getText().equals("")) {
+            currentMould.setThreadNeckSize1(this.txtMouldSize1.getText());
+        }
+        if(!this.txtMouldSize1Max.getText().equals("")) {
+            currentMould.setThreadNeckMax1(Float.parseFloat(this.txtMouldSize1Max.getText()));
+        }
+        if(!this.txtMouldSize1Min.getText().equals("")) {
+            currentMould.setThreadNeckMin1(Float.parseFloat(this.txtMouldSize1Min.getText()));
+        }
+        if(!this.txtMouldSize2.getText().equals("")) {
+            currentMould.setThreadNeckSize2(this.txtMouldSize2.getText());
+        }
+        if(!this.txtMouldSize2Max.getText().equals("")) {
+            currentMould.setThreadNeckMax2(Float.parseFloat(this.txtMouldSize2Max.getText()));
+        }
+        if(!this.txtMouldSize2Min.getText().equals("")) {
+            currentMould.setThreadNeckMin2(Float.parseFloat(this.txtMouldSize2Min.getText()));
+        }
+        if(!this.txtMouldSize3.getText().equals("")) {
+            currentMould.setThreadNeckSize3(this.txtMouldSize3.getText());
+        }
+        if(!this.txtMouldSize3Max.getText().equals("")) {
+            currentMould.setThreadNeckMax3(Float.parseFloat(this.txtMouldSize3Max.getText()));
+        }
+        if(!this.txtMouldSize3Min.getText().equals("")) {
+            currentMould.setThreadNeckMin3(Float.parseFloat(this.txtMouldSize3Min.getText()));
+        }
+        if(!this.txtMouldSizeA1.getText().equals("")) {
+            currentMould.setThreadBoreASize1(this.txtMouldSizeA1.getText());
+        }
+        if(!this.txtMouldSizeA1Max.getText().equals("")) {
+            currentMould.setThreadBoreAMax1(Float.parseFloat(this.txtMouldSizeA1Max.getText()));
+        }
+        if(!this.txtMouldSizeA1Min.getText().equals("")) {
+            currentMould.setThreadBoreAMin1(Float.parseFloat(this.txtMouldSizeA1Min.getText()));
+        }
+        if(!this.txtMouldSizeA2.getText().equals("")) {
+            currentMould.setThreadBoreASize2(this.txtMouldSizeA2.getText());
+        }
+        if(!this.txtMouldSizeA2Max.getText().equals("")) {
+            currentMould.setThreadBoreAMax2(Float.parseFloat(this.txtMouldSizeA2Max.getText()));
+        }
+        if(!this.txtMouldSizeA2Min.getText().equals("")) {
+            currentMould.setThreadBoreAMin2(Float.parseFloat(this.txtMouldSizeA2Min.getText()));
+        }
+        if(!this.txtMouldSizeA3.getText().equals("")) {
+            currentMould.setThreadBoreASize3(this.txtMouldSizeA3.getText());
+        }
+        if(!this.txtMouldSizeA3Max.getText().equals("")) {
+            currentMould.setThreadBoreAMax3(Float.parseFloat(this.txtMouldSizeA3Max.getText()));
+        }
+        if(!this.txtMouldSizeA3Min.getText().equals("")) {
+            currentMould.setThreadBoreAMin3(Float.parseFloat(this.txtMouldSizeA3Min.getText()));
+        }
+        if(!this.txtMouldSizeB1.getText().equals("")) {
+            currentMould.setThreadBoreBSize1(this.txtMouldSizeB1.getText());
+        }
+        if(!this.txtMouldSizeB1Max.getText().equals("")) {
+            currentMould.setThreadBoreBMax1(Float.parseFloat(this.txtMouldSizeB1Max.getText()));
+        }
+        if(!this.txtMouldSizeB1Min.getText().equals("")) {
+            currentMould.setThreadBoreBMin1(Float.parseFloat(this.txtMouldSizeB1Min.getText()));
+        }
+        if(!this.txtMouldSizeB2.getText().equals("")) {
+            currentMould.setThreadBoreBSize2(this.txtMouldSizeB2.getText());
+        }
+        if(!this.txtMouldSizeB2Max.getText().equals("")) {
+            currentMould.setThreadBoreBMax2(Float.parseFloat(this.txtMouldSizeB2Max.getText()));
+        }
+        if(!this.txtMouldSizeB2Min.getText().equals("")) {
+            currentMould.setThreadBoreBMin2(Float.parseFloat(this.txtMouldSizeB2Min.getText()));
+        }
+        if(!this.txtMouldSizeB3.getText().equals("")) {
+            currentMould.setThreadBoreBSize3(this.txtMouldSizeB3.getText());
+        }
+        if(!this.txtMouldSizeB3Max.getText().equals("")) {
+            currentMould.setThreadBoreBMax3(Float.parseFloat(this.txtMouldSizeB3Max.getText()));
+        }
+        if(!this.txtMouldSizeB3Min.getText().equals("")) {
+            currentMould.setThreadBoreBMin3(Float.parseFloat(this.txtMouldSizeB3Min.getText()));
+        }
+        if(!this.txtMouldTapMax.getText().equals("")) {
+            currentMould.setTapPositionMax(Float.parseFloat(this.txtMouldTapMax.getText()));
+        }
+        if(!this.txtMouldTapMin.getText().equals("")) {
+            currentMould.setTapPositionMin(Float.parseFloat(this.txtMouldTapMin.getText()));
+        }
+        if(!this.txtMouldUnderHandleMax.getText().equals("")) {
+            currentMould.setWallNonDgUnderHandleMax(Float.parseFloat(this.txtMouldUnderHandleMax.getText()));
+        }
+        if(!this.txtMouldUnderHandleMin.getText().equals("")) {
+            currentMould.setWallNonDgUnderHandleMin(Float.parseFloat(this.txtMouldUnderHandleMin.getText()));
+        }
+        if(!this.txtMouldVolume.getText().equals("")) {
+            currentMould.setVolumn(this.txtMouldVolume.getText());
+        }
+        if(!this.txtMouldWeightMax.getText().equals("")) {
+            currentMould.setWeightDgMax(Float.parseFloat(this.txtMouldWeightMax.getText()));
+        }
+        if(!this.txtMouldWeightMin.getText().equals("")) {
+            currentMould.setWeightDgMin(Float.parseFloat(this.txtMouldWeightMin.getText()));
+        }
+        if(!this.txtMouldYear.getText().equals("")) {
+            currentMould.setYear(this.txtMouldYear.getText());
+        }
+
+        this.mouldService.UpdateEntity(currentMould);
+        this.UpdateTabMould(currentMould.getId());
     }//GEN-LAST:event_btnMouldSaveActionPerformed
 
     private void btnMouldUndoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMouldUndoActionPerformed
-        Mould currentMould = ((ComboBoxItem<Mould>) this.cbMachine.getSelectedItem()).getItem();
+        Mould currentMould = ((ComboBoxItem<Mould>) this.cbMould.getSelectedItem()).getItem();
         this.UpdateTabMachine(currentMould.getId());
     }//GEN-LAST:event_btnMouldUndoActionPerformed
 
