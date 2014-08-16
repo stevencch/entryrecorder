@@ -48,8 +48,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Product.findByImage3", query = "SELECT p FROM Product p WHERE p.image3 = :image3"),
     @NamedQuery(name = "Product.findByThreadBore", query = "SELECT p FROM Product p WHERE p.threadBore = :threadBore"),
     @NamedQuery(name = "Product.findByThreadNeck", query = "SELECT p FROM Product p WHERE p.threadNeck = :threadNeck"),
-    @NamedQuery(name = "Product.findByHasDG", query = "SELECT p FROM Product p WHERE p.hasDG = :hasDG")})
-public class Product implements Serializable,SettingEntity {
+    @NamedQuery(name = "Product.findByDgnondg", query = "SELECT p FROM Product p WHERE p.dgnondg = :dgnondg")})
+public class Product implements Serializable , SettingEntity{
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -93,11 +93,11 @@ public class Product implements Serializable,SettingEntity {
     @Column(name = "Image3")
     private String image3;
     @Column(name = "ThreadBore")
-    private String threadBore;
+    private Integer threadBore;
     @Column(name = "ThreadNeck")
-    private String threadNeck;
-    @Column(name = "HasDG")
-    private String hasDG;
+    private Integer threadNeck;
+    @Column(name = "DGNONDG")
+    private Integer dgnondg;
 
     public Product() {
     }
@@ -255,28 +255,28 @@ public class Product implements Serializable,SettingEntity {
         this.image3 = image3;
     }
 
-    public String getThreadBore() {
+    public Integer getThreadBore() {
         return threadBore;
     }
 
-    public void setThreadBore(String threadBore) {
+    public void setThreadBore(Integer threadBore) {
         this.threadBore = threadBore;
     }
 
-    public String getThreadNeck() {
+    public Integer getThreadNeck() {
         return threadNeck;
     }
 
-    public void setThreadNeck(String threadNeck) {
+    public void setThreadNeck(Integer threadNeck) {
         this.threadNeck = threadNeck;
     }
 
-    public String getHasDG() {
-        return hasDG;
+    public Integer getDgnondg() {
+        return dgnondg;
     }
 
-    public void setHasDG(String hasDG) {
-        this.hasDG = hasDG;
+    public void setDgnondg(Integer dgnondg) {
+        this.dgnondg = dgnondg;
     }
 
     @Override
@@ -306,6 +306,6 @@ public class Product implements Serializable,SettingEntity {
     
     @Override
     public void setDefaultValue() {
-        this.code="Product Code";
+        this.code = "Product Code";
     }
 }

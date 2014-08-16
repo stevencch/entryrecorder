@@ -70,7 +70,7 @@ public class Staff implements Serializable, SettingEntity {
         return name;
     }
 
-    public void setName() {
+    public void setName(String name) {
         this.name = name;
     }
 
