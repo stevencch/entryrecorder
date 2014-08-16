@@ -176,7 +176,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         int result = -1;
         List<Mould> moulds = this.mouldService.GetAllEntities();
         if (moulds.size() > 0) {
-            List<ComboBoxItem<Mould>> mouldNames = moulds.stream().sorted(comparing(x -> x.getName())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getCode(), x.getId())).collect(Collectors.toList());
+            List<ComboBoxItem<Mould>> mouldNames = moulds.stream().sorted(comparing(x -> x.getCode())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getCode(), x.getId())).collect(Collectors.toList());
             ComboBoxItem[] mouldNamesArray = mouldNames.toArray(new ComboBoxItem[mouldNames.size()]);
             comboBox.setModel(new DefaultComboBoxModel(mouldNamesArray));
             if (id != 0) {
