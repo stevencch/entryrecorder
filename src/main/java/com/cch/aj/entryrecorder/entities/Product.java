@@ -34,7 +34,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Product.findByMouldId", query = "SELECT p FROM Product p WHERE p.mouldId = :mouldId"),
     @NamedQuery(name = "Product.findByWeightMin", query = "SELECT p FROM Product p WHERE p.weightMin = :weightMin"),
     @NamedQuery(name = "Product.findByWeightMax", query = "SELECT p FROM Product p WHERE p.weightMax = :weightMax"),
-    @NamedQuery(name = "Product.findByThreadId", query = "SELECT p FROM Product p WHERE p.threadId = :threadId"),
     @NamedQuery(name = "Product.findByBung", query = "SELECT p FROM Product p WHERE p.bung = :bung"),
     @NamedQuery(name = "Product.findByPierced", query = "SELECT p FROM Product p WHERE p.pierced = :pierced"),
     @NamedQuery(name = "Product.findByPolymerId", query = "SELECT p FROM Product p WHERE p.polymerId = :polymerId"),
@@ -46,7 +45,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Product.findByAdditiveCPercentage", query = "SELECT p FROM Product p WHERE p.additiveCPercentage = :additiveCPercentage"),
     @NamedQuery(name = "Product.findByImage1", query = "SELECT p FROM Product p WHERE p.image1 = :image1"),
     @NamedQuery(name = "Product.findByImage2", query = "SELECT p FROM Product p WHERE p.image2 = :image2"),
-    @NamedQuery(name = "Product.findByImage3", query = "SELECT p FROM Product p WHERE p.image3 = :image3")})
+    @NamedQuery(name = "Product.findByImage3", query = "SELECT p FROM Product p WHERE p.image3 = :image3"),
+    @NamedQuery(name = "Product.findByThreadBore", query = "SELECT p FROM Product p WHERE p.threadBore = :threadBore"),
+    @NamedQuery(name = "Product.findByThreadNeck", query = "SELECT p FROM Product p WHERE p.threadNeck = :threadNeck"),
+    @NamedQuery(name = "Product.findByHasDG", query = "SELECT p FROM Product p WHERE p.hasDG = :hasDG")})
 public class Product implements Serializable,SettingEntity {
     private static final long serialVersionUID = 1L;
     @Id
@@ -59,20 +61,17 @@ public class Product implements Serializable,SettingEntity {
     private String code;
     @Column(name = "Description")
     private String description;
-    @Basic(optional = false)
     @Column(name = "MouldId")
-    private int mouldId;
+    private Integer mouldId;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "WeightMin")
     private Float weightMin;
     @Column(name = "WeightMax")
     private Float weightMax;
-    @Column(name = "ThreadId")
-    private Integer threadId;
     @Column(name = "Bung")
-    private Boolean bung;
+    private String bung;
     @Column(name = "Pierced")
-    private Boolean pierced;
+    private String pierced;
     @Column(name = "PolymerId")
     private Integer polymerId;
     @Column(name = "AdditiveAId")
@@ -93,6 +92,12 @@ public class Product implements Serializable,SettingEntity {
     private String image2;
     @Column(name = "Image3")
     private String image3;
+    @Column(name = "ThreadBore")
+    private String threadBore;
+    @Column(name = "ThreadNeck")
+    private String threadNeck;
+    @Column(name = "HasDG")
+    private String hasDG;
 
     public Product() {
     }
@@ -101,10 +106,9 @@ public class Product implements Serializable,SettingEntity {
         this.id = id;
     }
 
-    public Product(Integer id, String code, int mouldId) {
+    public Product(Integer id, String code) {
         this.id = id;
         this.code = code;
-        this.mouldId = mouldId;
     }
 
     public Integer getId() {
@@ -131,11 +135,11 @@ public class Product implements Serializable,SettingEntity {
         this.description = description;
     }
 
-    public int getMouldId() {
+    public Integer getMouldId() {
         return mouldId;
     }
 
-    public void setMouldId(int mouldId) {
+    public void setMouldId(Integer mouldId) {
         this.mouldId = mouldId;
     }
 
@@ -155,27 +159,19 @@ public class Product implements Serializable,SettingEntity {
         this.weightMax = weightMax;
     }
 
-    public Integer getThreadId() {
-        return threadId;
-    }
-
-    public void setThreadId(Integer threadId) {
-        this.threadId = threadId;
-    }
-
-    public Boolean getBung() {
+    public String getBung() {
         return bung;
     }
 
-    public void setBung(Boolean bung) {
+    public void setBung(String bung) {
         this.bung = bung;
     }
 
-    public Boolean getPierced() {
+    public String getPierced() {
         return pierced;
     }
 
-    public void setPierced(Boolean pierced) {
+    public void setPierced(String pierced) {
         this.pierced = pierced;
     }
 
@@ -259,6 +255,30 @@ public class Product implements Serializable,SettingEntity {
         this.image3 = image3;
     }
 
+    public String getThreadBore() {
+        return threadBore;
+    }
+
+    public void setThreadBore(String threadBore) {
+        this.threadBore = threadBore;
+    }
+
+    public String getThreadNeck() {
+        return threadNeck;
+    }
+
+    public void setThreadNeck(String threadNeck) {
+        this.threadNeck = threadNeck;
+    }
+
+    public String getHasDG() {
+        return hasDG;
+    }
+
+    public void setHasDG(String hasDG) {
+        this.hasDG = hasDG;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -283,10 +303,9 @@ public class Product implements Serializable,SettingEntity {
     public String toString() {
         return "com.cch.aj.entryrecorder.entities.Product[ id=" + id + " ]";
     }
-
+    
     @Override
     public void setDefaultValue() {
         this.code="Product Code";
     }
-    
 }

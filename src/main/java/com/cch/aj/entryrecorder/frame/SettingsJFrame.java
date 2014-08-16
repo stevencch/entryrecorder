@@ -18,8 +18,10 @@ import com.cch.aj.entryrecorder.services.SettingService;
 import com.cch.aj.entryrecorder.services.impl.SettingServiceImpl;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Arrays;
 import static java.util.Arrays.stream;
+import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparing;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,6 +39,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
 
     private int settingMouldId = 0;
     private int settingMouldPreviousId = 0;
+    private Mould settingMould = new Mould();
 
     private SettingService staffService = new SettingServiceImpl<Staff>(Staff.class);
     private SettingService machineService = new SettingServiceImpl<Machine>(Machine.class);
@@ -129,9 +132,9 @@ public class SettingsJFrame extends javax.swing.JFrame {
             this.cbPolymer.setSelectedIndex(selectedIndex);
             Polymer currentPolymer = ((ComboBoxItem<Polymer>) this.cbPolymer.getSelectedItem()).getItem();
             //
-            this.txtPolymerCompany.setText(currentPolymer.getCompany());
-            this.txtPolymerDesc.setText(currentPolymer.getDescription());
-            this.txtPolymerGrade.setText(currentPolymer.getGrade());
+            this.txtPolymerCompany.setText(currentPolymer.getCompany() == null || currentPolymer.getCompany() == "- Select -" ? "" : currentPolymer.getCompany().toString());
+            this.txtPolymerDesc.setText(currentPolymer.getDescription() == null ? "" : currentPolymer.getDescription().toString());
+            this.txtPolymerGrade.setText(currentPolymer.getGrade() == null ? "" : currentPolymer.getGrade().toString());
         } else {
             this.cbPolymer.setModel(new DefaultComboBoxModel(new ComboBoxItem[]{}));
             this.txtPolymerCompany.setText("");
@@ -163,6 +166,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
             this.cbMould.setSelectedIndex(selectedIndex);
             Mould currentMould = ((ComboBoxItem<Mould>) this.cbMould.getSelectedItem()).getItem();
             this.settingMouldId = currentMould.getId();
+            this.settingMould = currentMould;
             //
             this.UpdateMouldUI(currentMould);
 
@@ -177,6 +181,10 @@ public class SettingsJFrame extends javax.swing.JFrame {
         List<Mould> moulds = this.mouldService.GetAllEntities();
         if (moulds.size() > 0) {
             List<ComboBoxItem<Mould>> mouldNames = moulds.stream().sorted(comparing(x -> x.getCode())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getCode(), x.getId())).collect(Collectors.toList());
+            Mould mould = new Mould();
+            mould.setId(0);
+            mould.setCode("- Select -");
+            mouldNames.add(0, new ComboBoxItem<Mould>(mould, mould.getCode(), mould.getId()));
             ComboBoxItem[] mouldNamesArray = mouldNames.toArray(new ComboBoxItem[mouldNames.size()]);
             comboBox.setModel(new DefaultComboBoxModel(mouldNamesArray));
             if (id != 0) {
@@ -194,6 +202,10 @@ public class SettingsJFrame extends javax.swing.JFrame {
         List<Polymer> polymers = this.polymerService.GetAllEntities();
         if (polymers.size() > 0) {
             List<ComboBoxItem<Polymer>> polymerNames = polymers.stream().sorted(comparing(x -> x.getCompany())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getCompany() + " " + x.getGrade(), x.getId())).collect(Collectors.toList());
+            Polymer polymer = new Polymer();
+            polymer.setId(0);
+            polymer.setCompany("- Select -");
+            polymerNames.add(0, new ComboBoxItem<Polymer>(polymer, polymer.getCompany(), polymer.getId()));
             ComboBoxItem[] polymerNamesArray = polymerNames.toArray(new ComboBoxItem[polymerNames.size()]);
             comboBox.setModel(new DefaultComboBoxModel(polymerNamesArray));
             if (id != 0) {
@@ -267,11 +279,12 @@ public class SettingsJFrame extends javax.swing.JFrame {
         int additiveId2 = 0;
         int additiveId3 = 0;
         //product
+        Product currentProduct = new Product();
 
         int selectedIndex = FillProductComboBox(this.cbProduct, id);
         if (selectedIndex >= 0) {
             this.cbProduct.setSelectedIndex(selectedIndex);
-            Product currentProduct = ((ComboBoxItem<Product>) this.cbProduct.getSelectedItem()).getItem();
+            currentProduct = ((ComboBoxItem<Product>) this.cbProduct.getSelectedItem()).getItem();
             mouldId = currentProduct.getMouldId();
             polymerId = currentProduct.getPolymerId() == null ? 0 : currentProduct.getPolymerId();
             additiveId1 = currentProduct.getAdditiveAId() == null ? 0 : currentProduct.getAdditiveAId();
@@ -289,6 +302,52 @@ public class SettingsJFrame extends javax.swing.JFrame {
         this.FillAdditiveComboBox(this.cbProductAdditive1, additiveId1);
         this.FillAdditiveComboBox(this.cbProductAdditive2, additiveId2);
         this.FillAdditiveComboBox(this.cbProductAdditive3, additiveId3);
+        List<String> threadBores = new ArrayList<String>();
+        if (settingMould.getThreadBoreASize1() != null && !settingMould.getThreadBoreASize1().equals("")) {
+            threadBores.add(settingMould.getThreadBoreASize1());
+        }
+        if (settingMould.getThreadBoreASize2() != null && !settingMould.getThreadBoreASize2().equals("")) {
+            threadBores.add(settingMould.getThreadBoreASize2());
+        }
+        if (settingMould.getThreadBoreASize3() != null && !settingMould.getThreadBoreASize3().equals("")) {
+            threadBores.add(settingMould.getThreadBoreASize3());
+        }
+        if (settingMould.getThreadBoreBSize1() != null && !settingMould.getThreadBoreBSize1().equals("")) {
+            threadBores.add(settingMould.getThreadBoreBSize1());
+        }
+        if (settingMould.getThreadBoreBSize2() != null && !settingMould.getThreadBoreBSize2().equals("")) {
+            threadBores.add(settingMould.getThreadBoreBSize2());
+        }
+        if (settingMould.getThreadBoreBSize3() != null && !settingMould.getThreadBoreBSize3().equals("")) {
+            threadBores.add(settingMould.getThreadBoreBSize3());
+        }
+        this.cbProductBore.setModel(new DefaultComboBoxModel(threadBores.toArray()));
+        List<String> threadNecks = new ArrayList<String>();
+        if (settingMould.getThreadNeckSize1() != null && !settingMould.getThreadNeckSize1().equals("")) {
+            threadNecks.add(settingMould.getThreadNeckSize1());
+        }
+        if (settingMould.getThreadNeckSize2() != null && !settingMould.getThreadNeckSize2().equals("")) {
+            threadNecks.add(settingMould.getThreadNeckSize2());
+        }
+        if (settingMould.getThreadNeckSize3() != null && !settingMould.getThreadNeckSize3().equals("")) {
+            threadNecks.add(settingMould.getThreadNeckSize3());
+        }
+        this.cbProductNeck.setModel(new DefaultComboBoxModel(threadNecks.toArray()));
+        if (currentProduct.getBung() != null && !currentProduct.getBung().equals("")) {
+            this.cbProductBung.setSelectedItem(currentProduct.getBung().toString());
+        }
+        if (currentProduct.getPierced() != null && !currentProduct.getPierced().equals("")) {
+            this.cbProductPierced.setSelectedItem(currentProduct.getPierced().toString());
+        }
+        if (currentProduct.getHasDG() != null && !currentProduct.getHasDG().equals("")) {
+            this.cbProductDg.setSelectedItem(currentProduct.getHasDG().toString());
+        }
+        if (currentProduct.getThreadBore() != null && !currentProduct.getThreadBore().equals("")) {
+            this.cbProductBore.setSelectedItem(currentProduct.getThreadBore().toString());
+        }
+        if (currentProduct.getThreadNeck() != null && !currentProduct.getThreadNeck().equals("")) {
+            this.cbProductNeck.setSelectedItem(currentProduct.getThreadNeck().toString());
+        }
 
     }
 
@@ -3208,6 +3267,9 @@ public class SettingsJFrame extends javax.swing.JFrame {
         int result = JOptionPane.showConfirmDialog(this, "Are you sure to delete this item", "Warning", JOptionPane.OK_CANCEL_OPTION);
         if (result == 0) {
             Polymer currentPolymer = ((ComboBoxItem<Polymer>) this.cbPolymer.getSelectedItem()).getItem();
+            if ("- Select -".equals(currentPolymer.getCompany())) {
+                return;
+            }
             this.polymerService.DeleteEntity(currentPolymer.getId());
             this.UpdateTabPolymer(0);
         }
@@ -3215,6 +3277,9 @@ public class SettingsJFrame extends javax.swing.JFrame {
 
     private void btnPolymerSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPolymerSaveActionPerformed
         Polymer currentPolymer = ((ComboBoxItem<Polymer>) this.cbPolymer.getSelectedItem()).getItem();
+        if ("- Select -".equals(currentPolymer.getCompany())) {
+            return;
+        }
         currentPolymer.setCompany(this.txtPolymerCompany.getText());
         currentPolymer.setDescription(this.txtPolymerDesc.getText());
         currentPolymer.setGrade(this.txtPolymerGrade.getText());
@@ -3277,7 +3342,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         this.txtMouldBaseMin.setText(currentMould.getWallNonDgBaseMin() == null ? "" : currentMould.getWallNonDgBaseMin().toString());
         this.txtMouldClosureMax.setText(currentMould.getWallNonDgClosureMax() == null ? "" : currentMould.getWallNonDgClosureMax().toString());
         this.txtMouldClosureMin.setText(currentMould.getWallNonDgClosureMin() == null ? "" : currentMould.getWallNonDgClosureMin().toString());
-        this.txtMouldCode.setText(currentMould.getCode() == null ? "" : currentMould.getCode().toString());
+        this.txtMouldCode.setText(currentMould.getCode() == null || currentMould.getCode() == "- Select -" ? "" : currentMould.getCode().toString());
         this.txtMouldDgBaseMax.setText(currentMould.getWallDgBaseMax() == null ? "" : currentMould.getWallDgBaseMax().toString());
         this.txtMouldDgBaseMin.setText(currentMould.getWallDgBaseMin() == null ? "" : currentMould.getWallDgBaseMin().toString());
         this.txtMouldDgClosureMax.setText(currentMould.getWallDgClosureMax() == null ? "" : currentMould.getWallDgClosureMax().toString());
@@ -3347,6 +3412,9 @@ public class SettingsJFrame extends javax.swing.JFrame {
         int result = JOptionPane.showConfirmDialog(this, "Are you sure to delete this item", "Warning", JOptionPane.OK_CANCEL_OPTION);
         if (result == 0) {
             Mould currentMould = ((ComboBoxItem<Mould>) this.cbMould.getSelectedItem()).getItem();
+            if ("- Select -".equals(currentMould.getCode())) {
+                return;
+            }
             this.mouldService.DeleteEntity(currentMould.getId());
             this.UpdateTabMould(0);
         }
@@ -3354,7 +3422,9 @@ public class SettingsJFrame extends javax.swing.JFrame {
 
     private void btnMouldSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMouldSaveActionPerformed
         Mould currentMould = ((ComboBoxItem<Mould>) this.cbMould.getSelectedItem()).getItem();
-
+        if ("- Select -".equals(currentMould.getCode())) {
+            return;
+        }
         if (!this.txtMouldBaseMax.getText().equals("")) {
             currentMould.setWallNonDgBaseMax(Float.parseFloat(this.txtMouldBaseMax.getText()));
         }
@@ -3608,6 +3678,16 @@ public class SettingsJFrame extends javax.swing.JFrame {
         if (!this.txtProductWeightMin.getText().equals("")) {
             currentProduct.setWeightMin(Float.parseFloat(this.txtProductWeightMin.getText()));
         }
+        currentProduct.setBung(this.cbProductBung.getSelectedItem().toString());
+        currentProduct.setPierced(this.cbProductPierced.getSelectedItem().toString());
+        currentProduct.setHasDG(this.cbProductDg.getSelectedItem().toString());
+        currentProduct.setMouldId(((ComboBoxItem<Mould>) this.cbProductMould.getSelectedItem()).getId());
+        currentProduct.setPolymerId(((ComboBoxItem<Polymer>) this.cbProductPolymer.getSelectedItem()).getId());
+        currentProduct.setAdditiveAId(((ComboBoxItem<Additive>) this.cbProductAdditive1.getSelectedItem()).getId());
+        currentProduct.setAdditiveBId(((ComboBoxItem<Additive>) this.cbProductAdditive2.getSelectedItem()).getId());
+        currentProduct.setAdditiveCId(((ComboBoxItem<Additive>) this.cbProductAdditive3.getSelectedItem()).getId());
+        currentProduct.setThreadBore(this.cbProductBore.getSelectedItem().toString());
+        currentProduct.setThreadNeck(this.cbProductNeck.getSelectedItem().toString());
         this.productService.UpdateEntity(currentProduct);
         this.UpdateTabProduct(currentProduct.getId());
     }//GEN-LAST:event_btnProductSaveActionPerformed
@@ -3622,9 +3702,10 @@ public class SettingsJFrame extends javax.swing.JFrame {
         txtProductDesc.setText(currentProduct.getDescription() == null ? "" : currentProduct.getDescription().toString());;
         txtProductPerc1.setText(currentProduct.getAdditiveAPercentage() == null ? "" : currentProduct.getAdditiveAPercentage().toString());;
         txtProductPerc2.setText(currentProduct.getAdditiveBPercentage() == null ? "" : currentProduct.getAdditiveBPercentage().toString());;
-        txtProductPerc3.setText(currentProduct.getAdditiveCPercentage() == null ? "" : currentProduct.getAdditiveCPercentage().toString());;
-        txtProductWeightMax.setText(currentProduct.getWeightMax() == null ? "" : currentProduct.getWeightMax().toString());;
-        txtProductWeightMin.setText(currentProduct.getWeightMin() == null ? "" : currentProduct.getWeightMin().toString());;
+        txtProductPerc3.setText(currentProduct.getAdditiveCPercentage() == null ? "" : currentProduct.getAdditiveCPercentage().toString());
+        txtProductWeightMax.setText(currentProduct.getWeightMax() == null ? "" : currentProduct.getWeightMax().toString());
+        txtProductWeightMin.setText(currentProduct.getWeightMin() == null ? "" : currentProduct.getWeightMin().toString());
+
     }
 
     /**
