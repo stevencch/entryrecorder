@@ -6,6 +6,8 @@
 
 package com.cch.aj.entryrecorder.frame;
 
+import javax.swing.JFrame;
+
 /**
  *
  * @author Administrator
@@ -17,6 +19,7 @@ public class MainJFrame extends javax.swing.JFrame {
      */
     public MainJFrame() {
         initComponents();
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         new SettingsJFrame().setVisible(true);
     }
 

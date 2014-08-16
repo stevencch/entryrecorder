@@ -20,11 +20,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
 import static java.util.Arrays.stream;
+import static java.util.Comparator.comparing;
 import java.util.List;
 import java.util.stream.Collectors;
 import javafx.scene.control.ComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -49,6 +51,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
     public SettingsJFrame() {
 
         initComponents();
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //load staff
         this.cbStaff.setRenderer(new ComboBoxRender());
         UpdateTabStaff(0);
@@ -66,21 +69,18 @@ public class SettingsJFrame extends javax.swing.JFrame {
         UpdateTabMould(0);
         //load Product
         this.cbProduct.setRenderer(new ComboBoxRender());
+        this.cbProductMould.setRenderer(new ComboBoxRender());
+        this.cbProductPolymer.setRenderer(new ComboBoxRender());
+        this.cbProductAdditive1.setRenderer(new ComboBoxRender());
+        this.cbProductAdditive2.setRenderer(new ComboBoxRender());
+        this.cbProductAdditive3.setRenderer(new ComboBoxRender());
         UpdateTabProduct(0);
 
     }
 
     private void UpdateTabStaff(int id) {
-        List<Staff> staffs = this.staffService.GetAllEntities();
-        if (staffs.size() > 0) {
-            List<ComboBoxItem<Staff>> staffNames = staffs.stream().map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getName(), x.getId())).collect(Collectors.toList());
-            ComboBoxItem[] staffNamesArray = staffNames.toArray(new ComboBoxItem[staffNames.size()]);
-            this.cbStaff.setModel(new DefaultComboBoxModel(staffNamesArray));
-            int selectedIndex = id;
-            if (id != 0) {
-                ComboBoxItem<Staff> currentStaffName = staffNames.stream().filter(x -> x.getId() == id).findFirst().get();
-                selectedIndex = staffNames.indexOf(currentStaffName);
-            }
+        int selectedIndex = FillStaffComboBox(this.cbStaff, id);
+        if (selectedIndex >= 0) {
             this.cbStaff.setSelectedIndex(selectedIndex);
             Staff currentStaff = ((ComboBoxItem<Staff>) this.cbStaff.getSelectedItem()).getItem();
             //
@@ -124,16 +124,8 @@ public class SettingsJFrame extends javax.swing.JFrame {
     }
 
     private void UpdateTabPolymer(int id) {
-        List<Polymer> polymers = this.polymerService.GetAllEntities();
-        if (polymers.size() > 0) {
-            List<ComboBoxItem<Polymer>> polymerNames = polymers.stream().map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getCompany() + " " + x.getGrade(), x.getId())).collect(Collectors.toList());
-            ComboBoxItem[] polymerNamesArray = polymerNames.toArray(new ComboBoxItem[polymerNames.size()]);
-            this.cbPolymer.setModel(new DefaultComboBoxModel(polymerNamesArray));
-            int selectedIndex = id;
-            if (id != 0) {
-                ComboBoxItem<Polymer> currentPolymerName = polymerNames.stream().filter(x -> x.getId() == id).findFirst().get();
-                selectedIndex = polymerNames.indexOf(currentPolymerName);
-            }
+        int selectedIndex = FillPolymerComboBox(this.cbPolymer, id);
+        if (selectedIndex >= 0) {
             this.cbPolymer.setSelectedIndex(selectedIndex);
             Polymer currentPolymer = ((ComboBoxItem<Polymer>) this.cbPolymer.getSelectedItem()).getItem();
             //
@@ -149,16 +141,8 @@ public class SettingsJFrame extends javax.swing.JFrame {
     }
 
     private void UpdateTabAdditive(int id) {
-        List<Additive> additives = this.additiveService.GetAllEntities();
-        if (additives.size() > 0) {
-            List<ComboBoxItem<Additive>> additiveNames = additives.stream().map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getCompany() + " " + x.getGrade(), x.getId())).collect(Collectors.toList());
-            ComboBoxItem[] additiveNamesArray = additiveNames.toArray(new ComboBoxItem[additiveNames.size()]);
-            this.cbAdditive.setModel(new DefaultComboBoxModel(additiveNamesArray));
-            int selectedIndex = id;
-            if (id != 0) {
-                ComboBoxItem<Additive> currentAdditiveName = additiveNames.stream().filter(x -> x.getId() == id).findFirst().get();
-                selectedIndex = additiveNames.indexOf(currentAdditiveName);
-            }
+        int selectedIndex = FillAdditiveComboBox(this.cbAdditive, id);
+        if (selectedIndex >= 0) {
             this.cbAdditive.setSelectedIndex(selectedIndex);
             Additive currentAdditive = ((ComboBoxItem<Additive>) this.cbAdditive.getSelectedItem()).getItem();
             //
@@ -174,10 +158,8 @@ public class SettingsJFrame extends javax.swing.JFrame {
     }
 
     private void UpdateTabMould(int id) {
-        int selectedIndex = FillMouldComboBox( id);
-        List<Mould> moulds = this.mouldService.GetAllEntities();
-        if (moulds.size() > 0) {
-
+        int selectedIndex = FillMouldComboBox(this.cbMould, id);
+        if (selectedIndex >= 0) {
             this.cbMould.setSelectedIndex(selectedIndex);
             Mould currentMould = ((ComboBoxItem<Mould>) this.cbMould.getSelectedItem()).getItem();
             this.settingMouldId = currentMould.getId();
@@ -190,50 +172,123 @@ public class SettingsJFrame extends javax.swing.JFrame {
         }
     }
 
-    private int FillMouldComboBox(int id) {
+    private int FillMouldComboBox(JComboBox comboBox, int id) {
         int result = -1;
         List<Mould> moulds = this.mouldService.GetAllEntities();
         if (moulds.size() > 0) {
-            List<ComboBoxItem<Mould>> mouldNames = moulds.stream().map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getCode(), x.getId())).collect(Collectors.toList());
+            List<ComboBoxItem<Mould>> mouldNames = moulds.stream().sorted(comparing(x -> x.getName())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getCode(), x.getId())).collect(Collectors.toList());
             ComboBoxItem[] mouldNamesArray = mouldNames.toArray(new ComboBoxItem[mouldNames.size()]);
-            this.cbMould.setModel(new DefaultComboBoxModel(mouldNamesArray));
+            comboBox.setModel(new DefaultComboBoxModel(mouldNamesArray));
             if (id != 0) {
                 ComboBoxItem<Mould> currentMouldName = mouldNames.stream().filter(x -> x.getId() == id).findFirst().get();
                 result = mouldNames.indexOf(currentMouldName);
+            } else {
+                result = 0;
+            }
+        }
+        return result;
+    }
+
+    private int FillPolymerComboBox(JComboBox comboBox, int id) {
+        int result = -1;
+        List<Polymer> polymers = this.polymerService.GetAllEntities();
+        if (polymers.size() > 0) {
+            List<ComboBoxItem<Polymer>> polymerNames = polymers.stream().sorted(comparing(x -> x.getCompany())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getCompany() + " " + x.getGrade(), x.getId())).collect(Collectors.toList());
+            ComboBoxItem[] polymerNamesArray = polymerNames.toArray(new ComboBoxItem[polymerNames.size()]);
+            comboBox.setModel(new DefaultComboBoxModel(polymerNamesArray));
+            if (id != 0) {
+                ComboBoxItem<Polymer> currentPolymerName = polymerNames.stream().filter(x -> x.getId() == id).findFirst().get();
+                result = polymerNames.indexOf(currentPolymerName);
+            } else {
+                result = 0;
+            }
+        }
+        return result;
+    }
+
+    private int FillAdditiveComboBox(JComboBox comboBox, int id) {
+        int result = -1;
+        List<Additive> additives = this.additiveService.GetAllEntities();
+        if (additives.size() > 0) {
+            List<ComboBoxItem<Additive>> additiveNames = additives.stream().sorted(comparing(x -> x.getCompany())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getCompany() + " " + x.getGrade(), x.getId())).collect(Collectors.toList());
+            ComboBoxItem[] additiveNamesArray = additiveNames.toArray(new ComboBoxItem[additiveNames.size()]);
+            comboBox.setModel(new DefaultComboBoxModel(additiveNamesArray));
+            if (id != 0) {
+                ComboBoxItem<Additive> currentAdditiveName = additiveNames.stream().filter(x -> x.getId() == id).findFirst().get();
+                result = additiveNames.indexOf(currentAdditiveName);
+            } else {
+                result = 0;
+            }
+        }
+        return result;
+    }
+
+    private int FillProductComboBox(JComboBox comboBox, int id) {
+        int result = -1;
+        List<Product> allProducts = this.productService.GetAllEntities();
+        if (allProducts.size() > 0) {
+            List<Product> products = allProducts.stream().filter(x -> x.getMouldId() == this.settingMouldId).collect(Collectors.toList());
+            if (products.size() > 0) {
+                List<ComboBoxItem<Product>> productNames = products.stream().sorted(comparing(x -> x.getCode())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getCode(), x.getId())).collect(Collectors.toList());
+                ComboBoxItem[] productNamesArray = productNames.toArray(new ComboBoxItem[productNames.size()]);
+                comboBox.setModel(new DefaultComboBoxModel(productNamesArray));
+                if (id != 0) {
+                    ComboBoxItem<Product> currentProductName = productNames.stream().filter(x -> x.getId() == id).findFirst().get();
+                    result = productNames.indexOf(currentProductName);
+                } else {
+                    result = 0;
+                }
+            }
+        }
+        return result;
+    }
+
+    private int FillStaffComboBox(JComboBox comboBox, int id) {
+        int result = -1;
+        List<Staff> staffs = this.staffService.GetAllEntities();
+        if (staffs.size() > 0) {
+            List<ComboBoxItem<Staff>> staffNames = staffs.stream().sorted(comparing(x -> x.getJobType() + " " + x.getName())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getJobType() + " " + x.getName(), x.getId())).collect(Collectors.toList());
+            ComboBoxItem[] staffNamesArray = staffNames.toArray(new ComboBoxItem[staffNames.size()]);
+            comboBox.setModel(new DefaultComboBoxModel(staffNamesArray));
+            if (id != 0) {
+                ComboBoxItem<Staff> currentStaffName = staffNames.stream().filter(x -> x.getId() == id).findFirst().get();
+                result = staffNames.indexOf(currentStaffName);
+            } else {
+                result = 0;
             }
         }
         return result;
     }
 
     private void UpdateTabProduct(int id) {
-        //MouldId
-
+        int mouldId = 0;
+        int polymerId = 0;
+        int additiveId1 = 0;
+        int additiveId2 = 0;
+        int additiveId3 = 0;
         //product
-        List<Product> allProducts = this.productService.GetAllEntities();
-        if (allProducts.size() > 0) {
-            List<Product> products = allProducts.stream().filter(x -> x.getMouldId() == this.settingMouldId).collect(Collectors.toList());
-            if (products.size() > 0) {
-                List<ComboBoxItem<Product>> productNames = products.stream().map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getCode(), x.getId())).collect(Collectors.toList());
-                ComboBoxItem[] productNamesArray = productNames.toArray(new ComboBoxItem[productNames.size()]);
-                this.cbProduct.setModel(new DefaultComboBoxModel(productNamesArray));
-                int selectedIndex = id;
-                if (id != 0) {
-                    ComboBoxItem<Product> currentProductName = productNames.stream().filter(x -> x.getId() == id).findFirst().get();
-                    selectedIndex = productNames.indexOf(currentProductName);
-                }
-                this.cbProduct.setSelectedIndex(selectedIndex);
-                Product currentProduct = ((ComboBoxItem<Product>) this.cbProduct.getSelectedItem()).getItem();
-                //
-                this.UpdateProductUI(currentProduct);
 
-            } else {
-                this.cbProduct.setModel(new DefaultComboBoxModel(new ComboBoxItem[]{}));
-                this.UpdateProductUI(new Product());
-            }
+        int selectedIndex = FillProductComboBox(this.cbProduct, id);
+        if (selectedIndex >= 0) {
+            this.cbProduct.setSelectedIndex(selectedIndex);
+            Product currentProduct = ((ComboBoxItem<Product>) this.cbProduct.getSelectedItem()).getItem();
+            mouldId = currentProduct.getMouldId();
+            polymerId = currentProduct.getPolymerId() == null ? 0 : currentProduct.getPolymerId();
+            additiveId1 = currentProduct.getAdditiveAId() == null ? 0 : currentProduct.getAdditiveAId();
+            additiveId2 = currentProduct.getAdditiveBId() == null ? 0 : currentProduct.getAdditiveBId();
+            additiveId3 = currentProduct.getAdditiveCId() == null ? 0 : currentProduct.getAdditiveCId();
+            this.UpdateProductUI(currentProduct);
+
         } else {
             this.cbProduct.setModel(new DefaultComboBoxModel(new ComboBoxItem[]{}));
             this.UpdateProductUI(new Product());
         }
+        //combobox
+        this.FillMouldComboBox(this.cbProductMould, mouldId);
+        this.FillPolymerComboBox(this.cbProductPolymer, polymerId);
+        this.FillAdditiveComboBox(this.cbProductAdditive1, additiveId1);
+        this.FillAdditiveComboBox(this.cbProductAdditive2, additiveId2);
+        this.FillAdditiveComboBox(this.cbProductAdditive3, additiveId3);
 
     }
 
@@ -512,6 +567,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         cbStaffJob = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(708, 668));
 
         tabSettings.setName(""); // NOI18N
         tabSettings.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -2192,6 +2248,8 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(2, 46, 2, 9);
         jPanel28.add(jLabel54, gridBagConstraints);
+
+        cbProductBung.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "YES", "NO" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
@@ -3027,11 +3085,11 @@ public class SettingsJFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabSettings)
+            .addComponent(tabSettings, javax.swing.GroupLayout.DEFAULT_SIZE, 668, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabSettings)
+            .addComponent(tabSettings, javax.swing.GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE)
         );
 
         tabSettings.getAccessibleContext().setAccessibleName("Tab1");
