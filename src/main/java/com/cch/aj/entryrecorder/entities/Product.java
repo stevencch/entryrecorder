@@ -43,13 +43,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Product.findByAdditiveAPercentage", query = "SELECT p FROM Product p WHERE p.additiveAPercentage = :additiveAPercentage"),
     @NamedQuery(name = "Product.findByAdditiveBPercentage", query = "SELECT p FROM Product p WHERE p.additiveBPercentage = :additiveBPercentage"),
     @NamedQuery(name = "Product.findByAdditiveCPercentage", query = "SELECT p FROM Product p WHERE p.additiveCPercentage = :additiveCPercentage"),
-    @NamedQuery(name = "Product.findByImage1", query = "SELECT p FROM Product p WHERE p.image1 = :image1"),
-    @NamedQuery(name = "Product.findByImage2", query = "SELECT p FROM Product p WHERE p.image2 = :image2"),
-    @NamedQuery(name = "Product.findByImage3", query = "SELECT p FROM Product p WHERE p.image3 = :image3"),
     @NamedQuery(name = "Product.findByThreadBore", query = "SELECT p FROM Product p WHERE p.threadBore = :threadBore"),
     @NamedQuery(name = "Product.findByThreadNeck", query = "SELECT p FROM Product p WHERE p.threadNeck = :threadNeck"),
     @NamedQuery(name = "Product.findByDgnondg", query = "SELECT p FROM Product p WHERE p.dgnondg = :dgnondg")})
-public class Product implements Serializable , SettingEntity{
+public class Product implements Serializable,SettingEntity {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -86,12 +83,6 @@ public class Product implements Serializable , SettingEntity{
     private String additiveBPercentage;
     @Column(name = "AdditiveCPercentage")
     private String additiveCPercentage;
-    @Column(name = "Image1")
-    private String image1;
-    @Column(name = "Image2")
-    private String image2;
-    @Column(name = "Image3")
-    private String image3;
     @Column(name = "ThreadBore")
     private Integer threadBore;
     @Column(name = "ThreadNeck")
@@ -229,30 +220,6 @@ public class Product implements Serializable , SettingEntity{
 
     public void setAdditiveCPercentage(String additiveCPercentage) {
         this.additiveCPercentage = additiveCPercentage;
-    }
-
-    public String getImage1() {
-        return image1;
-    }
-
-    public void setImage1(String image1) {
-        this.image1 = image1;
-    }
-
-    public String getImage2() {
-        return image2;
-    }
-
-    public void setImage2(String image2) {
-        this.image2 = image2;
-    }
-
-    public String getImage3() {
-        return image3;
-    }
-
-    public void setImage3(String image3) {
-        this.image3 = image3;
     }
 
     public Integer getThreadBore() {

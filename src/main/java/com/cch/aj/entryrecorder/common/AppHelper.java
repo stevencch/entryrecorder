@@ -5,17 +5,33 @@
  */
 package com.cch.aj.entryrecorder.common;
 
+import com.cch.aj.entryrecorder.frame.SettingsJFrame;
+import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Pattern;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /**
  *
  * @author chacao
  */
 public class AppHelper {
+
+    public static String currentDir = System.getProperty("user.dir");
+    public static JFileChooser fc = new JFileChooser(currentDir + "\\images");
+    public static String defaultShift="shift";
 
     public static Image getScaledImage(Image srcImg, int w, int h) {
         BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
@@ -31,5 +47,26 @@ public class AppHelper {
         Image newimg = image.getScaledInstance(w, h, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
         ImageIcon imageIconNew = new ImageIcon(newimg);
         return imageIconNew;
+    }
+
+    public static void selectImage(JPanel panel, JLabel lable) {
+        int returnVal = fc.showOpenDialog(panel);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            String dir = file.getPath().replaceAll(Pattern.quote(currentDir), "");
+            displayImage(dir, panel,lable);
+        }
+    }
+
+    public static void displayImage(String dir, JPanel panel,JLabel lable) {
+        try {
+            lable.setText(dir);
+            BufferedImage myPicture = ImageIO.read(new File(currentDir + dir));
+            JLabel picLabel = new JLabel((AppHelper.getScaledImage(new ImageIcon(myPicture), 320, 320)));
+            panel.setLayout(new FlowLayout());
+            panel.add(picLabel);
+        } catch (IOException ex) {
+            Logger.getLogger(SettingsJFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

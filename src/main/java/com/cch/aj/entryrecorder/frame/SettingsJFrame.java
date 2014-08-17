@@ -10,6 +10,7 @@ import com.cch.aj.entryrecorder.common.ComboBoxItem;
 import com.cch.aj.entryrecorder.common.ComboBoxItemConvertor;
 import com.cch.aj.entryrecorder.common.ComboBoxRender;
 import com.cch.aj.entryrecorder.entities.Additive;
+import com.cch.aj.entryrecorder.entities.Entry;
 import com.cch.aj.entryrecorder.entities.Machine;
 import com.cch.aj.entryrecorder.entities.Mould;
 import com.cch.aj.entryrecorder.entities.Polymer;
@@ -18,6 +19,7 @@ import com.cch.aj.entryrecorder.entities.Staff;
 import com.cch.aj.entryrecorder.services.SettingService;
 import com.cch.aj.entryrecorder.services.impl.SettingServiceImpl;
 import java.awt.FlowLayout;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -26,6 +28,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import static java.util.Arrays.stream;
+import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparing;
@@ -63,15 +66,13 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private int settingMouldPreviousId = 0;
     private Mould settingMould = new Mould();
 
-    String currentDir = System.getProperty("user.dir");
-    final JFileChooser fc = new JFileChooser(currentDir + "\\images");
-
     private SettingService staffService = new SettingServiceImpl<Staff>(Staff.class);
     private SettingService machineService = new SettingServiceImpl<Machine>(Machine.class);
     private SettingService polymerService = new SettingServiceImpl<Polymer>(Polymer.class);
     private SettingService additiveService = new SettingServiceImpl<Additive>(Additive.class);
     private SettingService mouldService = new SettingServiceImpl<Mould>(Mould.class);
     private SettingService productService = new SettingServiceImpl<Product>(Product.class);
+    private SettingService entryService = new SettingServiceImpl<Entry>(Entry.class);
 
     /**
      * Creates new form SettingsJFrame
@@ -103,13 +104,17 @@ public class SettingsJFrame extends javax.swing.JFrame {
         this.cbProductAdditive2.setRenderer(new ComboBoxRender());
         this.cbProductAdditive3.setRenderer(new ComboBoxRender());
         UpdateTabProduct(0);
+        //load entry
+        this.cbEntry.setRenderer(new ComboBoxRender());
+        this.cbEntryMachine.setRenderer(new ComboBoxRender());
+        this.cbEntryMould.setRenderer(new ComboBoxRender());
+        this.cbEntryProduct.setRenderer(new ComboBoxRender());
 
     }
 
     private void UpdateTabStaff(int id) {
         int selectedIndex = FillStaffComboBox(this.cbStaff, id);
         if (selectedIndex >= 0) {
-            this.cbStaff.setSelectedIndex(selectedIndex);
             Staff currentStaff = ((ComboBoxItem<Staff>) this.cbStaff.getSelectedItem()).getItem();
             //
             this.cbStaffJob.setSelectedItem(currentStaff.getJobType());
@@ -123,7 +128,6 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private void UpdateTabMachine(int id) {
         int selectedIndex = FillMachineComboBox(this.cbMachine, id);
         if (selectedIndex >= 0) {
-            this.cbMachine.setSelectedIndex(selectedIndex);
             Machine currentMachine = ((ComboBoxItem<Machine>) this.cbMachine.getSelectedItem()).getItem();
             //
             this.txtMachineCapacity.setText(currentMachine.getCapacity());
@@ -146,7 +150,6 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private void UpdateTabPolymer(int id) {
         int selectedIndex = FillPolymerComboBox(this.cbPolymer, id);
         if (selectedIndex >= 0) {
-            this.cbPolymer.setSelectedIndex(selectedIndex);
             Polymer currentPolymer = ((ComboBoxItem<Polymer>) this.cbPolymer.getSelectedItem()).getItem();
             //
             this.txtPolymerCompany.setText(currentPolymer.getCompany() == null || currentPolymer.getCompany() == "- Select -" ? "" : currentPolymer.getCompany().toString());
@@ -163,7 +166,6 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private void UpdateTabAdditive(int id) {
         int selectedIndex = FillAdditiveComboBox(this.cbAdditive, id);
         if (selectedIndex >= 0) {
-            this.cbAdditive.setSelectedIndex(selectedIndex);
             Additive currentAdditive = ((ComboBoxItem<Additive>) this.cbAdditive.getSelectedItem()).getItem();
             //
             this.txtAdditiveCompany.setText(currentAdditive.getCompany());
@@ -180,7 +182,6 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private void UpdateTabMould(int id) {
         int selectedIndex = FillMouldComboBox(this.cbMould, id);
         if (selectedIndex >= 0) {
-            this.cbMould.setSelectedIndex(selectedIndex);
             Mould currentMould = ((ComboBoxItem<Mould>) this.cbMould.getSelectedItem()).getItem();
             this.settingMouldId = currentMould.getId();
             this.settingMould = currentMould;
@@ -191,6 +192,93 @@ public class SettingsJFrame extends javax.swing.JFrame {
             this.cbMould.setModel(new DefaultComboBoxModel(new ComboBoxItem[]{}));
             this.UpdateMouldUI(new Mould());
         }
+    }
+
+    private void UpdateTabProduct(int id) {
+        //product
+        Product currentProduct = new Product();
+
+        int selectedIndex = FillProductComboBox(this.cbProduct, id, this.settingMouldId);
+        if (selectedIndex >= 0) {
+            currentProduct = ((ComboBoxItem<Product>) this.cbProduct.getSelectedItem()).getItem();
+            this.UpdateProductUI(currentProduct);
+
+        } else {
+            this.cbProduct.setModel(new DefaultComboBoxModel(new ComboBoxItem[]{}));
+            this.UpdateProductUI(new Product());
+        }
+//        //combobox
+//        this.FillMouldComboBox(this.cbProductMould, mouldId);
+//        this.FillPolymerComboBox(this.cbProductPolymer, polymerId);
+//        this.FillAdditiveComboBox(this.cbProductAdditive1, additiveId1);
+//        this.FillAdditiveComboBox(this.cbProductAdditive2, additiveId2);
+//        this.FillAdditiveComboBox(this.cbProductAdditive3, additiveId3);
+//        List<String> threadBores = new ArrayList<String>();
+//        threadBores.add("- Select -");
+//        if (settingMould.getThreadBoreASize1() != null && !settingMould.getThreadBoreASize1().equals("")) {
+//            threadBores.add(settingMould.getThreadBoreASize1());
+//        }
+//        if (settingMould.getThreadBoreASize2() != null && !settingMould.getThreadBoreASize2().equals("")) {
+//            threadBores.add(settingMould.getThreadBoreASize2());
+//        }
+//        if (settingMould.getThreadBoreASize3() != null && !settingMould.getThreadBoreASize3().equals("")) {
+//            threadBores.add(settingMould.getThreadBoreASize3());
+//        }
+//        if (settingMould.getThreadBoreBSize1() != null && !settingMould.getThreadBoreBSize1().equals("")) {
+//            threadBores.add(settingMould.getThreadBoreBSize1());
+//        }
+//        if (settingMould.getThreadBoreBSize2() != null && !settingMould.getThreadBoreBSize2().equals("")) {
+//            threadBores.add(settingMould.getThreadBoreBSize2());
+//        }
+//        if (settingMould.getThreadBoreBSize3() != null && !settingMould.getThreadBoreBSize3().equals("")) {
+//            threadBores.add(settingMould.getThreadBoreBSize3());
+//        }
+//        this.cbProductBore.setModel(new DefaultComboBoxModel(threadBores.toArray()));
+//        List<String> threadNecks = new ArrayList<String>();
+//        threadNecks.add("- Select -");
+//        if (settingMould.getThreadNeckSize1() != null && !settingMould.getThreadNeckSize1().equals("")) {
+//            threadNecks.add(settingMould.getThreadNeckSize1());
+//        }
+//        if (settingMould.getThreadNeckSize2() != null && !settingMould.getThreadNeckSize2().equals("")) {
+//            threadNecks.add(settingMould.getThreadNeckSize2());
+//        }
+//        if (settingMould.getThreadNeckSize3() != null && !settingMould.getThreadNeckSize3().equals("")) {
+//            threadNecks.add(settingMould.getThreadNeckSize3());
+//        }
+//        this.cbProductNeck.setModel(new DefaultComboBoxModel(threadNecks.toArray()));
+//        if (currentProduct.getBung() != null && !currentProduct.getBung().equals("")) {
+//            this.cbProductBung.setSelectedItem(currentProduct.getBung().toString());
+//        }
+//        if (currentProduct.getPierced() != null && !currentProduct.getPierced().equals("")) {
+//            this.cbProductPierced.setSelectedItem(currentProduct.getPierced().toString());
+//        }
+//        if (currentProduct.getDgnondg() != null) {
+//            this.cbProductDg.setSelectedIndex(currentProduct.getDgnondg());
+//        }
+//        if (currentProduct.getThreadBore() != null) {
+//            this.cbProductBore.setSelectedIndex(currentProduct.getThreadBore());
+//        }
+//        if (currentProduct.getThreadNeck() != null) {
+//            this.cbProductNeck.setSelectedIndex(currentProduct.getThreadNeck());
+//        }
+
+    }
+
+    private void UpdateTabEntry(int id) {
+
+        //entry
+        Entry currentEntry = new Entry();
+
+        int selectedIndex = FillEntryComboBox(this.cbEntry, id);
+        if (selectedIndex >= 0) {
+            currentEntry = ((ComboBoxItem<Entry>) this.cbEntry.getSelectedItem()).getItem();
+            this.UpdateEntryUI(currentEntry);
+
+        } else {
+            this.cbEntry.setModel(new DefaultComboBoxModel(new ComboBoxItem[]{}));
+            this.UpdateEntryUI(new Entry());
+        }
+
     }
 
     private int FillMouldComboBox(JComboBox comboBox, int id) {
@@ -210,6 +298,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
             } else {
                 result = 0;
             }
+            comboBox.setSelectedIndex(result);
         }
         return result;
     }
@@ -231,6 +320,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
             } else {
                 result = 0;
             }
+            comboBox.setSelectedIndex(result);
         }
         return result;
     }
@@ -252,15 +342,16 @@ public class SettingsJFrame extends javax.swing.JFrame {
             } else {
                 result = 0;
             }
+            comboBox.setSelectedIndex(result);
         }
         return result;
     }
 
-    private int FillProductComboBox(JComboBox comboBox, int id) {
+    private int FillProductComboBox(JComboBox comboBox, int id, int mouldId) {
         int result = -1;
         List<Product> allProducts = this.productService.GetAllEntities();
         if (allProducts.size() > 0) {
-            List<Product> products = allProducts.stream().filter(x -> x.getMouldId() != null && x.getMouldId() == this.settingMouldId).collect(Collectors.toList());
+            List<Product> products = allProducts.stream().filter(x -> x.getMouldId() != null && x.getMouldId() == mouldId).collect(Collectors.toList());
             if (products.size() > 0) {
                 List<ComboBoxItem<Product>> productNames = products.stream().sorted(comparing(x -> x.getCode())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getCode(), x.getId())).collect(Collectors.toList());
                 Product product = new Product();
@@ -275,6 +366,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
                 } else {
                     result = 0;
                 }
+                comboBox.setSelectedIndex(result);
             }
         }
         return result;
@@ -297,6 +389,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
             } else {
                 result = 0;
             }
+            comboBox.setSelectedIndex(result);
         }
         return result;
     }
@@ -318,89 +411,34 @@ public class SettingsJFrame extends javax.swing.JFrame {
             } else {
                 result = 0;
             }
+            comboBox.setSelectedIndex(result);
         }
         return result;
     }
 
-    private void UpdateTabProduct(int id) {
-        int mouldId = 0;
-        int polymerId = 0;
-        int additiveId1 = 0;
-        int additiveId2 = 0;
-        int additiveId3 = 0;
-        //product
-        Product currentProduct = new Product();
-
-        int selectedIndex = FillProductComboBox(this.cbProduct, id);
-        if (selectedIndex >= 0) {
-            this.cbProduct.setSelectedIndex(selectedIndex);
-            currentProduct = ((ComboBoxItem<Product>) this.cbProduct.getSelectedItem()).getItem();
-            mouldId = currentProduct.getMouldId();
-            polymerId = currentProduct.getPolymerId() == null ? 0 : currentProduct.getPolymerId();
-            additiveId1 = currentProduct.getAdditiveAId() == null ? 0 : currentProduct.getAdditiveAId();
-            additiveId2 = currentProduct.getAdditiveBId() == null ? 0 : currentProduct.getAdditiveBId();
-            additiveId3 = currentProduct.getAdditiveCId() == null ? 0 : currentProduct.getAdditiveCId();
-            this.UpdateProductUI(currentProduct);
-
-        } else {
-            this.cbProduct.setModel(new DefaultComboBoxModel(new ComboBoxItem[]{}));
-            this.UpdateProductUI(new Product());
+    private int FillEntryComboBox(JComboBox comboBox, int id) {
+        int result = -1;
+        List<Entry> allEntrys = this.entryService.GetAllEntities();
+        if (allEntrys.size() > 0) {
+            List<Entry> entrys = allEntrys.stream().filter(x -> x.getShift().equals(this.txtEntrySearch.getText())).collect(Collectors.toList());
+            if (entrys.size() > 0) {
+                List<ComboBoxItem<Entry>> entryNames = entrys.stream().sorted(comparing(x -> x.getCreateDate())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getMachineId() != null ? ((Machine) this.machineService.FindEntity(x.getMachineId())).getMachineNo() : "new" + " " + x.getCreateDate(), x.getId())).collect(Collectors.toList());
+                Entry entry = new Entry();
+                entry.setId(0);
+                entry.setShift("- Select -");
+                entryNames.add(0, new ComboBoxItem<Entry>(entry, entry.getShift(), entry.getId()));
+                ComboBoxItem[] entryNamesArray = entryNames.toArray(new ComboBoxItem[entryNames.size()]);
+                comboBox.setModel(new DefaultComboBoxModel(entryNamesArray));
+                if (id != 0) {
+                    ComboBoxItem<Entry> currentEntryName = entryNames.stream().filter(x -> x.getId() == id).findFirst().get();
+                    result = entryNames.indexOf(currentEntryName);
+                } else {
+                    result = 0;
+                }
+                comboBox.setSelectedIndex(result);
+            }
         }
-        //combobox
-        this.FillMouldComboBox(this.cbProductMould, mouldId);
-        this.FillPolymerComboBox(this.cbProductPolymer, polymerId);
-        this.FillAdditiveComboBox(this.cbProductAdditive1, additiveId1);
-        this.FillAdditiveComboBox(this.cbProductAdditive2, additiveId2);
-        this.FillAdditiveComboBox(this.cbProductAdditive3, additiveId3);
-        List<String> threadBores = new ArrayList<String>();
-        threadBores.add("- Select -");
-        if (settingMould.getThreadBoreASize1() != null && !settingMould.getThreadBoreASize1().equals("")) {
-            threadBores.add(settingMould.getThreadBoreASize1());
-        }
-        if (settingMould.getThreadBoreASize2() != null && !settingMould.getThreadBoreASize2().equals("")) {
-            threadBores.add(settingMould.getThreadBoreASize2());
-        }
-        if (settingMould.getThreadBoreASize3() != null && !settingMould.getThreadBoreASize3().equals("")) {
-            threadBores.add(settingMould.getThreadBoreASize3());
-        }
-        if (settingMould.getThreadBoreBSize1() != null && !settingMould.getThreadBoreBSize1().equals("")) {
-            threadBores.add(settingMould.getThreadBoreBSize1());
-        }
-        if (settingMould.getThreadBoreBSize2() != null && !settingMould.getThreadBoreBSize2().equals("")) {
-            threadBores.add(settingMould.getThreadBoreBSize2());
-        }
-        if (settingMould.getThreadBoreBSize3() != null && !settingMould.getThreadBoreBSize3().equals("")) {
-            threadBores.add(settingMould.getThreadBoreBSize3());
-        }
-        this.cbProductBore.setModel(new DefaultComboBoxModel(threadBores.toArray()));
-        List<String> threadNecks = new ArrayList<String>();
-        threadNecks.add("- Select -");
-        if (settingMould.getThreadNeckSize1() != null && !settingMould.getThreadNeckSize1().equals("")) {
-            threadNecks.add(settingMould.getThreadNeckSize1());
-        }
-        if (settingMould.getThreadNeckSize2() != null && !settingMould.getThreadNeckSize2().equals("")) {
-            threadNecks.add(settingMould.getThreadNeckSize2());
-        }
-        if (settingMould.getThreadNeckSize3() != null && !settingMould.getThreadNeckSize3().equals("")) {
-            threadNecks.add(settingMould.getThreadNeckSize3());
-        }
-        this.cbProductNeck.setModel(new DefaultComboBoxModel(threadNecks.toArray()));
-        if (currentProduct.getBung() != null && !currentProduct.getBung().equals("")) {
-            this.cbProductBung.setSelectedItem(currentProduct.getBung().toString());
-        }
-        if (currentProduct.getPierced() != null && !currentProduct.getPierced().equals("")) {
-            this.cbProductPierced.setSelectedItem(currentProduct.getPierced().toString());
-        }
-        if (currentProduct.getDgnondg() != null) {
-            this.cbProductDg.setSelectedIndex(currentProduct.getDgnondg());
-        }
-        if (currentProduct.getThreadBore() != null) {
-            this.cbProductBore.setSelectedIndex(currentProduct.getThreadBore());
-        }
-        if (currentProduct.getThreadNeck() != null) {
-            this.cbProductNeck.setSelectedIndex(currentProduct.getThreadNeck());
-        }
-
+        return result;
     }
 
     /**
@@ -414,6 +452,49 @@ public class SettingsJFrame extends javax.swing.JFrame {
         java.awt.GridBagConstraints gridBagConstraints;
 
         tabSettings = new javax.swing.JTabbedPane();
+        jPanel38 = new javax.swing.JPanel();
+        jTabbedPane4 = new javax.swing.JTabbedPane();
+        jPanel9 = new javax.swing.JPanel();
+        jLabel47 = new javax.swing.JLabel();
+        txtEntryShift = new javax.swing.JTextField();
+        jLabel74 = new javax.swing.JLabel();
+        jLabel75 = new javax.swing.JLabel();
+        jLabel76 = new javax.swing.JLabel();
+        cbEntryMachine = new javax.swing.JComboBox();
+        cbEntryMould = new javax.swing.JComboBox();
+        cbEntryProduct = new javax.swing.JComboBox();
+        jLabel73 = new javax.swing.JLabel();
+        cbEntryInUse = new javax.swing.JComboBox();
+        jPanel13 = new javax.swing.JPanel();
+        jLabel118 = new javax.swing.JLabel();
+        jLabel119 = new javax.swing.JLabel();
+        jLabel120 = new javax.swing.JLabel();
+        jLabel121 = new javax.swing.JLabel();
+        jLabel122 = new javax.swing.JLabel();
+        jLabel123 = new javax.swing.JLabel();
+        jLabel124 = new javax.swing.JLabel();
+        txtEntryWeightMin = new javax.swing.JTextField();
+        txtEntryWeightMax = new javax.swing.JTextField();
+        txtEntryWallMin = new javax.swing.JTextField();
+        txtEntryWallMax = new javax.swing.JTextField();
+        txtEntryThreadBoreMin = new javax.swing.JTextField();
+        txtEntryThreadBoreMax = new javax.swing.JTextField();
+        txtEntryThreadNeckMin = new javax.swing.JTextField();
+        txtEntryThreadNeckMax = new javax.swing.JTextField();
+        txtEntryTapPositionMin = new javax.swing.JTextField();
+        txtEntryTapPositionMax = new javax.swing.JTextField();
+        jPanel47 = new javax.swing.JPanel();
+        btnEntryNew = new javax.swing.JButton();
+        cbEntry = new javax.swing.JComboBox();
+        btnEntryDelete = new javax.swing.JButton();
+        jLabel126 = new javax.swing.JLabel();
+        txtEntrySearch = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jPanel48 = new javax.swing.JPanel();
+        btnEntryUndo = new javax.swing.JButton();
+        btnEntrySave = new javax.swing.JButton();
+        jLabel163 = new javax.swing.JLabel();
         jPanel19 = new javax.swing.JPanel();
         jPanel20 = new javax.swing.JPanel();
         btnMachineNew = new javax.swing.JButton();
@@ -702,11 +783,443 @@ public class SettingsJFrame extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(908, 668));
 
         tabSettings.setName(""); // NOI18N
+        tabSettings.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                tabSettingsAncestorAdded(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
         tabSettings.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 tabSettingsStateChanged(evt);
             }
         });
+
+        jPanel38.setLayout(new java.awt.GridBagLayout());
+
+        jPanel9.setLayout(new java.awt.GridBagLayout());
+
+        jLabel47.setText("SHIFT");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipadx = 10;
+        gridBagConstraints.ipady = 10;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(3, 27, 3, 45);
+        jPanel9.add(jLabel47, gridBagConstraints);
+
+        txtEntryShift.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtEntryShiftActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 10;
+        gridBagConstraints.ipady = 10;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(3, 27, 3, 45);
+        jPanel9.add(txtEntryShift, gridBagConstraints);
+
+        jLabel74.setText("MACHINE No");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipadx = 10;
+        gridBagConstraints.ipady = 10;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(3, 27, 3, 45);
+        jPanel9.add(jLabel74, gridBagConstraints);
+
+        jLabel75.setText("MOULD");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.ipadx = 10;
+        gridBagConstraints.ipady = 10;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(3, 27, 3, 45);
+        jPanel9.add(jLabel75, gridBagConstraints);
+
+        jLabel76.setText("PRODUCT CODE");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.ipadx = 10;
+        gridBagConstraints.ipady = 10;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(3, 27, 3, 45);
+        jPanel9.add(jLabel76, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 10;
+        gridBagConstraints.ipady = 10;
+        gridBagConstraints.insets = new java.awt.Insets(3, 27, 3, 45);
+        jPanel9.add(cbEntryMachine, gridBagConstraints);
+
+        cbEntryMould.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbEntryMouldActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 10;
+        gridBagConstraints.ipady = 10;
+        gridBagConstraints.insets = new java.awt.Insets(3, 27, 3, 45);
+        jPanel9.add(cbEntryMould, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 10;
+        gridBagConstraints.ipady = 10;
+        gridBagConstraints.insets = new java.awt.Insets(3, 27, 3, 45);
+        jPanel9.add(cbEntryProduct, gridBagConstraints);
+
+        jLabel73.setText("IN USE");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.ipadx = 10;
+        gridBagConstraints.ipady = 10;
+        gridBagConstraints.insets = new java.awt.Insets(3, 27, 3, 45);
+        jPanel9.add(jLabel73, gridBagConstraints);
+
+        cbEntryInUse.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "YES", "NO" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 10;
+        gridBagConstraints.ipady = 10;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(3, 27, 3, 45);
+        jPanel9.add(cbEntryInUse, gridBagConstraints);
+
+        jTabbedPane4.addTab("General", jPanel9);
+
+        jPanel13.setLayout(new java.awt.GridBagLayout());
+
+        jLabel118.setText("MIN");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 44);
+        jPanel13.add(jLabel118, gridBagConstraints);
+
+        jLabel119.setText("MAX");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
+        jPanel13.add(jLabel119, gridBagConstraints);
+
+        jLabel120.setText("PRODUCT WEIGHT");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 0);
+        jPanel13.add(jLabel120, gridBagConstraints);
+
+        jLabel121.setText("WALL");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 0);
+        jPanel13.add(jLabel121, gridBagConstraints);
+
+        jLabel122.setText("THREAD BORE");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 0);
+        jPanel13.add(jLabel122, gridBagConstraints);
+
+        jLabel123.setText("THREAD NECK");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 0);
+        jPanel13.add(jLabel123, gridBagConstraints);
+
+        jLabel124.setText("TAP POSITION");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 0);
+        jPanel13.add(jLabel124, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 44);
+        jPanel13.add(txtEntryWeightMin, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
+        jPanel13.add(txtEntryWeightMax, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 44);
+        jPanel13.add(txtEntryWallMin, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
+        jPanel13.add(txtEntryWallMax, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 44);
+        jPanel13.add(txtEntryThreadBoreMin, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
+        jPanel13.add(txtEntryThreadBoreMax, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 44);
+        jPanel13.add(txtEntryThreadNeckMin, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
+        jPanel13.add(txtEntryThreadNeckMax, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 44);
+        jPanel13.add(txtEntryTapPositionMin, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
+        jPanel13.add(txtEntryTapPositionMax, gridBagConstraints);
+
+        jTabbedPane4.addTab("Settings", jPanel13);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
+        jPanel38.add(jTabbedPane4, gridBagConstraints);
+
+        jPanel47.setLayout(new java.awt.GridBagLayout());
+
+        btnEntryNew.setText("New");
+        btnEntryNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEntryNewActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 9, 9, 9);
+        jPanel47.add(btnEntryNew, gridBagConstraints);
+
+        cbEntry.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbEntryActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(9, 9, 9, 9);
+        jPanel47.add(cbEntry, gridBagConstraints);
+
+        btnEntryDelete.setText("Delete");
+        btnEntryDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEntryDeleteActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 9, 9, 9);
+        jPanel47.add(btnEntryDelete, gridBagConstraints);
+
+        jLabel126.setText("SHIFT");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(9, 9, 9, 9);
+        jPanel47.add(jLabel126, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(9, 9, 9, 9);
+        jPanel47.add(txtEntrySearch, gridBagConstraints);
+
+        jButton1.setText("Search");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(9, 9, 9, 9);
+        jPanel47.add(jButton1, gridBagConstraints);
+
+        jButton2.setText("Go to Entry Form");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(9, 9, 9, 9);
+        jPanel47.add(jButton2, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
+        jPanel38.add(jPanel47, gridBagConstraints);
+
+        jPanel48.setLayout(new java.awt.GridBagLayout());
+
+        btnEntryUndo.setText("Undo");
+        btnEntryUndo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEntryUndoActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.weightx = 0.25;
+        jPanel48.add(btnEntryUndo, gridBagConstraints);
+
+        btnEntrySave.setText("Save");
+        btnEntrySave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEntrySaveActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.weightx = 0.25;
+        jPanel48.add(btnEntrySave, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.weightx = 0.5;
+        jPanel48.add(jLabel163, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
+        jPanel38.add(jPanel48, gridBagConstraints);
+
+        tabSettings.addTab("Shift", jPanel38);
 
         jPanel19.setLayout(new java.awt.GridBagLayout());
 
@@ -3392,11 +3905,17 @@ public class SettingsJFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabSettings)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(tabSettings)
+                .addGap(102, 102, 102))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabSettings, javax.swing.GroupLayout.DEFAULT_SIZE, 668, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(tabSettings, javax.swing.GroupLayout.DEFAULT_SIZE, 644, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         tabSettings.getAccessibleContext().setAccessibleName("Tab1");
@@ -3662,13 +4181,47 @@ public class SettingsJFrame extends javax.swing.JFrame {
         this.txtMouldWeightMax.setText(currentMould.getWeightDgMax() == null ? "" : currentMould.getWeightDgMax().toString());
         this.txtMouldWeightMin.setText(currentMould.getWeightDgMin() == null ? "" : currentMould.getWeightDgMin().toString());
         this.txtMouldYear.setText(currentMould.getYear() == null ? "" : currentMould.getYear().toString());
-        if(currentMould.getImageDrawing()!=null){
-            this.labDrawingImage.setText(currentMould.getImageDrawing());
-            displayImage(this.pnlDrawingImage,currentMould.getImageDrawing().toString());
-        }
-        else{
+        if (currentMould.getImageDrawing() != null) {
+            AppHelper.displayImage(currentMould.getImageDrawing().toString(), this.pnlDrawingImage, this.labDrawingImage);
+        } else {
             this.labDrawingImage.setText("Image File Path");
             this.pnlDrawingImage.removeAll();
+        }
+        if (currentMould.getImageDg() != null) {
+            AppHelper.displayImage(currentMould.getImageDg().toString(), this.pnlDgImage, this.labDgImage);
+        } else {
+            this.labDgImage.setText("Image File Path");
+            this.pnlDgImage.removeAll();
+        }
+        if (currentMould.getImageNonDg() != null) {
+            AppHelper.displayImage(currentMould.getImageNonDg().toString(), this.pnlNonDgImage, this.labNonDgImage);
+        } else {
+            this.labNonDgImage.setText("Image File Path");
+            this.pnlNonDgImage.removeAll();
+        }
+        if (currentMould.getImageTap() != null) {
+            AppHelper.displayImage(currentMould.getImageTap().toString(), this.pnlTapImage, this.labTapImage);
+        } else {
+            this.labTapImage.setText("Image File Path");
+            this.pnlTapImage.removeAll();
+        }
+        if (currentMould.getImageNeck() != null) {
+            AppHelper.displayImage(currentMould.getImageNeck().toString(), this.pnlNeckImage, this.labNeckImage);
+        } else {
+            this.labNeckImage.setText("Image File Path");
+            this.pnlNeckImage.removeAll();
+        }
+        if (currentMould.getImageBoreA() != null) {
+            AppHelper.displayImage(currentMould.getImageBoreA().toString(), this.pnlBoreAImage, this.labBoreAImage);
+        } else {
+            this.labBoreAImage.setText("Image File Path");
+            this.pnlBoreAImage.removeAll();
+        }
+        if (currentMould.getImageBoreB() != null) {
+            AppHelper.displayImage(currentMould.getImageBoreB().toString(), this.pnlBoreBImage, this.labBoreBImage);
+        } else {
+            this.labBoreBImage.setText("Image File Path");
+            this.pnlBoreBImage.removeAll();
         }
     }
 
@@ -3913,7 +4466,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
 
     private void tabSettingsStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabSettingsStateChanged
         int index = tabSettings.getSelectedIndex();
-        if (index == 2) {
+        if (index == 3) {
             if (settingMouldPreviousId != settingMouldId) {
                 this.UpdateTabProduct(0);
             }
@@ -3983,7 +4536,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         currentProduct.setAdditiveCId(((ComboBoxItem<Additive>) this.cbProductAdditive3.getSelectedItem()).getId());
         currentProduct.setThreadBore(this.cbProductBore.getSelectedIndex());
         currentProduct.setThreadNeck(this.cbProductNeck.getSelectedIndex());
-        
+
         this.productService.UpdateEntity(currentProduct);
         this.UpdateTabProduct(currentProduct.getId());
     }//GEN-LAST:event_btnProductSaveActionPerformed
@@ -3994,55 +4547,145 @@ public class SettingsJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnProductUndoActionPerformed
 
     private void btnTapImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTapImageActionPerformed
-        // TODO add your handling code here:
+        AppHelper.selectImage(this.pnlTapImage, this.labTapImage);
     }//GEN-LAST:event_btnTapImageActionPerformed
 
     private void btnNeckImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNeckImageActionPerformed
-        // TODO add your handling code here:
+        AppHelper.selectImage(this.pnlNeckImage, this.labNeckImage);
     }//GEN-LAST:event_btnNeckImageActionPerformed
 
     private void btnBoreBImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBoreBImageActionPerformed
-        // TODO add your handling code here:
+        AppHelper.selectImage(this.pnlBoreBImage, this.labBoreBImage);
     }//GEN-LAST:event_btnBoreBImageActionPerformed
 
     private void btnBoreAImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBoreAImageActionPerformed
-        // TODO add your handling code here:
+        AppHelper.selectImage(this.pnlBoreAImage, this.labBoreAImage);
     }//GEN-LAST:event_btnBoreAImageActionPerformed
 
     private void btnNonDgImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNonDgImageActionPerformed
-        // TODO add your handling code here:
+        AppHelper.selectImage(this.pnlNonDgImage, this.labNonDgImage);
     }//GEN-LAST:event_btnNonDgImageActionPerformed
 
     private void btnDgImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDgImageActionPerformed
-        // TODO add your handling code here:
+        AppHelper.selectImage(this.pnlDgImage, this.labDgImage);
     }//GEN-LAST:event_btnDgImageActionPerformed
 
     private void btnDrawingImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDrawingImageActionPerformed
-        int returnVal = fc.showOpenDialog(this);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-
-            File file = fc.getSelectedFile();
-            String dir=file.getPath().replaceAll(Pattern.quote(currentDir), "");
-            this.labDrawingImage.setText(dir);
-            displayImage(this.pnlDrawingImage,dir);
-
-        }
+        AppHelper.selectImage(this.pnlDrawingImage, this.labDrawingImage);
     }//GEN-LAST:event_btnDrawingImageActionPerformed
 
     private void txtMouldNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMouldNameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtMouldNameActionPerformed
 
-    private void displayImage(JPanel panel,String dir) {
-        try {
-            BufferedImage myPicture = ImageIO.read(new File(currentDir+dir));
-            JLabel picLabel = new JLabel((AppHelper.getScaledImage(new ImageIcon(myPicture), 320, 320)));
-            panel.setLayout(new FlowLayout());
-            panel.add(picLabel);
-        } catch (IOException ex) {
-            Logger.getLogger(SettingsJFrame.class.getName()).log(Level.SEVERE, null, ex);
+    private void txtEntryShiftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEntryShiftActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtEntryShiftActionPerformed
+
+    private void btnEntryNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntryNewActionPerformed
+        if (CheckEntryShift()) {
+            int newId = this.entryService.CreateEntity();
+            if (this.settingMouldId != 0) {
+                Entry newEntry = (Entry) this.entryService.FindEntity(newId);
+                newEntry.setMouldId(this.settingMouldId);
+                this.entryService.UpdateEntity(newEntry);
+            }
+            UpdateTabEntry(newId);
         }
+    }//GEN-LAST:event_btnEntryNewActionPerformed
+
+    private void cbEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEntryActionPerformed
+        Entry currentItem = ((ComboBoxItem<Entry>) this.cbEntry.getSelectedItem()).getItem();
+        UpdateEntryUI(currentItem);
+    }//GEN-LAST:event_cbEntryActionPerformed
+
+    private void btnEntryDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntryDeleteActionPerformed
+        int result = JOptionPane.showConfirmDialog(this, "Are you sure to delete this item", "Warning", JOptionPane.OK_CANCEL_OPTION);
+        if (result == 0) {
+            Entry currentEntry = ((ComboBoxItem<Entry>) this.cbEntry.getSelectedItem()).getItem();
+            if ("- Select -".equals(currentEntry.getShift())) {
+                return;
+            }
+            this.entryService.DeleteEntity(currentEntry.getId());
+            this.UpdateTabEntry(0);
+        }
+    }//GEN-LAST:event_btnEntryDeleteActionPerformed
+
+    private void btnEntryUndoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntryUndoActionPerformed
+        Entry currentEntry = ((ComboBoxItem<Entry>) this.cbEntry.getSelectedItem()).getItem();
+        this.UpdateTabEntry(currentEntry.getId());
+    }//GEN-LAST:event_btnEntryUndoActionPerformed
+
+    private void btnEntrySaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrySaveActionPerformed
+        Entry currentEntry = ((ComboBoxItem<Entry>) this.cbEntry.getSelectedItem()).getItem();
+        if ("- Select -".equals(currentEntry.getShift())) {
+            return;
+        }
+        if (!this.txtEntryShift.getText().equals("")) {
+            currentEntry.setShift(this.txtEntryShift.getText());
+        }
+        if (!this.txtEntryWeightMax.getText().equals("")) {
+            currentEntry.setWeightMax(Float.parseFloat(this.txtEntryWeightMax.getText()));
+        }
+        if (!this.txtEntryWeightMin.getText().equals("")) {
+            currentEntry.setWeightMin(Float.parseFloat(this.txtEntryWeightMin.getText()));
+        }
+        if (!this.txtEntryWallMax.getText().equals("")) {
+            currentEntry.setWallMax(Float.parseFloat(this.txtEntryWallMax.getText()));
+        }
+        if (!this.txtEntryWallMin.getText().equals("")) {
+            currentEntry.setWallMin(Float.parseFloat(this.txtEntryWallMin.getText()));
+        }
+        if (!this.txtEntryThreadBoreMax.getText().equals("")) {
+            currentEntry.setThreadBoreMax(Float.parseFloat(this.txtEntryThreadBoreMax.getText()));
+        }
+        if (!this.txtEntryThreadBoreMin.getText().equals("")) {
+            currentEntry.setThreadBoreMin(Float.parseFloat(this.txtEntryThreadBoreMin.getText()));
+        }
+        if (!this.txtEntryThreadNeckMax.getText().equals("")) {
+            currentEntry.setThreadNeckMax(Float.parseFloat(this.txtEntryThreadNeckMax.getText()));
+        }
+        if (!this.txtEntryThreadNeckMin.getText().equals("")) {
+            currentEntry.setThreadNeckMin(Float.parseFloat(this.txtEntryThreadNeckMin.getText()));
+        }
+        if (!this.txtEntryTapPositionMax.getText().equals("")) {
+            currentEntry.setTapPositionMax(Float.parseFloat(this.txtEntryTapPositionMax.getText()));
+        }
+        if (!this.txtEntryTapPositionMin.getText().equals("")) {
+            currentEntry.setTapPositionMin(Float.parseFloat(this.txtEntryTapPositionMin.getText()));
+        }
+        currentEntry.setMouldId(((ComboBoxItem<Mould>) this.cbEntryMould.getSelectedItem()).getId());
+        currentEntry.setMachineId(((ComboBoxItem<Machine>) this.cbEntryMachine.getSelectedItem()).getId());
+        currentEntry.setProductId(((ComboBoxItem<Product>) this.cbEntryProduct.getSelectedItem()).getId());
+        currentEntry.setInUse(this.cbEntryInUse.getSelectedItem().toString());
+        this.entryService.UpdateEntity(currentEntry);
+        this.UpdateTabEntry(currentEntry.getId());
+    }//GEN-LAST:event_btnEntrySaveActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if (CheckEntryShift()) {
+            UpdateTabEntry(0);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private Boolean CheckEntryShift() throws HeadlessException {
+        Boolean result = true;
+        if (!this.txtEntrySearch.getText().isEmpty()) {
+            AppHelper.defaultShift = this.txtEntrySearch.getText();
+        } else {
+            JOptionPane.showMessageDialog(this, "Please entry the value of shift", "Warning", JOptionPane.OK_OPTION);
+            result = false;
+        }
+        return result;
     }
+
+    private void cbEntryMouldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEntryMouldActionPerformed
+        this.FillProductComboBox(this.cbEntryProduct, 0, ((ComboBoxItem<Mould>) this.cbEntryMould.getSelectedItem()).getItem().getId());
+    }//GEN-LAST:event_cbEntryMouldActionPerformed
+
+    private void tabSettingsAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_tabSettingsAncestorAdded
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tabSettingsAncestorAdded
 
     private void UpdateProductUI(Product currentProduct) {
         txtProductCode.setText(currentProduct.getCode() == null ? "" : currentProduct.getCode().toString());;
@@ -4052,7 +4695,96 @@ public class SettingsJFrame extends javax.swing.JFrame {
         txtProductPerc3.setText(currentProduct.getAdditiveCPercentage() == null ? "" : currentProduct.getAdditiveCPercentage().toString());
         txtProductWeightMax.setText(currentProduct.getWeightMax() == null ? "" : currentProduct.getWeightMax().toString());
         txtProductWeightMin.setText(currentProduct.getWeightMin() == null ? "" : currentProduct.getWeightMin().toString());
+        //combobox
+        if(currentProduct.getMouldId()!=null){
+        this.FillMouldComboBox(this.cbProductMould, currentProduct.getMouldId());
+        }
+        if(currentProduct.getPolymerId()!=null){
+        this.FillPolymerComboBox(this.cbProductPolymer, currentProduct.getPolymerId());
+        }
+        if(currentProduct.getAdditiveAId()!=null){
+        this.FillAdditiveComboBox(this.cbProductAdditive1, currentProduct.getAdditiveAId());
+        }
+        if(currentProduct.getAdditiveBId()!=null){
+        this.FillAdditiveComboBox(this.cbProductAdditive2, currentProduct.getAdditiveBId());
+        }
+        if(currentProduct.getAdditiveCId()!=null){
+        this.FillAdditiveComboBox(this.cbProductAdditive3, currentProduct.getAdditiveCId());
+        }
+        List<String> threadBores = new ArrayList<String>();
+        threadBores.add("- Select -");
+        if (settingMould.getThreadBoreASize1() != null && !settingMould.getThreadBoreASize1().equals("")) {
+            threadBores.add(settingMould.getThreadBoreASize1());
+        }
+        if (settingMould.getThreadBoreASize2() != null && !settingMould.getThreadBoreASize2().equals("")) {
+            threadBores.add(settingMould.getThreadBoreASize2());
+        }
+        if (settingMould.getThreadBoreASize3() != null && !settingMould.getThreadBoreASize3().equals("")) {
+            threadBores.add(settingMould.getThreadBoreASize3());
+        }
+        if (settingMould.getThreadBoreBSize1() != null && !settingMould.getThreadBoreBSize1().equals("")) {
+            threadBores.add(settingMould.getThreadBoreBSize1());
+        }
+        if (settingMould.getThreadBoreBSize2() != null && !settingMould.getThreadBoreBSize2().equals("")) {
+            threadBores.add(settingMould.getThreadBoreBSize2());
+        }
+        if (settingMould.getThreadBoreBSize3() != null && !settingMould.getThreadBoreBSize3().equals("")) {
+            threadBores.add(settingMould.getThreadBoreBSize3());
+        }
+        this.cbProductBore.setModel(new DefaultComboBoxModel(threadBores.toArray()));
+        List<String> threadNecks = new ArrayList<String>();
+        threadNecks.add("- Select -");
+        if (settingMould.getThreadNeckSize1() != null && !settingMould.getThreadNeckSize1().equals("")) {
+            threadNecks.add(settingMould.getThreadNeckSize1());
+        }
+        if (settingMould.getThreadNeckSize2() != null && !settingMould.getThreadNeckSize2().equals("")) {
+            threadNecks.add(settingMould.getThreadNeckSize2());
+        }
+        if (settingMould.getThreadNeckSize3() != null && !settingMould.getThreadNeckSize3().equals("")) {
+            threadNecks.add(settingMould.getThreadNeckSize3());
+        }
+        this.cbProductNeck.setModel(new DefaultComboBoxModel(threadNecks.toArray()));
+        if (currentProduct.getBung() != null && !currentProduct.getBung().equals("")) {
+            this.cbProductBung.setSelectedItem(currentProduct.getBung().toString());
+        }
+        if (currentProduct.getPierced() != null && !currentProduct.getPierced().equals("")) {
+            this.cbProductPierced.setSelectedItem(currentProduct.getPierced().toString());
+        }
+        if (currentProduct.getDgnondg() != null) {
+            this.cbProductDg.setSelectedIndex(currentProduct.getDgnondg());
+        }
+        if (currentProduct.getThreadBore() != null) {
+            this.cbProductBore.setSelectedIndex(currentProduct.getThreadBore());
+        }
+        if (currentProduct.getThreadNeck() != null) {
+            this.cbProductNeck.setSelectedIndex(currentProduct.getThreadNeck());
+        }
 
+    }
+
+    private void UpdateEntryUI(Entry currentEntry) {
+        cbEntryInUse.setSelectedItem(currentEntry.getInUse());
+        txtEntryShift.setText(currentEntry.getShift() == null ? "" : currentEntry.getShift().toString());;
+        txtEntryWeightMin.setText(currentEntry.getWeightMin() == null ? "" : currentEntry.getWeightMin().toString());;
+        txtEntryWeightMax.setText(currentEntry.getWeightMax() == null ? "" : currentEntry.getWeightMax().toString());;
+        txtEntryWallMin.setText(currentEntry.getWallMin() == null ? "" : currentEntry.getWallMin().toString());;
+        txtEntryWallMax.setText(currentEntry.getWallMax() == null ? "" : currentEntry.getWallMax().toString());
+        txtEntryThreadBoreMin.setText(currentEntry.getThreadBoreMin() == null ? "" : currentEntry.getThreadBoreMin().toString());
+        txtEntryThreadBoreMax.setText(currentEntry.getThreadBoreMax() == null ? "" : currentEntry.getThreadBoreMax().toString());
+        txtEntryThreadNeckMin.setText(currentEntry.getThreadNeckMin() == null ? "" : currentEntry.getThreadNeckMin().toString());
+        txtEntryThreadNeckMax.setText(currentEntry.getThreadNeckMax() == null ? "" : currentEntry.getThreadNeckMax().toString());
+        txtEntryTapPositionMin.setText(currentEntry.getTapPositionMin() == null ? "" : currentEntry.getTapPositionMin().toString());
+        txtEntryTapPositionMax.setText(currentEntry.getTapPositionMax() == null ? "" : currentEntry.getTapPositionMax().toString());
+        //combobox
+        if (currentEntry.getMouldId() != null) {
+            this.FillMouldComboBox(this.cbEntryMould, currentEntry.getMouldId());
+        }
+        if (currentEntry.getProductId() != null) {
+            this.FillProductComboBox(this.cbEntryProduct, currentEntry.getProductId(), currentEntry.getMouldId());
+        }
+        if (currentEntry.getMachineId() != null) {
+            this.FillMachineComboBox(this.cbEntryMachine, currentEntry.getMachineId());
+        }
     }
 
     /**
@@ -4099,6 +4831,10 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnBoreBImage;
     private javax.swing.JButton btnDgImage;
     private javax.swing.JButton btnDrawingImage;
+    private javax.swing.JButton btnEntryDelete;
+    private javax.swing.JButton btnEntryNew;
+    private javax.swing.JButton btnEntrySave;
+    private javax.swing.JButton btnEntryUndo;
     private javax.swing.JButton btnMachineDelete;
     private javax.swing.JButton btnMachineNew;
     private javax.swing.JButton btnMachineSave;
@@ -4123,6 +4859,11 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnStaffUndo;
     private javax.swing.JButton btnTapImage;
     private javax.swing.JComboBox cbAdditive;
+    private javax.swing.JComboBox cbEntry;
+    private javax.swing.JComboBox cbEntryInUse;
+    private javax.swing.JComboBox cbEntryMachine;
+    private javax.swing.JComboBox cbEntryMould;
+    private javax.swing.JComboBox cbEntryProduct;
     private javax.swing.JComboBox cbMachine;
     private javax.swing.JComboBox cbMould;
     private javax.swing.JComboBox cbPolymer;
@@ -4139,6 +4880,8 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private javax.swing.JComboBox cbProductPolymer;
     private javax.swing.JComboBox cbStaff;
     private javax.swing.JComboBox cbStaffJob;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel100;
@@ -4152,11 +4895,20 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel109;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel110;
+    private javax.swing.JLabel jLabel118;
+    private javax.swing.JLabel jLabel119;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel120;
+    private javax.swing.JLabel jLabel121;
+    private javax.swing.JLabel jLabel122;
+    private javax.swing.JLabel jLabel123;
+    private javax.swing.JLabel jLabel124;
+    private javax.swing.JLabel jLabel126;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel163;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
@@ -4190,6 +4942,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel44;
     private javax.swing.JLabel jLabel45;
     private javax.swing.JLabel jLabel46;
+    private javax.swing.JLabel jLabel47;
     private javax.swing.JLabel jLabel48;
     private javax.swing.JLabel jLabel49;
     private javax.swing.JLabel jLabel5;
@@ -4218,6 +4971,10 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel70;
     private javax.swing.JLabel jLabel71;
     private javax.swing.JLabel jLabel72;
+    private javax.swing.JLabel jLabel73;
+    private javax.swing.JLabel jLabel74;
+    private javax.swing.JLabel jLabel75;
+    private javax.swing.JLabel jLabel76;
     private javax.swing.JLabel jLabel78;
     private javax.swing.JLabel jLabel79;
     private javax.swing.JLabel jLabel8;
@@ -4245,6 +5002,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
@@ -4270,13 +5028,18 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel35;
     private javax.swing.JPanel jPanel36;
     private javax.swing.JPanel jPanel37;
+    private javax.swing.JPanel jPanel38;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel47;
+    private javax.swing.JPanel jPanel48;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane3;
+    private javax.swing.JTabbedPane jTabbedPane4;
     private javax.swing.JTabbedPane jTabbedPane5;
     private javax.swing.JLabel labBoreAImage;
     private javax.swing.JLabel labBoreBImage;
@@ -4296,6 +5059,18 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private javax.swing.JTextField txtAdditiveCompany;
     private javax.swing.JTextField txtAdditiveDesc;
     private javax.swing.JTextField txtAdditiveGrade;
+    private javax.swing.JTextField txtEntrySearch;
+    private javax.swing.JTextField txtEntryShift;
+    private javax.swing.JTextField txtEntryTapPositionMax;
+    private javax.swing.JTextField txtEntryTapPositionMin;
+    private javax.swing.JTextField txtEntryThreadBoreMax;
+    private javax.swing.JTextField txtEntryThreadBoreMin;
+    private javax.swing.JTextField txtEntryThreadNeckMax;
+    private javax.swing.JTextField txtEntryThreadNeckMin;
+    private javax.swing.JTextField txtEntryWallMax;
+    private javax.swing.JTextField txtEntryWallMin;
+    private javax.swing.JTextField txtEntryWeightMax;
+    private javax.swing.JTextField txtEntryWeightMin;
     private javax.swing.JTextField txtMachineCapacity;
     private javax.swing.JTextField txtMachineDesc;
     private javax.swing.JTextField txtMachineManufa;
