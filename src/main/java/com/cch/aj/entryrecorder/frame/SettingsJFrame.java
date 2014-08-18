@@ -66,13 +66,12 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private int settingMouldPreviousId = 0;
     private Mould settingMould = new Mould();
 
-    private SettingService staffService = new SettingServiceImpl<Staff>(Staff.class);
     private SettingService machineService = new SettingServiceImpl<Machine>(Machine.class);
     private SettingService polymerService = new SettingServiceImpl<Polymer>(Polymer.class);
     private SettingService additiveService = new SettingServiceImpl<Additive>(Additive.class);
     private SettingService mouldService = new SettingServiceImpl<Mould>(Mould.class);
     private SettingService productService = new SettingServiceImpl<Product>(Product.class);
-    private SettingService entryService = new SettingServiceImpl<Entry>(Entry.class);
+   
 
     /**
      * Creates new form SettingsJFrame
