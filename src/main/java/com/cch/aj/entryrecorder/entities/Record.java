@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Record.findAll", query = "SELECT r FROM Record r"),
     @NamedQuery(name = "Record.findById", query = "SELECT r FROM Record r WHERE r.id = :id"),
-    @NamedQuery(name = "Record.findByKey", query = "SELECT r FROM Record r WHERE r.key = :key"),
+    @NamedQuery(name = "Record.findByRecordKey", query = "SELECT r FROM Record r WHERE r.recordKey = :recordKey"),
     @NamedQuery(name = "Record.findByNumberValue", query = "SELECT r FROM Record r WHERE r.numberValue = :numberValue"),
     @NamedQuery(name = "Record.findByStringValue", query = "SELECT r FROM Record r WHERE r.stringValue = :stringValue"),
     @NamedQuery(name = "Record.findByCreatedTime", query = "SELECT r FROM Record r WHERE r.createdTime = :createdTime"),
@@ -46,8 +46,8 @@ public class Record implements Serializable,SettingEntity {
     @Column(name = "Id")
     private Integer id;
     @Basic(optional = false)
-    @Column(name = "Key")
-    private String key;
+    @Column(name = "RecordKey")
+    private String recordKey;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "NumberValue")
     private Float numberValue;
@@ -70,9 +70,9 @@ public class Record implements Serializable,SettingEntity {
         this.id = id;
     }
 
-    public Record(Integer id, String key, Date createdTime, int entryId) {
+    public Record(Integer id, String recordKey, Date createdTime, int entryId) {
         this.id = id;
-        this.key = key;
+        this.recordKey = recordKey;
         this.createdTime = createdTime;
         this.entryId = entryId;
     }
@@ -85,12 +85,12 @@ public class Record implements Serializable,SettingEntity {
         this.id = id;
     }
 
-    public String getKey() {
-        return key;
+    public String getRecordKey() {
+        return recordKey;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setRecordKey(String recordKey) {
+        this.recordKey = recordKey;
     }
 
     public Float getNumberValue() {

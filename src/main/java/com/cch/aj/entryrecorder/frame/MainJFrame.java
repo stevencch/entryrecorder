@@ -3,15 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.cch.aj.entryrecorder.frame;
 
+import com.cch.aj.entryrecorder.common.RecordKey;
 import com.cch.aj.entryrecorder.entities.Product;
 import com.cch.aj.entryrecorder.entities.Record;
+import com.cch.aj.entryrecorder.services.RecordSettingService;
 import com.cch.aj.entryrecorder.services.SettingService;
+import com.cch.aj.entryrecorder.services.impl.RecordSettingServiceImpl;
 import com.cch.aj.entryrecorder.services.impl.SettingServiceImpl;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
@@ -30,10 +33,10 @@ import org.jfree.data.xy.XYSeriesCollection;
  */
 public class MainJFrame extends javax.swing.JFrame {
 
-    private SettingService recordService = new SettingServiceImpl<Record>(Record.class);
-    
+    private RecordSettingService recordService = new RecordSettingServiceImpl(Record.class);
+
     DefaultCategoryDataset datasetWeight = new DefaultCategoryDataset();
-        
+
     /**
      * Creates new form MainJFrame
      */
@@ -41,19 +44,25 @@ public class MainJFrame extends javax.swing.JFrame {
         initComponents();
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         new SettingsJFrame().setVisible(true);
-        
+
         //weight
-        datasetWeight.addValue(1, "item","a1");
+        List<Record> records = this.recordService.GetAllEntitiesByKey(RecordKey.PRODUCT_WEIGHT);
+        DefaultTableModel model = (DefaultTableModel) this.tblWeight.getModel();
+        for (Record record : records) {
+            datasetWeight.addValue(record.getNumberValue(), "item", record.getCreatedTime().toString());
+            model.addRow(new Object[]{record.getCreatedTime().toString(), record.getNumberValue(), ""});
+        }
+        ((AbstractTableModel) this.tblWeight.getModel()).fireTableDataChanged();
         JFreeChart chartWeight = ChartFactory.createLineChart(
-            "Product Weight (kg)", "","",
-            datasetWeight, PlotOrientation.VERTICAL, false, true, false);
+                "Product Weight (kg)", "", "",
+                datasetWeight, PlotOrientation.VERTICAL, false, true, false);
         ChartPanel cp = new ChartPanel(chartWeight) {
             @Override
             public Dimension getPreferredSize() {
                 return new Dimension(620, 240);
             }
         };
-        FlowLayout fl=new FlowLayout();
+        FlowLayout fl = new FlowLayout();
         this.pnlChartWeight.setLayout(fl);
         this.pnlChartWeight.add(cp);
     }
@@ -271,10 +280,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
         tblWeight.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"1", "1", null},
-                {"2", "3", null},
-                {"3", "3", null},
-                {"34", "5", null}
+
             },
             new String [] {
                 "Time", "Value", "Staff"
@@ -539,10 +545,10 @@ public class MainJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnWeightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWeightActionPerformed
-        DefaultTableModel model=(DefaultTableModel)this.tblWeight.getModel();
-        model.addRow(new Object[]{5,6,""});
-        ((AbstractTableModel)this.tblWeight.getModel()).fireTableDataChanged();
-        datasetWeight.addValue(2, "a","a4");
+        DefaultTableModel model = (DefaultTableModel) this.tblWeight.getModel();
+        model.addRow(new Object[]{5, 6, ""});
+        ((AbstractTableModel) this.tblWeight.getModel()).fireTableDataChanged();
+        datasetWeight.addValue(2, "a", "a4");
     }//GEN-LAST:event_btnWeightActionPerformed
 
     /**

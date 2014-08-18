@@ -34,7 +34,7 @@ import java.util.logging.Logger;
  */
 public class SettingServiceImpl<T extends SettingEntity> implements SettingService<T> {
 
-    private String _connectionString = "com.cch.aj_EntryRecorder_jar_1.0-SNAPSHOTPU";
+    protected String _connectionString = "com.cch.aj_EntryRecorder_jar_1.0-SNAPSHOTPU";
     private SettingRepository repository;
     private T instance;
 

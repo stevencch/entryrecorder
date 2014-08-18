@@ -11,5 +11,5 @@ package com.cch.aj.entryrecorder.common;
  * @author chacao
  */
 public enum RecordKey {
-    WEIGHT
+    PRODUCT_WEIGHT
 }
