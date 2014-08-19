@@ -11,6 +11,9 @@
     <class>com.cch.aj.entryrecorder.entities.Record</class>
     <class>com.cch.aj.entryrecorder.entities.Entry</class>
     <class>com.cch.aj.entryrecorder.entities.Staff</class>
+    <class>com.cch.aj.entryrecorder.entities.Polymer_1</class>
+    <class>com.cch.aj.entryrecorder.entities.Additive_1</class>
+    <class>com.cch.aj.entryrecorder.entities.Mould_1</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/ajrecorder?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="cch"/>

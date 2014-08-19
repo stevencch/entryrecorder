@@ -66,11 +66,11 @@ public class EntryJFrame extends javax.swing.JFrame {
     private int settingMouldPreviousId = 0;
     private Mould settingMould = new Mould();
 
-    private SettingService staffService = new SettingServiceImpl<Staff>(Staff.class);
-    private SettingService machineService = new SettingServiceImpl<Machine>(Machine.class);
-    private SettingService mouldService = new SettingServiceImpl<Mould>(Mould.class);
-    private SettingService productService = new SettingServiceImpl<Product>(Product.class);
-    private SettingService entryService = new SettingServiceImpl<Entry>(Entry.class);
+    private SettingService<Staff> staffService = new SettingServiceImpl<Staff>(Staff.class);
+    private SettingService<Machine> machineService = new SettingServiceImpl<Machine>(Machine.class);
+    private SettingService<Mould> mouldService = new SettingServiceImpl<Mould>(Mould.class);
+    private SettingService<Product> productService = new SettingServiceImpl<Product>(Product.class);
+    private SettingService<Entry> entryService = new SettingServiceImpl<Entry>(Entry.class);
 
     /**
      * Creates new form SettingsJFrame
@@ -146,7 +146,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         int result = -1;
         List<Product> allProducts = this.productService.GetAllEntities();
         if (allProducts.size() > 0) {
-            List<Product> products = allProducts.stream().filter(x -> x.getMouldId() != null && x.getMouldId() == mouldId).collect(Collectors.toList());
+            List<Product> products = allProducts.stream().filter(x -> x.getMouldId() != null && x.getMouldId().getId() == mouldId).collect(Collectors.toList());
             if (products.size() > 0) {
                 List<ComboBoxItem<Product>> productNames = products.stream().sorted(comparing(x -> x.getCode())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getCode(), x.getId())).collect(Collectors.toList());
                 Product product = new Product();
@@ -217,7 +217,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         if (allEntrys.size() > 0) {
             List<Entry> entrys = allEntrys.stream().filter(x -> x.getShift().equals(this.txtEntrySearch.getText())).collect(Collectors.toList());
             if (entrys.size() > 0) {
-                List<ComboBoxItem<Entry>> entryNames = entrys.stream().sorted(comparing(x -> x.getCreateDate())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getMachineId() != null ? ((Machine) this.machineService.FindEntity(x.getMachineId())).getMachineNo() : "New", x.getId())).collect(Collectors.toList());
+                List<ComboBoxItem<Entry>> entryNames = entrys.stream().sorted(comparing(x -> x.getCreateDate())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getMachineId() != null ? x.getMachineId().getMachineNo() : "New", x.getId())).collect(Collectors.toList());
                 Entry entry = new Entry();
                 entry.setId(0);
                 entry.setShift("- Select -");
@@ -986,7 +986,7 @@ public class EntryJFrame extends javax.swing.JFrame {
             int newId = this.entryService.CreateEntity();
             if (this.settingMouldId != 0) {
                 Entry newEntry = (Entry) this.entryService.FindEntity(newId);
-                newEntry.setMouldId(this.settingMouldId);
+                newEntry.setMouldId(this.mouldService.FindEntity(this.settingMouldId));
                 this.entryService.UpdateEntity(newEntry);
             }
             UpdateTabEntry(newId);
@@ -1053,9 +1053,9 @@ public class EntryJFrame extends javax.swing.JFrame {
         if (!this.txtEntryTapPositionMin.getText().equals("")) {
             currentEntry.setTapPositionMin(Float.parseFloat(this.txtEntryTapPositionMin.getText()));
         }
-        currentEntry.setMouldId(((ComboBoxItem<Mould>) this.cbEntryMould.getSelectedItem()).getId());
-        currentEntry.setMachineId(((ComboBoxItem<Machine>) this.cbEntryMachine.getSelectedItem()).getId());
-        currentEntry.setProductId(((ComboBoxItem<Product>) this.cbEntryProduct.getSelectedItem()).getId());
+        currentEntry.setMouldId(((ComboBoxItem<Mould>) this.cbEntryMould.getSelectedItem()).getItem());
+        currentEntry.setMachineId(((ComboBoxItem<Machine>) this.cbEntryMachine.getSelectedItem()).getItem());
+        currentEntry.setProductId(((ComboBoxItem<Product>) this.cbEntryProduct.getSelectedItem()).getItem());
         if (this.cbEntryInUse.getSelectedItem() != null) {
             currentEntry.setInUse(this.cbEntryInUse.getSelectedItem().toString());
         }
@@ -1211,11 +1211,11 @@ public class EntryJFrame extends javax.swing.JFrame {
         txtEntryTapPositionMin.setText(currentEntry.getTapPositionMin() == null ? "" : currentEntry.getTapPositionMin().toString());
         txtEntryTapPositionMax.setText(currentEntry.getTapPositionMax() == null ? "" : currentEntry.getTapPositionMax().toString());
         //combobox
-        this.FillMouldComboBox(this.cbEntryMould, currentEntry.getMouldId() != null ? currentEntry.getMouldId() : 0);
+        this.FillMouldComboBox(this.cbEntryMould, currentEntry.getMouldId() != null ? currentEntry.getMouldId().getId() : 0);
         if (currentEntry.getMouldId() != null) {
-            this.FillProductComboBox(this.cbEntryProduct, currentEntry.getProductId() != null ? currentEntry.getProductId() : 0, currentEntry.getMouldId());
+            this.FillProductComboBox(this.cbEntryProduct, currentEntry.getProductId() != null ? currentEntry.getProductId().getId() : 0, currentEntry.getMouldId().getId());
         }
-        this.FillMachineComboBox(this.cbEntryMachine, currentEntry.getMachineId() != null ? currentEntry.getMachineId() : 0);
+        this.FillMachineComboBox(this.cbEntryMachine, currentEntry.getMachineId() != null ? currentEntry.getMachineId().getId() : 0);
     }
 
     /**

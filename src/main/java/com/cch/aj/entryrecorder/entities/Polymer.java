@@ -8,6 +8,7 @@ package com.cch.aj.entryrecorder.entities;
 
 import com.cch.aj.entryrecorder.common.SettingEntity;
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,8 +17,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -32,7 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Polymer.findByCompany", query = "SELECT p FROM Polymer p WHERE p.company = :company"),
     @NamedQuery(name = "Polymer.findByGrade", query = "SELECT p FROM Polymer p WHERE p.grade = :grade"),
     @NamedQuery(name = "Polymer.findByDescription", query = "SELECT p FROM Polymer p WHERE p.description = :description")})
-public class Polymer implements Serializable, SettingEntity {
+public class Polymer implements Serializable,SettingEntity {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,6 +49,8 @@ public class Polymer implements Serializable, SettingEntity {
     private String grade;
     @Column(name = "Description")
     private String description;
+    @OneToMany(mappedBy = "polymerId")
+    private Collection<Product> productCollection;
 
     public Polymer() {
     }
@@ -91,6 +96,15 @@ public class Polymer implements Serializable, SettingEntity {
         this.description = description;
     }
 
+    @XmlTransient
+    public Collection<Product> getProductCollection() {
+        return productCollection;
+    }
+
+    public void setProductCollection(Collection<Product> productCollection) {
+        this.productCollection = productCollection;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -118,8 +132,8 @@ public class Polymer implements Serializable, SettingEntity {
 
     @Override
     public void setDefaultValue() {
-        this.company="Company A";
-        this.grade="AAA";
+        this.company="Company Name";
+        this.grade="Grade";
     }
     
 }

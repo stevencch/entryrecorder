@@ -8,6 +8,7 @@ package com.cch.aj.entryrecorder.entities;
 
 import com.cch.aj.entryrecorder.common.SettingEntity;
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,8 +17,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -55,6 +58,8 @@ public class Machine implements Serializable,SettingEntity {
     private String capacity;
     @Column(name = "Manufacturer")
     private String manufacturer;
+    @OneToMany(mappedBy = "machineId")
+    private Collection<Entry> entryCollection;
 
     public Machine() {
     }
@@ -124,6 +129,15 @@ public class Machine implements Serializable,SettingEntity {
         this.manufacturer = manufacturer;
     }
 
+    @XmlTransient
+    public Collection<Entry> getEntryCollection() {
+        return entryCollection;
+    }
+
+    public void setEntryCollection(Collection<Entry> entryCollection) {
+        this.entryCollection = entryCollection;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -151,7 +165,7 @@ public class Machine implements Serializable,SettingEntity {
 
     @Override
     public void setDefaultValue() {
-        this.machineNo="New Machine No";
+        this.machineNo="Machine No";
     }
     
 }

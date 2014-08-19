@@ -15,6 +15,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -35,9 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Record.findByRecordKey", query = "SELECT r FROM Record r WHERE r.recordKey = :recordKey"),
     @NamedQuery(name = "Record.findByNumberValue", query = "SELECT r FROM Record r WHERE r.numberValue = :numberValue"),
     @NamedQuery(name = "Record.findByStringValue", query = "SELECT r FROM Record r WHERE r.stringValue = :stringValue"),
-    @NamedQuery(name = "Record.findByCreatedTime", query = "SELECT r FROM Record r WHERE r.createdTime = :createdTime"),
-    @NamedQuery(name = "Record.findByStaffId", query = "SELECT r FROM Record r WHERE r.staffId = :staffId"),
-    @NamedQuery(name = "Record.findByEntryId", query = "SELECT r FROM Record r WHERE r.entryId = :entryId")})
+    @NamedQuery(name = "Record.findByCreatedTime", query = "SELECT r FROM Record r WHERE r.createdTime = :createdTime")})
 public class Record implements Serializable,SettingEntity {
     private static final long serialVersionUID = 1L;
     @Id
@@ -57,11 +57,12 @@ public class Record implements Serializable,SettingEntity {
     @Column(name = "CreatedTime")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdTime;
-    @Column(name = "StaffId")
-    private Integer staffId;
-    @Basic(optional = false)
-    @Column(name = "EntryId")
-    private int entryId;
+    @JoinColumn(name = "EntryId", referencedColumnName = "Id")
+    @ManyToOne(optional = false)
+    private Entry entryId;
+    @JoinColumn(name = "StaffId", referencedColumnName = "Id")
+    @ManyToOne
+    private Staff staffId;
 
     public Record() {
     }
@@ -70,11 +71,10 @@ public class Record implements Serializable,SettingEntity {
         this.id = id;
     }
 
-    public Record(Integer id, String recordKey, Date createdTime, int entryId) {
+    public Record(Integer id, String recordKey, Date createdTime) {
         this.id = id;
         this.recordKey = recordKey;
         this.createdTime = createdTime;
-        this.entryId = entryId;
     }
 
     public Integer getId() {
@@ -117,20 +117,20 @@ public class Record implements Serializable,SettingEntity {
         this.createdTime = createdTime;
     }
 
-    public Integer getStaffId() {
-        return staffId;
-    }
-
-    public void setStaffId(Integer staffId) {
-        this.staffId = staffId;
-    }
-
-    public int getEntryId() {
+    public Entry getEntryId() {
         return entryId;
     }
 
-    public void setEntryId(int entryId) {
+    public void setEntryId(Entry entryId) {
         this.entryId = entryId;
+    }
+
+    public Staff getStaffId() {
+        return staffId;
+    }
+
+    public void setStaffId(Staff staffId) {
+        this.staffId = staffId;
     }
 
     @Override

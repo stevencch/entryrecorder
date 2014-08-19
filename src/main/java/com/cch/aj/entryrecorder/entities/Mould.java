@@ -8,6 +8,7 @@ package com.cch.aj.entryrecorder.entities;
 
 import com.cch.aj.entryrecorder.common.SettingEntity;
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,8 +17,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -245,6 +248,10 @@ public class Mould implements Serializable,SettingEntity {
     private Float threadNeckMax2;
     @Column(name = "ThreadNeckMax3")
     private Float threadNeckMax3;
+    @OneToMany(mappedBy = "mouldId")
+    private Collection<Entry> entryCollection;
+    @OneToMany(mappedBy = "mouldId")
+    private Collection<Product> productCollection;
 
     public Mould() {
     }
@@ -816,6 +823,24 @@ public class Mould implements Serializable,SettingEntity {
 
     public void setThreadNeckMax3(Float threadNeckMax3) {
         this.threadNeckMax3 = threadNeckMax3;
+    }
+
+    @XmlTransient
+    public Collection<Entry> getEntryCollection() {
+        return entryCollection;
+    }
+
+    public void setEntryCollection(Collection<Entry> entryCollection) {
+        this.entryCollection = entryCollection;
+    }
+
+    @XmlTransient
+    public Collection<Product> getProductCollection() {
+        return productCollection;
+    }
+
+    public void setProductCollection(Collection<Product> productCollection) {
+        this.productCollection = productCollection;
     }
 
     @Override

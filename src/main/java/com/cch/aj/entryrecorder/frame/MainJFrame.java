@@ -89,7 +89,7 @@ public class MainJFrame extends javax.swing.JFrame {
             DefaultTableModel model = (DefaultTableModel) this.tblWeight.getModel();
             for (Record record : records) {
                 String time = new SimpleDateFormat("HH:mm").format(record.getCreatedTime());
-                String staff = record.getStaffId() == null ? "" : this.staffService.FindEntity(record.getStaffId()).getName();
+                String staff = record.getStaffId() == null ? "" : record.getStaffId().getName();
                 datasetWeight.addValue(record.getNumberValue(), "Weight", time);
                 model.addRow(new Object[]{time, record.getNumberValue(), staff});
             }
@@ -130,7 +130,7 @@ public class MainJFrame extends javax.swing.JFrame {
         if (allEntrys.size() > 0) {
             List<Entry> entrys = allEntrys.stream().filter(x -> x.getInUse().equals("YES")).collect(Collectors.toList());
             if (entrys.size() > 0) {
-                List<ComboBoxItem<Entry>> entryNames = entrys.stream().sorted(comparing(x -> x.getCreateDate())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getShift() + "-" + (this.machineService.FindEntity(x.getMachineId())).getMachineNo(), x.getId())).collect(Collectors.toList());
+                List<ComboBoxItem<Entry>> entryNames = entrys.stream().sorted(comparing(x -> x.getCreateDate())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getShift() + "-" + x.getMachineId().getMachineNo(), x.getId())).collect(Collectors.toList());
                 ComboBoxItem[] entryNamesArray = entryNames.toArray(new ComboBoxItem[entryNames.size()]);
                 comboBox.setModel(new DefaultComboBoxModel(entryNamesArray));
                 if (id != 0) {

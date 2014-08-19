@@ -40,6 +40,7 @@ import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparing;
+import static java.util.Comparator.comparing;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -66,11 +67,11 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private int settingMouldPreviousId = 0;
     private Mould settingMould = new Mould();
 
-    private SettingService machineService = new SettingServiceImpl<Machine>(Machine.class);
-    private SettingService polymerService = new SettingServiceImpl<Polymer>(Polymer.class);
-    private SettingService additiveService = new SettingServiceImpl<Additive>(Additive.class);
-    private SettingService mouldService = new SettingServiceImpl<Mould>(Mould.class);
-    private SettingService productService = new SettingServiceImpl<Product>(Product.class);
+    private SettingService<Machine> machineService = new SettingServiceImpl<Machine>(Machine.class);
+    private SettingService<Polymer> polymerService = new SettingServiceImpl<Polymer>(Polymer.class);
+    private SettingService<Additive> additiveService = new SettingServiceImpl<Additive>(Additive.class);
+    private SettingService<Mould> mouldService = new SettingServiceImpl<Mould>(Mould.class);
+    private SettingService<Product> productService = new SettingServiceImpl<Product>(Product.class);
    
 
     /**
@@ -312,7 +313,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         int result = -1;
         List<Product> allProducts = this.productService.GetAllEntities();
         if (allProducts.size() > 0) {
-            List<Product> products = allProducts.stream().filter(x -> x.getMouldId() != null && x.getMouldId() == mouldId).collect(Collectors.toList());
+            List<Product> products = allProducts.stream().filter(x -> x.getMouldId() != null && x.getMouldId().getId() == mouldId).collect(Collectors.toList());
             if (products.size() > 0) {
                 List<ComboBoxItem<Product>> productNames = products.stream().sorted(comparing(x -> x.getCode())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getCode(), x.getId())).collect(Collectors.toList());
                 Product product = new Product();
@@ -3716,7 +3717,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         int newId = this.productService.CreateEntity();
         if (this.settingMouldId != 0) {
             Product newProduct = (Product) this.productService.FindEntity(newId);
-            newProduct.setMouldId(this.settingMouldId);
+            newProduct.setMouldId(this.mouldService.FindEntity(this.settingMouldId));
             this.productService.UpdateEntity(newProduct);
         }
         UpdateTabProduct(newId);
@@ -3763,11 +3764,11 @@ public class SettingsJFrame extends javax.swing.JFrame {
         currentProduct.setBung(this.cbProductBung.getSelectedItem().toString());
         currentProduct.setPierced(this.cbProductPierced.getSelectedItem().toString());
         currentProduct.setDgnondg(this.cbProductDg.getSelectedIndex());
-        currentProduct.setMouldId(((ComboBoxItem<Mould>) this.cbProductMould.getSelectedItem()).getId());
-        currentProduct.setPolymerId(((ComboBoxItem<Polymer>) this.cbProductPolymer.getSelectedItem()).getId());
-        currentProduct.setAdditiveAId(((ComboBoxItem<Additive>) this.cbProductAdditive1.getSelectedItem()).getId());
-        currentProduct.setAdditiveBId(((ComboBoxItem<Additive>) this.cbProductAdditive2.getSelectedItem()).getId());
-        currentProduct.setAdditiveCId(((ComboBoxItem<Additive>) this.cbProductAdditive3.getSelectedItem()).getId());
+        currentProduct.setMouldId(((ComboBoxItem<Mould>) this.cbProductMould.getSelectedItem()).getItem());
+        currentProduct.setPolymerId(((ComboBoxItem<Polymer>) this.cbProductPolymer.getSelectedItem()).getItem());
+        currentProduct.setAdditiveAId(((ComboBoxItem<Additive>) this.cbProductAdditive1.getSelectedItem()).getItem());
+        currentProduct.setAdditiveBId(((ComboBoxItem<Additive>) this.cbProductAdditive2.getSelectedItem()).getItem());
+        currentProduct.setAdditiveCId(((ComboBoxItem<Additive>) this.cbProductAdditive3.getSelectedItem()).getItem());
         currentProduct.setThreadBore(this.cbProductBore.getSelectedIndex());
         currentProduct.setThreadNeck(this.cbProductNeck.getSelectedIndex());
 
@@ -3825,11 +3826,11 @@ public class SettingsJFrame extends javax.swing.JFrame {
         txtProductWeightMax.setText(currentProduct.getWeightMax() == null ? "" : currentProduct.getWeightMax().toString());
         txtProductWeightMin.setText(currentProduct.getWeightMin() == null ? "" : currentProduct.getWeightMin().toString());
         //combobox
-        this.FillMouldComboBox(this.cbProductMould, currentProduct.getMouldId() != null ? currentProduct.getMouldId() : 0);
-        this.FillPolymerComboBox(this.cbProductPolymer, currentProduct.getPolymerId() != null ? currentProduct.getPolymerId() : 0);
-        this.FillAdditiveComboBox(this.cbProductAdditive1, currentProduct.getAdditiveAId() != null ? currentProduct.getAdditiveAId() : 0);
-        this.FillAdditiveComboBox(this.cbProductAdditive2, currentProduct.getAdditiveBId() != null ? currentProduct.getAdditiveAId() : 0);
-        this.FillAdditiveComboBox(this.cbProductAdditive3, currentProduct.getAdditiveCId() != null ? currentProduct.getAdditiveCId() : 0);
+        this.FillMouldComboBox(this.cbProductMould, currentProduct.getMouldId() != null ? currentProduct.getMouldId().getId() : 0);
+        this.FillPolymerComboBox(this.cbProductPolymer, currentProduct.getPolymerId() != null ? currentProduct.getPolymerId().getId() : 0);
+        this.FillAdditiveComboBox(this.cbProductAdditive1, currentProduct.getAdditiveAId() != null ? currentProduct.getAdditiveAId().getId() : 0);
+        this.FillAdditiveComboBox(this.cbProductAdditive2, currentProduct.getAdditiveBId() != null ? currentProduct.getAdditiveAId().getId() : 0);
+        this.FillAdditiveComboBox(this.cbProductAdditive3, currentProduct.getAdditiveCId() != null ? currentProduct.getAdditiveCId().getId() : 0);
         List<String> threadBores = new ArrayList<String>();
         threadBores.add("- Select -");
         if (settingMould.getThreadBoreASize1() != null && !settingMould.getThreadBoreASize1().equals("")) {

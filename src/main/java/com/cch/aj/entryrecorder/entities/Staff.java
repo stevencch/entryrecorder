@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package com.cch.aj.entryrecorder.entities;
 
 import com.cch.aj.entryrecorder.common.SettingEntity;
@@ -30,8 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Staff.findById", query = "SELECT s FROM Staff s WHERE s.id = :id"),
     @NamedQuery(name = "Staff.findByName", query = "SELECT s FROM Staff s WHERE s.name = :name"),
     @NamedQuery(name = "Staff.findByJobType", query = "SELECT s FROM Staff s WHERE s.jobType = :jobType")})
-public class Staff implements Serializable, SettingEntity {
-
+public class Staff implements Serializable,SettingEntity {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -109,7 +109,8 @@ public class Staff implements Serializable, SettingEntity {
 
     @Override
     public void setDefaultValue() {
-        this.name = "New Staff";
         this.jobType="PROCESS WORKER";
+        this.name="Name";
     }
+    
 }

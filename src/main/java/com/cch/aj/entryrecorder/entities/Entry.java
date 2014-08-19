@@ -9,19 +9,25 @@ package com.cch.aj.entryrecorder.entities;
 import com.cch.aj.entryrecorder.common.AppHelper;
 import com.cch.aj.entryrecorder.common.SettingEntity;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -34,9 +40,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Entry.findAll", query = "SELECT e FROM Entry e"),
     @NamedQuery(name = "Entry.findById", query = "SELECT e FROM Entry e WHERE e.id = :id"),
     @NamedQuery(name = "Entry.findByShift", query = "SELECT e FROM Entry e WHERE e.shift = :shift"),
-    @NamedQuery(name = "Entry.findByMachineId", query = "SELECT e FROM Entry e WHERE e.machineId = :machineId"),
-    @NamedQuery(name = "Entry.findByMouldId", query = "SELECT e FROM Entry e WHERE e.mouldId = :mouldId"),
-    @NamedQuery(name = "Entry.findByProductId", query = "SELECT e FROM Entry e WHERE e.productId = :productId"),
     @NamedQuery(name = "Entry.findByCreateDate", query = "SELECT e FROM Entry e WHERE e.createDate = :createDate"),
     @NamedQuery(name = "Entry.findByWallMin", query = "SELECT e FROM Entry e WHERE e.wallMin = :wallMin"),
     @NamedQuery(name = "Entry.findByWallMax", query = "SELECT e FROM Entry e WHERE e.wallMax = :wallMax"),
@@ -59,12 +62,6 @@ public class Entry implements Serializable,SettingEntity {
     @Basic(optional = false)
     @Column(name = "Shift")
     private String shift;
-    @Column(name = "MachineId")
-    private Integer machineId;
-    @Column(name = "MouldId")
-    private Integer mouldId;
-    @Column(name = "ProductId")
-    private Integer productId;
     @Column(name = "CreateDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
@@ -91,6 +88,17 @@ public class Entry implements Serializable,SettingEntity {
     private Float threadNeckMax;
     @Column(name = "InUse")
     private String inUse;
+    @JoinColumn(name = "ProductId", referencedColumnName = "Id")
+    @ManyToOne
+    private Product productId;
+    @JoinColumn(name = "MachineId", referencedColumnName = "Id")
+    @ManyToOne
+    private Machine machineId;
+    @JoinColumn(name = "MouldId", referencedColumnName = "Id")
+    @ManyToOne
+    private Mould mouldId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "entryId")
+    private Collection<Record> recordCollection;
 
     public Entry() {
     }
@@ -99,10 +107,9 @@ public class Entry implements Serializable,SettingEntity {
         this.id = id;
     }
 
-    public Entry(Integer id, String shift, String inUse) {
+    public Entry(Integer id, String shift) {
         this.id = id;
         this.shift = shift;
-        this.inUse = inUse;
     }
 
     public Integer getId() {
@@ -119,30 +126,6 @@ public class Entry implements Serializable,SettingEntity {
 
     public void setShift(String shift) {
         this.shift = shift;
-    }
-
-    public Integer getMachineId() {
-        return machineId;
-    }
-
-    public void setMachineId(Integer machineId) {
-        this.machineId = machineId;
-    }
-
-    public Integer getMouldId() {
-        return mouldId;
-    }
-
-    public void setMouldId(Integer mouldId) {
-        this.mouldId = mouldId;
-    }
-
-    public Integer getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Integer productId) {
-        this.productId = productId;
     }
 
     public Date getCreateDate() {
@@ -241,6 +224,39 @@ public class Entry implements Serializable,SettingEntity {
         this.inUse = inUse;
     }
 
+    public Product getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Product productId) {
+        this.productId = productId;
+    }
+
+    public Machine getMachineId() {
+        return machineId;
+    }
+
+    public void setMachineId(Machine machineId) {
+        this.machineId = machineId;
+    }
+
+    public Mould getMouldId() {
+        return mouldId;
+    }
+
+    public void setMouldId(Mould mouldId) {
+        this.mouldId = mouldId;
+    }
+
+    @XmlTransient
+    public Collection<Record> getRecordCollection() {
+        return recordCollection;
+    }
+
+    public void setRecordCollection(Collection<Record> recordCollection) {
+        this.recordCollection = recordCollection;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -268,10 +284,9 @@ public class Entry implements Serializable,SettingEntity {
 
     @Override
     public void setDefaultValue() {
-        this.shift=AppHelper.defaultShift;
+        this.inUse="YES";
         this.createDate=new Date();
+        this.shift=AppHelper.defaultShift;
     }
-    
-    
     
 }
