@@ -5,19 +5,41 @@
  */
 package com.cch.aj.entryrecorder.frame;
 
+import com.cch.aj.entryrecorder.common.ComboBoxItem;
+import com.cch.aj.entryrecorder.common.ComboBoxItemConvertor;
+import com.cch.aj.entryrecorder.common.ComboBoxRender;
 import com.cch.aj.entryrecorder.common.RecordKey;
+import com.cch.aj.entryrecorder.entities.Entry;
+import com.cch.aj.entryrecorder.entities.Machine;
 import com.cch.aj.entryrecorder.entities.Product;
 import com.cch.aj.entryrecorder.entities.Record;
+import com.cch.aj.entryrecorder.entities.Staff;
 import com.cch.aj.entryrecorder.services.RecordSettingService;
+import com.cch.aj.entryrecorder.services.RecordValidationService;
 import com.cch.aj.entryrecorder.services.SettingService;
 import com.cch.aj.entryrecorder.services.impl.RecordSettingServiceImpl;
+import com.cch.aj.entryrecorder.services.impl.RecordValidationServiceImpl;
 import com.cch.aj.entryrecorder.services.impl.SettingServiceImpl;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.text.SimpleDateFormat;
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.comparing;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -33,7 +55,12 @@ import org.jfree.data.xy.XYSeriesCollection;
  */
 public class MainJFrame extends javax.swing.JFrame {
 
+    private RecordValidationService recordValidationService = new RecordValidationServiceImpl();
     private RecordSettingService recordService = new RecordSettingServiceImpl(Record.class);
+    private SettingService<Staff> staffService = new SettingServiceImpl<Staff>(Staff.class);
+    private SettingService<Entry> entryService = new SettingServiceImpl<Entry>(Entry.class);
+    private SettingService<Machine> machineService = new SettingServiceImpl<Machine>(Machine.class);
+    private Entry currentEntry = null;
 
     DefaultCategoryDataset datasetWeight = new DefaultCategoryDataset();
 
@@ -45,26 +72,78 @@ public class MainJFrame extends javax.swing.JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         new SettingsJFrame().setVisible(true);
 
-        //weight
-        List<Record> records = this.recordService.GetAllEntitiesByKey(RecordKey.PRODUCT_WEIGHT);
-        DefaultTableModel model = (DefaultTableModel) this.tblWeight.getModel();
-        for (Record record : records) {
-            datasetWeight.addValue(record.getNumberValue(), "item", record.getCreatedTime().toString());
-            model.addRow(new Object[]{record.getCreatedTime().toString(), record.getNumberValue(), ""});
-        }
-        ((AbstractTableModel) this.tblWeight.getModel()).fireTableDataChanged();
-        JFreeChart chartWeight = ChartFactory.createLineChart(
-                "Product Weight (kg)", "", "",
-                datasetWeight, PlotOrientation.VERTICAL, false, true, false);
-        ChartPanel cp = new ChartPanel(chartWeight) {
-            @Override
-            public Dimension getPreferredSize() {
-                return new Dimension(620, 240);
+        //load entry
+        java.awt.GridBagConstraints gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
+        this.cbEntry.setRenderer(new ComboBoxRender());
+        FillEntryComboBox(this.cbEntry, 0);
+
+        if (this.currentEntry != null) {
+            //weight
+            this.labWeightStaff.setVisible(false);
+            this.cbWeightStaff.setVisible(false);
+            List<Record> records = this.recordService.GetAllEntitiesByKey(RecordKey.PRODUCT_WEIGHT);
+            DefaultTableModel model = (DefaultTableModel) this.tblWeight.getModel();
+            for (Record record : records) {
+                String time = new SimpleDateFormat("HH:mm").format(record.getCreatedTime());
+                String staff = record.getStaffId() == null ? "" : this.staffService.FindEntity(record.getStaffId()).getName();
+                datasetWeight.addValue(record.getNumberValue(), "Weight", time);
+                model.addRow(new Object[]{time, record.getNumberValue(), staff});
             }
-        };
-        FlowLayout fl = new FlowLayout();
-        this.pnlChartWeight.setLayout(fl);
-        this.pnlChartWeight.add(cp);
+            ((AbstractTableModel) this.tblWeight.getModel()).fireTableDataChanged();
+            JFreeChart chartWeight = ChartFactory.createLineChart(
+                    "Product Weight (kg)", "", "",
+                    datasetWeight, PlotOrientation.VERTICAL, false, true, false);
+            ChartPanel cp = new ChartPanel(chartWeight);
+            this.pnlChartWeight.add(cp, gridBagConstraints);
+        }
+    }
+
+    private int FillStaffComboBox(JComboBox comboBox, int id) {
+        int result = -1;
+        List<Staff> staffs = this.staffService.GetAllEntities();
+        if (staffs.size() > 0) {
+            List<ComboBoxItem<Staff>> staffNames = staffs.stream().sorted(comparing(x -> x.getJobType() + " " + x.getName())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getJobType() + " " + x.getName(), x.getId())).collect(Collectors.toList());
+            Staff staff = new Staff();
+            staff.setId(0);
+            staff.setName("- Select -");
+            staffNames.add(0, new ComboBoxItem<Staff>(staff, staff.getName(), staff.getId()));
+            ComboBoxItem[] staffNamesArray = staffNames.toArray(new ComboBoxItem[staffNames.size()]);
+            comboBox.setModel(new DefaultComboBoxModel(staffNamesArray));
+            if (id != 0) {
+                ComboBoxItem<Staff> currentStaffName = staffNames.stream().filter(x -> x.getId() == id).findFirst().get();
+                result = staffNames.indexOf(currentStaffName);
+            } else {
+                result = 0;
+            }
+            comboBox.setSelectedIndex(result);
+        }
+        return result;
+    }
+
+    private int FillEntryComboBox(JComboBox comboBox, int id) {
+        int result = -1;
+        List<Entry> allEntrys = this.entryService.GetAllEntities();
+        if (allEntrys.size() > 0) {
+            List<Entry> entrys = allEntrys.stream().filter(x -> x.getInUse().equals("YES")).collect(Collectors.toList());
+            if (entrys.size() > 0) {
+                List<ComboBoxItem<Entry>> entryNames = entrys.stream().sorted(comparing(x -> x.getCreateDate())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getShift() + "-" + (this.machineService.FindEntity(x.getMachineId())).getMachineNo(), x.getId())).collect(Collectors.toList());
+                ComboBoxItem[] entryNamesArray = entryNames.toArray(new ComboBoxItem[entryNames.size()]);
+                comboBox.setModel(new DefaultComboBoxModel(entryNamesArray));
+                if (id != 0) {
+                    ComboBoxItem<Entry> currentEntryName = entryNames.stream().filter(x -> x.getId() == id).findFirst().get();
+                    result = entryNames.indexOf(currentEntryName);
+                } else {
+                    result = 0;
+                }
+                comboBox.setSelectedIndex(result);
+                this.currentEntry = ((ComboBoxItem<Entry>) comboBox.getSelectedItem()).getItem();
+            }
+        }
+        return result;
     }
 
     /**
@@ -78,10 +157,8 @@ public class MainJFrame extends javax.swing.JFrame {
         java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
+        cbEntry = new javax.swing.JComboBox();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -103,11 +180,9 @@ public class MainJFrame extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblWeight = new javax.swing.JTable();
         jPanel14 = new javax.swing.JPanel();
-        jLabel19 = new javax.swing.JLabel();
-        labWeightTime = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
         txtWeight = new javax.swing.JTextField();
-        jLabel22 = new javax.swing.JLabel();
+        labWeightStaff = new javax.swing.JLabel();
         cbWeightStaff = new javax.swing.JComboBox();
         btnWeight = new javax.swing.JButton();
         pnlChartWeight = new javax.swing.JPanel();
@@ -128,33 +203,17 @@ public class MainJFrame extends javax.swing.JFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Machine No"));
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
-        jLabel1.setText("SHIFT:");
+        jLabel2.setText("Record");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        jPanel1.add(jLabel1, gridBagConstraints);
-
-        jLabel2.setText("MACHINE:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
         jPanel1.add(jLabel2, gridBagConstraints);
-
-        jLabel3.setText("shift");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
-        jPanel1.add(jLabel3, gridBagConstraints);
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        jPanel1.add(jComboBox1, gridBagConstraints);
+        jPanel1.add(cbEntry, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -305,61 +364,40 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jPanel14.setLayout(new java.awt.GridBagLayout());
 
-        jLabel19.setText("Time");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.ipadx = 5;
-        gridBagConstraints.ipady = 5;
-        gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.insets = new java.awt.Insets(4, 28, 4, 28);
-        jPanel14.add(jLabel19, gridBagConstraints);
-
-        labWeightTime.setText("time");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.ipadx = 5;
-        gridBagConstraints.ipady = 5;
-        gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.insets = new java.awt.Insets(4, 28, 4, 28);
-        jPanel14.add(labWeightTime, gridBagConstraints);
-
         jLabel21.setText("Product Weight (kg)");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.ipadx = 5;
         gridBagConstraints.ipady = 5;
         gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.insets = new java.awt.Insets(4, 28, 4, 28);
+        gridBagConstraints.insets = new java.awt.Insets(21, 28, 4, 28);
         jPanel14.add(jLabel21, gridBagConstraints);
 
         txtWeight.setToolTipText("");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 5;
         gridBagConstraints.ipady = 5;
         gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.insets = new java.awt.Insets(4, 28, 4, 28);
+        gridBagConstraints.insets = new java.awt.Insets(21, 28, 4, 28);
         jPanel14.add(txtWeight, gridBagConstraints);
 
-        jLabel22.setText("Staff Check");
+        labWeightStaff.setText("Staff Check");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.ipadx = 5;
         gridBagConstraints.ipady = 5;
         gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(4, 28, 4, 28);
-        jPanel14.add(jLabel22, gridBagConstraints);
+        jPanel14.add(labWeightStaff, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 5;
         gridBagConstraints.ipady = 5;
@@ -375,7 +413,7 @@ public class MainJFrame extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 5, 0);
         jPanel14.add(btnWeight, gridBagConstraints);
@@ -408,7 +446,7 @@ public class MainJFrame extends javax.swing.JFrame {
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 399, Short.MAX_VALUE)
+            .addGap(0, 414, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Wall Thickness", jPanel6);
@@ -421,7 +459,7 @@ public class MainJFrame extends javax.swing.JFrame {
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 399, Short.MAX_VALUE)
+            .addGap(0, 414, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Tap Poistion/Tightness", jPanel7);
@@ -434,7 +472,7 @@ public class MainJFrame extends javax.swing.JFrame {
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 399, Short.MAX_VALUE)
+            .addGap(0, 414, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Bore/ Neck", jPanel8);
@@ -447,7 +485,7 @@ public class MainJFrame extends javax.swing.JFrame {
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 399, Short.MAX_VALUE)
+            .addGap(0, 414, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Quality Random Check", jPanel9);
@@ -460,7 +498,7 @@ public class MainJFrame extends javax.swing.JFrame {
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 399, Short.MAX_VALUE)
+            .addGap(0, 414, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Drop Test", jPanel10);
@@ -473,7 +511,7 @@ public class MainJFrame extends javax.swing.JFrame {
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 399, Short.MAX_VALUE)
+            .addGap(0, 414, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Staff", jPanel11);
@@ -486,7 +524,7 @@ public class MainJFrame extends javax.swing.JFrame {
         );
         jPanel12Layout.setVerticalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 399, Short.MAX_VALUE)
+            .addGap(0, 414, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Raw Material", jPanel12);
@@ -499,7 +537,7 @@ public class MainJFrame extends javax.swing.JFrame {
         );
         jPanel13Layout.setVerticalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 399, Short.MAX_VALUE)
+            .addGap(0, 414, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Quantity Produced", jPanel13);
@@ -545,10 +583,24 @@ public class MainJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnWeightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWeightActionPerformed
-        DefaultTableModel model = (DefaultTableModel) this.tblWeight.getModel();
-        model.addRow(new Object[]{5, 6, ""});
-        ((AbstractTableModel) this.tblWeight.getModel()).fireTableDataChanged();
-        datasetWeight.addValue(2, "a", "a4");
+        if (this.currentEntry != null) {
+            if (!(NumberUtils.isNumber(this.txtWeight.getText()) && recordValidationService.Validate(currentEntry, RecordKey.PRODUCT_WEIGHT, Float.parseFloat(this.txtWeight.getText())))) {
+                JOptionPane.showMessageDialog(this, "the value is over the range, please enty the supervisor name.", "Warning", JOptionPane.OK_OPTION);
+                this.labWeightStaff.setVisible(true);
+                this.cbWeightStaff.setVisible(true);
+            } else {
+                DefaultTableModel model = (DefaultTableModel) this.tblWeight.getModel();
+                Date now = new Date();
+                String time = new SimpleDateFormat("HH:mm").format(now);
+                Float value = Float.parseFloat(this.txtWeight.getText());
+                String staff = this.cbWeightStaff.getSelectedIndex() == 0 ? "" : ((ComboBoxItem<Staff>) this.cbWeightStaff.getSelectedItem()).getItem().getName();
+                model.addRow(new Object[]{time, value, staff});
+                ((AbstractTableModel) this.tblWeight.getModel()).fireTableDataChanged();
+                datasetWeight.addValue(value, "Weight", time);
+                this.labWeightStaff.setVisible(false);
+                this.cbWeightStaff.setVisible(false);
+            }
+        }
     }//GEN-LAST:event_btnWeightActionPerformed
 
     /**
@@ -588,9 +640,8 @@ public class MainJFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnWeight;
+    private javax.swing.JComboBox cbEntry;
     private javax.swing.JComboBox cbWeightStaff;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -598,11 +649,8 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -626,7 +674,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JLabel labWeightTime;
+    private javax.swing.JLabel labWeightStaff;
     private javax.swing.JPanel pnlChartWeight;
     private javax.swing.JTable tblWeight;
     private javax.swing.JTextField txtWeight;

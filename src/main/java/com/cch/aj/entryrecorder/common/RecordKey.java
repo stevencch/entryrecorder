@@ -11,5 +11,9 @@ package com.cch.aj.entryrecorder.common;
  * @author chacao
  */
 public enum RecordKey {
-    PRODUCT_WEIGHT
+    PRODUCT_WEIGHT,
+    TAP_POSITION,
+    WALL_THICKNESS,
+    THREAD_BORE,
+    THREAD_NECK
 }
