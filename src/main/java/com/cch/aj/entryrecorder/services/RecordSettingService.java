@@ -15,5 +15,5 @@ import java.util.List;
  * @author chacao
  */
 public interface RecordSettingService extends SettingService<Record> {
-    List<Record> GetAllEntitiesByKey(RecordKey recordkey);
+    List<Record> GetAllEntitiesByKeyAndRecord(RecordKey recordkey,int recordId);
 }

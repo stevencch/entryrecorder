@@ -17,6 +17,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 /**
@@ -74,13 +75,15 @@ public class RecordRepositoryImpl implements RecordSettingRepository{
     }
 
     @Override
-    public List<Record> FindEntitiesByKey(RecordKey key) {
+    public List<Record> FindEntitiesByKeyAndRecord(RecordKey key,int recordId) {
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         try {
             CriteriaQuery<Record> cq = em.getCriteriaBuilder().createQuery(Record.class);
             Root<Record> from = cq.from(Record.class);
-            cq.where(cb.equal(from.get("recordKey"), key.toString())).select(from);
+            Predicate p1=cb.equal(from.get("recordKey"), key.toString());
+            Predicate p2=cb.equal(from.get("entryId").get("id"), recordId);
+            cq.where(cb.and(p1,p2)).select(from);
             Query q = em.createQuery(cq);
             return q.getResultList();
         } finally {

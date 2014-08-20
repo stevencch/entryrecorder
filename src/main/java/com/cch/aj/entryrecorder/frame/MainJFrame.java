@@ -98,8 +98,11 @@ public class MainJFrame extends javax.swing.JFrame {
         this.labWeightStaff.setVisible(false);
         this.cbWeightStaff.setVisible(false);
         FillStaffComboBox(this.cbWeightStaff, 0);
-        List<Record> records = this.recordService.GetAllEntitiesByKey(RecordKey.PRODUCT_WEIGHT);
+        datasetWeight = new DefaultCategoryDataset();
+        
+        List<Record> records = this.recordService.GetAllEntitiesByKeyAndRecord(RecordKey.PRODUCT_WEIGHT,this.currentEntry.getId());
         DefaultTableModel model = (DefaultTableModel) this.tblWeight.getModel();
+        model.setRowCount(0);
         for (Record record : records) {
             String time = new SimpleDateFormat("HH:mm").format(record.getCreatedTime());
             String staff = record.getStaffId() == null ? "" : record.getStaffId().getName();
@@ -111,6 +114,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 "Product Weight (kg)", "", "",
                 datasetWeight, PlotOrientation.VERTICAL, false, true, false);
         ChartPanel cp = new ChartPanel(chartWeight);
+        this.pnlChartWeight.removeAll();
         this.pnlChartWeight.add(cp, gridBagConstraints);
     }
 
@@ -693,8 +697,8 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnWeightActionPerformed
 
     private void cbEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEntryActionPerformed
-        Entry currentItem = ((ComboBoxItem<Entry>) this.cbEntry.getSelectedItem()).getItem();
-        UpdateProductInfo(currentItem);
+        this.currentEntry = ((ComboBoxItem<Entry>) this.cbEntry.getSelectedItem()).getItem();
+        this.UpdateEntryForm();
     }//GEN-LAST:event_cbEntryActionPerformed
 
     /**

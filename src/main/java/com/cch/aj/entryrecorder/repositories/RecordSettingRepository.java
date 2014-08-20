@@ -15,5 +15,5 @@ import java.util.List;
  * @author chacao
  */
 public interface RecordSettingRepository extends SettingRepository<Record> {
-    List<Record> FindEntitiesByKey(RecordKey key);
+    List<Record> FindEntitiesByKeyAndRecord(RecordKey key,int recordId);
 }

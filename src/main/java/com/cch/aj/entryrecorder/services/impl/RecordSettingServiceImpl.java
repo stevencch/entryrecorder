@@ -28,8 +28,8 @@ public class RecordSettingServiceImpl extends SettingServiceImpl<Record> impleme
     }
 
     @Override
-    public List<Record> GetAllEntitiesByKey(RecordKey recordkey) {
-        return this.recordSettingRepository.FindEntitiesByKey(recordkey);
+    public List<Record> GetAllEntitiesByKeyAndRecord(RecordKey recordkey,int recordId) {
+        return this.recordSettingRepository.FindEntitiesByKeyAndRecord(recordkey,recordId);
     }
 
     
