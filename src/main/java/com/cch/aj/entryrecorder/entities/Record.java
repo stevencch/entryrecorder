@@ -45,7 +45,6 @@ public class Record implements Serializable,SettingEntity {
     @Basic(optional = false)
     @Column(name = "Id")
     private Integer id;
-    @Basic(optional = false)
     @Column(name = "RecordKey")
     private String recordKey;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -53,28 +52,21 @@ public class Record implements Serializable,SettingEntity {
     private Float numberValue;
     @Column(name = "StringValue")
     private String stringValue;
-    @Basic(optional = false)
     @Column(name = "CreatedTime")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdTime;
-    @JoinColumn(name = "EntryId", referencedColumnName = "Id")
-    @ManyToOne(optional = false)
-    private Entry entryId;
     @JoinColumn(name = "StaffId", referencedColumnName = "Id")
     @ManyToOne
     private Staff staffId;
+    @JoinColumn(name = "EntryId", referencedColumnName = "Id")
+    @ManyToOne
+    private Entry entryId;
 
     public Record() {
     }
 
     public Record(Integer id) {
         this.id = id;
-    }
-
-    public Record(Integer id, String recordKey, Date createdTime) {
-        this.id = id;
-        this.recordKey = recordKey;
-        this.createdTime = createdTime;
     }
 
     public Integer getId() {
@@ -117,20 +109,20 @@ public class Record implements Serializable,SettingEntity {
         this.createdTime = createdTime;
     }
 
-    public Entry getEntryId() {
-        return entryId;
-    }
-
-    public void setEntryId(Entry entryId) {
-        this.entryId = entryId;
-    }
-
     public Staff getStaffId() {
         return staffId;
     }
 
     public void setStaffId(Staff staffId) {
         this.staffId = staffId;
+    }
+
+    public Entry getEntryId() {
+        return entryId;
+    }
+
+    public void setEntryId(Entry entryId) {
+        this.entryId = entryId;
     }
 
     @Override
@@ -157,9 +149,8 @@ public class Record implements Serializable,SettingEntity {
     public String toString() {
         return "com.cch.aj.entryrecorder.entities.Record[ id=" + id + " ]";
     }
-
+    
     @Override
     public void setDefaultValue() {
     }
-    
 }

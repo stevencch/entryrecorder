@@ -54,16 +54,22 @@ public class AppHelper {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
             String dir = file.getPath().replaceAll(Pattern.quote(currentDir), "");
-            displayImage(dir, panel,lable);
+            lable.setText(dir);
+            DisplayImage(dir, panel);
         }
     }
 
-    public static void displayImage(String dir, JPanel panel,JLabel lable) {
+    public static void DisplayImage(String dir, JPanel panel) {
+        int size=300;
+        DisplayImage(dir, panel,size);
+    }
+
+    public static void DisplayImage(String dir,  JPanel panel,int size) {
         try {
-            lable.setText(dir);
             BufferedImage myPicture = ImageIO.read(new File(currentDir + dir));
-            JLabel picLabel = new JLabel((AppHelper.getScaledImage(new ImageIcon(myPicture), 320, 320)));
+            JLabel picLabel = new JLabel((AppHelper.getScaledImage(new ImageIcon(myPicture), size,size)));
             panel.setLayout(new FlowLayout());
+            panel.removeAll();
             panel.add(picLabel);
         } catch (IOException ex) {
             Logger.getLogger(SettingsJFrame.class.getName()).log(Level.SEVERE, null, ex);

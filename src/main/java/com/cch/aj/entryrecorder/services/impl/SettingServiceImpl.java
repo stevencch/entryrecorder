@@ -12,6 +12,7 @@ import com.cch.aj.entryrecorder.entities.Machine;
 import com.cch.aj.entryrecorder.entities.Mould;
 import com.cch.aj.entryrecorder.entities.Polymer;
 import com.cch.aj.entryrecorder.entities.Product;
+import com.cch.aj.entryrecorder.entities.Record;
 import com.cch.aj.entryrecorder.entities.Staff;
 import com.cch.aj.entryrecorder.repositories.SettingRepository;
 import com.cch.aj.entryrecorder.repositories.impl.AdditiveRepositoryImpl;
@@ -20,6 +21,7 @@ import com.cch.aj.entryrecorder.repositories.impl.MachineRepositoryImpl;
 import com.cch.aj.entryrecorder.repositories.impl.MouldRepositoryImpl;
 import com.cch.aj.entryrecorder.repositories.impl.PolymerRepositoryImpl;
 import com.cch.aj.entryrecorder.repositories.impl.ProductRepositoryImpl;
+import com.cch.aj.entryrecorder.repositories.impl.RecordRepositoryImpl;
 import com.cch.aj.entryrecorder.repositories.impl.StaffRepositoryImpl;
 import com.cch.aj.entryrecorder.services.SettingService;
 import java.lang.reflect.ParameterizedType;
@@ -40,7 +42,7 @@ public class SettingServiceImpl<T extends SettingEntity> implements SettingServi
 
     public SettingServiceImpl(Class<T> type) {
         try {
-            instance=type.newInstance();
+            instance = type.newInstance();
         } catch (InstantiationException ex) {
             Logger.getLogger(SettingServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
@@ -63,8 +65,12 @@ public class SettingServiceImpl<T extends SettingEntity> implements SettingServi
         }
         if (type == Product.class) {
             this.repository = new ProductRepositoryImpl(this._connectionString);
-        }if (type == Entry.class) {
+        }
+        if (type == Entry.class) {
             this.repository = new EntryRepositoryImpl(this._connectionString);
+        }
+        if (type == Record.class) {
+            this.repository = new RecordRepositoryImpl(this._connectionString);
         }
     }
 
@@ -75,12 +81,12 @@ public class SettingServiceImpl<T extends SettingEntity> implements SettingServi
 
     @Override
     public Integer CreateEntity() {
-        SettingEntity newItem = (SettingEntity)this.instance;
+        SettingEntity newItem = (SettingEntity) this.instance;
         Integer result = 0;
         if (newItem != null) {
             newItem.setDefaultValue();
             this.repository.create(newItem);
-            result=newItem.getId();
+            result = newItem.getId();
         }
         return result;
     }

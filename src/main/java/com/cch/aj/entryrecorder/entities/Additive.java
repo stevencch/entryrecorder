@@ -8,6 +8,7 @@ package com.cch.aj.entryrecorder.entities;
 
 import com.cch.aj.entryrecorder.common.SettingEntity;
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,8 +17,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -33,6 +36,12 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Additive.findByGrade", query = "SELECT a FROM Additive a WHERE a.grade = :grade"),
     @NamedQuery(name = "Additive.findByDescription", query = "SELECT a FROM Additive a WHERE a.description = :description")})
 public class Additive implements Serializable,SettingEntity {
+    @OneToMany(mappedBy = "additiveAId")
+    private Collection<Product> productCollection;
+    @OneToMany(mappedBy = "additiveBId")
+    private Collection<Product> productCollection1;
+    @OneToMany(mappedBy = "additiveCId")
+    private Collection<Product> productCollection2;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -120,6 +129,33 @@ public class Additive implements Serializable,SettingEntity {
     public void setDefaultValue() {
         this.company="Company Name";
         this.grade="Grade";
+    }
+
+    @XmlTransient
+    public Collection<Product> getProductCollection() {
+        return productCollection;
+    }
+
+    public void setProductCollection(Collection<Product> productCollection) {
+        this.productCollection = productCollection;
+    }
+
+    @XmlTransient
+    public Collection<Product> getProductCollection1() {
+        return productCollection1;
+    }
+
+    public void setProductCollection1(Collection<Product> productCollection1) {
+        this.productCollection1 = productCollection1;
+    }
+
+    @XmlTransient
+    public Collection<Product> getProductCollection2() {
+        return productCollection2;
+    }
+
+    public void setProductCollection2(Collection<Product> productCollection2) {
+        this.productCollection2 = productCollection2;
     }
     
 }

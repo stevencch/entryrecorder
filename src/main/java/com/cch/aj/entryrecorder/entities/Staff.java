@@ -8,6 +8,7 @@ package com.cch.aj.entryrecorder.entities;
 
 import com.cch.aj.entryrecorder.common.SettingEntity;
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,8 +17,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -32,6 +35,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Staff.findByName", query = "SELECT s FROM Staff s WHERE s.name = :name"),
     @NamedQuery(name = "Staff.findByJobType", query = "SELECT s FROM Staff s WHERE s.jobType = :jobType")})
 public class Staff implements Serializable,SettingEntity {
+    @OneToMany(mappedBy = "staffId")
+    private Collection<Record> recordCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -111,6 +116,15 @@ public class Staff implements Serializable,SettingEntity {
     public void setDefaultValue() {
         this.jobType="PROCESS WORKER";
         this.name="Name";
+    }
+
+    @XmlTransient
+    public Collection<Record> getRecordCollection() {
+        return recordCollection;
+    }
+
+    public void setRecordCollection(Collection<Record> recordCollection) {
+        this.recordCollection = recordCollection;
     }
     
 }

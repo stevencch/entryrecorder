@@ -25,9 +25,11 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import static java.util.Arrays.stream;
+import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparing;
@@ -78,7 +80,7 @@ public class EntryJFrame extends javax.swing.JFrame {
     public EntryJFrame() {
 
         initComponents();
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         //load staff
         this.cbStaff.setRenderer(new ComboBoxRender());
         UpdateTabStaff(0);
@@ -87,7 +89,15 @@ public class EntryJFrame extends javax.swing.JFrame {
         this.cbEntryMachine.setRenderer(new ComboBoxRender());
         this.cbEntryMould.setRenderer(new ComboBoxRender());
         this.cbEntryProduct.setRenderer(new ComboBoxRender());
+        this.pnlEditEntry.setVisible(false);
+        this.btnEntryDelete.setVisible(false);
+        this.btnEntrySave.setVisible(false);
+        this.btnEntryUndo.setVisible(false);
 
+    }
+    
+    public void ActiveStaffTab(){
+        this.tabSettings.setSelectedIndex(1);
     }
 
     private void UpdateTabStaff(int id) {
@@ -100,6 +110,18 @@ public class EntryJFrame extends javax.swing.JFrame {
         } else {
             this.cbStaff.setModel(new DefaultComboBoxModel(new ComboBoxItem[]{}));
             this.txtStaffName.setText("");
+        }
+
+        if (this.cbStaff.getSelectedItem() == null || ((ComboBoxItem<Staff>) this.cbStaff.getSelectedItem()).getId() == 0) {
+            this.pnlEditStaff.setVisible(false);
+            this.btnStaffDelete.setVisible(false);
+            this.btnStaffSave.setVisible(false);
+            this.btnStaffUndo.setVisible(false);
+        } else {
+            this.pnlEditStaff.setVisible(true);
+            this.btnStaffDelete.setVisible(true);
+            this.btnStaffSave.setVisible(true);
+            this.btnStaffUndo.setVisible(true);
         }
     }
 
@@ -116,6 +138,18 @@ public class EntryJFrame extends javax.swing.JFrame {
         } else {
             this.cbEntry.setModel(new DefaultComboBoxModel(new ComboBoxItem[]{}));
             this.UpdateEntryUI(new Entry());
+        }
+
+        if (this.cbEntry.getSelectedItem() == null || ((ComboBoxItem<Entry>) this.cbEntry.getSelectedItem()).getId() == 0) {
+            this.pnlEditEntry.setVisible(false);
+            this.btnEntryDelete.setVisible(false);
+            this.btnEntrySave.setVisible(false);
+            this.btnEntryUndo.setVisible(false);
+        } else {
+            this.pnlEditEntry.setVisible(true);
+            this.btnEntryDelete.setVisible(true);
+            this.btnEntrySave.setVisible(true);
+            this.btnEntryUndo.setVisible(true);
         }
 
     }
@@ -144,6 +178,7 @@ public class EntryJFrame extends javax.swing.JFrame {
 
     private int FillProductComboBox(JComboBox comboBox, int id, int mouldId) {
         int result = -1;
+        comboBox.removeAll();
         List<Product> allProducts = this.productService.GetAllEntities();
         if (allProducts.size() > 0) {
             List<Product> products = allProducts.stream().filter(x -> x.getMouldId() != null && x.getMouldId().getId() == mouldId).collect(Collectors.toList());
@@ -248,7 +283,7 @@ public class EntryJFrame extends javax.swing.JFrame {
 
         tabSettings = new javax.swing.JTabbedPane();
         jPanel38 = new javax.swing.JPanel();
-        jTabbedPane4 = new javax.swing.JTabbedPane();
+        pnlEditEntry = new javax.swing.JTabbedPane();
         jPanel9 = new javax.swing.JPanel();
         jLabel47 = new javax.swing.JLabel();
         txtEntryShift = new javax.swing.JTextField();
@@ -300,7 +335,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         btnStaffUndo = new javax.swing.JButton();
         btnStaffSave = new javax.swing.JButton();
         jLabel101 = new javax.swing.JLabel();
-        jPanel12 = new javax.swing.JPanel();
+        pnlEditStaff = new javax.swing.JPanel();
         jLabel78 = new javax.swing.JLabel();
         txtStaffName = new javax.swing.JTextField();
         jLabel90 = new javax.swing.JLabel();
@@ -459,7 +494,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(3, 27, 3, 45);
         jPanel9.add(labEntryCreatedDate, gridBagConstraints);
 
-        jTabbedPane4.addTab("General", jPanel9);
+        pnlEditEntry.addTab("General", jPanel9);
 
         jPanel13.setLayout(new java.awt.GridBagLayout());
 
@@ -623,7 +658,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
         jPanel13.add(txtEntryTapPositionMax, gridBagConstraints);
 
-        jTabbedPane4.addTab("Settings", jPanel13);
+        pnlEditEntry.addTab("Settings", jPanel13);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -632,7 +667,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
-        jPanel38.add(jTabbedPane4, gridBagConstraints);
+        jPanel38.add(pnlEditEntry, gridBagConstraints);
 
         jPanel47.setLayout(new java.awt.GridBagLayout());
 
@@ -853,7 +888,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
         jPanel29.add(jPanel31, gridBagConstraints);
 
-        jPanel12.setLayout(new java.awt.GridBagLayout());
+        pnlEditStaff.setLayout(new java.awt.GridBagLayout());
 
         jLabel78.setText("NAME");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -863,7 +898,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(14, 0, 6, 20);
-        jPanel12.add(jLabel78, gridBagConstraints);
+        pnlEditStaff.add(jLabel78, gridBagConstraints);
 
         txtStaffName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -878,7 +913,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(14, 0, 6, 55);
-        jPanel12.add(txtStaffName, gridBagConstraints);
+        pnlEditStaff.add(txtStaffName, gridBagConstraints);
 
         jLabel90.setText("JOB TITLE");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -887,7 +922,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipadx = 4;
         gridBagConstraints.ipady = 4;
         gridBagConstraints.insets = new java.awt.Insets(14, 0, 6, 20);
-        jPanel12.add(jLabel90, gridBagConstraints);
+        pnlEditStaff.add(jLabel90, gridBagConstraints);
 
         cbStaffJob.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "PROCESS WORKER", "TECHNICIAN", "SUPERVISOR" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -898,14 +933,14 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(14, 0, 6, 55);
-        jPanel12.add(cbStaffJob, gridBagConstraints);
+        pnlEditStaff.add(cbStaffJob, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        jPanel29.add(jPanel12, gridBagConstraints);
+        jPanel29.add(pnlEditStaff, gridBagConstraints);
 
         tabSettings.addTab("Staff", jPanel29);
 
@@ -935,11 +970,8 @@ public class EntryJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnStaffNewActionPerformed
 
     private void cbStaffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbStaffActionPerformed
-
         Staff currentStaff = ((ComboBoxItem<Staff>) this.cbStaff.getSelectedItem()).getItem();
-        //
-        this.cbStaffJob.setSelectedItem(currentStaff.getJobType());
-        this.txtStaffName.setText(currentStaff.getName());
+        UpdateTabStaff(currentStaff.getId());
     }//GEN-LAST:event_cbStaffActionPerformed
 
     private void btnStaffSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStaffSaveActionPerformed
@@ -995,7 +1027,7 @@ public class EntryJFrame extends javax.swing.JFrame {
 
     private void cbEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEntryActionPerformed
         Entry currentItem = ((ComboBoxItem<Entry>) this.cbEntry.getSelectedItem()).getItem();
-        UpdateEntryUI(currentItem);
+        UpdateTabEntry(currentItem.getId());
     }//GEN-LAST:event_cbEntryActionPerformed
 
     private void btnEntryDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntryDeleteActionPerformed
@@ -1081,7 +1113,7 @@ public class EntryJFrame extends javax.swing.JFrame {
     }
 
     private void cbEntryMouldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEntryMouldActionPerformed
-        this.FillProductComboBox(this.cbEntryProduct, 0, ((ComboBoxItem<Mould>) this.cbEntryMould.getSelectedItem()).getItem().getId());
+        this.FillProductComboBox(this.cbEntryProduct, 0, ((ComboBoxItem<Mould>)this.cbEntryMould.getSelectedItem()).getItem().getId());
     }//GEN-LAST:event_cbEntryMouldActionPerformed
 
     private void tabSettingsAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_tabSettingsAncestorAdded
@@ -1195,9 +1227,8 @@ public class EntryJFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_cbEntryProductActionPerformed
 
-
     private void UpdateEntryUI(Entry currentEntry) {
-        this.labEntryCreatedDate.setText(currentEntry.getCreateDate()!=null?currentEntry.getCreateDate().toString():"");
+        this.labEntryCreatedDate.setText(currentEntry.getCreateDate() != null ? (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format( currentEntry.getCreateDate()) : "");
         cbEntryInUse.setSelectedItem(currentEntry.getInUse());
         txtEntryShift.setText(currentEntry.getShift() == null || currentEntry.getShift() == "- Select -" ? "" : currentEntry.getShift().toString());;
         txtEntryWeightMin.setText(currentEntry.getWeightMin() == null ? "" : currentEntry.getWeightMin().toString());;
@@ -1288,7 +1319,6 @@ public class EntryJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel76;
     private javax.swing.JLabel jLabel78;
     private javax.swing.JLabel jLabel90;
-    private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel29;
     private javax.swing.JPanel jPanel30;
@@ -1297,8 +1327,9 @@ public class EntryJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel47;
     private javax.swing.JPanel jPanel48;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JTabbedPane jTabbedPane4;
     private javax.swing.JLabel labEntryCreatedDate;
+    private javax.swing.JTabbedPane pnlEditEntry;
+    private javax.swing.JPanel pnlEditStaff;
     private javax.swing.JTabbedPane tabSettings;
     private javax.swing.JTextField txtEntrySearch;
     private javax.swing.JTextField txtEntryShift;

@@ -6,6 +6,8 @@
 
 package com.cch.aj.entryrecorder.frame;
 
+import javax.swing.JFrame;
+
 /**
  *
  * @author chacao
@@ -17,6 +19,7 @@ public class HomeJFrame extends javax.swing.JFrame {
      */
     public HomeJFrame() {
         initComponents();
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     /**
@@ -29,67 +32,100 @@ public class HomeJFrame extends javax.swing.JFrame {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        btnShift = new javax.swing.JButton();
+        btnEntry = new javax.swing.JButton();
+        btnSettings = new javax.swing.JButton();
+        btnStaff = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(400, 500));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        jButton1.setText("New Entry");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.ipadx = 14;
-        gridBagConstraints.ipady = 14;
-        gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.insets = new java.awt.Insets(14, 59, 14, 59);
-        getContentPane().add(jButton1, gridBagConstraints);
-
-        jButton2.setText("jButton2");
+        btnShift.setText("Shift");
+        btnShift.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnShiftActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.ipadx = 14;
-        gridBagConstraints.ipady = 14;
-        gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.insets = new java.awt.Insets(14, 59, 14, 59);
-        getContentPane().add(jButton2, gridBagConstraints);
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 9;
+        gridBagConstraints.ipady = 9;
+        gridBagConstraints.insets = new java.awt.Insets(15, 15, 15, 15);
+        getContentPane().add(btnShift, gridBagConstraints);
 
-        jButton3.setText("jButton3");
+        btnEntry.setText("Main Form");
+        btnEntry.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEntryActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.ipadx = 14;
-        gridBagConstraints.ipady = 14;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 9;
+        gridBagConstraints.ipady = 9;
         gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.insets = new java.awt.Insets(14, 59, 14, 59);
-        getContentPane().add(jButton3, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(15, 15, 15, 15);
+        getContentPane().add(btnEntry, gridBagConstraints);
 
-        jButton4.setText("jButton4");
+        btnSettings.setText("Settings");
+        btnSettings.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSettingsActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.ipadx = 14;
-        gridBagConstraints.ipady = 14;
-        gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.insets = new java.awt.Insets(14, 59, 14, 59);
-        getContentPane().add(jButton4, gridBagConstraints);
-
-        jButton5.setText("jButton5");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.ipadx = 14;
-        gridBagConstraints.ipady = 14;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 9;
+        gridBagConstraints.ipady = 9;
         gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.insets = new java.awt.Insets(14, 59, 14, 59);
-        getContentPane().add(jButton5, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(15, 15, 15, 15);
+        getContentPane().add(btnSettings, gridBagConstraints);
+
+        btnStaff.setText("Staff");
+        btnStaff.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnStaffActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 9;
+        gridBagConstraints.ipady = 9;
+        gridBagConstraints.insets = new java.awt.Insets(15, 15, 15, 15);
+        getContentPane().add(btnStaff, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntryActionPerformed
+        MainJFrame mf=new MainJFrame();
+        mf.setVisible(true);
+    }//GEN-LAST:event_btnEntryActionPerformed
+
+    private void btnShiftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShiftActionPerformed
+        EntryJFrame ef=new EntryJFrame();
+        ef.setVisible(true);
+    }//GEN-LAST:event_btnShiftActionPerformed
+
+    private void btnSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSettingsActionPerformed
+        SettingsJFrame sf=new SettingsJFrame();
+        sf.setVisible(true);
+    }//GEN-LAST:event_btnSettingsActionPerformed
+
+    private void btnStaffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStaffActionPerformed
+        EntryJFrame ef=new EntryJFrame();
+        ef.setVisible(true);
+        ef.ActiveStaffTab();
+    }//GEN-LAST:event_btnStaffActionPerformed
 
     /**
      * @param args the command line arguments
@@ -127,10 +163,9 @@ public class HomeJFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton btnEntry;
+    private javax.swing.JButton btnSettings;
+    private javax.swing.JButton btnShift;
+    private javax.swing.JButton btnStaff;
     // End of variables declaration//GEN-END:variables
 }
