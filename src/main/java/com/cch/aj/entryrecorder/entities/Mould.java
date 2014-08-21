@@ -72,7 +72,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Mould.findByWallDgHandleBungMax", query = "SELECT m FROM Mould m WHERE m.wallDgHandleBungMax = :wallDgHandleBungMax"),
     @NamedQuery(name = "Mould.findByWallDgHandleLeftMin", query = "SELECT m FROM Mould m WHERE m.wallDgHandleLeftMin = :wallDgHandleLeftMin"),
     @NamedQuery(name = "Mould.findByWallDgHandleLeftMax", query = "SELECT m FROM Mould m WHERE m.wallDgHandleLeftMax = :wallDgHandleLeftMax"),
-    @NamedQuery(name = "Mould.findByWallDgHandRightMin", query = "SELECT m FROM Mould m WHERE m.wallDgHandRightMin = :wallDgHandRightMin"),
+    @NamedQuery(name = "Mould.findByWallDgHandleRightMin", query = "SELECT m FROM Mould m WHERE m.wallDgHandleRightMin = :wallDgHandleRightMin"),
     @NamedQuery(name = "Mould.findByWallDgHandleRightMax", query = "SELECT m FROM Mould m WHERE m.wallDgHandleRightMax = :wallDgHandleRightMax"),
     @NamedQuery(name = "Mould.findByThreadBoreASize1", query = "SELECT m FROM Mould m WHERE m.threadBoreASize1 = :threadBoreASize1"),
     @NamedQuery(name = "Mould.findByThreadBoreASize2", query = "SELECT m FROM Mould m WHERE m.threadBoreASize2 = :threadBoreASize2"),
@@ -102,6 +102,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Mould.findByThreadNeckMax2", query = "SELECT m FROM Mould m WHERE m.threadNeckMax2 = :threadNeckMax2"),
     @NamedQuery(name = "Mould.findByThreadNeckMax3", query = "SELECT m FROM Mould m WHERE m.threadNeckMax3 = :threadNeckMax3")})
 public class Mould implements Serializable,SettingEntity {
+    @OneToMany(mappedBy = "mouldId")
+    private Collection<Entry> entryCollection;
+    @OneToMany(mappedBy = "mouldId")
+    private Collection<Product> productCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -190,8 +194,8 @@ public class Mould implements Serializable,SettingEntity {
     private Float wallDgHandleLeftMin;
     @Column(name = "WallDgHandleLeftMax")
     private Float wallDgHandleLeftMax;
-    @Column(name = "WallDgHandRightMin")
-    private Float wallDgHandRightMin;
+    @Column(name = "WallDgHandleRightMin")
+    private Float wallDgHandleRightMin;
     @Column(name = "WallDgHandleRightMax")
     private Float wallDgHandleRightMax;
     @Column(name = "ThreadBoreASize1")
@@ -248,10 +252,6 @@ public class Mould implements Serializable,SettingEntity {
     private Float threadNeckMax2;
     @Column(name = "ThreadNeckMax3")
     private Float threadNeckMax3;
-    @OneToMany(mappedBy = "mouldId")
-    private Collection<Entry> entryCollection;
-    @OneToMany(mappedBy = "mouldId")
-    private Collection<Product> productCollection;
 
     public Mould() {
     }
@@ -593,12 +593,12 @@ public class Mould implements Serializable,SettingEntity {
         this.wallDgHandleLeftMax = wallDgHandleLeftMax;
     }
 
-    public Float getWallDgHandRightMin() {
-        return wallDgHandRightMin;
+    public Float getWallDgHandleRightMin() {
+        return wallDgHandleRightMin;
     }
 
-    public void setWallDgHandRightMin(Float wallDgHandRightMin) {
-        this.wallDgHandRightMin = wallDgHandRightMin;
+    public void setWallDgHandleRightMin(Float wallDgHandleRightMin) {
+        this.wallDgHandleRightMin = wallDgHandleRightMin;
     }
 
     public Float getWallDgHandleRightMax() {
@@ -825,24 +825,6 @@ public class Mould implements Serializable,SettingEntity {
         this.threadNeckMax3 = threadNeckMax3;
     }
 
-    @XmlTransient
-    public Collection<Entry> getEntryCollection() {
-        return entryCollection;
-    }
-
-    public void setEntryCollection(Collection<Entry> entryCollection) {
-        this.entryCollection = entryCollection;
-    }
-
-    @XmlTransient
-    public Collection<Product> getProductCollection() {
-        return productCollection;
-    }
-
-    public void setProductCollection(Collection<Product> productCollection) {
-        this.productCollection = productCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -867,10 +849,26 @@ public class Mould implements Serializable,SettingEntity {
     public String toString() {
         return "com.cch.aj.entryrecorder.entities.Mould[ id=" + id + " ]";
     }
-
     @Override
     public void setDefaultValue() {
         this.code="Mould Code";
     }
-    
+
+    @XmlTransient
+    public Collection<Entry> getEntryCollection() {
+        return entryCollection;
+    }
+
+    public void setEntryCollection(Collection<Entry> entryCollection) {
+        this.entryCollection = entryCollection;
+    }
+
+    @XmlTransient
+    public Collection<Product> getProductCollection() {
+        return productCollection;
+    }
+
+    public void setProductCollection(Collection<Product> productCollection) {
+        this.productCollection = productCollection;
+    }
 }

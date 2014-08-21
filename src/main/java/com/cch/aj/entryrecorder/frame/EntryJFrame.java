@@ -89,19 +89,29 @@ public class EntryJFrame extends javax.swing.JFrame {
         this.cbEntryMachine.setRenderer(new ComboBoxRender());
         this.cbEntryMould.setRenderer(new ComboBoxRender());
         this.cbEntryProduct.setRenderer(new ComboBoxRender());
+        this.cbSupervisor1.setRenderer(new ComboBoxRender());
+        this.cbSupervisor2.setRenderer(new ComboBoxRender());
+        this.cbSupervisor3.setRenderer(new ComboBoxRender());
+        this.cbTechnician1.setRenderer(new ComboBoxRender());
+        this.cbTechnician2.setRenderer(new ComboBoxRender());
+        this.cbTechnician3.setRenderer(new ComboBoxRender());
+        this.cbWorker1.setRenderer(new ComboBoxRender());
+        this.cbWorker2.setRenderer(new ComboBoxRender());
+        this.cbWorker3.setRenderer(new ComboBoxRender());
+        
         this.pnlEditEntry.setVisible(false);
         this.btnEntryDelete.setVisible(false);
         this.btnEntrySave.setVisible(false);
         this.btnEntryUndo.setVisible(false);
 
     }
-    
-    public void ActiveStaffTab(){
+
+    public void ActiveStaffTab() {
         this.tabSettings.setSelectedIndex(1);
     }
 
     private void UpdateTabStaff(int id) {
-        int selectedIndex = FillStaffComboBox(this.cbStaff, id);
+        int selectedIndex = FillStaffComboBox(this.cbStaff, id,"");
         if (selectedIndex >= 0) {
             Staff currentStaff = ((ComboBoxItem<Staff>) this.cbStaff.getSelectedItem()).getItem();
             //
@@ -202,9 +212,12 @@ public class EntryJFrame extends javax.swing.JFrame {
         return result;
     }
 
-    private int FillStaffComboBox(JComboBox comboBox, int id) {
+    private int FillStaffComboBox(JComboBox comboBox, int id, String jobType) {
         int result = -1;
         List<Staff> staffs = this.staffService.GetAllEntities();
+        if(!jobType.equals("")){
+            staffs=staffs.stream().filter(x->x.getJobType().equals(jobType)).collect(Collectors.toList());
+        }
         if (staffs.size() > 0) {
             List<ComboBoxItem<Staff>> staffNames = staffs.stream().sorted(comparing(x -> x.getJobType() + " " + x.getName())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getJobType() + " " + x.getName(), x.getId())).collect(Collectors.toList());
             Staff staff = new Staff();
@@ -301,20 +314,58 @@ public class EntryJFrame extends javax.swing.JFrame {
         jLabel118 = new javax.swing.JLabel();
         jLabel119 = new javax.swing.JLabel();
         jLabel120 = new javax.swing.JLabel();
-        jLabel121 = new javax.swing.JLabel();
         jLabel122 = new javax.swing.JLabel();
         jLabel123 = new javax.swing.JLabel();
         jLabel124 = new javax.swing.JLabel();
         txtEntryWeightMin = new javax.swing.JTextField();
         txtEntryWeightMax = new javax.swing.JTextField();
-        txtEntryWallMin = new javax.swing.JTextField();
-        txtEntryWallMax = new javax.swing.JTextField();
         txtEntryThreadBoreMin = new javax.swing.JTextField();
         txtEntryThreadBoreMax = new javax.swing.JTextField();
         txtEntryThreadNeckMin = new javax.swing.JTextField();
         txtEntryThreadNeckMax = new javax.swing.JTextField();
         txtEntryTapPositionMin = new javax.swing.JTextField();
         txtEntryTapPositionMax = new javax.swing.JTextField();
+        jPanel3 = new javax.swing.JPanel();
+        labEntryWall = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
+        jLabel25 = new javax.swing.JLabel();
+        txtMouldUnderHandleMin = new javax.swing.JTextField();
+        txtMouldUnderHandleMax = new javax.swing.JTextField();
+        txtMouldBaseMin = new javax.swing.JTextField();
+        txtMouldBaseMax = new javax.swing.JTextField();
+        txtMouldClosureMin = new javax.swing.JTextField();
+        txtMouldClosureMax = new javax.swing.JTextField();
+        txtMouldHandleBungMin = new javax.swing.JTextField();
+        txtMouldHandleBungMax = new javax.swing.JTextField();
+        txtMouldHandleLeftMin = new javax.swing.JTextField();
+        txtMouldHandleLeftMax = new javax.swing.JTextField();
+        txtMouldHandleRightMin = new javax.swing.JTextField();
+        txtMouldHandleRightMax = new javax.swing.JTextField();
+        jPanel11 = new javax.swing.JPanel();
+        jLabel35 = new javax.swing.JLabel();
+        jLabel36 = new javax.swing.JLabel();
+        jLabel37 = new javax.swing.JLabel();
+        jLabel38 = new javax.swing.JLabel();
+        jLabel39 = new javax.swing.JLabel();
+        jLabel40 = new javax.swing.JLabel();
+        jLabel41 = new javax.swing.JLabel();
+        jLabel42 = new javax.swing.JLabel();
+        jLabel43 = new javax.swing.JLabel();
+        cbSupervisor1 = new javax.swing.JComboBox();
+        cbSupervisor2 = new javax.swing.JComboBox();
+        cbSupervisor3 = new javax.swing.JComboBox();
+        cbTechnician1 = new javax.swing.JComboBox();
+        cbTechnician2 = new javax.swing.JComboBox();
+        cbTechnician3 = new javax.swing.JComboBox();
+        cbWorker1 = new javax.swing.JComboBox();
+        cbWorker2 = new javax.swing.JComboBox();
+        cbWorker3 = new javax.swing.JComboBox();
         jPanel47 = new javax.swing.JPanel();
         btnEntryNew = new javax.swing.JButton();
         cbEntry = new javax.swing.JComboBox();
@@ -342,7 +393,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         cbStaffJob = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(700, 600));
+        setPreferredSize(new java.awt.Dimension(750, 700));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         tabSettings.setName(""); // NOI18N
@@ -528,20 +579,10 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 0);
         jPanel13.add(jLabel120, gridBagConstraints);
 
-        jLabel121.setText("WALL");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.ipadx = 30;
-        gridBagConstraints.ipady = 4;
-        gridBagConstraints.weightx = 0.25;
-        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 0);
-        jPanel13.add(jLabel121, gridBagConstraints);
-
         jLabel122.setText("THREAD BORE");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.ipadx = 30;
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
@@ -551,7 +592,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         jLabel123.setText("THREAD NECK");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.ipadx = 30;
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
@@ -561,7 +602,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         jLabel124.setText("TAP POSITION");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.ipadx = 30;
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
@@ -593,7 +634,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 44);
-        jPanel13.add(txtEntryWallMin, gridBagConstraints);
+        jPanel13.add(txtEntryThreadBoreMin, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
@@ -602,28 +643,10 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
-        jPanel13.add(txtEntryWallMax, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.ipadx = 30;
-        gridBagConstraints.ipady = 4;
-        gridBagConstraints.weightx = 0.25;
-        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 44);
-        jPanel13.add(txtEntryThreadBoreMin, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.ipadx = 30;
-        gridBagConstraints.ipady = 4;
-        gridBagConstraints.weightx = 0.25;
-        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
         jPanel13.add(txtEntryThreadBoreMax, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 30;
         gridBagConstraints.ipady = 4;
@@ -632,7 +655,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         jPanel13.add(txtEntryThreadNeckMin, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 30;
         gridBagConstraints.ipady = 4;
@@ -641,7 +664,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         jPanel13.add(txtEntryThreadNeckMax, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 30;
         gridBagConstraints.ipady = 4;
@@ -650,7 +673,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         jPanel13.add(txtEntryTapPositionMin, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 30;
         gridBagConstraints.ipady = 4;
@@ -659,6 +682,374 @@ public class EntryJFrame extends javax.swing.JFrame {
         jPanel13.add(txtEntryTapPositionMax, gridBagConstraints);
 
         pnlEditEntry.addTab("Settings", jPanel13);
+
+        jPanel3.setLayout(new java.awt.GridBagLayout());
+
+        labEntryWall.setText("WALL THICKNESS NON-DG");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 0);
+        jPanel3.add(labEntryWall, gridBagConstraints);
+
+        jLabel18.setText("MIN");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 44);
+        jPanel3.add(jLabel18, gridBagConstraints);
+
+        jLabel19.setText("MAX");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
+        jPanel3.add(jLabel19, gridBagConstraints);
+
+        jLabel20.setText("UNDER THE HANDLE");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 0);
+        jPanel3.add(jLabel20, gridBagConstraints);
+
+        jLabel21.setText("BASE (CENTRE)");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 0);
+        jPanel3.add(jLabel21, gridBagConstraints);
+
+        jLabel22.setText("CLOSURE SIDE");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 0);
+        jPanel3.add(jLabel22, gridBagConstraints);
+
+        jLabel23.setText("END OF HANDLE SIDE - BUNG");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 0);
+        jPanel3.add(jLabel23, gridBagConstraints);
+
+        jLabel24.setText("END OF HANDLE SIDE - LEFT");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 0);
+        jPanel3.add(jLabel24, gridBagConstraints);
+
+        jLabel25.setText("END OF HANDLE SIDE - RIGHT");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 0);
+        jPanel3.add(jLabel25, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 44);
+        jPanel3.add(txtMouldUnderHandleMin, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
+        jPanel3.add(txtMouldUnderHandleMax, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 44);
+        jPanel3.add(txtMouldBaseMin, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
+        jPanel3.add(txtMouldBaseMax, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 44);
+        jPanel3.add(txtMouldClosureMin, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
+        jPanel3.add(txtMouldClosureMax, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 44);
+        jPanel3.add(txtMouldHandleBungMin, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
+        jPanel3.add(txtMouldHandleBungMax, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 44);
+        jPanel3.add(txtMouldHandleLeftMin, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
+        jPanel3.add(txtMouldHandleLeftMax, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 44);
+        jPanel3.add(txtMouldHandleRightMin, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
+        jPanel3.add(txtMouldHandleRightMax, gridBagConstraints);
+
+        pnlEditEntry.addTab("Wall", jPanel3);
+
+        jPanel11.setLayout(new java.awt.GridBagLayout());
+
+        jLabel35.setText("SUPERVISOR 1");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 20, 2, 20);
+        jPanel11.add(jLabel35, gridBagConstraints);
+
+        jLabel36.setText("SUPERVISOR 2");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 20, 2, 20);
+        jPanel11.add(jLabel36, gridBagConstraints);
+
+        jLabel37.setText("SUPERVISOR 3");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 20, 2, 20);
+        jPanel11.add(jLabel37, gridBagConstraints);
+
+        jLabel38.setText("TECHNICIAN 1");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 20, 2, 20);
+        jPanel11.add(jLabel38, gridBagConstraints);
+
+        jLabel39.setText("TECHNICIAN 2");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 20, 2, 20);
+        jPanel11.add(jLabel39, gridBagConstraints);
+
+        jLabel40.setText("TECHNICIAN 3");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 20, 2, 20);
+        jPanel11.add(jLabel40, gridBagConstraints);
+
+        jLabel41.setText("MACHINE OPERATOR 1");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 20, 2, 20);
+        jPanel11.add(jLabel41, gridBagConstraints);
+
+        jLabel42.setText("MACHINE OPERATOR 2");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 20, 2, 20);
+        jPanel11.add(jLabel42, gridBagConstraints);
+
+        jLabel43.setText("MACHINE OPERATOR 3");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 20, 2, 20);
+        jPanel11.add(jLabel43, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 20, 2, 20);
+        jPanel11.add(cbSupervisor1, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 20, 2, 20);
+        jPanel11.add(cbSupervisor2, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 20, 2, 20);
+        jPanel11.add(cbSupervisor3, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 20, 2, 20);
+        jPanel11.add(cbTechnician1, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 20, 2, 20);
+        jPanel11.add(cbTechnician2, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 20, 2, 20);
+        jPanel11.add(cbTechnician3, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 20, 2, 20);
+        jPanel11.add(cbWorker1, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 20, 2, 20);
+        jPanel11.add(cbWorker2, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 20, 2, 20);
+        jPanel11.add(cbWorker3, gridBagConstraints);
+
+        pnlEditEntry.addTab("Staff", jPanel11);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -1061,12 +1452,6 @@ public class EntryJFrame extends javax.swing.JFrame {
         if (!this.txtEntryWeightMin.getText().equals("")) {
             currentEntry.setWeightMin(Float.parseFloat(this.txtEntryWeightMin.getText()));
         }
-        if (!this.txtEntryWallMax.getText().equals("")) {
-            currentEntry.setWallMax(Float.parseFloat(this.txtEntryWallMax.getText()));
-        }
-        if (!this.txtEntryWallMin.getText().equals("")) {
-            currentEntry.setWallMin(Float.parseFloat(this.txtEntryWallMin.getText()));
-        }
         if (!this.txtEntryThreadBoreMax.getText().equals("")) {
             currentEntry.setThreadBoreMax(Float.parseFloat(this.txtEntryThreadBoreMax.getText()));
         }
@@ -1091,6 +1476,71 @@ public class EntryJFrame extends javax.swing.JFrame {
         if (this.cbEntryInUse.getSelectedItem() != null) {
             currentEntry.setInUse(this.cbEntryInUse.getSelectedItem().toString());
         }
+
+        if (!this.txtMouldBaseMax.getText().equals("")) {
+            currentEntry.setWallBaseMax(Float.parseFloat(this.txtMouldBaseMax.getText()));
+        }
+        if (!this.txtMouldBaseMin.getText().equals("")) {
+            currentEntry.setWallBaseMin(Float.parseFloat(this.txtMouldBaseMin.getText()));
+        }
+        if (!this.txtMouldClosureMax.getText().equals("")) {
+            currentEntry.setWallClosureMax(Float.parseFloat(this.txtMouldClosureMax.getText()));
+        }
+        if (!this.txtMouldClosureMin.getText().equals("")) {
+            currentEntry.setWallClosureMin(Float.parseFloat(this.txtMouldClosureMin.getText()));
+        }
+        if (!this.txtMouldHandleBungMax.getText().equals("")) {
+            currentEntry.setWallHandleBungMax(Float.parseFloat(this.txtMouldHandleBungMax.getText()));
+        }
+        if (!this.txtMouldHandleBungMin.getText().equals("")) {
+            currentEntry.setWallHandleBungMin(Float.parseFloat(this.txtMouldHandleBungMin.getText()));
+        }
+        if (!this.txtMouldHandleLeftMax.getText().equals("")) {
+            currentEntry.setWallHandleLeftMax(Float.parseFloat(this.txtMouldHandleLeftMax.getText()));
+        }
+        if (!this.txtMouldHandleLeftMin.getText().equals("")) {
+            currentEntry.setWallHandleLeftMin(Float.parseFloat(this.txtMouldHandleLeftMin.getText()));
+        }
+        if (!this.txtMouldHandleRightMax.getText().equals("")) {
+            currentEntry.setWallHandleRightMax(Float.parseFloat(this.txtMouldHandleRightMax.getText()));
+        }
+        if (!this.txtMouldHandleRightMin.getText().equals("")) {
+            currentEntry.setWallHandleRightMin(Float.parseFloat(this.txtMouldHandleRightMin.getText()));
+        }
+        if (!this.txtMouldUnderHandleMax.getText().equals("")) {
+            currentEntry.setWallUnderHandleMax(Float.parseFloat(this.txtMouldUnderHandleMax.getText()));
+        }
+        if (!this.txtMouldUnderHandleMin.getText().equals("")) {
+            currentEntry.setWallUnderHandleMin(Float.parseFloat(this.txtMouldUnderHandleMin.getText()));
+        }
+        if (this.cbSupervisor1.getSelectedItem() != null && this.cbSupervisor1.getSelectedIndex() != 0) {
+            currentEntry.setSupervisor1(((ComboBoxItem<Staff>) this.cbSupervisor1.getSelectedItem()).getItem());
+        }
+        if (this.cbSupervisor2.getSelectedItem() != null && this.cbSupervisor2.getSelectedIndex() != 0) {
+            currentEntry.setSupervisor2(((ComboBoxItem<Staff>) this.cbSupervisor2.getSelectedItem()).getItem());
+        }
+        if (this.cbSupervisor3.getSelectedItem() != null && this.cbSupervisor3.getSelectedIndex() != 0) {
+            currentEntry.setSupervisor3(((ComboBoxItem<Staff>) this.cbSupervisor3.getSelectedItem()).getItem());
+        }
+        if (this.cbTechnician1.getSelectedItem() != null && this.cbTechnician1.getSelectedIndex() != 0) {
+            currentEntry.setTechnician1(((ComboBoxItem<Staff>) this.cbTechnician1.getSelectedItem()).getItem());
+        }
+        if (this.cbTechnician2.getSelectedItem() != null && this.cbTechnician2.getSelectedIndex() != 0) {
+            currentEntry.setTechnician2(((ComboBoxItem<Staff>) this.cbTechnician2.getSelectedItem()).getItem());
+        }
+        if (this.cbTechnician3.getSelectedItem() != null && this.cbTechnician3.getSelectedIndex() != 0) {
+            currentEntry.setTechnician3(((ComboBoxItem<Staff>) this.cbTechnician3.getSelectedItem()).getItem());
+        }
+        if (this.cbWorker1.getSelectedItem() != null && this.cbWorker1.getSelectedIndex() != 0) {
+            currentEntry.setWorker1(((ComboBoxItem<Staff>) this.cbWorker1.getSelectedItem()).getItem());
+        }
+        if (this.cbWorker2.getSelectedItem() != null && this.cbWorker2.getSelectedIndex() != 0) {
+            currentEntry.setWorker2(((ComboBoxItem<Staff>) this.cbWorker2.getSelectedItem()).getItem());
+        }
+        if (this.cbWorker3.getSelectedItem() != null && this.cbWorker3.getSelectedIndex() != 0) {
+            currentEntry.setWorker3(((ComboBoxItem<Staff>) this.cbWorker3.getSelectedItem()).getItem());
+        }
+        
         this.entryService.UpdateEntity(currentEntry);
         this.UpdateTabEntry(currentEntry.getId());
     }//GEN-LAST:event_btnEntrySaveActionPerformed
@@ -1113,7 +1563,7 @@ public class EntryJFrame extends javax.swing.JFrame {
     }
 
     private void cbEntryMouldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEntryMouldActionPerformed
-        this.FillProductComboBox(this.cbEntryProduct, 0, ((ComboBoxItem<Mould>)this.cbEntryMould.getSelectedItem()).getItem().getId());
+        this.FillProductComboBox(this.cbEntryProduct, 0, ((ComboBoxItem<Mould>) this.cbEntryMould.getSelectedItem()).getItem().getId());
     }//GEN-LAST:event_cbEntryMouldActionPerformed
 
     private void tabSettingsAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_tabSettingsAncestorAdded
@@ -1128,113 +1578,144 @@ public class EntryJFrame extends javax.swing.JFrame {
             txtEntryWeightMax.setText(currentProduct.getWeightMax() == null ? "" : currentProduct.getWeightMax().toString());;
             txtEntryTapPositionMin.setText(currentMould.getTapPositionMin() == null ? "" : currentMould.getTapPositionMin().toString());
             txtEntryTapPositionMax.setText(currentMould.getTapPositionMax() == null ? "" : currentMould.getTapPositionMax().toString());
+//            if (currentProduct.getDgnondg() != null) {
+//                switch (currentProduct.getDgnondg()) {
+//                    case 0:
+//                        this.txtEntryWallMin.setText(currentMould.getWallDgUnderHandleMin() == null ? "" : currentMould.getWallDgUnderHandleMin().toString());
+//                        this.txtEntryWallMax.setText(currentMould.getWallDgUnderHandleMax() == null ? "" : currentMould.getWallDgUnderHandleMax().toString());
+//                        break;
+//                    case 1:
+//                        this.txtEntryWallMin.setText(currentMould.getWallDgBaseMin() == null ? "" : currentMould.getWallDgBaseMin().toString());
+//                        this.txtEntryWallMax.setText(currentMould.getWallDgBaseMax() == null ? "" : currentMould.getWallDgBaseMax().toString());
+//                        break;
+//                    case 2:
+//                        this.txtEntryWallMin.setText(currentMould.getWallDgClosureMin() == null ? "" : currentMould.getWallDgClosureMin().toString());
+//                        this.txtEntryWallMax.setText(currentMould.getWallDgClosureMax() == null ? "" : currentMould.getWallDgClosureMax().toString());
+//                        break;
+//                    case 3:
+//                        this.txtEntryWallMin.setText(currentMould.getWallDgHandleBungMin() == null ? "" : currentMould.getWallDgHandleBungMin().toString());
+//                        this.txtEntryWallMax.setText(currentMould.getWallDgHandleBungMax() == null ? "" : currentMould.getWallDgHandleBungMax().toString());
+//                        break;
+//                    case 4:
+//                        this.txtEntryWallMin.setText(currentMould.getWallDgHandleLeftMin() == null ? "" : currentMould.getWallDgHandleLeftMin().toString());
+//                        this.txtEntryWallMax.setText(currentMould.getWallDgHandleLeftMax() == null ? "" : currentMould.getWallDgHandleLeftMax().toString());
+//                        break;
+//                    case 5:
+//                        this.txtEntryWallMin.setText(currentMould.getWallDgHandRightMin() == null ? "" : currentMould.getWallDgHandRightMin().toString());
+//                        this.txtEntryWallMax.setText(currentMould.getWallDgHandleRightMax() == null ? "" : currentMould.getWallDgHandleRightMax().toString());
+//                        break;
+//                    case 6:
+//                        this.txtEntryWallMin.setText(currentMould.getWallNonDgUnderHandleMin() == null ? "" : currentMould.getWallNonDgUnderHandleMin().toString());
+//                        this.txtEntryWallMax.setText(currentMould.getWallNonDgUnderHandleMax() == null ? "" : currentMould.getWallNonDgUnderHandleMax().toString());
+//                        break;
+//                    case 7:
+//                        this.txtEntryWallMin.setText(currentMould.getWallNonDgBaseMin() == null ? "" : currentMould.getWallNonDgBaseMin().toString());
+//                        this.txtEntryWallMax.setText(currentMould.getWallNonDgBaseMax() == null ? "" : currentMould.getWallNonDgBaseMax().toString());
+//                        break;
+//                    case 8:
+//                        this.txtEntryWallMin.setText(currentMould.getWallNonDgClosureMin() == null ? "" : currentMould.getWallNonDgClosureMin().toString());
+//                        this.txtEntryWallMax.setText(currentMould.getWallNonDgClosureMax() == null ? "" : currentMould.getWallNonDgClosureMax().toString());
+//                        break;
+//                    case 9:
+//                        this.txtEntryWallMin.setText(currentMould.getWallNonDgHandleBungMin() == null ? "" : currentMould.getWallNonDgHandleBungMin().toString());
+//                        this.txtEntryWallMax.setText(currentMould.getWallNonDgHandleBungMax() == null ? "" : currentMould.getWallNonDgHandleBungMax().toString());
+//                        break;
+//                    case 10:
+//                        this.txtEntryWallMin.setText(currentMould.getWallNonDgHandleLeftMin() == null ? "" : currentMould.getWallNonDgHandleLeftMin().toString());
+//                        this.txtEntryWallMax.setText(currentMould.getWallNonDgHandleLeftMax() == null ? "" : currentMould.getWallNonDgHandleLeftMax().toString());
+//                        break;
+//                    case 11:
+//                        this.txtEntryWallMin.setText(currentMould.getWallNonDgHandleRightMin() == null ? "" : currentMould.getWallNonDgHandleRightMin().toString());
+//                        this.txtEntryWallMax.setText(currentMould.getWallNonDgHandleRightMax() == null ? "" : currentMould.getWallNonDgHandleRightMax().toString());
+//                        break;
+//                }
+//            }
+
             if (currentProduct.getDgnondg() != null) {
                 switch (currentProduct.getDgnondg()) {
                     case 0:
-                        this.txtEntryWallMin.setText(currentMould.getWallDgUnderHandleMin() == null ? "" : currentMould.getWallDgUnderHandleMin().toString());
-                        this.txtEntryWallMax.setText(currentMould.getWallDgUnderHandleMax() == null ? "" : currentMould.getWallDgUnderHandleMax().toString());
+                        this.txtMouldHandleBungMax.setText(currentMould.getWallDgHandleBungMax() == null ? "" : currentMould.getWallDgHandleBungMax().toString());
+                        this.txtMouldHandleBungMin.setText(currentMould.getWallDgHandleBungMin() == null ? "" : currentMould.getWallDgHandleBungMin().toString());
+                        this.txtMouldHandleLeftMax.setText(currentMould.getWallDgHandleLeftMax() == null ? "" : currentMould.getWallDgHandleLeftMax().toString());
+                        this.txtMouldHandleLeftMin.setText(currentMould.getWallDgHandleLeftMin() == null ? "" : currentMould.getWallDgHandleLeftMin().toString());
+                        this.txtMouldHandleRightMax.setText(currentMould.getWallDgHandleRightMax() == null ? "" : currentMould.getWallDgHandleRightMax().toString());
+                        this.txtMouldHandleRightMin.setText(currentMould.getWallDgHandleRightMin() == null ? "" : currentMould.getWallDgHandleRightMin().toString());
+                        this.txtMouldUnderHandleMax.setText(currentMould.getWallDgUnderHandleMax() == null ? "" : currentMould.getWallDgUnderHandleMax().toString());
+                        this.txtMouldUnderHandleMin.setText(currentMould.getWallDgUnderHandleMin() == null ? "" : currentMould.getWallDgUnderHandleMin().toString());
+                        this.txtMouldBaseMax.setText(currentMould.getWallDgBaseMax() == null ? "" : currentMould.getWallDgBaseMax().toString());
+                        this.txtMouldBaseMin.setText(currentMould.getWallDgBaseMin() == null ? "" : currentMould.getWallDgBaseMin().toString());
+                        this.txtMouldClosureMax.setText(currentMould.getWallDgClosureMax() == null ? "" : currentMould.getWallDgClosureMax().toString());
+                        this.txtMouldClosureMin.setText(currentMould.getWallDgClosureMin() == null ? "" : currentMould.getWallDgClosureMin().toString());
                         break;
                     case 1:
-                        this.txtEntryWallMin.setText(currentMould.getWallDgBaseMin() == null ? "" : currentMould.getWallDgBaseMin().toString());
-                        this.txtEntryWallMax.setText(currentMould.getWallDgBaseMax() == null ? "" : currentMould.getWallDgBaseMax().toString());
+                        this.txtMouldHandleBungMax.setText(currentMould.getWallNonDgHandleBungMax() == null ? "" : currentMould.getWallNonDgHandleBungMax().toString());
+                        this.txtMouldHandleBungMin.setText(currentMould.getWallNonDgHandleBungMin() == null ? "" : currentMould.getWallNonDgHandleBungMin().toString());
+                        this.txtMouldHandleLeftMax.setText(currentMould.getWallNonDgHandleLeftMax() == null ? "" : currentMould.getWallNonDgHandleLeftMax().toString());
+                        this.txtMouldHandleLeftMin.setText(currentMould.getWallNonDgHandleLeftMin() == null ? "" : currentMould.getWallNonDgHandleLeftMin().toString());
+                        this.txtMouldHandleRightMax.setText(currentMould.getWallNonDgHandleRightMax() == null ? "" : currentMould.getWallNonDgHandleRightMax().toString());
+                        this.txtMouldHandleRightMin.setText(currentMould.getWallNonDgHandleRightMin() == null ? "" : currentMould.getWallNonDgHandleRightMin().toString());
+                        this.txtMouldUnderHandleMax.setText(currentMould.getWallNonDgUnderHandleMax() == null ? "" : currentMould.getWallNonDgUnderHandleMax().toString());
+                        this.txtMouldUnderHandleMin.setText(currentMould.getWallNonDgUnderHandleMin() == null ? "" : currentMould.getWallNonDgUnderHandleMin().toString());
+                        this.txtMouldBaseMax.setText(currentMould.getWallNonDgBaseMax() == null ? "" : currentMould.getWallNonDgBaseMax().toString());
+                        this.txtMouldBaseMin.setText(currentMould.getWallNonDgBaseMin() == null ? "" : currentMould.getWallNonDgBaseMin().toString());
+                        this.txtMouldClosureMax.setText(currentMould.getWallNonDgClosureMax() == null ? "" : currentMould.getWallNonDgClosureMax().toString());
+                        this.txtMouldClosureMin.setText(currentMould.getWallNonDgClosureMin() == null ? "" : currentMould.getWallNonDgClosureMin().toString());
+                        break;
+                }
+            }
+            if (currentProduct.getThreadBore() != null) {
+                switch (currentProduct.getThreadBore()) {
+                    case 1:
+                        this.txtEntryThreadBoreMin.setText(currentMould.getThreadBoreAMin1() == null ? "" : currentMould.getThreadBoreAMin1().toString());
+                        this.txtEntryThreadBoreMax.setText(currentMould.getThreadBoreAMax1() == null ? "" : currentMould.getThreadBoreAMax1().toString());
                         break;
                     case 2:
-                        this.txtEntryWallMin.setText(currentMould.getWallDgClosureMin() == null ? "" : currentMould.getWallDgClosureMin().toString());
-                        this.txtEntryWallMax.setText(currentMould.getWallDgClosureMax() == null ? "" : currentMould.getWallDgClosureMax().toString());
+                        this.txtEntryThreadBoreMin.setText(currentMould.getThreadBoreAMin2() == null ? "" : currentMould.getThreadBoreAMin2().toString());
+                        this.txtEntryThreadBoreMax.setText(currentMould.getThreadBoreAMax2() == null ? "" : currentMould.getThreadBoreAMax2().toString());
                         break;
                     case 3:
-                        this.txtEntryWallMin.setText(currentMould.getWallDgHandleBungMin() == null ? "" : currentMould.getWallDgHandleBungMin().toString());
-                        this.txtEntryWallMax.setText(currentMould.getWallDgHandleBungMax() == null ? "" : currentMould.getWallDgHandleBungMax().toString());
+                        this.txtEntryThreadBoreMin.setText(currentMould.getThreadBoreAMin3() == null ? "" : currentMould.getThreadBoreAMin3().toString());
+                        this.txtEntryThreadBoreMax.setText(currentMould.getThreadBoreAMax3() == null ? "" : currentMould.getThreadBoreAMax3().toString());
                         break;
                     case 4:
-                        this.txtEntryWallMin.setText(currentMould.getWallDgHandleLeftMin() == null ? "" : currentMould.getWallDgHandleLeftMin().toString());
-                        this.txtEntryWallMax.setText(currentMould.getWallDgHandleLeftMax() == null ? "" : currentMould.getWallDgHandleLeftMax().toString());
+                        this.txtEntryThreadBoreMin.setText(currentMould.getThreadBoreBMin1() == null ? "" : currentMould.getThreadBoreBMin1().toString());
+                        this.txtEntryThreadBoreMax.setText(currentMould.getThreadBoreBMax1() == null ? "" : currentMould.getThreadBoreBMax1().toString());
                         break;
                     case 5:
-                        this.txtEntryWallMin.setText(currentMould.getWallDgHandRightMin() == null ? "" : currentMould.getWallDgHandRightMin().toString());
-                        this.txtEntryWallMax.setText(currentMould.getWallDgHandleRightMax() == null ? "" : currentMould.getWallDgHandleRightMax().toString());
+                        this.txtEntryThreadBoreMin.setText(currentMould.getThreadBoreBMin2() == null ? "" : currentMould.getThreadBoreBMin2().toString());
+                        this.txtEntryThreadBoreMax.setText(currentMould.getThreadBoreBMax2() == null ? "" : currentMould.getThreadBoreBMax2().toString());
                         break;
                     case 6:
-                        this.txtEntryWallMin.setText(currentMould.getWallNonDgUnderHandleMin() == null ? "" : currentMould.getWallNonDgUnderHandleMin().toString());
-                        this.txtEntryWallMax.setText(currentMould.getWallNonDgUnderHandleMax() == null ? "" : currentMould.getWallNonDgUnderHandleMax().toString());
-                        break;
-                    case 7:
-                        this.txtEntryWallMin.setText(currentMould.getWallNonDgBaseMin() == null ? "" : currentMould.getWallNonDgBaseMin().toString());
-                        this.txtEntryWallMax.setText(currentMould.getWallNonDgBaseMax() == null ? "" : currentMould.getWallNonDgBaseMax().toString());
-                        break;
-                    case 8:
-                        this.txtEntryWallMin.setText(currentMould.getWallNonDgClosureMin() == null ? "" : currentMould.getWallNonDgClosureMin().toString());
-                        this.txtEntryWallMax.setText(currentMould.getWallNonDgClosureMax() == null ? "" : currentMould.getWallNonDgClosureMax().toString());
-                        break;
-                    case 9:
-                        this.txtEntryWallMin.setText(currentMould.getWallNonDgHandleBungMin() == null ? "" : currentMould.getWallNonDgHandleBungMin().toString());
-                        this.txtEntryWallMax.setText(currentMould.getWallNonDgHandleBungMax() == null ? "" : currentMould.getWallNonDgHandleBungMax().toString());
-                        break;
-                    case 10:
-                        this.txtEntryWallMin.setText(currentMould.getWallNonDgHandleLeftMin() == null ? "" : currentMould.getWallNonDgHandleLeftMin().toString());
-                        this.txtEntryWallMax.setText(currentMould.getWallNonDgHandleLeftMax() == null ? "" : currentMould.getWallNonDgHandleLeftMax().toString());
-                        break;
-                    case 11:
-                        this.txtEntryWallMin.setText(currentMould.getWallNonDgHandleRightMin() == null ? "" : currentMould.getWallNonDgHandleRightMin().toString());
-                        this.txtEntryWallMax.setText(currentMould.getWallNonDgHandleRightMax() == null ? "" : currentMould.getWallNonDgHandleRightMax().toString());
+                        this.txtEntryThreadBoreMin.setText(currentMould.getThreadBoreBMin3() == null ? "" : currentMould.getThreadBoreBMin3().toString());
+                        this.txtEntryThreadBoreMax.setText(currentMould.getThreadBoreBMax3() == null ? "" : currentMould.getThreadBoreBMax3().toString());
                         break;
                 }
-                if (currentProduct.getThreadBore() != null) {
-                    switch (currentProduct.getThreadBore()) {
-                        case 1:
-                            this.txtEntryThreadBoreMin.setText(currentMould.getThreadBoreAMin1() == null ? "" : currentMould.getThreadBoreAMin1().toString());
-                            this.txtEntryThreadBoreMax.setText(currentMould.getThreadBoreAMax1() == null ? "" : currentMould.getThreadBoreAMax1().toString());
-                            break;
-                        case 2:
-                            this.txtEntryThreadBoreMin.setText(currentMould.getThreadBoreAMin2() == null ? "" : currentMould.getThreadBoreAMin2().toString());
-                            this.txtEntryThreadBoreMax.setText(currentMould.getThreadBoreAMax2() == null ? "" : currentMould.getThreadBoreAMax2().toString());
-                            break;
-                        case 3:
-                            this.txtEntryThreadBoreMin.setText(currentMould.getThreadBoreAMin3() == null ? "" : currentMould.getThreadBoreAMin3().toString());
-                            this.txtEntryThreadBoreMax.setText(currentMould.getThreadBoreAMax3() == null ? "" : currentMould.getThreadBoreAMax3().toString());
-                            break;
-                        case 4:
-                            this.txtEntryThreadBoreMin.setText(currentMould.getThreadBoreBMin1() == null ? "" : currentMould.getThreadBoreBMin1().toString());
-                            this.txtEntryThreadBoreMax.setText(currentMould.getThreadBoreBMax1() == null ? "" : currentMould.getThreadBoreBMax1().toString());
-                            break;
-                        case 5:
-                            this.txtEntryThreadBoreMin.setText(currentMould.getThreadBoreBMin2() == null ? "" : currentMould.getThreadBoreBMin2().toString());
-                            this.txtEntryThreadBoreMax.setText(currentMould.getThreadBoreBMax2() == null ? "" : currentMould.getThreadBoreBMax2().toString());
-                            break;
-                        case 6:
-                            this.txtEntryThreadBoreMin.setText(currentMould.getThreadBoreBMin3() == null ? "" : currentMould.getThreadBoreBMin3().toString());
-                            this.txtEntryThreadBoreMax.setText(currentMould.getThreadBoreBMax3() == null ? "" : currentMould.getThreadBoreBMax3().toString());
-                            break;
-                    }
-                }
-                if (currentProduct.getThreadNeck() != null) {
-                    switch (currentProduct.getThreadNeck()) {
-                        case 1:
-                            this.txtEntryThreadNeckMin.setText(currentMould.getThreadNeckMin1() == null ? "" : currentMould.getThreadNeckMin1().toString());
-                            this.txtEntryThreadNeckMax.setText(currentMould.getThreadNeckMax1() == null ? "" : currentMould.getThreadNeckMax1().toString());
-                            break;
-                        case 2:
-                            this.txtEntryThreadNeckMin.setText(currentMould.getThreadNeckMin2() == null ? "" : currentMould.getThreadNeckMin2().toString());
-                            this.txtEntryThreadNeckMax.setText(currentMould.getThreadNeckMax2() == null ? "" : currentMould.getThreadNeckMax2().toString());
-                            break;
-                        case 3:
-                            this.txtEntryThreadNeckMin.setText(currentMould.getThreadNeckMin3() == null ? "" : currentMould.getThreadNeckMin3().toString());
-                            this.txtEntryThreadNeckMax.setText(currentMould.getThreadNeckMax3() == null ? "" : currentMould.getThreadNeckMax3().toString());
-                            break;
-                    }
+            }
+            if (currentProduct.getThreadNeck() != null) {
+                switch (currentProduct.getThreadNeck()) {
+                    case 1:
+                        this.txtEntryThreadNeckMin.setText(currentMould.getThreadNeckMin1() == null ? "" : currentMould.getThreadNeckMin1().toString());
+                        this.txtEntryThreadNeckMax.setText(currentMould.getThreadNeckMax1() == null ? "" : currentMould.getThreadNeckMax1().toString());
+                        break;
+                    case 2:
+                        this.txtEntryThreadNeckMin.setText(currentMould.getThreadNeckMin2() == null ? "" : currentMould.getThreadNeckMin2().toString());
+                        this.txtEntryThreadNeckMax.setText(currentMould.getThreadNeckMax2() == null ? "" : currentMould.getThreadNeckMax2().toString());
+                        break;
+                    case 3:
+                        this.txtEntryThreadNeckMin.setText(currentMould.getThreadNeckMin3() == null ? "" : currentMould.getThreadNeckMin3().toString());
+                        this.txtEntryThreadNeckMax.setText(currentMould.getThreadNeckMax3() == null ? "" : currentMould.getThreadNeckMax3().toString());
+                        break;
                 }
             }
         }
     }//GEN-LAST:event_cbEntryProductActionPerformed
 
     private void UpdateEntryUI(Entry currentEntry) {
-        this.labEntryCreatedDate.setText(currentEntry.getCreateDate() != null ? (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format( currentEntry.getCreateDate()) : "");
+        this.labEntryCreatedDate.setText(currentEntry.getCreateDate() != null ? (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(currentEntry.getCreateDate()) : "");
         cbEntryInUse.setSelectedItem(currentEntry.getInUse());
         txtEntryShift.setText(currentEntry.getShift() == null || currentEntry.getShift() == "- Select -" ? "" : currentEntry.getShift().toString());;
         txtEntryWeightMin.setText(currentEntry.getWeightMin() == null ? "" : currentEntry.getWeightMin().toString());;
         txtEntryWeightMax.setText(currentEntry.getWeightMax() == null ? "" : currentEntry.getWeightMax().toString());;
-        txtEntryWallMin.setText(currentEntry.getWallMin() == null ? "" : currentEntry.getWallMin().toString());;
-        txtEntryWallMax.setText(currentEntry.getWallMax() == null ? "" : currentEntry.getWallMax().toString());
         txtEntryThreadBoreMin.setText(currentEntry.getThreadBoreMin() == null ? "" : currentEntry.getThreadBoreMin().toString());
         txtEntryThreadBoreMax.setText(currentEntry.getThreadBoreMax() == null ? "" : currentEntry.getThreadBoreMax().toString());
         txtEntryThreadNeckMin.setText(currentEntry.getThreadNeckMin() == null ? "" : currentEntry.getThreadNeckMin().toString());
@@ -1247,6 +1728,15 @@ public class EntryJFrame extends javax.swing.JFrame {
             this.FillProductComboBox(this.cbEntryProduct, currentEntry.getProductId() != null ? currentEntry.getProductId().getId() : 0, currentEntry.getMouldId().getId());
         }
         this.FillMachineComboBox(this.cbEntryMachine, currentEntry.getMachineId() != null ? currentEntry.getMachineId().getId() : 0);
+        this.FillStaffComboBox(this.cbSupervisor1, currentEntry.getSupervisor1() != null ? currentEntry.getSupervisor1().getId() : 0,"SUPERVISOR");
+        this.FillStaffComboBox(this.cbSupervisor2, currentEntry.getSupervisor2() != null ? currentEntry.getSupervisor2().getId() : 0,"SUPERVISOR");
+        this.FillStaffComboBox(this.cbSupervisor3, currentEntry.getSupervisor3() != null ? currentEntry.getSupervisor3().getId() : 0,"SUPERVISOR");
+        this.FillStaffComboBox(this.cbTechnician1, currentEntry.getTechnician1() != null ? currentEntry.getTechnician1().getId() : 0,"TECHNICIAN");
+        this.FillStaffComboBox(this.cbTechnician2, currentEntry.getTechnician2() != null ? currentEntry.getTechnician2().getId() : 0,"TECHNICIAN");
+        this.FillStaffComboBox(this.cbTechnician3, currentEntry.getTechnician3() != null ? currentEntry.getTechnician3().getId() : 0,"TECHNICIAN");
+        this.FillStaffComboBox(this.cbWorker1, currentEntry.getWorker1() != null ? currentEntry.getWorker1().getId() : 0,"PROCESS WORKER");
+        this.FillStaffComboBox(this.cbWorker2, currentEntry.getWorker2() != null ? currentEntry.getWorker2().getId() : 0,"PROCESS WORKER");
+        this.FillStaffComboBox(this.cbWorker3, currentEntry.getWorker3() != null ? currentEntry.getWorker3().getId() : 0,"PROCESS WORKER");
     }
 
     /**
@@ -1300,18 +1790,43 @@ public class EntryJFrame extends javax.swing.JFrame {
     private javax.swing.JComboBox cbEntryProduct;
     private javax.swing.JComboBox cbStaff;
     private javax.swing.JComboBox cbStaffJob;
+    private javax.swing.JComboBox cbSupervisor1;
+    private javax.swing.JComboBox cbSupervisor2;
+    private javax.swing.JComboBox cbSupervisor3;
+    private javax.swing.JComboBox cbTechnician1;
+    private javax.swing.JComboBox cbTechnician2;
+    private javax.swing.JComboBox cbTechnician3;
+    private javax.swing.JComboBox cbWorker1;
+    private javax.swing.JComboBox cbWorker2;
+    private javax.swing.JComboBox cbWorker3;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel101;
     private javax.swing.JLabel jLabel118;
     private javax.swing.JLabel jLabel119;
     private javax.swing.JLabel jLabel120;
-    private javax.swing.JLabel jLabel121;
     private javax.swing.JLabel jLabel122;
     private javax.swing.JLabel jLabel123;
     private javax.swing.JLabel jLabel124;
     private javax.swing.JLabel jLabel126;
     private javax.swing.JLabel jLabel163;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel37;
+    private javax.swing.JLabel jLabel38;
+    private javax.swing.JLabel jLabel39;
+    private javax.swing.JLabel jLabel40;
+    private javax.swing.JLabel jLabel41;
+    private javax.swing.JLabel jLabel42;
+    private javax.swing.JLabel jLabel43;
     private javax.swing.JLabel jLabel47;
     private javax.swing.JLabel jLabel73;
     private javax.swing.JLabel jLabel74;
@@ -1319,8 +1834,10 @@ public class EntryJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel76;
     private javax.swing.JLabel jLabel78;
     private javax.swing.JLabel jLabel90;
+    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel29;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel30;
     private javax.swing.JPanel jPanel31;
     private javax.swing.JPanel jPanel38;
@@ -1328,6 +1845,7 @@ public class EntryJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel48;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JLabel labEntryCreatedDate;
+    private javax.swing.JLabel labEntryWall;
     private javax.swing.JTabbedPane pnlEditEntry;
     private javax.swing.JPanel pnlEditStaff;
     private javax.swing.JTabbedPane tabSettings;
@@ -1339,10 +1857,20 @@ public class EntryJFrame extends javax.swing.JFrame {
     private javax.swing.JTextField txtEntryThreadBoreMin;
     private javax.swing.JTextField txtEntryThreadNeckMax;
     private javax.swing.JTextField txtEntryThreadNeckMin;
-    private javax.swing.JTextField txtEntryWallMax;
-    private javax.swing.JTextField txtEntryWallMin;
     private javax.swing.JTextField txtEntryWeightMax;
     private javax.swing.JTextField txtEntryWeightMin;
+    private javax.swing.JTextField txtMouldBaseMax;
+    private javax.swing.JTextField txtMouldBaseMin;
+    private javax.swing.JTextField txtMouldClosureMax;
+    private javax.swing.JTextField txtMouldClosureMin;
+    private javax.swing.JTextField txtMouldHandleBungMax;
+    private javax.swing.JTextField txtMouldHandleBungMin;
+    private javax.swing.JTextField txtMouldHandleLeftMax;
+    private javax.swing.JTextField txtMouldHandleLeftMin;
+    private javax.swing.JTextField txtMouldHandleRightMax;
+    private javax.swing.JTextField txtMouldHandleRightMin;
+    private javax.swing.JTextField txtMouldUnderHandleMax;
+    private javax.swing.JTextField txtMouldUnderHandleMin;
     private javax.swing.JTextField txtStaffName;
     // End of variables declaration//GEN-END:variables
 

@@ -34,8 +34,33 @@ public class RecordValidationServiceImpl implements RecordValidationService {
                     result = false;
                 }
                 break;
-            case WALL_THICKNESS:
-                if (value < entry.getWallMin() || value > entry.getWallMax()) {
+            case WALL_BASE:
+                if (value < entry.getWallBaseMin() || value > entry.getWallBaseMax()) {
+                    result = false;
+                }
+                break;
+            case WALL_CLOSURE:
+                if (value < entry.getWallClosureMin() || value > entry.getWallClosureMax()) {
+                    result = false;
+                }
+                break;
+            case WALL_HANDLE_BUNG:
+                if (value < entry.getWallHandleBungMin() || value > entry.getWallHandleBungMax()) {
+                    result = false;
+                }
+                break;
+            case WALL_HANDLE_LEFT:
+                if (value < entry.getWallHandleLeftMin() || value > entry.getWallHandleLeftMax()) {
+                    result = false;
+                }
+                break;
+            case WALL_HANDLE_RIGHT:
+                if (value < entry.getWallHandleRightMin() || value > entry.getWallHandleRightMax()) {
+                    result = false;
+                }
+                break;
+            case WALL_UNDER_HANDLE:
+                if (value < entry.getWallUnderHandleMin() || value > entry.getWallUnderHandleMax()) {
                     result = false;
                 }
                 break;

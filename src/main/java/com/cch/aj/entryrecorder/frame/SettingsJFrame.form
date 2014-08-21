@@ -2072,19 +2072,9 @@
                 <Component class="javax.swing.JComboBox" name="cbProductDg">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                      <StringArray count="12">
-                        <StringItem index="0" value="DG-UNDER THE HANDLE"/>
-                        <StringItem index="1" value="DG-BASE(CENTRE)"/>
-                        <StringItem index="2" value="DG-CLOSURE SIDE"/>
-                        <StringItem index="3" value="DG-END OF HANDLE SIDE-BUNG"/>
-                        <StringItem index="4" value="DG-END OF HANDLE SIDE-LEFT"/>
-                        <StringItem index="5" value="DG-END OF HANDLE SIDE-RIGHT"/>
-                        <StringItem index="6" value="NONDG-UNDER THE HANDLE"/>
-                        <StringItem index="7" value="NONDG-BASE(CENTRE)"/>
-                        <StringItem index="8" value="NONDG-CLOSURE SIDE"/>
-                        <StringItem index="9" value="NONDG-END OF HANDLE SIDE-BUNG"/>
-                        <StringItem index="10" value="NONDG-END OF HANDLE SIDE-LEFT"/>
-                        <StringItem index="11" value="NONDG-END OF HANDLE SIDE-RIGHT"/>
+                      <StringArray count="2">
+                        <StringItem index="0" value="DG"/>
+                        <StringItem index="1" value="NON-DG"/>
                       </StringArray>
                     </Property>
                   </Properties>

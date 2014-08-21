@@ -35,6 +35,24 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Staff.findByName", query = "SELECT s FROM Staff s WHERE s.name = :name"),
     @NamedQuery(name = "Staff.findByJobType", query = "SELECT s FROM Staff s WHERE s.jobType = :jobType")})
 public class Staff implements Serializable,SettingEntity {
+    @OneToMany(mappedBy = "worker3")
+    private Collection<Entry> entryCollection;
+    @OneToMany(mappedBy = "worker1")
+    private Collection<Entry> entryCollection1;
+    @OneToMany(mappedBy = "worker2")
+    private Collection<Entry> entryCollection2;
+    @OneToMany(mappedBy = "supervisor1")
+    private Collection<Entry> entryCollection3;
+    @OneToMany(mappedBy = "technician3")
+    private Collection<Entry> entryCollection4;
+    @OneToMany(mappedBy = "supervisor2")
+    private Collection<Entry> entryCollection5;
+    @OneToMany(mappedBy = "supervisor3")
+    private Collection<Entry> entryCollection6;
+    @OneToMany(mappedBy = "technician1")
+    private Collection<Entry> entryCollection7;
+    @OneToMany(mappedBy = "technician2")
+    private Collection<Entry> entryCollection8;
     @OneToMany(mappedBy = "staffId")
     private Collection<Record> recordCollection;
     private static final long serialVersionUID = 1L;
@@ -125,6 +143,87 @@ public class Staff implements Serializable,SettingEntity {
 
     public void setRecordCollection(Collection<Record> recordCollection) {
         this.recordCollection = recordCollection;
+    }
+
+    @XmlTransient
+    public Collection<Entry> getEntryCollection() {
+        return entryCollection;
+    }
+
+    public void setEntryCollection(Collection<Entry> entryCollection) {
+        this.entryCollection = entryCollection;
+    }
+
+    @XmlTransient
+    public Collection<Entry> getEntryCollection1() {
+        return entryCollection1;
+    }
+
+    public void setEntryCollection1(Collection<Entry> entryCollection1) {
+        this.entryCollection1 = entryCollection1;
+    }
+
+    @XmlTransient
+    public Collection<Entry> getEntryCollection2() {
+        return entryCollection2;
+    }
+
+    public void setEntryCollection2(Collection<Entry> entryCollection2) {
+        this.entryCollection2 = entryCollection2;
+    }
+
+    @XmlTransient
+    public Collection<Entry> getEntryCollection3() {
+        return entryCollection3;
+    }
+
+    public void setEntryCollection3(Collection<Entry> entryCollection3) {
+        this.entryCollection3 = entryCollection3;
+    }
+
+    @XmlTransient
+    public Collection<Entry> getEntryCollection4() {
+        return entryCollection4;
+    }
+
+    public void setEntryCollection4(Collection<Entry> entryCollection4) {
+        this.entryCollection4 = entryCollection4;
+    }
+
+    @XmlTransient
+    public Collection<Entry> getEntryCollection5() {
+        return entryCollection5;
+    }
+
+    public void setEntryCollection5(Collection<Entry> entryCollection5) {
+        this.entryCollection5 = entryCollection5;
+    }
+
+    @XmlTransient
+    public Collection<Entry> getEntryCollection6() {
+        return entryCollection6;
+    }
+
+    public void setEntryCollection6(Collection<Entry> entryCollection6) {
+        this.entryCollection6 = entryCollection6;
+    }
+
+    @XmlTransient
+    public Collection<Entry> getEntryCollection7() {
+        return entryCollection7;
+    }
+
+    public void setEntryCollection7(Collection<Entry> entryCollection7) {
+        this.entryCollection7 = entryCollection7;
+    }
+
+    @XmlTransient
+    public Collection<Entry> getEntryCollection8() {
+        return entryCollection8;
+    }
+
+    public void setEntryCollection8(Collection<Entry> entryCollection8) {
+        this.entryCollection8 = entryCollection8;
     }
     
 }

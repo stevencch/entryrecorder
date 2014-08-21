@@ -9,10 +9,8 @@ package com.cch.aj.entryrecorder.entities;
 import com.cch.aj.entryrecorder.common.AppHelper;
 import com.cch.aj.entryrecorder.common.SettingEntity;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,12 +20,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -41,8 +37,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Entry.findById", query = "SELECT e FROM Entry e WHERE e.id = :id"),
     @NamedQuery(name = "Entry.findByShift", query = "SELECT e FROM Entry e WHERE e.shift = :shift"),
     @NamedQuery(name = "Entry.findByCreateDate", query = "SELECT e FROM Entry e WHERE e.createDate = :createDate"),
-    @NamedQuery(name = "Entry.findByWallMin", query = "SELECT e FROM Entry e WHERE e.wallMin = :wallMin"),
-    @NamedQuery(name = "Entry.findByWallMax", query = "SELECT e FROM Entry e WHERE e.wallMax = :wallMax"),
     @NamedQuery(name = "Entry.findByWeightMin", query = "SELECT e FROM Entry e WHERE e.weightMin = :weightMin"),
     @NamedQuery(name = "Entry.findByWeightMax", query = "SELECT e FROM Entry e WHERE e.weightMax = :weightMax"),
     @NamedQuery(name = "Entry.findByTapPositionMin", query = "SELECT e FROM Entry e WHERE e.tapPositionMin = :tapPositionMin"),
@@ -51,7 +45,19 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Entry.findByThreadBoreMax", query = "SELECT e FROM Entry e WHERE e.threadBoreMax = :threadBoreMax"),
     @NamedQuery(name = "Entry.findByThreadNeckMin", query = "SELECT e FROM Entry e WHERE e.threadNeckMin = :threadNeckMin"),
     @NamedQuery(name = "Entry.findByThreadNeckMax", query = "SELECT e FROM Entry e WHERE e.threadNeckMax = :threadNeckMax"),
-    @NamedQuery(name = "Entry.findByInUse", query = "SELECT e FROM Entry e WHERE e.inUse = :inUse")})
+    @NamedQuery(name = "Entry.findByInUse", query = "SELECT e FROM Entry e WHERE e.inUse = :inUse"),
+    @NamedQuery(name = "Entry.findByWallUnderHandleMin", query = "SELECT e FROM Entry e WHERE e.wallUnderHandleMin = :wallUnderHandleMin"),
+    @NamedQuery(name = "Entry.findByWallUnderHandleMax", query = "SELECT e FROM Entry e WHERE e.wallUnderHandleMax = :wallUnderHandleMax"),
+    @NamedQuery(name = "Entry.findByWallBaseMin", query = "SELECT e FROM Entry e WHERE e.wallBaseMin = :wallBaseMin"),
+    @NamedQuery(name = "Entry.findByWallBaseMax", query = "SELECT e FROM Entry e WHERE e.wallBaseMax = :wallBaseMax"),
+    @NamedQuery(name = "Entry.findByWallClosureMin", query = "SELECT e FROM Entry e WHERE e.wallClosureMin = :wallClosureMin"),
+    @NamedQuery(name = "Entry.findByWallClosureMax", query = "SELECT e FROM Entry e WHERE e.wallClosureMax = :wallClosureMax"),
+    @NamedQuery(name = "Entry.findByWallHandleBungMin", query = "SELECT e FROM Entry e WHERE e.wallHandleBungMin = :wallHandleBungMin"),
+    @NamedQuery(name = "Entry.findByWallHandleBungMax", query = "SELECT e FROM Entry e WHERE e.wallHandleBungMax = :wallHandleBungMax"),
+    @NamedQuery(name = "Entry.findByWallHandleLeftMin", query = "SELECT e FROM Entry e WHERE e.wallHandleLeftMin = :wallHandleLeftMin"),
+    @NamedQuery(name = "Entry.findByWallHandleLeftMax", query = "SELECT e FROM Entry e WHERE e.wallHandleLeftMax = :wallHandleLeftMax"),
+    @NamedQuery(name = "Entry.findByWallHandleRightMin", query = "SELECT e FROM Entry e WHERE e.wallHandleRightMin = :wallHandleRightMin"),
+    @NamedQuery(name = "Entry.findByWallHandleRightMax", query = "SELECT e FROM Entry e WHERE e.wallHandleRightMax = :wallHandleRightMax")})
 public class Entry implements Serializable,SettingEntity {
     private static final long serialVersionUID = 1L;
     @Id
@@ -66,10 +72,6 @@ public class Entry implements Serializable,SettingEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "WallMin")
-    private Float wallMin;
-    @Column(name = "WallMax")
-    private Float wallMax;
     @Column(name = "WeightMin")
     private Float weightMin;
     @Column(name = "WeightMax")
@@ -88,17 +90,66 @@ public class Entry implements Serializable,SettingEntity {
     private Float threadNeckMax;
     @Column(name = "InUse")
     private String inUse;
+    @Column(name = "WallUnderHandleMin")
+    private Float wallUnderHandleMin;
+    @Column(name = "WallUnderHandleMax")
+    private Float wallUnderHandleMax;
+    @Column(name = "WallBaseMin")
+    private Float wallBaseMin;
+    @Column(name = "WallBaseMax")
+    private Float wallBaseMax;
+    @Column(name = "WallClosureMin")
+    private Float wallClosureMin;
+    @Column(name = "WallClosureMax")
+    private Float wallClosureMax;
+    @Column(name = "WallHandleBungMin")
+    private Float wallHandleBungMin;
+    @Column(name = "WallHandleBungMax")
+    private Float wallHandleBungMax;
+    @Column(name = "WallHandleLeftMin")
+    private Float wallHandleLeftMin;
+    @Column(name = "WallHandleLeftMax")
+    private Float wallHandleLeftMax;
+    @Column(name = "WallHandleRightMin")
+    private Float wallHandleRightMin;
+    @Column(name = "WallHandleRightMax")
+    private Float wallHandleRightMax;
     @JoinColumn(name = "ProductId", referencedColumnName = "Id")
     @ManyToOne
     private Product productId;
+    @JoinColumn(name = "Worker3", referencedColumnName = "Id")
+    @ManyToOne
+    private Staff worker3;
     @JoinColumn(name = "MachineId", referencedColumnName = "Id")
     @ManyToOne
     private Machine machineId;
+    @JoinColumn(name = "Worker1", referencedColumnName = "Id")
+    @ManyToOne
+    private Staff worker1;
+    @JoinColumn(name = "Worker2", referencedColumnName = "Id")
+    @ManyToOne
+    private Staff worker2;
     @JoinColumn(name = "MouldId", referencedColumnName = "Id")
     @ManyToOne
     private Mould mouldId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "entryId")
-    private Collection<Record> recordCollection;
+    @JoinColumn(name = "Supervisor1", referencedColumnName = "Id")
+    @ManyToOne
+    private Staff supervisor1;
+    @JoinColumn(name = "Technician3", referencedColumnName = "Id")
+    @ManyToOne
+    private Staff technician3;
+    @JoinColumn(name = "Supervisor2", referencedColumnName = "Id")
+    @ManyToOne
+    private Staff supervisor2;
+    @JoinColumn(name = "Supervisor3", referencedColumnName = "Id")
+    @ManyToOne
+    private Staff supervisor3;
+    @JoinColumn(name = "Technician1", referencedColumnName = "Id")
+    @ManyToOne
+    private Staff technician1;
+    @JoinColumn(name = "Technician2", referencedColumnName = "Id")
+    @ManyToOne
+    private Staff technician2;
 
     public Entry() {
     }
@@ -134,22 +185,6 @@ public class Entry implements Serializable,SettingEntity {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
-    }
-
-    public Float getWallMin() {
-        return wallMin;
-    }
-
-    public void setWallMin(Float wallMin) {
-        this.wallMin = wallMin;
-    }
-
-    public Float getWallMax() {
-        return wallMax;
-    }
-
-    public void setWallMax(Float wallMax) {
-        this.wallMax = wallMax;
     }
 
     public Float getWeightMin() {
@@ -224,12 +259,116 @@ public class Entry implements Serializable,SettingEntity {
         this.inUse = inUse;
     }
 
+    public Float getWallUnderHandleMin() {
+        return wallUnderHandleMin;
+    }
+
+    public void setWallUnderHandleMin(Float wallUnderHandleMin) {
+        this.wallUnderHandleMin = wallUnderHandleMin;
+    }
+
+    public Float getWallUnderHandleMax() {
+        return wallUnderHandleMax;
+    }
+
+    public void setWallUnderHandleMax(Float wallUnderHandleMax) {
+        this.wallUnderHandleMax = wallUnderHandleMax;
+    }
+
+    public Float getWallBaseMin() {
+        return wallBaseMin;
+    }
+
+    public void setWallBaseMin(Float wallBaseMin) {
+        this.wallBaseMin = wallBaseMin;
+    }
+
+    public Float getWallBaseMax() {
+        return wallBaseMax;
+    }
+
+    public void setWallBaseMax(Float wallBaseMax) {
+        this.wallBaseMax = wallBaseMax;
+    }
+
+    public Float getWallClosureMin() {
+        return wallClosureMin;
+    }
+
+    public void setWallClosureMin(Float wallClosureMin) {
+        this.wallClosureMin = wallClosureMin;
+    }
+
+    public Float getWallClosureMax() {
+        return wallClosureMax;
+    }
+
+    public void setWallClosureMax(Float wallClosureMax) {
+        this.wallClosureMax = wallClosureMax;
+    }
+
+    public Float getWallHandleBungMin() {
+        return wallHandleBungMin;
+    }
+
+    public void setWallHandleBungMin(Float wallHandleBungMin) {
+        this.wallHandleBungMin = wallHandleBungMin;
+    }
+
+    public Float getWallHandleBungMax() {
+        return wallHandleBungMax;
+    }
+
+    public void setWallHandleBungMax(Float wallHandleBungMax) {
+        this.wallHandleBungMax = wallHandleBungMax;
+    }
+
+    public Float getWallHandleLeftMin() {
+        return wallHandleLeftMin;
+    }
+
+    public void setWallHandleLeftMin(Float wallHandleLeftMin) {
+        this.wallHandleLeftMin = wallHandleLeftMin;
+    }
+
+    public Float getWallHandleLeftMax() {
+        return wallHandleLeftMax;
+    }
+
+    public void setWallHandleLeftMax(Float wallHandleLeftMax) {
+        this.wallHandleLeftMax = wallHandleLeftMax;
+    }
+
+    public Float getWallHandleRightMin() {
+        return wallHandleRightMin;
+    }
+
+    public void setWallHandleRightMin(Float wallHandleRightMin) {
+        this.wallHandleRightMin = wallHandleRightMin;
+    }
+
+    public Float getWallHandleRightMax() {
+        return wallHandleRightMax;
+    }
+
+    public void setWallHandleRightMax(Float wallHandleRightMax) {
+        this.wallHandleRightMax = wallHandleRightMax;
+    }
+
     public Product getProductId() {
         return productId;
     }
 
     public void setProductId(Product productId) {
         this.productId = productId;
+    }
+
+    public Staff getWorker3() {
+        return worker3;
+    }
+
+    public void setWorker3(Staff worker3) {
+        this.worker3 = worker3;
     }
 
     public Machine getMachineId() {
@@ -240,6 +379,22 @@ public class Entry implements Serializable,SettingEntity {
         this.machineId = machineId;
     }
 
+    public Staff getWorker1() {
+        return worker1;
+    }
+
+    public void setWorker1(Staff worker1) {
+        this.worker1 = worker1;
+    }
+
+    public Staff getWorker2() {
+        return worker2;
+    }
+
+    public void setWorker2(Staff worker2) {
+        this.worker2 = worker2;
+    }
+
     public Mould getMouldId() {
         return mouldId;
     }
@@ -248,13 +403,52 @@ public class Entry implements Serializable,SettingEntity {
         this.mouldId = mouldId;
     }
 
-    @XmlTransient
-    public Collection<Record> getRecordCollection() {
-        return recordCollection;
+    public Staff getSupervisor1() {
+        return supervisor1;
     }
 
-    public void setRecordCollection(Collection<Record> recordCollection) {
-        this.recordCollection = recordCollection;
+    public void setSupervisor1(Staff supervisor1) {
+        this.supervisor1 = supervisor1;
+    }
+
+    public Staff getTechnician3() {
+        return technician3;
+    }
+
+    public void setTechnician3(Staff technician3) {
+        this.technician3 = technician3;
+    }
+
+    public Staff getSupervisor2() {
+        return supervisor2;
+    }
+
+    public void setSupervisor2(Staff supervisor2) {
+        this.supervisor2 = supervisor2;
+    }
+
+    public Staff getSupervisor3() {
+        return supervisor3;
+    }
+
+    public void setSupervisor3(Staff supervisor3) {
+        this.supervisor3 = supervisor3;
+    }
+
+    public Staff getTechnician1() {
+        return technician1;
+    }
+
+    public void setTechnician1(Staff technician1) {
+        this.technician1 = technician1;
+    }
+
+    public Staff getTechnician2() {
+        return technician2;
+    }
+
+    public void setTechnician2(Staff technician2) {
+        this.technician2 = technician2;
     }
 
     @Override
@@ -281,12 +475,11 @@ public class Entry implements Serializable,SettingEntity {
     public String toString() {
         return "com.cch.aj.entryrecorder.entities.Entry[ id=" + id + " ]";
     }
-
+    
     @Override
     public void setDefaultValue() {
         this.inUse="YES";
         this.createDate=new Date();
         this.shift=AppHelper.defaultShift;
     }
-    
 }

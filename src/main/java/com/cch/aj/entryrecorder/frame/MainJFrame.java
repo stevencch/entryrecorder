@@ -61,10 +61,10 @@ public class MainJFrame extends javax.swing.JFrame {
     private RecordSettingService recordService = new RecordSettingServiceImpl(Record.class);
     private SettingService<Staff> staffService = new SettingServiceImpl<Staff>(Staff.class);
     private SettingService<Entry> entryService = new SettingServiceImpl<Entry>(Entry.class);
-    private SettingService<Machine> machineService = new SettingServiceImpl<Machine>(Machine.class);
     private Entry currentEntry = null;
 
     DefaultCategoryDataset datasetWeight = new DefaultCategoryDataset();
+    DefaultCategoryDataset datasetTap = new DefaultCategoryDataset();
 
     java.awt.GridBagConstraints gridBagConstraints = new java.awt.GridBagConstraints();
 
@@ -84,6 +84,11 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
         this.cbEntry.setRenderer(new ComboBoxRender());
         this.cbWeightStaff.setRenderer(new ComboBoxRender());
+        this.cbWallStaff.setRenderer(new ComboBoxRender());
+        this.cbTapStaff.setRenderer(new ComboBoxRender());
+        this.cbBoreStaff.setRenderer(new ComboBoxRender());
+        this.cbCheckStaff.setRenderer(new ComboBoxRender());
+        this.cbDropStaff.setRenderer(new ComboBoxRender());
         FillEntryComboBox(this.cbEntry, 0);
 
         if (this.currentEntry != null) {
@@ -92,6 +97,7 @@ public class MainJFrame extends javax.swing.JFrame {
     }
 
     private void UpdateEntryForm() {
+        List<Record> records=this.recordService.GetAllEntitiesByKeyAndRecord(RecordKey.ALL,this.currentEntry.getId());
         //info
         UpdateProductInfo(this.currentEntry);
         //weight
@@ -100,22 +106,104 @@ public class MainJFrame extends javax.swing.JFrame {
         FillStaffComboBox(this.cbWeightStaff, 0);
         datasetWeight = new DefaultCategoryDataset();
         
-        List<Record> records = this.recordService.GetAllEntitiesByKeyAndRecord(RecordKey.PRODUCT_WEIGHT,this.currentEntry.getId());
-        DefaultTableModel model = (DefaultTableModel) this.tblWeight.getModel();
-        model.setRowCount(0);
-        for (Record record : records) {
+        List<Record> recordsWeight = records.stream().filter(x->x.getRecordKey().equals("PRODUCT_WEIGHT")).collect(Collectors.toList());
+        DefaultTableModel modelWeight = (DefaultTableModel) this.tblWeight.getModel();
+        modelWeight.setRowCount(0);
+        for (Record record : recordsWeight) {
             String time = new SimpleDateFormat("HH:mm").format(record.getCreatedTime());
             String staff = record.getStaffId() == null ? "" : record.getStaffId().getName();
             datasetWeight.addValue(record.getNumberValue(), "Weight", time);
-            model.addRow(new Object[]{time, record.getNumberValue(), staff});
+            modelWeight.addRow(new Object[]{time, record.getNumberValue(), staff});
         }
         ((AbstractTableModel) this.tblWeight.getModel()).fireTableDataChanged();
         JFreeChart chartWeight = ChartFactory.createLineChart(
                 "Product Weight (kg)", "", "",
                 datasetWeight, PlotOrientation.VERTICAL, false, true, false);
-        ChartPanel cp = new ChartPanel(chartWeight);
+        ChartPanel cpWeight = new ChartPanel(chartWeight);
         this.pnlChartWeight.removeAll();
-        this.pnlChartWeight.add(cp, gridBagConstraints);
+        this.pnlChartWeight.add(cpWeight, gridBagConstraints);
+        //wall
+        this.labWallStaff.setVisible(false);
+        this.cbWallStaff.setVisible(false);
+        FillStaffComboBox(this.cbWallStaff, 0);
+        
+        List<Record> recordsWall  = records.stream().filter(x->x.getRecordKey().startsWith("WALL_")).collect(Collectors.toList());
+        DefaultTableModel modelWall = (DefaultTableModel) this.tblWall.getModel();
+        modelWall.setRowCount(0);
+        for (Record record : recordsWall ) {
+            String time = new SimpleDateFormat("HH:mm").format(record.getCreatedTime());
+            String staff = record.getStaffId() == null ? "" : record.getStaffId().getName();
+            String name=record.getRecordKey();
+            modelWall.addRow(new Object[]{time, name, record.getNumberValue(), staff});
+        }
+        ((AbstractTableModel) this.tblWall.getModel()).fireTableDataChanged();
+        //Tap
+        this.labTapStaff.setVisible(false);
+        this.cbTapStaff.setVisible(false);
+        FillStaffComboBox(this.cbTapStaff, 0);
+        datasetTap = new DefaultCategoryDataset();
+        
+        List<Record> recordsTap = records.stream().filter(x->x.getRecordKey().equals("TAP_POSITION")).collect(Collectors.toList());
+        DefaultTableModel modelTap = (DefaultTableModel) this.tblTap.getModel();
+        modelTap.setRowCount(0);
+        for (Record record : recordsTap) {
+            String time = new SimpleDateFormat("HH:mm").format(record.getCreatedTime());
+            String staff = record.getStaffId() == null ? "" : record.getStaffId().getName();
+            datasetTap.addValue(record.getNumberValue(), "Tap", time);
+            modelTap.addRow(new Object[]{time, record.getNumberValue(), staff});
+        }
+        ((AbstractTableModel) this.tblTap.getModel()).fireTableDataChanged();
+        JFreeChart chartTap = ChartFactory.createLineChart(
+                "Product Tap (kg)", "", "",
+                datasetTap, PlotOrientation.VERTICAL, false, true, false);
+        ChartPanel cpTap = new ChartPanel(chartTap);
+        this.pnlChartTap.removeAll();
+        this.pnlChartTap.add(cpTap, gridBagConstraints);
+        //Bore
+        this.labBoreStaff.setVisible(false);
+        this.cbBoreStaff.setVisible(false);
+        FillStaffComboBox(this.cbBoreStaff, 0);
+        
+        List<Record> recordsBore  = records.stream().filter(x->x.getRecordKey().startsWith("THREAD_")).collect(Collectors.toList());
+        DefaultTableModel modelBore = (DefaultTableModel) this.tblBore.getModel();
+        modelBore.setRowCount(0);
+        for (Record record : recordsBore ) {
+            String time = new SimpleDateFormat("HH:mm").format(record.getCreatedTime());
+            String staff = record.getStaffId() == null ? "" : record.getStaffId().getName();
+            String name=record.getRecordKey();
+            modelBore.addRow(new Object[]{time, name, record.getNumberValue(), staff});
+        }
+        ((AbstractTableModel) this.tblBore.getModel()).fireTableDataChanged();
+        //Check
+        this.labCheckStaff.setVisible(false);
+        this.cbCheckStaff.setVisible(false);
+        FillStaffComboBox(this.cbCheckStaff, 0);
+        
+        List<Record> recordsCheck  = records.stream().filter(x->x.getRecordKey().startsWith("CHECK_")).collect(Collectors.toList());
+        DefaultTableModel modelCheck = (DefaultTableModel) this.tblCheck.getModel();
+        modelCheck.setRowCount(0);
+        for (Record record : recordsCheck ) {
+            String time = new SimpleDateFormat("HH:mm").format(record.getCreatedTime());
+            String staff = record.getStaffId() == null ? "" : record.getStaffId().getName();
+            String name=record.getRecordKey();
+            modelCheck.addRow(new Object[]{time, name, record.getNumberValue(), staff});
+        }
+        ((AbstractTableModel) this.tblCheck.getModel()).fireTableDataChanged();
+        //Drop
+        this.labDropStaff.setVisible(false);
+        this.cbDropStaff.setVisible(false);
+        FillStaffComboBox(this.cbDropStaff, 0);
+        
+        List<Record> recordsDrop  = records.stream().filter(x->x.getRecordKey().startsWith("DROP_")).collect(Collectors.toList());
+        DefaultTableModel modelDrop = (DefaultTableModel) this.tblDrop.getModel();
+        modelDrop.setRowCount(0);
+        for (Record record : recordsDrop ) {
+            String time = new SimpleDateFormat("HH:mm").format(record.getCreatedTime());
+            String staff = record.getStaffId() == null ? "" : record.getStaffId().getName();
+            String name=record.getRecordKey();
+            modelDrop.addRow(new Object[]{time, name, record.getNumberValue(), staff});
+        }
+        ((AbstractTableModel) this.tblDrop.getModel()).fireTableDataChanged();
     }
 
     private int FillStaffComboBox(JComboBox comboBox, int id) {
@@ -146,7 +234,7 @@ public class MainJFrame extends javax.swing.JFrame {
         if (allEntrys.size() > 0) {
             List<Entry> entrys = allEntrys.stream().filter(x -> x.getInUse().equals("YES")).collect(Collectors.toList());
             if (entrys.size() > 0) {
-                List<ComboBoxItem<Entry>> entryNames = entrys.stream().sorted(comparing(x -> x.getCreateDate())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getShift() + "-" + x.getMachineId() != null ? x.getMachineId().getMachineNo() : "", x.getId())).collect(Collectors.toList());
+                List<ComboBoxItem<Entry>> entryNames = entrys.stream().sorted(comparing(x -> x.getCreateDate())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getShift() + "-" + (x.getMachineId() != null ? x.getMachineId().getMachineNo() : ""), x.getId())).collect(Collectors.toList());
                 ComboBoxItem[] entryNamesArray = entryNames.toArray(new ComboBoxItem[entryNames.size()]);
                 comboBox.setModel(new DefaultComboBoxModel(entryNamesArray));
                 if (id != 0) {
@@ -203,12 +291,99 @@ public class MainJFrame extends javax.swing.JFrame {
         cbWeightStaff = new javax.swing.JComboBox();
         btnWeight = new javax.swing.JButton();
         pnlChartWeight = new javax.swing.JPanel();
+        jPanel17 = new javax.swing.JPanel();
+        jPanel18 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblWall = new javax.swing.JTable();
+        jPanel19 = new javax.swing.JPanel();
+        jLabel22 = new javax.swing.JLabel();
+        txtWallHandleRight = new javax.swing.JTextField();
+        labWallStaff = new javax.swing.JLabel();
+        cbWallStaff = new javax.swing.JComboBox();
+        btnWall = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        txtWallUnderHandle = new javax.swing.JTextField();
+        txtWallBase = new javax.swing.JTextField();
+        txtWallClosure = new javax.swing.JTextField();
+        txtWallHandleBung = new javax.swing.JTextField();
+        txtWallHandleLeft = new javax.swing.JTextField();
         jPanel6 = new javax.swing.JPanel();
-        jPanel7 = new javax.swing.JPanel();
-        jPanel8 = new javax.swing.JPanel();
-        jPanel9 = new javax.swing.JPanel();
-        jPanel10 = new javax.swing.JPanel();
-        jPanel11 = new javax.swing.JPanel();
+        jPanel20 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblTap = new javax.swing.JTable();
+        jPanel21 = new javax.swing.JPanel();
+        jLabel23 = new javax.swing.JLabel();
+        labTapStaff = new javax.swing.JLabel();
+        cbTapStaff = new javax.swing.JComboBox();
+        btnTap = new javax.swing.JButton();
+        cbTap = new javax.swing.JComboBox();
+        pnlChartTap = new javax.swing.JPanel();
+        jPanel22 = new javax.swing.JPanel();
+        jPanel23 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tblBore = new javax.swing.JTable();
+        jPanel24 = new javax.swing.JPanel();
+        labBoreStaff = new javax.swing.JLabel();
+        cbBoreStaff = new javax.swing.JComboBox();
+        btnBore = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        txtBore1 = new javax.swing.JTextField();
+        txtBore2 = new javax.swing.JTextField();
+        txtNeck = new javax.swing.JTextField();
+        jPanel25 = new javax.swing.JPanel();
+        jPanel26 = new javax.swing.JPanel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        tblCheck = new javax.swing.JTable();
+        jPanel27 = new javax.swing.JPanel();
+        jLabel24 = new javax.swing.JLabel();
+        labCheckStaff = new javax.swing.JLabel();
+        cbCheckStaff = new javax.swing.JComboBox();
+        btnCheck = new javax.swing.JButton();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        jLabel25 = new javax.swing.JLabel();
+        jLabel26 = new javax.swing.JLabel();
+        cbNeckRound = new javax.swing.JComboBox();
+        cbNeckComplete = new javax.swing.JComboBox();
+        cbUnderTheHandle = new javax.swing.JComboBox();
+        cbBungIfDrilled = new javax.swing.JComboBox();
+        cbBase = new javax.swing.JComboBox();
+        cbStrengthOfDrum = new javax.swing.JComboBox();
+        cbWeightWithinRange = new javax.swing.JComboBox();
+        cbColourTexture = new javax.swing.JComboBox();
+        jPanel28 = new javax.swing.JPanel();
+        jPanel29 = new javax.swing.JPanel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        tblDrop = new javax.swing.JTable();
+        jPanel30 = new javax.swing.JPanel();
+        jLabel27 = new javax.swing.JLabel();
+        labDropStaff = new javax.swing.JLabel();
+        cbDropStaff = new javax.swing.JComboBox();
+        btnDrop = new javax.swing.JButton();
+        jLabel28 = new javax.swing.JLabel();
+        jLabel29 = new javax.swing.JLabel();
+        jLabel30 = new javax.swing.JLabel();
+        jLabel31 = new javax.swing.JLabel();
+        jLabel32 = new javax.swing.JLabel();
+        jLabel33 = new javax.swing.JLabel();
+        jLabel34 = new javax.swing.JLabel();
+        cbDrop1 = new javax.swing.JComboBox();
+        cbDrop2 = new javax.swing.JComboBox();
+        cbDrop3 = new javax.swing.JComboBox();
+        cbDrop4 = new javax.swing.JComboBox();
+        cbDrop5 = new javax.swing.JComboBox();
+        cbDrop6 = new javax.swing.JComboBox();
+        cbDrop7 = new javax.swing.JComboBox();
+        cbDrop8 = new javax.swing.JComboBox();
         jPanel12 = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
@@ -425,7 +600,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.weightx = 0.7;
         jPanel5.add(jPanel16, gridBagConstraints);
 
         jPanel14.setLayout(new java.awt.GridBagLayout());
@@ -488,7 +663,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.weightx = 0.3;
         jPanel5.add(jPanel14, gridBagConstraints);
 
         pnlChartWeight.setPreferredSize(new java.awt.Dimension(400, 400));
@@ -504,93 +679,921 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Weight", jPanel5);
 
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 998, Short.MAX_VALUE)
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 545, Short.MAX_VALUE)
-        );
+        jPanel17.setLayout(new java.awt.GridBagLayout());
 
-        jTabbedPane1.addTab("Wall Thickness", jPanel6);
+        jPanel18.setLayout(new java.awt.GridBagLayout());
 
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 998, Short.MAX_VALUE)
-        );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 545, Short.MAX_VALUE)
-        );
+        tblWall.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
 
-        jTabbedPane1.addTab("Tap Poistion/Tightness", jPanel7);
+            },
+            new String [] {
+                "Time", "Name", "Value", "Staff"
+            }
+        ));
+        jScrollPane2.setViewportView(tblWall);
 
-        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
-        jPanel8.setLayout(jPanel8Layout);
-        jPanel8Layout.setHorizontalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 998, Short.MAX_VALUE)
-        );
-        jPanel8Layout.setVerticalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 545, Short.MAX_VALUE)
-        );
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        jPanel18.add(jScrollPane2, gridBagConstraints);
 
-        jTabbedPane1.addTab("Bore/ Neck", jPanel8);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.7;
+        jPanel17.add(jPanel18, gridBagConstraints);
 
-        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
-        jPanel9.setLayout(jPanel9Layout);
-        jPanel9Layout.setHorizontalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 998, Short.MAX_VALUE)
-        );
-        jPanel9Layout.setVerticalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 545, Short.MAX_VALUE)
-        );
+        jPanel19.setLayout(new java.awt.GridBagLayout());
 
-        jTabbedPane1.addTab("Quality Random Check", jPanel9);
+        jLabel22.setText("END OF HANDLE SIDE-RIGHT");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(9, 33, 9, 33);
+        jPanel19.add(jLabel22, gridBagConstraints);
 
-        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
-        jPanel10.setLayout(jPanel10Layout);
-        jPanel10Layout.setHorizontalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 998, Short.MAX_VALUE)
-        );
-        jPanel10Layout.setVerticalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 545, Short.MAX_VALUE)
-        );
+        txtWallHandleRight.setToolTipText("");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(9, 33, 9, 33);
+        jPanel19.add(txtWallHandleRight, gridBagConstraints);
 
-        jTabbedPane1.addTab("Drop Test", jPanel10);
+        labWallStaff.setText("Staff Check");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(9, 33, 9, 33);
+        jPanel19.add(labWallStaff, gridBagConstraints);
 
-        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
-        jPanel11.setLayout(jPanel11Layout);
-        jPanel11Layout.setHorizontalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 998, Short.MAX_VALUE)
-        );
-        jPanel11Layout.setVerticalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 545, Short.MAX_VALUE)
-        );
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(9, 33, 9, 33);
+        jPanel19.add(cbWallStaff, gridBagConstraints);
 
-        jTabbedPane1.addTab("Staff", jPanel11);
+        btnWall.setText("Add");
+        btnWall.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnWallActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(9, 33, 9, 33);
+        jPanel19.add(btnWall, gridBagConstraints);
+
+        jLabel2.setText("UNDER THE HANDLE");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(9, 33, 9, 33);
+        jPanel19.add(jLabel2, gridBagConstraints);
+
+        jLabel3.setText("BASE (CENTRE)");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(9, 33, 9, 33);
+        jPanel19.add(jLabel3, gridBagConstraints);
+
+        jLabel4.setText("CLOSURE SIDE");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(9, 33, 9, 33);
+        jPanel19.add(jLabel4, gridBagConstraints);
+
+        jLabel6.setText("END OF HANDLE SIDE-BUNG");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(9, 33, 9, 33);
+        jPanel19.add(jLabel6, gridBagConstraints);
+
+        jLabel8.setText("END OF HANDLE SIDE-LEFT");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(9, 33, 9, 33);
+        jPanel19.add(jLabel8, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(9, 33, 9, 33);
+        jPanel19.add(txtWallUnderHandle, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(9, 33, 9, 33);
+        jPanel19.add(txtWallBase, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(9, 33, 9, 33);
+        jPanel19.add(txtWallClosure, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(9, 33, 9, 33);
+        jPanel19.add(txtWallHandleBung, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(9, 33, 9, 33);
+        jPanel19.add(txtWallHandleLeft, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.3;
+        jPanel17.add(jPanel19, gridBagConstraints);
+
+        jTabbedPane1.addTab("Wall Thickness", jPanel17);
+
+        jPanel6.setLayout(new java.awt.GridBagLayout());
+
+        jPanel20.setLayout(new java.awt.GridBagLayout());
+
+        tblTap.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Time", "Value", "Staff"
+            }
+        ));
+        jScrollPane3.setViewportView(tblTap);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        jPanel20.add(jScrollPane3, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.7;
+        jPanel6.add(jPanel20, gridBagConstraints);
+
+        jPanel21.setLayout(new java.awt.GridBagLayout());
+
+        jLabel23.setText("Product Weight (kg)");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(9, 27, 9, 27);
+        jPanel21.add(jLabel23, gridBagConstraints);
+
+        labTapStaff.setText("Staff Check");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(9, 27, 9, 27);
+        jPanel21.add(labTapStaff, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(9, 27, 9, 27);
+        jPanel21.add(cbTapStaff, gridBagConstraints);
+
+        btnTap.setText("Add");
+        btnTap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTapActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.insets = new java.awt.Insets(9, 27, 9, 27);
+        jPanel21.add(btnTap, gridBagConstraints);
+
+        cbTap.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "- Select -", "1:00", "2:00", "3:00", "4:00", "5:00", "6:00", "7:00", "8:00", "9;00", "10:00", "11:00", "12:00" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.insets = new java.awt.Insets(9, 27, 9, 27);
+        jPanel21.add(cbTap, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.3;
+        jPanel6.add(jPanel21, gridBagConstraints);
+
+        pnlChartTap.setPreferredSize(new java.awt.Dimension(400, 400));
+        pnlChartTap.setLayout(new java.awt.GridBagLayout());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        jPanel6.add(pnlChartTap, gridBagConstraints);
+
+        jTabbedPane1.addTab("Tap Position / Tightness", jPanel6);
+
+        jPanel22.setLayout(new java.awt.GridBagLayout());
+
+        jPanel23.setLayout(new java.awt.GridBagLayout());
+
+        tblBore.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Time", "Name", "Value", "Staff"
+            }
+        ));
+        jScrollPane4.setViewportView(tblBore);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        jPanel23.add(jScrollPane4, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.7;
+        jPanel22.add(jPanel23, gridBagConstraints);
+
+        jPanel24.setLayout(new java.awt.GridBagLayout());
+
+        labBoreStaff.setText("Staff Check");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(9, 33, 9, 33);
+        jPanel24.add(labBoreStaff, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(9, 33, 9, 33);
+        jPanel24.add(cbBoreStaff, gridBagConstraints);
+
+        btnBore.setText("Add");
+        btnBore.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBoreActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(9, 33, 9, 33);
+        jPanel24.add(btnBore, gridBagConstraints);
+
+        jLabel10.setText("BORE DIAMETRE 1");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(9, 33, 9, 33);
+        jPanel24.add(jLabel10, gridBagConstraints);
+
+        jLabel12.setText("BORE DIAMETRE 2");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(9, 33, 9, 33);
+        jPanel24.add(jLabel12, gridBagConstraints);
+
+        jLabel14.setText("NECK HEIGHT");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(9, 33, 9, 33);
+        jPanel24.add(jLabel14, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(9, 33, 9, 33);
+        jPanel24.add(txtBore1, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(9, 33, 9, 33);
+        jPanel24.add(txtBore2, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(9, 33, 9, 33);
+        jPanel24.add(txtNeck, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.3;
+        jPanel22.add(jPanel24, gridBagConstraints);
+
+        jTabbedPane1.addTab("Bore / Neck", jPanel22);
+
+        jPanel25.setLayout(new java.awt.GridBagLayout());
+
+        jPanel26.setLayout(new java.awt.GridBagLayout());
+
+        tblCheck.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Time", "Name", "Value", "Staff"
+            }
+        ));
+        jScrollPane5.setViewportView(tblCheck);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        jPanel26.add(jScrollPane5, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.7;
+        jPanel25.add(jPanel26, gridBagConstraints);
+
+        jPanel27.setLayout(new java.awt.GridBagLayout());
+
+        jLabel24.setText("STRENGTH OF DRUM");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel27.add(jLabel24, gridBagConstraints);
+
+        labCheckStaff.setText("Staff Check");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel27.add(labCheckStaff, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel27.add(cbCheckStaff, gridBagConstraints);
+
+        btnCheck.setText("Add");
+        btnCheck.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCheckActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 9;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel27.add(btnCheck, gridBagConstraints);
+
+        jLabel16.setText("NECK ROUND");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel27.add(jLabel16, gridBagConstraints);
+
+        jLabel17.setText("NECK COMPLETE");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel27.add(jLabel17, gridBagConstraints);
+
+        jLabel18.setText("UNDER THE HANDLE");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel27.add(jLabel18, gridBagConstraints);
+
+        jLabel19.setText("BUNG, IF DRILLED");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel27.add(jLabel19, gridBagConstraints);
+
+        jLabel20.setText("BASE");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel27.add(jLabel20, gridBagConstraints);
+
+        jLabel25.setText("WEIGHT WITHIN RANGE");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel27.add(jLabel25, gridBagConstraints);
+
+        jLabel26.setText("COLOUR / TEXTURE");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel27.add(jLabel26, gridBagConstraints);
+
+        cbNeckRound.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "- Select -", "Checked", "NA" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel27.add(cbNeckRound, gridBagConstraints);
+
+        cbNeckComplete.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "- Select -", "Checked", "NA" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel27.add(cbNeckComplete, gridBagConstraints);
+
+        cbUnderTheHandle.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "- Select -", "Checked", "NA" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel27.add(cbUnderTheHandle, gridBagConstraints);
+
+        cbBungIfDrilled.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "- Select -", "Checked", "NA" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel27.add(cbBungIfDrilled, gridBagConstraints);
+
+        cbBase.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "- Select -", "Checked", "NA" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel27.add(cbBase, gridBagConstraints);
+
+        cbStrengthOfDrum.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "- Select -", "Checked", "NA" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel27.add(cbStrengthOfDrum, gridBagConstraints);
+
+        cbWeightWithinRange.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "- Select -", "Yes", "No" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel27.add(cbWeightWithinRange, gridBagConstraints);
+
+        cbColourTexture.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "- Select -", "Checked", "NA" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel27.add(cbColourTexture, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.3;
+        jPanel25.add(jPanel27, gridBagConstraints);
+
+        jTabbedPane1.addTab("Quanlity Check", jPanel25);
+
+        jPanel28.setLayout(new java.awt.GridBagLayout());
+
+        jPanel29.setLayout(new java.awt.GridBagLayout());
+
+        tblDrop.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Time", "Name", "Value", "Staff"
+            }
+        ));
+        jScrollPane6.setViewportView(tblDrop);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        jPanel29.add(jScrollPane6, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.7;
+        jPanel28.add(jPanel29, gridBagConstraints);
+
+        jPanel30.setLayout(new java.awt.GridBagLayout());
+
+        jLabel27.setText("STRENGTH OF DRUM");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel30.add(jLabel27, gridBagConstraints);
+
+        labDropStaff.setText("Staff Check");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel30.add(labDropStaff, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel30.add(cbDropStaff, gridBagConstraints);
+
+        btnDrop.setText("Add");
+        btnDrop.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDropActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 9;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel30.add(btnDrop, gridBagConstraints);
+
+        jLabel28.setText("NECK ROUND");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel30.add(jLabel28, gridBagConstraints);
+
+        jLabel29.setText("NECK COMPLETE");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel30.add(jLabel29, gridBagConstraints);
+
+        jLabel30.setText("UNDER THE HANDLE");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel30.add(jLabel30, gridBagConstraints);
+
+        jLabel31.setText("BUNG, IF DRILLED");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel30.add(jLabel31, gridBagConstraints);
+
+        jLabel32.setText("BASE");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel30.add(jLabel32, gridBagConstraints);
+
+        jLabel33.setText("WEIGHT WITHIN RANGE");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel30.add(jLabel33, gridBagConstraints);
+
+        jLabel34.setText("COLOUR / TEXTURE");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel30.add(jLabel34, gridBagConstraints);
+
+        cbDrop1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "- Select -", "Pass", "Fail" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel30.add(cbDrop1, gridBagConstraints);
+
+        cbDrop2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "- Select -", "Pass", "Fail" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel30.add(cbDrop2, gridBagConstraints);
+
+        cbDrop3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "- Select -", "Pass", "Fail" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel30.add(cbDrop3, gridBagConstraints);
+
+        cbDrop4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "- Select -", "Pass", "Fail" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel30.add(cbDrop4, gridBagConstraints);
+
+        cbDrop5.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "- Select -", "Pass", "Fail" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel30.add(cbDrop5, gridBagConstraints);
+
+        cbDrop6.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "- Select -", "Pass", "Fail" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel30.add(cbDrop6, gridBagConstraints);
+
+        cbDrop7.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "- Select -", "Pass", "Fail" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel30.add(cbDrop7, gridBagConstraints);
+
+        cbDrop8.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "- Select -", "Pass", "Fail" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel30.add(cbDrop8, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.3;
+        jPanel28.add(jPanel30, gridBagConstraints);
+
+        jTabbedPane1.addTab("Drop Test", jPanel28);
 
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
         jPanel12Layout.setHorizontalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 998, Short.MAX_VALUE)
+            .addGap(0, 1093, Short.MAX_VALUE)
         );
         jPanel12Layout.setVerticalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 545, Short.MAX_VALUE)
+            .addGap(0, 640, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Raw Material", jPanel12);
@@ -599,11 +1602,11 @@ public class MainJFrame extends javax.swing.JFrame {
         jPanel13.setLayout(jPanel13Layout);
         jPanel13Layout.setHorizontalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 998, Short.MAX_VALUE)
+            .addGap(0, 1093, Short.MAX_VALUE)
         );
         jPanel13Layout.setVerticalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 545, Short.MAX_VALUE)
+            .addGap(0, 640, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Quantity Produced", jPanel13);
@@ -667,7 +1670,7 @@ public class MainJFrame extends javax.swing.JFrame {
                     }
                 }
             } else {
-                JOptionPane.showMessageDialog(this, "Please entry a valid number.", "Warning", JOptionPane.OK_OPTION);
+                JOptionPane.showMessageDialog(this, "Please entry the valid number.", "Warning", JOptionPane.OK_OPTION);
             }
 
             if (isSave) {
@@ -681,17 +1684,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 this.labWeightStaff.setVisible(false);
                 this.cbWeightStaff.setVisible(false);
                 this.txtWeight.setText("");
-                //
-                int recordId=this.recordService.CreateEntity();
-                Record record=this.recordService.FindEntity(recordId);
-                record.setEntryId(this.currentEntry);
-                record.setCreatedTime(now);
-                record.setNumberValue(value);
-                record.setRecordKey(RecordKey.PRODUCT_WEIGHT.toString());
-                if(staff!=null){
-                    record.setStaffId(staff);
-                }
-                this.recordService.UpdateEntity(record);
+                UpdateEntryData(now, value,RecordKey.PRODUCT_WEIGHT, staff);
             }
         }
     }//GEN-LAST:event_btnWeightActionPerformed
@@ -700,6 +1693,299 @@ public class MainJFrame extends javax.swing.JFrame {
         this.currentEntry = ((ComboBoxItem<Entry>) this.cbEntry.getSelectedItem()).getItem();
         this.UpdateEntryForm();
     }//GEN-LAST:event_cbEntryActionPerformed
+
+    private void btnWallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWallActionPerformed
+                Boolean isSave = false;
+        Staff staff=null;
+        if (this.currentEntry != null) {
+            if (NumberUtils.isNumber(this.txtWallBase.getText()) && NumberUtils.isNumber(this.txtWallHandleBung.getText())
+                    && NumberUtils.isNumber(this.txtWallClosure.getText()) && NumberUtils.isNumber(this.txtWallHandleLeft.getText())
+                    && NumberUtils.isNumber(this.txtWallHandleRight.getText()) && NumberUtils.isNumber(this.txtWallUnderHandle.getText())) {
+                if (recordValidationService.Validate(currentEntry, RecordKey.WALL_BASE, Float.parseFloat(this.txtWallBase.getText()))
+                        && recordValidationService.Validate(currentEntry, RecordKey.WALL_CLOSURE, Float.parseFloat(this.txtWallClosure.getText()))
+                        && recordValidationService.Validate(currentEntry, RecordKey.WALL_HANDLE_BUNG, Float.parseFloat(this.txtWallHandleBung.getText()))
+                        && recordValidationService.Validate(currentEntry, RecordKey.WALL_HANDLE_LEFT, Float.parseFloat(this.txtWallHandleLeft.getText()))
+                        && recordValidationService.Validate(currentEntry, RecordKey.WALL_HANDLE_RIGHT, Float.parseFloat(this.txtWallHandleRight.getText()))
+                        && recordValidationService.Validate(currentEntry, RecordKey.WALL_UNDER_HANDLE, Float.parseFloat(this.txtWallUnderHandle.getText()))) {
+                    isSave = true;
+                } else {
+                    if (this.cbWallStaff.getSelectedItem() != null && this.cbWallStaff.getSelectedIndex() != 0) {
+                        isSave = true;
+                        staff = ((ComboBoxItem<Staff>) this.cbWallStaff.getSelectedItem()).getItem();
+                        this.cbWallStaff.setSelectedIndex(0);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "the value is over the limit, please entry supervisor name.", "Warning", JOptionPane.OK_OPTION);
+                        this.labWallStaff.setVisible(true);
+                        this.cbWallStaff.setVisible(true);
+                    }
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Please entry the valid number.", "Warning", JOptionPane.OK_OPTION);
+            }
+
+            if (isSave) {
+                DefaultTableModel model = (DefaultTableModel) this.tblWall.getModel();
+                Date now = new Date();
+                String time = new SimpleDateFormat("HH:mm").format(now);
+                Float valueUnderHandle = Float.parseFloat(this.txtWallUnderHandle.getText());
+                Float valueBase = Float.parseFloat(this.txtWallBase.getText());
+                Float valueClosure = Float.parseFloat(this.txtWallClosure.getText());
+                Float valueHandleBung = Float.parseFloat(this.txtWallHandleBung.getText());
+                Float valueHandleLeft = Float.parseFloat(this.txtWallHandleLeft.getText());
+                Float valueHandleRight = Float.parseFloat(this.txtWallHandleRight.getText());
+                model.addRow(new Object[]{time,RecordKey.WALL_UNDER_HANDLE, valueUnderHandle, staff!=null?staff.getName():""});
+                model.addRow(new Object[]{time,RecordKey.WALL_BASE, valueBase, staff!=null?staff.getName():""});
+                model.addRow(new Object[]{time,RecordKey.WALL_CLOSURE, valueClosure, staff!=null?staff.getName():""});
+                model.addRow(new Object[]{time,RecordKey.WALL_HANDLE_BUNG, valueHandleBung, staff!=null?staff.getName():""});
+                model.addRow(new Object[]{time,RecordKey.WALL_HANDLE_LEFT, valueHandleLeft, staff!=null?staff.getName():""});
+                model.addRow(new Object[]{time,RecordKey.WALL_HANDLE_RIGHT, valueHandleRight, staff!=null?staff.getName():""});
+                
+                ((AbstractTableModel) this.tblWall.getModel()).fireTableDataChanged();
+                this.labWallStaff.setVisible(false);
+                this.cbWallStaff.setVisible(false);
+                this.txtWallUnderHandle.setText("");
+                this.txtWallBase.setText("");
+                this.txtWallClosure.setText("");
+                this.txtWallHandleBung.setText("");
+                this.txtWallHandleLeft.setText("");
+                this.txtWallHandleRight.setText("");
+                //
+                UpdateEntryData(now, valueUnderHandle, RecordKey.WALL_UNDER_HANDLE, staff);
+                UpdateEntryData(now, valueBase, RecordKey.WALL_BASE, staff);
+                UpdateEntryData(now, valueClosure, RecordKey.WALL_CLOSURE, staff);
+                UpdateEntryData(now, valueHandleBung, RecordKey.WALL_HANDLE_BUNG, staff);
+                UpdateEntryData(now, valueHandleLeft, RecordKey.WALL_HANDLE_LEFT, staff);
+                UpdateEntryData(now, valueHandleRight, RecordKey.WALL_HANDLE_RIGHT, staff);
+            }
+        }
+    }//GEN-LAST:event_btnWallActionPerformed
+
+    private void btnTapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTapActionPerformed
+        Boolean isSave = false;
+        Staff staff=null;
+        if (this.currentEntry != null) {
+            if (this.cbTap.getSelectedIndex()!=0) {
+                if (recordValidationService.Validate(currentEntry, RecordKey.PRODUCT_WEIGHT, (float)this.cbTap.getSelectedIndex())) {
+                    isSave = true;
+                } else {
+                    if (this.cbTapStaff.getSelectedItem() != null && this.cbTapStaff.getSelectedIndex() != 0) {
+                        isSave = true;
+                        staff = ((ComboBoxItem<Staff>) this.cbTapStaff.getSelectedItem()).getItem();
+                        this.cbTapStaff.setSelectedIndex(0);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "the value is over the limit, please entry supervisor name.", "Warning", JOptionPane.OK_OPTION);
+                        this.labTapStaff.setVisible(true);
+                        this.cbTapStaff.setVisible(true);
+                    }
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Please select the tap position.", "Warning", JOptionPane.OK_OPTION);
+            }
+
+            if (isSave) {
+                DefaultTableModel model = (DefaultTableModel) this.tblTap.getModel();
+                Date now = new Date();
+                String time = new SimpleDateFormat("HH:mm").format(now);
+                Float value = (float)this.cbTap.getSelectedIndex();
+                model.addRow(new Object[]{time, value, staff!=null?staff.getName():""});
+                ((AbstractTableModel) this.tblTap.getModel()).fireTableDataChanged();
+                datasetTap.addValue(value, "Tap", time);
+                this.labTapStaff.setVisible(false);
+                this.cbTapStaff.setVisible(false);
+                this.cbTap.setSelectedIndex(0);
+                UpdateEntryData(now, value,RecordKey.TAP_POSITION, staff);
+            }
+        }
+    }//GEN-LAST:event_btnTapActionPerformed
+
+    private void btnBoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBoreActionPerformed
+        Boolean isSave = false;
+        Staff staff=null;
+        if (this.currentEntry != null) {
+            if (NumberUtils.isNumber(this.txtBore1.getText()) && NumberUtils.isNumber(this.txtBore2.getText())
+                    && NumberUtils.isNumber(this.txtNeck.getText()) ) {
+                if (recordValidationService.Validate(currentEntry, RecordKey.THREAD_BORE, Float.parseFloat(this.txtBore1.getText()))
+                        && recordValidationService.Validate(currentEntry, RecordKey.THREAD_BORE, Float.parseFloat(this.txtBore2.getText()))
+                        && recordValidationService.Validate(currentEntry, RecordKey.THREAD_NECK, Float.parseFloat(this.txtNeck.getText()))) {
+                    isSave = true;
+                } else {
+                    if (this.cbBoreStaff.getSelectedItem() != null && this.cbBoreStaff.getSelectedIndex() != 0) {
+                        isSave = true;
+                        staff = ((ComboBoxItem<Staff>) this.cbBoreStaff.getSelectedItem()).getItem();
+                        this.cbBoreStaff.setSelectedIndex(0);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "the value is over the limit, please entry supervisor name.", "Warning", JOptionPane.OK_OPTION);
+                        this.labBoreStaff.setVisible(true);
+                        this.cbBoreStaff.setVisible(true);
+                    }
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Please entry the valid number.", "Warning", JOptionPane.OK_OPTION);
+            }
+
+            if (isSave) {
+                DefaultTableModel model = (DefaultTableModel) this.tblBore.getModel();
+                Date now = new Date();
+                String time = new SimpleDateFormat("HH:mm").format(now);
+                Float valueBore1 = Float.parseFloat(this.txtBore1.getText());
+                Float valueBore2 = Float.parseFloat(this.txtBore2.getText());
+                Float valueNeck = Float.parseFloat(this.txtNeck.getText());
+                model.addRow(new Object[]{time,RecordKey.THREAD_BORE1, valueBore1, staff!=null?staff.getName():""});
+                model.addRow(new Object[]{time,RecordKey.THREAD_BORE2, valueBore2, staff!=null?staff.getName():""});
+                model.addRow(new Object[]{time,RecordKey.THREAD_NECK, valueNeck, staff!=null?staff.getName():""});
+                
+                ((AbstractTableModel) this.tblBore.getModel()).fireTableDataChanged();
+                this.labBoreStaff.setVisible(false);
+                this.cbBoreStaff.setVisible(false);
+                this.txtBore1.setText("");
+                this.txtBore2.setText("");
+                this.txtNeck.setText("");
+                //
+                UpdateEntryData(now, valueBore1, RecordKey.THREAD_BORE1, staff);
+                UpdateEntryData(now, valueBore2, RecordKey.THREAD_BORE2, staff);
+                UpdateEntryData(now, valueNeck, RecordKey.THREAD_NECK, staff);
+            }
+        }
+    }//GEN-LAST:event_btnBoreActionPerformed
+
+    private void btnCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckActionPerformed
+        Boolean isSave = false;
+        Staff staff=null;
+        if (this.currentEntry != null) {
+            if (this.cbNeckRound.getSelectedIndex()!=0 && this.cbNeckComplete.getSelectedIndex()!=0 && this.cbUnderTheHandle.getSelectedIndex()!=0
+                    && this.cbBungIfDrilled.getSelectedIndex()!=0 && this.cbBase.getSelectedIndex()!=0 && this.cbStrengthOfDrum.getSelectedIndex()!=0
+                    && this.cbWeightWithinRange.getSelectedIndex()!=0 && this.cbColourTexture.getSelectedIndex()!=0) {
+                if (this.cbNeckRound.getSelectedIndex()!=2 && this.cbNeckComplete.getSelectedIndex()!=2 && this.cbUnderTheHandle.getSelectedIndex()!=2
+                    && this.cbBungIfDrilled.getSelectedIndex()!=2 && this.cbBase.getSelectedIndex()!=2 && this.cbStrengthOfDrum.getSelectedIndex()!=2
+                    && this.cbWeightWithinRange.getSelectedIndex()!=2 && this.cbColourTexture.getSelectedIndex()!=2) {
+                    isSave = true;
+                } else {
+                    if (this.cbCheckStaff.getSelectedItem() != null && this.cbCheckStaff.getSelectedIndex() != 0) {
+                        isSave = true;
+                        staff = ((ComboBoxItem<Staff>) this.cbCheckStaff.getSelectedItem()).getItem();
+                        this.cbCheckStaff.setSelectedIndex(0);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Fail to pass all the checks, please entry supervisor name.", "Warning", JOptionPane.OK_OPTION);
+                        this.labCheckStaff.setVisible(true);
+                        this.cbCheckStaff.setVisible(true);
+                    }
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Please complete all the checks.", "Warning", JOptionPane.OK_OPTION);
+            }
+
+            if (isSave) {
+                DefaultTableModel model = (DefaultTableModel) this.tblCheck.getModel();
+                Date now = new Date();
+                String time = new SimpleDateFormat("HH:mm").format(now);
+                model.addRow(new Object[]{time,RecordKey.CHECK_NECK_ROUND, this.cbNeckRound.getSelectedItem(), staff!=null?staff.getName():""});
+                model.addRow(new Object[]{time,RecordKey.CHECK_NECK_COMPLETE, this.cbNeckComplete.getSelectedItem(), staff!=null?staff.getName():""});
+                model.addRow(new Object[]{time,RecordKey.CHECK_UNDER_THE_HANDLE,this.cbUnderTheHandle.getSelectedItem(), staff!=null?staff.getName():""});
+                model.addRow(new Object[]{time,RecordKey.CHECK_BUNG_IF_DRILLED,this.cbBungIfDrilled.getSelectedItem(), staff!=null?staff.getName():""});
+                model.addRow(new Object[]{time,RecordKey.CHECK_BASE,this.cbBase.getSelectedItem(), staff!=null?staff.getName():""});
+                model.addRow(new Object[]{time,RecordKey.CHECK_STRENGTH_OF_DRUM,this.cbStrengthOfDrum.getSelectedItem(), staff!=null?staff.getName():""});
+                model.addRow(new Object[]{time,RecordKey.CHECK_WEIGHT_WITHIN_RANGE,this.cbWeightWithinRange.getSelectedItem(), staff!=null?staff.getName():""});
+                model.addRow(new Object[]{time,RecordKey.CHECK_COLOUR_TEXTURE,this.cbColourTexture.getSelectedItem(), staff!=null?staff.getName():""});
+                
+                ((AbstractTableModel) this.tblCheck.getModel()).fireTableDataChanged();
+                this.labCheckStaff.setVisible(false);
+                this.cbCheckStaff.setVisible(false);
+                this.cbNeckRound.setSelectedIndex(0);
+                this.cbNeckComplete.setSelectedIndex(0);
+                this.cbUnderTheHandle.setSelectedIndex(0);
+                this.cbBungIfDrilled.setSelectedIndex(0);
+                this.cbBase.setSelectedIndex(0);
+                this.cbStrengthOfDrum.setSelectedIndex(0);
+                this.cbWeightWithinRange.setSelectedIndex(0);
+                this.cbColourTexture.setSelectedIndex(0);
+                //
+                UpdateEntryData(now, (float)this.cbNeckRound.getSelectedIndex(), RecordKey.CHECK_NECK_ROUND, staff);
+                UpdateEntryData(now, (float)this.cbNeckComplete.getSelectedIndex(), RecordKey.CHECK_NECK_COMPLETE, staff);
+                UpdateEntryData(now, (float)this.cbUnderTheHandle.getSelectedIndex(), RecordKey.CHECK_UNDER_THE_HANDLE, staff);
+                UpdateEntryData(now, (float)this.cbBungIfDrilled.getSelectedIndex(), RecordKey.CHECK_BUNG_IF_DRILLED, staff);
+                UpdateEntryData(now, (float)this.cbBase.getSelectedIndex(), RecordKey.CHECK_BASE, staff);
+                UpdateEntryData(now, (float)this.cbStrengthOfDrum.getSelectedIndex(), RecordKey.CHECK_STRENGTH_OF_DRUM, staff);
+                UpdateEntryData(now, (float)this.cbWeightWithinRange.getSelectedIndex(), RecordKey.CHECK_WEIGHT_WITHIN_RANGE, staff);
+                UpdateEntryData(now, (float)this.cbColourTexture.getSelectedIndex(), RecordKey.CHECK_COLOUR_TEXTURE, staff);
+            }
+        }
+    }//GEN-LAST:event_btnCheckActionPerformed
+
+    private void btnDropActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDropActionPerformed
+        Boolean isSave = false;
+        Staff staff=null;
+        if (this.currentEntry != null) {
+            if (this.cbDrop1.getSelectedIndex()!=0 && this.cbDrop2.getSelectedIndex()!=0 && this.cbDrop3.getSelectedIndex()!=0
+                    && this.cbDrop4.getSelectedIndex()!=0 && this.cbDrop5.getSelectedIndex()!=0 && this.cbDrop6.getSelectedIndex()!=0
+                    && this.cbDrop7.getSelectedIndex()!=0 && this.cbDrop8.getSelectedIndex()!=0) {
+                if (this.cbDrop1.getSelectedIndex()!=2 && this.cbDrop2.getSelectedIndex()!=2 && this.cbDrop3.getSelectedIndex()!=2
+                    && this.cbDrop4.getSelectedIndex()!=2 && this.cbDrop5.getSelectedIndex()!=2 && this.cbDrop6.getSelectedIndex()!=2
+                    && this.cbDrop7.getSelectedIndex()!=2 && this.cbDrop8.getSelectedIndex()!=2) {
+                    isSave = true;
+                } else {
+                    if (this.cbDropStaff.getSelectedItem() != null && this.cbDropStaff.getSelectedIndex() != 0) {
+                        isSave = true;
+                        staff = ((ComboBoxItem<Staff>) this.cbDropStaff.getSelectedItem()).getItem();
+                        this.cbDropStaff.setSelectedIndex(0);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Fail to pass all the tests, please entry supervisor name.", "Warning", JOptionPane.OK_OPTION);
+                        this.labDropStaff.setVisible(true);
+                        this.cbDropStaff.setVisible(true);
+                    }
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Please complete all the tests.", "Warning", JOptionPane.OK_OPTION);
+            }
+
+            if (isSave) {
+                DefaultTableModel model = (DefaultTableModel) this.tblDrop.getModel();
+                Date now = new Date();
+                String time = new SimpleDateFormat("HH:mm").format(now);
+                model.addRow(new Object[]{time,RecordKey.DROP_TEST_1, this.cbDrop1.getSelectedItem(), staff!=null?staff.getName():""});
+                model.addRow(new Object[]{time,RecordKey.DROP_TEST_2, this.cbDrop2.getSelectedItem(), staff!=null?staff.getName():""});
+                model.addRow(new Object[]{time,RecordKey.DROP_TEST_3, this.cbDrop3.getSelectedItem(), staff!=null?staff.getName():""});
+                model.addRow(new Object[]{time,RecordKey.DROP_TEST_4, this.cbDrop4.getSelectedItem(), staff!=null?staff.getName():""});
+                model.addRow(new Object[]{time,RecordKey.DROP_TEST_5, this.cbDrop5.getSelectedItem(), staff!=null?staff.getName():""});
+                model.addRow(new Object[]{time,RecordKey.DROP_TEST_6, this.cbDrop6.getSelectedItem(), staff!=null?staff.getName():""});
+                model.addRow(new Object[]{time,RecordKey.DROP_TEST_7, this.cbDrop7.getSelectedItem(), staff!=null?staff.getName():""});
+                model.addRow(new Object[]{time,RecordKey.DROP_TEST_8, this.cbDrop8.getSelectedItem(), staff!=null?staff.getName():""});
+                
+                ((AbstractTableModel) this.tblDrop.getModel()).fireTableDataChanged();
+                this.labDropStaff.setVisible(false);
+                this.cbDropStaff.setVisible(false);
+                this.cbDrop1.setSelectedIndex(0);
+                this.cbDrop2.setSelectedIndex(0);
+                this.cbDrop3.setSelectedIndex(0);
+                this.cbDrop4.setSelectedIndex(0);
+                this.cbDrop5.setSelectedIndex(0);
+                this.cbDrop6.setSelectedIndex(0);
+                this.cbDrop7.setSelectedIndex(0);
+                this.cbDrop8.setSelectedIndex(0);
+                //
+                UpdateEntryData(now, (float)this.cbDrop1.getSelectedIndex(), RecordKey.DROP_TEST_1, staff);
+                UpdateEntryData(now, (float)this.cbDrop2.getSelectedIndex(), RecordKey.DROP_TEST_2, staff);
+                UpdateEntryData(now, (float)this.cbDrop3.getSelectedIndex(), RecordKey.DROP_TEST_3, staff);
+                UpdateEntryData(now, (float)this.cbDrop4.getSelectedIndex(), RecordKey.DROP_TEST_4, staff);
+                UpdateEntryData(now, (float)this.cbDrop5.getSelectedIndex(), RecordKey.DROP_TEST_5, staff);
+                UpdateEntryData(now, (float)this.cbDrop6.getSelectedIndex(), RecordKey.DROP_TEST_6, staff);
+                UpdateEntryData(now, (float)this.cbDrop7.getSelectedIndex(), RecordKey.DROP_TEST_7, staff);
+                UpdateEntryData(now, (float)this.cbDrop8.getSelectedIndex(), RecordKey.DROP_TEST_8, staff);
+            }
+        }
+    }//GEN-LAST:event_btnDropActionPerformed
+
+    private void UpdateEntryData(Date now, Float valueUnderHandle, RecordKey key, Staff staff) {
+        int recordId=this.recordService.CreateEntity();
+        Record record=this.recordService.FindEntity(recordId);
+        record.setEntryId(this.currentEntry);
+        record.setCreatedTime(now);
+        record.setNumberValue(valueUnderHandle);
+        record.setRecordKey(key.toString());
+        if(staff!=null){
+            record.setStaffId(staff);
+        }
+        this.recordService.UpdateEntity(record);
+    }
 
     /**
      * @param args the command line arguments
@@ -737,46 +2023,133 @@ public class MainJFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBore;
+    private javax.swing.JButton btnCheck;
+    private javax.swing.JButton btnDrop;
+    private javax.swing.JButton btnTap;
+    private javax.swing.JButton btnWall;
     private javax.swing.JButton btnWeight;
+    private javax.swing.JComboBox cbBase;
+    private javax.swing.JComboBox cbBoreStaff;
+    private javax.swing.JComboBox cbBungIfDrilled;
+    private javax.swing.JComboBox cbCheckStaff;
+    private javax.swing.JComboBox cbColourTexture;
+    private javax.swing.JComboBox cbDrop1;
+    private javax.swing.JComboBox cbDrop2;
+    private javax.swing.JComboBox cbDrop3;
+    private javax.swing.JComboBox cbDrop4;
+    private javax.swing.JComboBox cbDrop5;
+    private javax.swing.JComboBox cbDrop6;
+    private javax.swing.JComboBox cbDrop7;
+    private javax.swing.JComboBox cbDrop8;
+    private javax.swing.JComboBox cbDropStaff;
     private javax.swing.JComboBox cbEntry;
+    private javax.swing.JComboBox cbNeckComplete;
+    private javax.swing.JComboBox cbNeckRound;
+    private javax.swing.JComboBox cbStrengthOfDrum;
+    private javax.swing.JComboBox cbTap;
+    private javax.swing.JComboBox cbTapStaff;
+    private javax.swing.JComboBox cbUnderTheHandle;
+    private javax.swing.JComboBox cbWallStaff;
     private javax.swing.JComboBox cbWeightStaff;
+    private javax.swing.JComboBox cbWeightWithinRange;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel10;
-    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
+    private javax.swing.JPanel jPanel17;
+    private javax.swing.JPanel jPanel18;
+    private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel20;
+    private javax.swing.JPanel jPanel21;
+    private javax.swing.JPanel jPanel22;
+    private javax.swing.JPanel jPanel23;
+    private javax.swing.JPanel jPanel24;
+    private javax.swing.JPanel jPanel25;
+    private javax.swing.JPanel jPanel26;
+    private javax.swing.JPanel jPanel27;
+    private javax.swing.JPanel jPanel28;
+    private javax.swing.JPanel jPanel29;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel30;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JLabel labBoreStaff;
+    private javax.swing.JLabel labCheckStaff;
+    private javax.swing.JLabel labDropStaff;
     private javax.swing.JLabel labProductImage;
+    private javax.swing.JLabel labTapStaff;
+    private javax.swing.JLabel labWallStaff;
     private javax.swing.JLabel labWeightStaff;
+    private javax.swing.JPanel pnlChartTap;
     private javax.swing.JPanel pnlChartWeight;
     private javax.swing.JPanel pnlMouldImage;
+    private javax.swing.JTable tblBore;
+    private javax.swing.JTable tblCheck;
+    private javax.swing.JTable tblDrop;
+    private javax.swing.JTable tblTap;
+    private javax.swing.JTable tblWall;
     private javax.swing.JTable tblWeight;
+    private javax.swing.JTextField txtBore1;
+    private javax.swing.JTextField txtBore2;
+    private javax.swing.JTextField txtNeck;
     private javax.swing.JLabel txtProductBung;
     private javax.swing.JLabel txtProductCode;
     private javax.swing.JLabel txtProductColor;
     private javax.swing.JLabel txtProductDesc;
     private javax.swing.JLabel txtProductPierced;
     private javax.swing.JLabel txtProductWeight;
+    private javax.swing.JTextField txtWallBase;
+    private javax.swing.JTextField txtWallClosure;
+    private javax.swing.JTextField txtWallHandleBung;
+    private javax.swing.JTextField txtWallHandleLeft;
+    private javax.swing.JTextField txtWallHandleRight;
+    private javax.swing.JTextField txtWallUnderHandle;
     private javax.swing.JTextField txtWeight;
     // End of variables declaration//GEN-END:variables
 

@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.cch.aj.entryrecorder.repositories.impl;
 
 import com.cch.aj.entryrecorder.common.RecordKey;
@@ -24,13 +23,13 @@ import javax.persistence.criteria.Root;
  *
  * @author chacao
  */
-public class RecordRepositoryImpl implements RecordSettingRepository{
+public class RecordRepositoryImpl implements RecordSettingRepository {
 
     RecordJpaController controller;
-    
+
     public RecordRepositoryImpl(String dbConnectionString) {
-        EntityManagerFactory emf=javax.persistence.Persistence.createEntityManagerFactory(dbConnectionString);
-        this.controller=new RecordJpaController(emf);
+        EntityManagerFactory emf = javax.persistence.Persistence.createEntityManagerFactory(dbConnectionString);
+        this.controller = new RecordJpaController(emf);
     }
 
     @Override
@@ -39,8 +38,7 @@ public class RecordRepositoryImpl implements RecordSettingRepository{
     }
 
     @Override
-    public void destroy(Integer id) throws NonexistentEntityException
-    {
+    public void destroy(Integer id) throws NonexistentEntityException {
         controller.destroy(id);
     }
 
@@ -51,7 +49,7 @@ public class RecordRepositoryImpl implements RecordSettingRepository{
 
     @Override
     public Record findEntity(Integer id) {
-       return  this.controller.findRecord(id);
+        return this.controller.findRecord(id);
     }
 
     @Override
@@ -75,15 +73,19 @@ public class RecordRepositoryImpl implements RecordSettingRepository{
     }
 
     @Override
-    public List<Record> FindEntitiesByKeyAndRecord(RecordKey key,int recordId) {
+    public List<Record> FindEntitiesByKeyAndRecord(RecordKey key, int recordId) {
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         try {
             CriteriaQuery<Record> cq = em.getCriteriaBuilder().createQuery(Record.class);
             Root<Record> from = cq.from(Record.class);
-            Predicate p1=cb.equal(from.get("recordKey"), key.toString());
-            Predicate p2=cb.equal(from.get("entryId").get("id"), recordId);
-            cq.where(cb.and(p1,p2)).select(from);
+            Predicate pKey = cb.equal(from.get("recordKey"), key.toString());
+            Predicate pEntry = cb.equal(from.get("entryId").get("id"), recordId);
+            if (key != RecordKey.ALL) {
+                cq.where(cb.and(pKey, pEntry)).select(from);
+            } else {
+                cq.where(pEntry).select(from);
+            }
             Query q = em.createQuery(cq);
             return q.getResultList();
         } finally {
@@ -91,5 +93,4 @@ public class RecordRepositoryImpl implements RecordSettingRepository{
         }
     }
 
-    
 }

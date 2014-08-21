@@ -2614,7 +2614,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 9);
         pnlEditProduct.add(jLabel59, gridBagConstraints);
 
-        cbProductDg.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "DG-UNDER THE HANDLE", "DG-BASE(CENTRE)", "DG-CLOSURE SIDE", "DG-END OF HANDLE SIDE-BUNG", "DG-END OF HANDLE SIDE-LEFT", "DG-END OF HANDLE SIDE-RIGHT", "NONDG-UNDER THE HANDLE", "NONDG-BASE(CENTRE)", "NONDG-CLOSURE SIDE", "NONDG-END OF HANDLE SIDE-BUNG", "NONDG-END OF HANDLE SIDE-LEFT", "NONDG-END OF HANDLE SIDE-RIGHT" }));
+        cbProductDg.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "DG", "NON-DG" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
@@ -3361,7 +3361,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         this.txtMouldDgHandleLeftMax.setText(currentMould.getWallDgHandleLeftMax() == null ? "" : currentMould.getWallDgHandleLeftMax().toString());
         this.txtMouldDgHandleLeftMin.setText(currentMould.getWallDgHandleLeftMin() == null ? "" : currentMould.getWallDgHandleLeftMin().toString());
         this.txtMouldDgHandleRightMax.setText(currentMould.getWallDgHandleRightMax() == null ? "" : currentMould.getWallDgHandleRightMax().toString());
-        this.txtMouldDgHandleRightMin.setText(currentMould.getWallDgHandRightMin() == null ? "" : currentMould.getWallDgHandRightMin().toString());
+        this.txtMouldDgHandleRightMin.setText(currentMould.getWallDgHandleRightMin() == null ? "" : currentMould.getWallDgHandleRightMin().toString());
         this.txtMouldDgUnderHandleMax.setText(currentMould.getWallDgUnderHandleMax() == null ? "" : currentMould.getWallDgUnderHandleMax().toString());
         this.txtMouldDgUnderHandleMin.setText(currentMould.getWallDgUnderHandleMin() == null ? "" : currentMould.getWallDgUnderHandleMin().toString());
         this.txtMouldHandleBungMax.setText(currentMould.getWallNonDgHandleBungMax() == null ? "" : currentMould.getWallNonDgHandleBungMax().toString());
@@ -3525,7 +3525,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
             currentMould.setWallDgHandleRightMax(Float.parseFloat(this.txtMouldDgHandleRightMax.getText()));
         }
         if (!this.txtMouldDgHandleRightMin.getText().equals("")) {
-            currentMould.setWallDgHandRightMin(Float.parseFloat(this.txtMouldDgHandleRightMin.getText()));
+            currentMould.setWallDgHandleRightMin(Float.parseFloat(this.txtMouldDgHandleRightMin.getText()));
         }
         if (!this.txtMouldDgUnderHandleMax.getText().equals("")) {
             currentMould.setWallDgUnderHandleMax(Float.parseFloat(this.txtMouldDgUnderHandleMax.getText()));
