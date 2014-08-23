@@ -108,7 +108,7 @@ public class MainJFrame extends javax.swing.JFrame {
         this.labWeightStaff.setVisible(false);
         this.txtWeightStaff.setVisible(false);
         datasetWeight = new DefaultCategoryDataset();
-
+        
         List<Record> recordsWeight = records.stream().filter(x -> x.getRecordKey().equals("PRODUCT_WEIGHT")).collect(Collectors.toList());
         DefaultTableModel modelWeight = (DefaultTableModel) this.tblWeight.getModel();
         modelWeight.setRowCount(0);
@@ -127,9 +127,6 @@ public class MainJFrame extends javax.swing.JFrame {
         this.pnlChartWeight.removeAll();
         this.pnlChartWeight.add(cpWeight, gridBagConstraints);
         //wall
-        this.labWallStaff.setVisible(false);
-        this.txtWallStaff.setVisible(false);
-
         List<Record> recordsWall = records.stream().filter(x -> x.getRecordKey().startsWith("WALL_")).collect(Collectors.toList());
         DefaultTableModel modelWall = (DefaultTableModel) this.tblWall.getModel();
         modelWall.setRowCount(0);
@@ -142,8 +139,6 @@ public class MainJFrame extends javax.swing.JFrame {
         }
         ((AbstractTableModel) this.tblWall.getModel()).fireTableDataChanged();
         //Tap
-        this.labTapStaff.setVisible(false);
-        this.txtTapStaff.setVisible(false);
         datasetTap = new DefaultCategoryDataset();
 
         List<Record> recordsTap = records.stream().filter(x -> x.getRecordKey().equals("TAP_POSITION")).collect(Collectors.toList());
@@ -164,9 +159,6 @@ public class MainJFrame extends javax.swing.JFrame {
         this.pnlChartTap.removeAll();
         this.pnlChartTap.add(cpTap, gridBagConstraints);
         //Bore
-        this.labBoreStaff.setVisible(false);
-        this.txtBoreStaff.setVisible(false);
-
         List<Record> recordsBore = records.stream().filter(x -> x.getRecordKey().startsWith("THREAD_")).collect(Collectors.toList());
         DefaultTableModel modelBore = (DefaultTableModel) this.tblBore.getModel();
         modelBore.setRowCount(0);
@@ -179,9 +171,6 @@ public class MainJFrame extends javax.swing.JFrame {
         }
         ((AbstractTableModel) this.tblBore.getModel()).fireTableDataChanged();
         //Check
-        this.labCheckStaff.setVisible(false);
-        this.txtCheckStaff.setVisible(false);
-
         List<Record> recordsCheck = records.stream().filter(x -> x.getRecordKey().startsWith("CHECK_")).collect(Collectors.toList());
         DefaultTableModel modelCheck = (DefaultTableModel) this.tblCheck.getModel();
         modelCheck.setRowCount(0);
@@ -194,9 +183,6 @@ public class MainJFrame extends javax.swing.JFrame {
         }
         ((AbstractTableModel) this.tblCheck.getModel()).fireTableDataChanged();
         //Drop
-        this.labDropStaff.setVisible(false);
-        this.txtDropStaff.setVisible(false);
-
         List<Record> recordsDrop = records.stream().filter(x -> x.getRecordKey().startsWith("DROP_")).collect(Collectors.toList());
         DefaultTableModel modelDrop = (DefaultTableModel) this.tblDrop.getModel();
         modelDrop.setRowCount(0);
@@ -208,6 +194,17 @@ public class MainJFrame extends javax.swing.JFrame {
             modelDrop.addRow(new Object[]{time, name, record.getNumberValue(), pass, staff});
         }
         ((AbstractTableModel) this.tblDrop.getModel()).fireTableDataChanged();
+        //Bung
+        List<Record> recordsBung = records.stream().filter(x -> x.getRecordKey().equals("BUNG")).collect(Collectors.toList());
+        DefaultTableModel modelBung = (DefaultTableModel) this.tblBung.getModel();
+        modelBung.setRowCount(0);
+        for (Record record : recordsBung) {
+            String time = new SimpleDateFormat("HH:mm").format(record.getCreatedTime());
+            String staff = record.getStaff() == null ? "" : record.getStaff();
+            String pass = record.getIsPass() == null ? "" : record.getIsPass();
+            modelBung.addRow(new Object[]{time, record.getNumberValue(), pass, staff});
+        }
+        
     }
 
     private int FillEntryComboBox(JComboBox comboBox, int id) {
@@ -306,6 +303,16 @@ public class MainJFrame extends javax.swing.JFrame {
         cbTap = new javax.swing.JComboBox();
         txtTapStaff = new javax.swing.JTextField();
         pnlChartTap = new javax.swing.JPanel();
+        jPanel7 = new javax.swing.JPanel();
+        jPanel31 = new javax.swing.JPanel();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        tblBung = new javax.swing.JTable();
+        jPanel32 = new javax.swing.JPanel();
+        jLabel39 = new javax.swing.JLabel();
+        labBungStaff = new javax.swing.JLabel();
+        btnBung = new javax.swing.JButton();
+        cbBung = new javax.swing.JComboBox();
+        txtBungStaff = new javax.swing.JTextField();
         jPanel22 = new javax.swing.JPanel();
         jPanel23 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
@@ -982,7 +989,100 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.weighty = 1.0;
         jPanel6.add(pnlChartTap, gridBagConstraints);
 
-        jTabbedPane1.addTab("Tap Position / Tightness", jPanel6);
+        jTabbedPane1.addTab("Tap Position", jPanel6);
+
+        jPanel7.setLayout(new java.awt.GridBagLayout());
+
+        jPanel31.setLayout(new java.awt.GridBagLayout());
+
+        tblBung.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Time", "Value", "Pass", "Staff"
+            }
+        ));
+        jScrollPane7.setViewportView(tblBung);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        jPanel31.add(jScrollPane7, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.7;
+        jPanel7.add(jPanel31, gridBagConstraints);
+
+        jPanel32.setLayout(new java.awt.GridBagLayout());
+
+        jLabel39.setText("Tap");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(9, 27, 9, 27);
+        jPanel32.add(jLabel39, gridBagConstraints);
+
+        labBungStaff.setText("Check By");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(9, 27, 9, 27);
+        jPanel32.add(labBungStaff, gridBagConstraints);
+
+        btnBung.setText("Add");
+        btnBung.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBungActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.insets = new java.awt.Insets(9, 27, 9, 27);
+        jPanel32.add(btnBung, gridBagConstraints);
+
+        cbBung.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "- Select -", "Weak", "Good", "Strong" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.insets = new java.awt.Insets(9, 27, 9, 27);
+        jPanel32.add(cbBung, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.insets = new java.awt.Insets(9, 27, 9, 27);
+        jPanel32.add(txtBungStaff, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.3;
+        jPanel7.add(jPanel32, gridBagConstraints);
+
+        jTabbedPane1.addTab("Bung", jPanel7);
 
         jPanel22.setLayout(new java.awt.GridBagLayout());
 
@@ -1015,7 +1115,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jPanel24.setLayout(new java.awt.GridBagLayout());
 
-        labBoreStaff.setText("Staff Check");
+        labBoreStaff.setText("Check By");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 6;
@@ -1185,7 +1285,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
         jPanel27.add(jLabel24, gridBagConstraints);
 
-        labCheckStaff.setText("Staff Check");
+        labCheckStaff.setText("Check By");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 8;
@@ -1420,7 +1520,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
         jPanel30.add(jLabel27, gridBagConstraints);
 
-        labDropStaff.setText("Staff Check");
+        labDropStaff.setText("Test By");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
@@ -1428,7 +1528,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipadx = 4;
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
-        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        gridBagConstraints.insets = new java.awt.Insets(10, 29, 5, 29);
         jPanel30.add(labDropStaff, gridBagConstraints);
 
         btnDrop.setText("Add");
@@ -1609,7 +1709,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 4;
         gridBagConstraints.ipady = 4;
-        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        gridBagConstraints.insets = new java.awt.Insets(10, 29, 5, 29);
         jPanel30.add(txtDropStaff, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -1709,7 +1809,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 datasetWeight.addValue(value, "Weight", time);
                 this.labWeightStaff.setVisible(false);
                 this.txtWeightStaff.setVisible(false);
-                this.txtWeightStaff.setText("");
+                this.txtWeight.setText("");
                 UpdateEntryData(now, value, RecordKey.PRODUCT_WEIGHT, staff, pass);
             }
         }
@@ -1732,7 +1832,7 @@ public class MainJFrame extends javax.swing.JFrame {
                         && recordValidationService.Validate(currentEntry, RecordKey.WALL_CLOSURE, Float.parseFloat(this.txtWallClosure.getText()))
                         && recordValidationService.Validate(currentEntry, RecordKey.WALL_HANDLE_BUNG, Float.parseFloat(this.txtWallHandleBung.getText()))
                         && recordValidationService.Validate(currentEntry, RecordKey.WALL_HANDLE_LEFT, Float.parseFloat(this.txtWallHandleLeft.getText()))
-                        && recordValidationService.Validate(currentEntry, RecordKey.WALL_HANDLE_RIGHT, Float.parseFloat(this.txtWallStaff.getText()))
+                        && recordValidationService.Validate(currentEntry, RecordKey.WALL_HANDLE_RIGHT, Float.parseFloat(this.txtWallHandleRight.getText()))
                         && recordValidationService.Validate(currentEntry, RecordKey.WALL_UNDER_HANDLE, Float.parseFloat(this.txtWallUnderHandle.getText()))) {
                     isSave = true;
                     pass = "YES";
@@ -1743,8 +1843,6 @@ public class MainJFrame extends javax.swing.JFrame {
                         this.txtWallStaff.setText("");
                     } else {
                         JOptionPane.showMessageDialog(this, "the value is over the limit, please entry supervisor name.", "Warning", JOptionPane.OK_OPTION);
-                        this.labWallStaff.setVisible(true);
-                        this.txtWallStaff.setVisible(true);
                     }
                 }
             } else {
@@ -1760,7 +1858,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 Float valueClosure = Float.parseFloat(this.txtWallClosure.getText());
                 Float valueHandleBung = Float.parseFloat(this.txtWallHandleBung.getText());
                 Float valueHandleLeft = Float.parseFloat(this.txtWallHandleLeft.getText());
-                Float valueHandleRight = Float.parseFloat(this.txtWallStaff.getText());
+                Float valueHandleRight = Float.parseFloat(this.txtWallHandleRight.getText());
                 model.addRow(new Object[]{time, RecordKey.WALL_UNDER_HANDLE, valueUnderHandle, pass, staff});
                 model.addRow(new Object[]{time, RecordKey.WALL_BASE, valueBase, pass, staff});
                 model.addRow(new Object[]{time, RecordKey.WALL_CLOSURE, valueClosure, pass, staff});
@@ -1776,7 +1874,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 this.txtWallClosure.setText("");
                 this.txtWallHandleBung.setText("");
                 this.txtWallHandleLeft.setText("");
-                this.txtWallStaff.setText("");
+                this.txtWallHandleRight.setText("");
                 //
                 UpdateEntryData(now, valueUnderHandle, RecordKey.WALL_UNDER_HANDLE, staff, pass);
                 UpdateEntryData(now, valueBase, RecordKey.WALL_BASE, staff, pass);
@@ -1794,7 +1892,7 @@ public class MainJFrame extends javax.swing.JFrame {
         String pass = "NO";
         if (this.currentEntry != null) {
             if (this.cbTap.getSelectedIndex() != 0) {
-                if (recordValidationService.Validate(currentEntry, RecordKey.PRODUCT_WEIGHT, (float) this.cbTap.getSelectedIndex())) {
+                if (recordValidationService.Validate(currentEntry, RecordKey.TAP_POSITION, (float) this.cbTap.getSelectedIndex())) {
                     isSave = true;
                     pass = "YES";
                 } else {
@@ -1805,8 +1903,6 @@ public class MainJFrame extends javax.swing.JFrame {
 
                     } else {
                         JOptionPane.showMessageDialog(this, "the value is over the limit, please entry supervisor name.", "Warning", JOptionPane.OK_OPTION);
-                        this.labTapStaff.setVisible(true);
-                        this.txtTapStaff.setVisible(true);
                     }
                 }
             } else {
@@ -1838,7 +1934,7 @@ public class MainJFrame extends javax.swing.JFrame {
                     && NumberUtils.isNumber(this.txtNeck.getText())) {
                 if (recordValidationService.Validate(currentEntry, RecordKey.THREAD_BORE, Float.parseFloat(this.txtBore1.getText()))
                         && recordValidationService.Validate(currentEntry, RecordKey.THREAD_BORE, Float.parseFloat(this.txtBore2.getText()))
-                        && recordValidationService.Validate(currentEntry, RecordKey.THREAD_NECK, Float.parseFloat(this.txtBoreStaff.getText()))) {
+                        && recordValidationService.Validate(currentEntry, RecordKey.THREAD_NECK, Float.parseFloat(this.txtNeck.getText()))) {
                     isSave = true;
                     pass = "YES";
                 } else {
@@ -1848,8 +1944,6 @@ public class MainJFrame extends javax.swing.JFrame {
                         this.txtBoreStaff.setText("");
                     } else {
                         JOptionPane.showMessageDialog(this, "the value is over the limit, please entry supervisor name.", "Warning", JOptionPane.OK_OPTION);
-                        this.labBoreStaff.setVisible(true);
-                        this.txtBoreStaff.setVisible(true);
                     }
                 }
             } else {
@@ -1862,7 +1956,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 String time = new SimpleDateFormat("HH:mm").format(now);
                 Float valueBore1 = Float.parseFloat(this.txtBore1.getText());
                 Float valueBore2 = Float.parseFloat(this.txtBore2.getText());
-                Float valueNeck = Float.parseFloat(this.txtBoreStaff.getText());
+                Float valueNeck = Float.parseFloat(this.txtNeck.getText());
                 model.addRow(new Object[]{time, RecordKey.THREAD_BORE1, valueBore1, pass, staff});
                 model.addRow(new Object[]{time, RecordKey.THREAD_BORE2, valueBore2, pass, staff});
                 model.addRow(new Object[]{time, RecordKey.THREAD_NECK, valueNeck, pass, staff});
@@ -1872,7 +1966,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 this.txtBoreStaff.setVisible(false);
                 this.txtBore1.setText("");
                 this.txtBore2.setText("");
-                this.txtBoreStaff.setText("");
+                this.txtNeck.setText("");
                 //
                 UpdateEntryData(now, valueBore1, RecordKey.THREAD_BORE1, staff, pass);
                 UpdateEntryData(now, valueBore2, RecordKey.THREAD_BORE2, staff, pass);
@@ -1901,8 +1995,6 @@ public class MainJFrame extends javax.swing.JFrame {
                         this.txtCheckStaff.setText("");
                     } else {
                         JOptionPane.showMessageDialog(this, "Fail to pass all the checks, please entry supervisor name.", "Warning", JOptionPane.OK_OPTION);
-                        this.labCheckStaff.setVisible(true);
-                        this.txtCheckStaff.setVisible(true);
                     }
                 }
             } else {
@@ -1966,8 +2058,6 @@ public class MainJFrame extends javax.swing.JFrame {
                         this.txtDropStaff.setText("");
                     } else {
                         JOptionPane.showMessageDialog(this, "Fail to pass all the tests, please entry supervisor name.", "Warning", JOptionPane.OK_OPTION);
-                        this.labDropStaff.setVisible(true);
-                        this.txtDropStaff.setVisible(true);
                     }
                 }
             } else {
@@ -2010,6 +2100,44 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnDropActionPerformed
+
+    private void btnBungActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBungActionPerformed
+        Boolean isSave = false;
+        String staff = "";
+        String pass = "NO";
+        if (this.currentEntry != null) {
+            if (this.cbBung.getSelectedIndex() != 0) {
+                if (this.cbBung.getSelectedIndex() != 1) {
+                    isSave = true;
+                    pass = "YES";
+                } else {
+                    if (!this.txtBungStaff.getText().equals("")) {
+                        isSave = true;
+                        staff = txtBungStaff.getText();
+                        this.txtBungStaff.setText("");
+
+                    } else {
+                        JOptionPane.showMessageDialog(this, "the value is over the limit, please entry supervisor name.", "Warning", JOptionPane.OK_OPTION);
+                    }
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Please select the tap position.", "Warning", JOptionPane.OK_OPTION);
+            }
+
+            if (isSave) {
+                DefaultTableModel model = (DefaultTableModel) this.tblBung.getModel();
+                Date now = new Date();
+                String time = new SimpleDateFormat("HH:mm").format(now);
+                Float value = (float) this.cbBung.getSelectedIndex();
+                model.addRow(new Object[]{time, value, pass, staff});
+                ((AbstractTableModel) this.tblBung.getModel()).fireTableDataChanged();
+                this.labBungStaff.setVisible(false);
+                this.txtBungStaff.setVisible(false);
+                this.cbBung.setSelectedIndex(0);
+                UpdateEntryData(now, value, RecordKey.BUNG, staff, pass);
+            }
+        }
+    }//GEN-LAST:event_btnBungActionPerformed
 
     private void UpdateEntryData(Date now, Float valueUnderHandle, RecordKey key, String staff, String pass) {
         int recordId = this.recordService.CreateEntity();
@@ -2060,12 +2188,14 @@ public class MainJFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBore;
+    private javax.swing.JButton btnBung;
     private javax.swing.JButton btnCheck;
     private javax.swing.JButton btnDrop;
     private javax.swing.JButton btnTap;
     private javax.swing.JButton btnWall;
     private javax.swing.JButton btnWeight;
     private javax.swing.JComboBox cbBase;
+    private javax.swing.JComboBox cbBung;
     private javax.swing.JComboBox cbBungIfDrilled;
     private javax.swing.JComboBox cbColourTexture;
     private javax.swing.JComboBox cbDrop1;
@@ -2115,6 +2245,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel38;
+    private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -2142,17 +2273,22 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel29;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel30;
+    private javax.swing.JPanel jPanel31;
+    private javax.swing.JPanel jPanel32;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel labBoreStaff;
+    private javax.swing.JLabel labBungStaff;
     private javax.swing.JLabel labCheckStaff;
     private javax.swing.JLabel labDropStaff;
     private javax.swing.JLabel labProductImage;
@@ -2163,6 +2299,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel pnlChartWeight;
     private javax.swing.JPanel pnlMouldImage;
     private javax.swing.JTable tblBore;
+    private javax.swing.JTable tblBung;
     private javax.swing.JTable tblCheck;
     private javax.swing.JTable tblDrop;
     private javax.swing.JTable tblTap;
@@ -2171,6 +2308,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JTextField txtBore1;
     private javax.swing.JTextField txtBore2;
     private javax.swing.JTextField txtBoreStaff;
+    private javax.swing.JTextField txtBungStaff;
     private javax.swing.JTextField txtCheckStaff;
     private javax.swing.JTextField txtDropStaff;
     private javax.swing.JTextField txtNeck;
