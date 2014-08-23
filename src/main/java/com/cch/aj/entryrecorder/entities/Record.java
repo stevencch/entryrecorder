@@ -37,7 +37,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Record.findByRecordKey", query = "SELECT r FROM Record r WHERE r.recordKey = :recordKey"),
     @NamedQuery(name = "Record.findByNumberValue", query = "SELECT r FROM Record r WHERE r.numberValue = :numberValue"),
     @NamedQuery(name = "Record.findByStringValue", query = "SELECT r FROM Record r WHERE r.stringValue = :stringValue"),
-    @NamedQuery(name = "Record.findByCreatedTime", query = "SELECT r FROM Record r WHERE r.createdTime = :createdTime")})
+    @NamedQuery(name = "Record.findByCreatedTime", query = "SELECT r FROM Record r WHERE r.createdTime = :createdTime"),
+    @NamedQuery(name = "Record.findByStaff", query = "SELECT r FROM Record r WHERE r.staff = :staff"),
+    @NamedQuery(name = "Record.findByIsPass", query = "SELECT r FROM Record r WHERE r.isPass = :isPass")})
 public class Record implements Serializable,SettingEntity {
     private static final long serialVersionUID = 1L;
     @Id
@@ -55,9 +57,10 @@ public class Record implements Serializable,SettingEntity {
     @Column(name = "CreatedTime")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdTime;
-    @JoinColumn(name = "StaffId", referencedColumnName = "Id")
-    @ManyToOne
-    private Staff staffId;
+    @Column(name = "Staff")
+    private String staff;
+    @Column(name = "IsPass")
+    private String isPass;
     @JoinColumn(name = "EntryId", referencedColumnName = "Id")
     @ManyToOne
     private Entry entryId;
@@ -109,12 +112,20 @@ public class Record implements Serializable,SettingEntity {
         this.createdTime = createdTime;
     }
 
-    public Staff getStaffId() {
-        return staffId;
+    public String getStaff() {
+        return staff;
     }
 
-    public void setStaffId(Staff staffId) {
-        this.staffId = staffId;
+    public void setStaff(String staff) {
+        this.staff = staff;
+    }
+
+    public String getIsPass() {
+        return isPass;
+    }
+
+    public void setIsPass(String isPass) {
+        this.isPass = isPass;
     }
 
     public Entry getEntryId() {
@@ -149,8 +160,9 @@ public class Record implements Serializable,SettingEntity {
     public String toString() {
         return "com.cch.aj.entryrecorder.entities.Record[ id=" + id + " ]";
     }
-    
+
     @Override
     public void setDefaultValue() {
     }
+    
 }

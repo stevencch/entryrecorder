@@ -10,6 +10,7 @@ import com.cch.aj.entryrecorder.common.SettingEntity;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,13 +37,14 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Polymer.findByGrade", query = "SELECT p FROM Polymer p WHERE p.grade = :grade"),
     @NamedQuery(name = "Polymer.findByDescription", query = "SELECT p FROM Polymer p WHERE p.description = :description")})
 public class Polymer implements Serializable,SettingEntity {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "polymerId")
+    private Collection<Entry> entryCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "Id")
     private Integer id;
-    @Basic(optional = false)
     @Column(name = "Company")
     private String company;
     @Column(name = "Grade")
@@ -134,6 +136,16 @@ public class Polymer implements Serializable,SettingEntity {
     public void setDefaultValue() {
         this.company="Company Name";
         this.grade="Grade";
+        this.description="Colour";
+    }
+
+    @XmlTransient
+    public Collection<Entry> getEntryCollection() {
+        return entryCollection;
+    }
+
+    public void setEntryCollection(Collection<Entry> entryCollection) {
+        this.entryCollection = entryCollection;
     }
     
 }

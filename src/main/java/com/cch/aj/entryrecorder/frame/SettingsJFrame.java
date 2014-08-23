@@ -591,7 +591,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         txtProductWeightMax = new javax.swing.JTextField();
         jLabel65 = new javax.swing.JLabel();
         jLabel66 = new javax.swing.JLabel();
-        cbProductBore = new javax.swing.JComboBox();
+        cbProductBoreB = new javax.swing.JComboBox();
         cbProductNeck = new javax.swing.JComboBox();
         jLabel67 = new javax.swing.JLabel();
         jLabel68 = new javax.swing.JLabel();
@@ -606,6 +606,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         cbProductAdditive3 = new javax.swing.JComboBox();
         txtProductPerc3 = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
+        cbProductBoreA = new javax.swing.JComboBox();
         jTabbedPane5 = new javax.swing.JTabbedPane();
         jPanel10 = new javax.swing.JPanel();
         pnlEditPolymer = new javax.swing.JPanel();
@@ -2687,7 +2688,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 9);
         pnlEditProduct.add(txtProductWeightMax, gridBagConstraints);
 
-        jLabel65.setText("BORE DIAMETRE");
+        jLabel65.setText("BORE B DIAMETRE");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 8;
@@ -2716,7 +2717,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 9);
-        pnlEditProduct.add(cbProductBore, gridBagConstraints);
+        pnlEditProduct.add(cbProductBoreB, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 9;
@@ -2847,7 +2848,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 25);
         pnlEditProduct.add(txtProductPerc3, gridBagConstraints);
 
-        jLabel7.setText("THREAD TYPE");
+        jLabel7.setText("BORE A DIAMETRE");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 7;
@@ -2857,6 +2858,15 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 9);
         pnlEditProduct.add(jLabel7, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 28;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 9);
+        pnlEditProduct.add(cbProductBoreA, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -3793,8 +3803,20 @@ public class SettingsJFrame extends javax.swing.JFrame {
         if (this.cbProductAdditive3.getSelectedIndex() != 0) {
             currentProduct.setAdditiveCId(((ComboBoxItem<Additive>) this.cbProductAdditive3.getSelectedItem()).getItem());
         }
-        if (this.cbProductBore.getSelectedIndex() != 0) {
-            currentProduct.setThreadBore(this.cbProductBore.getSelectedIndex());
+        if (!this.txtProductPerc1.getText().equals("")) {
+            currentProduct.setAdditiveAPercentage(this.txtProductPerc1.getText());
+        }
+        if (!this.txtProductPerc2.getText().equals("")) {
+            currentProduct.setAdditiveBPercentage(this.txtProductPerc2.getText());
+        }
+        if (!this.txtProductPerc3.getText().equals("")) {
+            currentProduct.setAdditiveCPercentage(this.txtProductPerc3.getText());
+        }
+        if (this.cbProductBoreA.getSelectedIndex() != 0) {
+            currentProduct.setThreadBoreA(this.cbProductBoreA.getSelectedIndex());
+        }
+        if (this.cbProductBoreB.getSelectedIndex() != 0) {
+            currentProduct.setThreadBoreB(this.cbProductBoreB.getSelectedIndex());
         }
         if (this.cbProductNeck.getSelectedIndex() != 0) {
             currentProduct.setThreadNeck(this.cbProductNeck.getSelectedIndex());
@@ -3859,27 +3881,30 @@ public class SettingsJFrame extends javax.swing.JFrame {
         this.FillAdditiveComboBox(this.cbProductAdditive1, currentProduct.getAdditiveAId() != null ? currentProduct.getAdditiveAId().getId() : 0);
         this.FillAdditiveComboBox(this.cbProductAdditive2, currentProduct.getAdditiveBId() != null ? currentProduct.getAdditiveAId().getId() : 0);
         this.FillAdditiveComboBox(this.cbProductAdditive3, currentProduct.getAdditiveCId() != null ? currentProduct.getAdditiveCId().getId() : 0);
-        List<String> threadBores = new ArrayList<String>();
-        threadBores.add("- Select -");
+        List<String> threadBoresA = new ArrayList<String>();
+        threadBoresA.add("- Select -");
         if (settingMould.getThreadBoreASize1() != null && !settingMould.getThreadBoreASize1().equals("")) {
-            threadBores.add(settingMould.getThreadBoreASize1());
+            threadBoresA.add(settingMould.getThreadBoreASize1());
         }
         if (settingMould.getThreadBoreASize2() != null && !settingMould.getThreadBoreASize2().equals("")) {
-            threadBores.add(settingMould.getThreadBoreASize2());
+            threadBoresA.add(settingMould.getThreadBoreASize2());
         }
         if (settingMould.getThreadBoreASize3() != null && !settingMould.getThreadBoreASize3().equals("")) {
-            threadBores.add(settingMould.getThreadBoreASize3());
+            threadBoresA.add(settingMould.getThreadBoreASize3());
         }
+        this.cbProductBoreA.setModel(new DefaultComboBoxModel(threadBoresA.toArray()));
+        List<String> threadBoresB = new ArrayList<String>();
+        threadBoresB.add("- Select -");
         if (settingMould.getThreadBoreBSize1() != null && !settingMould.getThreadBoreBSize1().equals("")) {
-            threadBores.add(settingMould.getThreadBoreBSize1());
+            threadBoresB.add(settingMould.getThreadBoreBSize1());
         }
         if (settingMould.getThreadBoreBSize2() != null && !settingMould.getThreadBoreBSize2().equals("")) {
-            threadBores.add(settingMould.getThreadBoreBSize2());
+            threadBoresB.add(settingMould.getThreadBoreBSize2());
         }
         if (settingMould.getThreadBoreBSize3() != null && !settingMould.getThreadBoreBSize3().equals("")) {
-            threadBores.add(settingMould.getThreadBoreBSize3());
+            threadBoresB.add(settingMould.getThreadBoreBSize3());
         }
-        this.cbProductBore.setModel(new DefaultComboBoxModel(threadBores.toArray()));
+        this.cbProductBoreB.setModel(new DefaultComboBoxModel(threadBoresB.toArray()));
         List<String> threadNecks = new ArrayList<String>();
         threadNecks.add("- Select -");
         if (settingMould.getThreadNeckSize1() != null && !settingMould.getThreadNeckSize1().equals("")) {
@@ -3901,8 +3926,11 @@ public class SettingsJFrame extends javax.swing.JFrame {
         if (currentProduct.getDgnondg() != null) {
             this.cbProductDg.setSelectedIndex(currentProduct.getDgnondg());
         }
-        if (currentProduct.getThreadBore() != null) {
-            this.cbProductBore.setSelectedIndex(currentProduct.getThreadBore());
+        if (currentProduct.getThreadBoreA() != null) {
+            this.cbProductBoreA.setSelectedIndex(currentProduct.getThreadBoreA());
+        }
+        if (currentProduct.getThreadBoreB() != null) {
+            this.cbProductBoreB.setSelectedIndex(currentProduct.getThreadBoreB());
         }
         if (currentProduct.getThreadNeck() != null) {
             this.cbProductNeck.setSelectedIndex(currentProduct.getThreadNeck());
@@ -3981,7 +4009,8 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private javax.swing.JComboBox cbProductAdditive1;
     private javax.swing.JComboBox cbProductAdditive2;
     private javax.swing.JComboBox cbProductAdditive3;
-    private javax.swing.JComboBox cbProductBore;
+    private javax.swing.JComboBox cbProductBoreA;
+    private javax.swing.JComboBox cbProductBoreB;
     private javax.swing.JComboBox cbProductBung;
     private javax.swing.JComboBox cbProductDg;
     private javax.swing.JComboBox cbProductMould;

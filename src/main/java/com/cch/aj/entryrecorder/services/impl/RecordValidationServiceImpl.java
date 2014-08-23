@@ -5,19 +5,22 @@
  */
 package com.cch.aj.entryrecorder.services.impl;
 
-import com.cch.aj.entryrecorder.services.RecordValidationService;
 import com.cch.aj.entryrecorder.common.RecordKey;
 import com.cch.aj.entryrecorder.entities.Entry;
+import com.cch.aj.entryrecorder.services.RecordValidationService;
 import com.cch.aj.entryrecorder.services.SettingService;
 import static java.util.Arrays.stream;
 import java.util.stream.Stream;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author chacao
  */
+@Service("recordValidationService")
 public class RecordValidationServiceImpl implements RecordValidationService {
 
+    
     private SettingService<Entry> entryService = new SettingServiceImpl<Entry>(Entry.class);
 
     @Override

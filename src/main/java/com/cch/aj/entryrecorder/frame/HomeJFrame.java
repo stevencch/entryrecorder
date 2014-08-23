@@ -3,17 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.cch.aj.entryrecorder.frame;
 
+import com.cch.aj.entryrecorder.common.AppContext;
+import com.cch.aj.entryrecorder.common.ApplicationContextProvider;
 import javax.swing.JFrame;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author chacao
  */
+@Component("HomeJFrame")
 public class HomeJFrame extends javax.swing.JFrame {
 
+    
     /**
      * Creates new form HomeJFrame
      */
@@ -107,22 +113,22 @@ public class HomeJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntryActionPerformed
-        MainJFrame mf=new MainJFrame();
+        MainJFrame mf = AppContext.getApplicationContext().getBean("MainJFrame", com.cch.aj.entryrecorder.frame.MainJFrame.class);
         mf.setVisible(true);
     }//GEN-LAST:event_btnEntryActionPerformed
 
     private void btnShiftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShiftActionPerformed
-        EntryJFrame ef=new EntryJFrame();
+        EntryJFrame ef = new EntryJFrame();
         ef.setVisible(true);
     }//GEN-LAST:event_btnShiftActionPerformed
 
     private void btnSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSettingsActionPerformed
-        SettingsJFrame sf=new SettingsJFrame();
+        SettingsJFrame sf = new SettingsJFrame();
         sf.setVisible(true);
     }//GEN-LAST:event_btnSettingsActionPerformed
 
     private void btnStaffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStaffActionPerformed
-        EntryJFrame ef=new EntryJFrame();
+        EntryJFrame ef = new EntryJFrame();
         ef.setVisible(true);
         ef.ActiveStaffTab();
     }//GEN-LAST:event_btnStaffActionPerformed
@@ -157,7 +163,9 @@ public class HomeJFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new HomeJFrame().setVisible(true);
+                AppContext.setApplicationContext(new ClassPathXmlApplicationContext("applicationContext.xml"));
+                HomeJFrame hf = AppContext.getApplicationContext().getBean("HomeJFrame", com.cch.aj.entryrecorder.frame.HomeJFrame.class);
+                hf.setVisible(true);
             }
         });
     }

@@ -10,6 +10,7 @@ import com.cch.aj.entryrecorder.common.SettingEntity;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,6 +37,12 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Additive.findByGrade", query = "SELECT a FROM Additive a WHERE a.grade = :grade"),
     @NamedQuery(name = "Additive.findByDescription", query = "SELECT a FROM Additive a WHERE a.description = :description")})
 public class Additive implements Serializable,SettingEntity {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "additiveCId")
+    private Collection<Entry> entryCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "additiveAId")
+    private Collection<Entry> entryCollection1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "additiveBId")
+    private Collection<Entry> entryCollection2;
     @OneToMany(mappedBy = "additiveAId")
     private Collection<Product> productCollection;
     @OneToMany(mappedBy = "additiveBId")
@@ -45,7 +52,6 @@ public class Additive implements Serializable,SettingEntity {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
     @Column(name = "Id")
     private Integer id;
     @Basic(optional = false)
@@ -129,6 +135,7 @@ public class Additive implements Serializable,SettingEntity {
     public void setDefaultValue() {
         this.company="Company Name";
         this.grade="Grade";
+        this.description="Colour";
     }
 
     @XmlTransient
@@ -156,6 +163,33 @@ public class Additive implements Serializable,SettingEntity {
 
     public void setProductCollection2(Collection<Product> productCollection2) {
         this.productCollection2 = productCollection2;
+    }
+
+    @XmlTransient
+    public Collection<Entry> getEntryCollection() {
+        return entryCollection;
+    }
+
+    public void setEntryCollection(Collection<Entry> entryCollection) {
+        this.entryCollection = entryCollection;
+    }
+
+    @XmlTransient
+    public Collection<Entry> getEntryCollection1() {
+        return entryCollection1;
+    }
+
+    public void setEntryCollection1(Collection<Entry> entryCollection1) {
+        this.entryCollection1 = entryCollection1;
+    }
+
+    @XmlTransient
+    public Collection<Entry> getEntryCollection2() {
+        return entryCollection2;
+    }
+
+    public void setEntryCollection2(Collection<Entry> entryCollection2) {
+        this.entryCollection2 = entryCollection2;
     }
     
 }

@@ -9,6 +9,7 @@ package com.cch.aj.entryrecorder.entities;
 import com.cch.aj.entryrecorder.common.AppHelper;
 import com.cch.aj.entryrecorder.common.SettingEntity;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -20,10 +21,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -57,8 +60,13 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Entry.findByWallHandleLeftMin", query = "SELECT e FROM Entry e WHERE e.wallHandleLeftMin = :wallHandleLeftMin"),
     @NamedQuery(name = "Entry.findByWallHandleLeftMax", query = "SELECT e FROM Entry e WHERE e.wallHandleLeftMax = :wallHandleLeftMax"),
     @NamedQuery(name = "Entry.findByWallHandleRightMin", query = "SELECT e FROM Entry e WHERE e.wallHandleRightMin = :wallHandleRightMin"),
-    @NamedQuery(name = "Entry.findByWallHandleRightMax", query = "SELECT e FROM Entry e WHERE e.wallHandleRightMax = :wallHandleRightMax")})
+    @NamedQuery(name = "Entry.findByWallHandleRightMax", query = "SELECT e FROM Entry e WHERE e.wallHandleRightMax = :wallHandleRightMax"),
+    @NamedQuery(name = "Entry.findByAdditiveAPercentage", query = "SELECT e FROM Entry e WHERE e.additiveAPercentage = :additiveAPercentage"),
+    @NamedQuery(name = "Entry.findByAdditiveBPercentage", query = "SELECT e FROM Entry e WHERE e.additiveBPercentage = :additiveBPercentage"),
+    @NamedQuery(name = "Entry.findByAdditiveCPercentage", query = "SELECT e FROM Entry e WHERE e.additiveCPercentage = :additiveCPercentage")})
 public class Entry implements Serializable,SettingEntity {
+    @OneToMany(mappedBy = "entryId")
+    private Collection<Record> recordCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -114,42 +122,60 @@ public class Entry implements Serializable,SettingEntity {
     private Float wallHandleRightMin;
     @Column(name = "WallHandleRightMax")
     private Float wallHandleRightMax;
-    @JoinColumn(name = "ProductId", referencedColumnName = "Id")
-    @ManyToOne
-    private Product productId;
-    @JoinColumn(name = "Worker3", referencedColumnName = "Id")
-    @ManyToOne
-    private Staff worker3;
+    @Column(name = "AdditiveAPercentage")
+    private String additiveAPercentage;
+    @Column(name = "AdditiveBPercentage")
+    private String additiveBPercentage;
+    @Column(name = "AdditiveCPercentage")
+    private String additiveCPercentage;
     @JoinColumn(name = "MachineId", referencedColumnName = "Id")
     @ManyToOne
     private Machine machineId;
     @JoinColumn(name = "Worker1", referencedColumnName = "Id")
     @ManyToOne
     private Staff worker1;
-    @JoinColumn(name = "Worker2", referencedColumnName = "Id")
-    @ManyToOne
-    private Staff worker2;
-    @JoinColumn(name = "MouldId", referencedColumnName = "Id")
-    @ManyToOne
-    private Mould mouldId;
-    @JoinColumn(name = "Supervisor1", referencedColumnName = "Id")
-    @ManyToOne
-    private Staff supervisor1;
-    @JoinColumn(name = "Technician3", referencedColumnName = "Id")
-    @ManyToOne
-    private Staff technician3;
     @JoinColumn(name = "Supervisor2", referencedColumnName = "Id")
     @ManyToOne
     private Staff supervisor2;
+    @JoinColumn(name = "Technician3", referencedColumnName = "Id")
+    @ManyToOne
+    private Staff technician3;
+    @JoinColumn(name = "Worker2", referencedColumnName = "Id")
+    @ManyToOne
+    private Staff worker2;
+    @JoinColumn(name = "Worker3", referencedColumnName = "Id")
+    @ManyToOne
+    private Staff worker3;
+    @JoinColumn(name = "PolymerId", referencedColumnName = "Id")
+    @ManyToOne
+    private Polymer polymerId;
+    @JoinColumn(name = "AdditiveAId", referencedColumnName = "Id")
+    @ManyToOne
+    private Additive additiveAId;
+    @JoinColumn(name = "AdditiveBId", referencedColumnName = "Id")
+    @ManyToOne
+    private Additive additiveBId;
     @JoinColumn(name = "Supervisor3", referencedColumnName = "Id")
     @ManyToOne
     private Staff supervisor3;
-    @JoinColumn(name = "Technician1", referencedColumnName = "Id")
+    @JoinColumn(name = "AdditiveCId", referencedColumnName = "Id")
     @ManyToOne
-    private Staff technician1;
+    private Additive additiveCId;
+    @JoinColumn(name = "MouldId", referencedColumnName = "Id")
+    @ManyToOne
+    private Mould mouldId;
+    @JoinColumn(name = "ProductId", referencedColumnName = "Id")
+    @ManyToOne
+    private Product productId;
+    @JoinColumn(name = "Supervisor1", referencedColumnName = "Id")
+    @ManyToOne
+    private Staff supervisor1;
     @JoinColumn(name = "Technician2", referencedColumnName = "Id")
     @ManyToOne
     private Staff technician2;
+    @JoinColumn(name = "Technician1", referencedColumnName = "Id")
+    @ManyToOne
+    private Staff technician1;
 
     public Entry() {
     }
@@ -355,20 +381,28 @@ public class Entry implements Serializable,SettingEntity {
         this.wallHandleRightMax = wallHandleRightMax;
     }
 
-    public Product getProductId() {
-        return productId;
+    public String getAdditiveAPercentage() {
+        return additiveAPercentage;
     }
 
-    public void setProductId(Product productId) {
-        this.productId = productId;
+    public void setAdditiveAPercentage(String additiveAPercentage) {
+        this.additiveAPercentage = additiveAPercentage;
     }
 
-    public Staff getWorker3() {
-        return worker3;
+    public String getAdditiveBPercentage() {
+        return additiveBPercentage;
     }
 
-    public void setWorker3(Staff worker3) {
-        this.worker3 = worker3;
+    public void setAdditiveBPercentage(String additiveBPercentage) {
+        this.additiveBPercentage = additiveBPercentage;
+    }
+
+    public String getAdditiveCPercentage() {
+        return additiveCPercentage;
+    }
+
+    public void setAdditiveCPercentage(String additiveCPercentage) {
+        this.additiveCPercentage = additiveCPercentage;
     }
 
     public Machine getMachineId() {
@@ -387,28 +421,12 @@ public class Entry implements Serializable,SettingEntity {
         this.worker1 = worker1;
     }
 
-    public Staff getWorker2() {
-        return worker2;
+    public Staff getSupervisor2() {
+        return supervisor2;
     }
 
-    public void setWorker2(Staff worker2) {
-        this.worker2 = worker2;
-    }
-
-    public Mould getMouldId() {
-        return mouldId;
-    }
-
-    public void setMouldId(Mould mouldId) {
-        this.mouldId = mouldId;
-    }
-
-    public Staff getSupervisor1() {
-        return supervisor1;
-    }
-
-    public void setSupervisor1(Staff supervisor1) {
-        this.supervisor1 = supervisor1;
+    public void setSupervisor2(Staff supervisor2) {
+        this.supervisor2 = supervisor2;
     }
 
     public Staff getTechnician3() {
@@ -419,12 +437,44 @@ public class Entry implements Serializable,SettingEntity {
         this.technician3 = technician3;
     }
 
-    public Staff getSupervisor2() {
-        return supervisor2;
+    public Staff getWorker2() {
+        return worker2;
     }
 
-    public void setSupervisor2(Staff supervisor2) {
-        this.supervisor2 = supervisor2;
+    public void setWorker2(Staff worker2) {
+        this.worker2 = worker2;
+    }
+
+    public Staff getWorker3() {
+        return worker3;
+    }
+
+    public void setWorker3(Staff worker3) {
+        this.worker3 = worker3;
+    }
+
+    public Polymer getPolymerId() {
+        return polymerId;
+    }
+
+    public void setPolymerId(Polymer polymerId) {
+        this.polymerId = polymerId;
+    }
+
+    public Additive getAdditiveAId() {
+        return additiveAId;
+    }
+
+    public void setAdditiveAId(Additive additiveAId) {
+        this.additiveAId = additiveAId;
+    }
+
+    public Additive getAdditiveBId() {
+        return additiveBId;
+    }
+
+    public void setAdditiveBId(Additive additiveBId) {
+        this.additiveBId = additiveBId;
     }
 
     public Staff getSupervisor3() {
@@ -435,12 +485,36 @@ public class Entry implements Serializable,SettingEntity {
         this.supervisor3 = supervisor3;
     }
 
-    public Staff getTechnician1() {
-        return technician1;
+    public Additive getAdditiveCId() {
+        return additiveCId;
     }
 
-    public void setTechnician1(Staff technician1) {
-        this.technician1 = technician1;
+    public void setAdditiveCId(Additive additiveCId) {
+        this.additiveCId = additiveCId;
+    }
+
+    public Mould getMouldId() {
+        return mouldId;
+    }
+
+    public void setMouldId(Mould mouldId) {
+        this.mouldId = mouldId;
+    }
+
+    public Product getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Product productId) {
+        this.productId = productId;
+    }
+
+    public Staff getSupervisor1() {
+        return supervisor1;
+    }
+
+    public void setSupervisor1(Staff supervisor1) {
+        this.supervisor1 = supervisor1;
     }
 
     public Staff getTechnician2() {
@@ -449,6 +523,14 @@ public class Entry implements Serializable,SettingEntity {
 
     public void setTechnician2(Staff technician2) {
         this.technician2 = technician2;
+    }
+
+    public Staff getTechnician1() {
+        return technician1;
+    }
+
+    public void setTechnician1(Staff technician1) {
+        this.technician1 = technician1;
     }
 
     @Override
@@ -476,10 +558,19 @@ public class Entry implements Serializable,SettingEntity {
         return "com.cch.aj.entryrecorder.entities.Entry[ id=" + id + " ]";
     }
     
-    @Override
+     @Override
     public void setDefaultValue() {
         this.inUse="YES";
         this.createDate=new Date();
         this.shift=AppHelper.defaultShift;
+    }
+
+    @XmlTransient
+    public Collection<Record> getRecordCollection() {
+        return recordCollection;
+    }
+
+    public void setRecordCollection(Collection<Record> recordCollection) {
+        this.recordCollection = recordCollection;
     }
 }

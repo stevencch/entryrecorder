@@ -14,11 +14,16 @@
     <class>com.cch.aj.entryrecorder.entities.Polymer_1</class>
     <class>com.cch.aj.entryrecorder.entities.Additive_1</class>
     <class>com.cch.aj.entryrecorder.entities.Mould_1</class>
+    <class>com.cch.aj.entryrecorder.entities.Check</class>
+    <class>com.cch.aj.entryrecorder.entities.Machine_1</class>
+    <class>com.cch.aj.entryrecorder.entities.Product_1</class>
+    <class>com.cch.aj.entryrecorder.entities.Staff_1</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/ajrecorder?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="cch"/>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
       <property name="javax.persistence.jdbc.password" value="123123"/>
+      <property name="eclipselink.cache.shared.default" value="false"/>
     </properties>
   </persistence-unit>
 </persistence>

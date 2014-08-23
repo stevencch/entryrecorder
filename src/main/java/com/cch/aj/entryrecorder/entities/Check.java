@@ -6,14 +6,13 @@
 
 package com.cch.aj.entryrecorder.entities;
 
-import com.cch.aj.entryrecorder.common.SettingEntity;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -24,38 +23,40 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author chacao
  */
 @Entity
-@Table(name = "staff")
+@Table(name = "check")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Staff.findAll", query = "SELECT s FROM Staff s"),
-    @NamedQuery(name = "Staff.findById", query = "SELECT s FROM Staff s WHERE s.id = :id"),
-    @NamedQuery(name = "Staff.findByName", query = "SELECT s FROM Staff s WHERE s.name = :name"),
-    @NamedQuery(name = "Staff.findByJobType", query = "SELECT s FROM Staff s WHERE s.jobType = :jobType")})
-public class Staff implements Serializable,SettingEntity {
+    @NamedQuery(name = "Check.findAll", query = "SELECT c FROM Check c"),
+    @NamedQuery(name = "Check.findById", query = "SELECT c FROM Check c WHERE c.id = :id"),
+    @NamedQuery(name = "Check.findByItemOrder", query = "SELECT c FROM Check c WHERE c.itemOrder = :itemOrder"),
+    @NamedQuery(name = "Check.findByDescription", query = "SELECT c FROM Check c WHERE c.description = :description")})
+public class Check implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "Id")
     private Integer id;
     @Basic(optional = false)
-    @Column(name = "Name")
-    private String name;
+    @Column(name = "ItemOrder")
+    private int itemOrder;
     @Basic(optional = false)
-    @Column(name = "JobType")
-    private String jobType;
+    @Column(name = "Description")
+    private String description;
+    @JoinColumn(name = "Product", referencedColumnName = "Id")
+    @ManyToOne(optional = false)
+    private Product product;
 
-    public Staff() {
+    public Check() {
     }
 
-    public Staff(Integer id) {
+    public Check(Integer id) {
         this.id = id;
     }
 
-    public Staff(Integer id, String name, String jobType) {
+    public Check(Integer id, int itemOrder, String description) {
         this.id = id;
-        this.name = name;
-        this.jobType = jobType;
+        this.itemOrder = itemOrder;
+        this.description = description;
     }
 
     public Integer getId() {
@@ -66,20 +67,28 @@ public class Staff implements Serializable,SettingEntity {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public int getItemOrder() {
+        return itemOrder;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setItemOrder(int itemOrder) {
+        this.itemOrder = itemOrder;
     }
 
-    public String getJobType() {
-        return jobType;
+    public String getDescription() {
+        return description;
     }
 
-    public void setJobType(String jobType) {
-        this.jobType = jobType;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     @Override
@@ -92,10 +101,10 @@ public class Staff implements Serializable,SettingEntity {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Staff)) {
+        if (!(object instanceof Check)) {
             return false;
         }
-        Staff other = (Staff) object;
+        Check other = (Check) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -104,13 +113,7 @@ public class Staff implements Serializable,SettingEntity {
 
     @Override
     public String toString() {
-        return "com.cch.aj.entryrecorder.entities.Staff[ id=" + id + " ]";
-    }
-
-    @Override
-    public void setDefaultValue() {
-        this.jobType="PROCESS WORKER";
-        this.name="Name";
+        return "com.cch.aj.entryrecorder.entities.Check[ id=" + id + " ]";
     }
     
 }

@@ -10,6 +10,7 @@ import com.cch.aj.entryrecorder.common.SettingEntity;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -43,10 +44,15 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Product.findByAdditiveAPercentage", query = "SELECT p FROM Product p WHERE p.additiveAPercentage = :additiveAPercentage"),
     @NamedQuery(name = "Product.findByAdditiveBPercentage", query = "SELECT p FROM Product p WHERE p.additiveBPercentage = :additiveBPercentage"),
     @NamedQuery(name = "Product.findByAdditiveCPercentage", query = "SELECT p FROM Product p WHERE p.additiveCPercentage = :additiveCPercentage"),
-    @NamedQuery(name = "Product.findByThreadBore", query = "SELECT p FROM Product p WHERE p.threadBore = :threadBore"),
+    @NamedQuery(name = "Product.findByThreadBoreA", query = "SELECT p FROM Product p WHERE p.threadBoreA = :threadBoreA"),
+    @NamedQuery(name = "Product.findByThreadBoreB", query = "SELECT p FROM Product p WHERE p.threadBoreB = :threadBoreB"),
     @NamedQuery(name = "Product.findByThreadNeck", query = "SELECT p FROM Product p WHERE p.threadNeck = :threadNeck"),
     @NamedQuery(name = "Product.findByDgnondg", query = "SELECT p FROM Product p WHERE p.dgnondg = :dgnondg")})
 public class Product implements Serializable,SettingEntity {
+    @OneToMany(mappedBy = "productId")
+    private Collection<Entry> entryCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
+    private Collection<Check> checkCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -73,17 +79,14 @@ public class Product implements Serializable,SettingEntity {
     private String additiveBPercentage;
     @Column(name = "AdditiveCPercentage")
     private String additiveCPercentage;
-    @Column(name = "ThreadBore")
-    private Integer threadBore;
+    @Column(name = "ThreadBoreA")
+    private Integer threadBoreA;
+    @Column(name = "ThreadBoreB")
+    private Integer threadBoreB;
     @Column(name = "ThreadNeck")
     private Integer threadNeck;
     @Column(name = "DGNONDG")
     private Integer dgnondg;
-    @OneToMany(mappedBy = "productId")
-    private Collection<Entry> entryCollection;
-    @JoinColumn(name = "AdditiveCId", referencedColumnName = "Id")
-    @ManyToOne
-    private Additive additiveCId;
     @JoinColumn(name = "MouldId", referencedColumnName = "Id")
     @ManyToOne
     private Mould mouldId;
@@ -96,6 +99,9 @@ public class Product implements Serializable,SettingEntity {
     @JoinColumn(name = "AdditiveBId", referencedColumnName = "Id")
     @ManyToOne
     private Additive additiveBId;
+    @JoinColumn(name = "AdditiveCId", referencedColumnName = "Id")
+    @ManyToOne
+    private Additive additiveCId;
 
     public Product() {
     }
@@ -104,9 +110,10 @@ public class Product implements Serializable,SettingEntity {
         this.id = id;
     }
 
-    public Product(Integer id, String code) {
+    public Product(Integer id, String code, int threadBoreB) {
         this.id = id;
         this.code = code;
+        this.threadBoreB = threadBoreB;
     }
 
     public Integer getId() {
@@ -189,12 +196,20 @@ public class Product implements Serializable,SettingEntity {
         this.additiveCPercentage = additiveCPercentage;
     }
 
-    public Integer getThreadBore() {
-        return threadBore;
+    public Integer getThreadBoreA() {
+        return threadBoreA;
     }
 
-    public void setThreadBore(Integer threadBore) {
-        this.threadBore = threadBore;
+    public void setThreadBoreA(Integer threadBoreA) {
+        this.threadBoreA = threadBoreA;
+    }
+
+    public Integer getThreadBoreB() {
+        return threadBoreB;
+    }
+
+    public void setThreadBoreB(Integer threadBoreB) {
+        this.threadBoreB = threadBoreB;
     }
 
     public Integer getThreadNeck() {
@@ -211,23 +226,6 @@ public class Product implements Serializable,SettingEntity {
 
     public void setDgnondg(Integer dgnondg) {
         this.dgnondg = dgnondg;
-    }
-
-    @XmlTransient
-    public Collection<Entry> getEntryCollection() {
-        return entryCollection;
-    }
-
-    public void setEntryCollection(Collection<Entry> entryCollection) {
-        this.entryCollection = entryCollection;
-    }
-
-    public Additive getAdditiveCId() {
-        return additiveCId;
-    }
-
-    public void setAdditiveCId(Additive additiveCId) {
-        this.additiveCId = additiveCId;
     }
 
     public Mould getMouldId() {
@@ -262,6 +260,14 @@ public class Product implements Serializable,SettingEntity {
         this.additiveBId = additiveBId;
     }
 
+    public Additive getAdditiveCId() {
+        return additiveCId;
+    }
+
+    public void setAdditiveCId(Additive additiveCId) {
+        this.additiveCId = additiveCId;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -286,10 +292,27 @@ public class Product implements Serializable,SettingEntity {
     public String toString() {
         return "com.cch.aj.entryrecorder.entities.Product[ id=" + id + " ]";
     }
-
+    
     @Override
     public void setDefaultValue() {
         this.code="Product Code";
     }
-    
+
+    @XmlTransient
+    public Collection<Entry> getEntryCollection() {
+        return entryCollection;
+    }
+
+    public void setEntryCollection(Collection<Entry> entryCollection) {
+        this.entryCollection = entryCollection;
+    }
+
+    @XmlTransient
+    public Collection<Check> getCheckCollection() {
+        return checkCollection;
+    }
+
+    public void setCheckCollection(Collection<Check> checkCollection) {
+        this.checkCollection = checkCollection;
+    }
 }

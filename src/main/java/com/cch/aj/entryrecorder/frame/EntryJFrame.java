@@ -73,6 +73,8 @@ public class EntryJFrame extends javax.swing.JFrame {
     private SettingService<Mould> mouldService = new SettingServiceImpl<Mould>(Mould.class);
     private SettingService<Product> productService = new SettingServiceImpl<Product>(Product.class);
     private SettingService<Entry> entryService = new SettingServiceImpl<Entry>(Entry.class);
+    private SettingService<Polymer> polymerService = new SettingServiceImpl<Polymer>(Polymer.class);
+    private SettingService<Additive> additiveService = new SettingServiceImpl<Additive>(Additive.class);
 
     /**
      * Creates new form SettingsJFrame
@@ -98,6 +100,11 @@ public class EntryJFrame extends javax.swing.JFrame {
         this.cbWorker1.setRenderer(new ComboBoxRender());
         this.cbWorker2.setRenderer(new ComboBoxRender());
         this.cbWorker3.setRenderer(new ComboBoxRender());
+        this.cbProductAdditive1.setRenderer(new ComboBoxRender());
+        this.cbProductAdditive2.setRenderer(new ComboBoxRender());
+        this.cbProductAdditive3.setRenderer(new ComboBoxRender());
+        this.cbProductPolymer.setRenderer(new ComboBoxRender());
+        
         
         this.pnlEditEntry.setVisible(false);
         this.btnEntryDelete.setVisible(false);
@@ -265,7 +272,8 @@ public class EntryJFrame extends javax.swing.JFrame {
         if (allEntrys.size() > 0) {
             List<Entry> entrys = allEntrys.stream().filter(x -> x.getShift().equals(this.txtEntrySearch.getText())).collect(Collectors.toList());
             if (entrys.size() > 0) {
-                List<ComboBoxItem<Entry>> entryNames = entrys.stream().sorted(comparing(x -> x.getCreateDate())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getMachineId() != null ? x.getMachineId().getMachineNo() : "New", x.getId())).collect(Collectors.toList());
+                List<ComboBoxItem<Entry>> entryNames = entrys.stream().sorted(comparing(x -> x.getCreateDate()))
+                        .map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, (x.getMachineId() != null ? x.getMachineId().getMachineNo() : "New")+" # "+(x.getProductId()!=null?x.getProductId().getCode():"NA"), x.getId())).collect(Collectors.toList());
                 Entry entry = new Entry();
                 entry.setId(0);
                 entry.setShift("- Select -");
@@ -280,6 +288,53 @@ public class EntryJFrame extends javax.swing.JFrame {
                 }
                 comboBox.setSelectedIndex(result);
             }
+            else{
+                JOptionPane.showMessageDialog(this, "No entry has been found.","Info",JOptionPane.OK_OPTION);
+            }
+        }
+        return result;
+    }
+    
+    private int FillPolymerComboBox(JComboBox comboBox, int id) {
+        int result = -1;
+        List<Polymer> polymers = this.polymerService.GetAllEntities();
+        if (polymers.size() > 0) {
+            List<ComboBoxItem<Polymer>> polymerNames = polymers.stream().sorted(comparing(x -> x.getCompany())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getCompany() + " " + x.getGrade(), x.getId())).collect(Collectors.toList());
+            Polymer polymer = new Polymer();
+            polymer.setId(0);
+            polymer.setCompany("- Select -");
+            polymerNames.add(0, new ComboBoxItem<Polymer>(polymer, polymer.getCompany(), polymer.getId()));
+            ComboBoxItem[] polymerNamesArray = polymerNames.toArray(new ComboBoxItem[polymerNames.size()]);
+            comboBox.setModel(new DefaultComboBoxModel(polymerNamesArray));
+            if (id != 0) {
+                ComboBoxItem<Polymer> currentPolymerName = polymerNames.stream().filter(x -> x.getId() == id).findFirst().get();
+                result = polymerNames.indexOf(currentPolymerName);
+            } else {
+                result = 0;
+            }
+            comboBox.setSelectedIndex(result);
+        }
+        return result;
+    }
+
+    private int FillAdditiveComboBox(JComboBox comboBox, int id) {
+        int result = -1;
+        List<Additive> additives = this.additiveService.GetAllEntities();
+        if (additives.size() > 0) {
+            List<ComboBoxItem<Additive>> additiveNames = additives.stream().sorted(comparing(x -> x.getCompany())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getCompany() + " " + x.getGrade(), x.getId())).collect(Collectors.toList());
+            Additive additive = new Additive();
+            additive.setId(0);
+            additive.setCompany("- Select -");
+            additiveNames.add(0, new ComboBoxItem<Additive>(additive, additive.getCompany(), additive.getId()));
+            ComboBoxItem[] additiveNamesArray = additiveNames.toArray(new ComboBoxItem[additiveNames.size()]);
+            comboBox.setModel(new DefaultComboBoxModel(additiveNamesArray));
+            if (id != 0) {
+                ComboBoxItem<Additive> currentAdditiveName = additiveNames.stream().filter(x -> x.getId() == id).findFirst().get();
+                result = additiveNames.indexOf(currentAdditiveName);
+            } else {
+                result = 0;
+            }
+            comboBox.setSelectedIndex(result);
         }
         return result;
     }
@@ -319,12 +374,15 @@ public class EntryJFrame extends javax.swing.JFrame {
         jLabel124 = new javax.swing.JLabel();
         txtEntryWeightMin = new javax.swing.JTextField();
         txtEntryWeightMax = new javax.swing.JTextField();
-        txtEntryThreadBoreMin = new javax.swing.JTextField();
-        txtEntryThreadBoreMax = new javax.swing.JTextField();
+        txtEntryThreadBoreBMin = new javax.swing.JTextField();
+        txtEntryThreadBoreBMax = new javax.swing.JTextField();
         txtEntryThreadNeckMin = new javax.swing.JTextField();
         txtEntryThreadNeckMax = new javax.swing.JTextField();
         txtEntryTapPositionMin = new javax.swing.JTextField();
         txtEntryTapPositionMax = new javax.swing.JTextField();
+        jLabel125 = new javax.swing.JLabel();
+        txtEntryThreadBoreAMin = new javax.swing.JTextField();
+        txtEntryThreadBoreAMax = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         labEntryWall = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
@@ -366,6 +424,23 @@ public class EntryJFrame extends javax.swing.JFrame {
         cbWorker1 = new javax.swing.JComboBox();
         cbWorker2 = new javax.swing.JComboBox();
         cbWorker3 = new javax.swing.JComboBox();
+        pnlProductTab = new javax.swing.JPanel();
+        pnlEditProduct = new javax.swing.JPanel();
+        jLabel58 = new javax.swing.JLabel();
+        cbProductPolymer = new javax.swing.JComboBox();
+        jLabel60 = new javax.swing.JLabel();
+        jLabel67 = new javax.swing.JLabel();
+        jLabel68 = new javax.swing.JLabel();
+        jLabel69 = new javax.swing.JLabel();
+        jLabel70 = new javax.swing.JLabel();
+        jLabel71 = new javax.swing.JLabel();
+        jLabel72 = new javax.swing.JLabel();
+        cbProductAdditive1 = new javax.swing.JComboBox();
+        txtProductPerc1 = new javax.swing.JTextField();
+        cbProductAdditive2 = new javax.swing.JComboBox();
+        txtProductPerc2 = new javax.swing.JTextField();
+        cbProductAdditive3 = new javax.swing.JComboBox();
+        txtProductPerc3 = new javax.swing.JTextField();
         jPanel47 = new javax.swing.JPanel();
         btnEntryNew = new javax.swing.JButton();
         cbEntry = new javax.swing.JComboBox();
@@ -579,10 +654,10 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 0);
         jPanel13.add(jLabel120, gridBagConstraints);
 
-        jLabel122.setText("THREAD BORE");
+        jLabel122.setText("THREAD BORE B");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.ipadx = 30;
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
@@ -592,7 +667,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         jLabel123.setText("THREAD NECK");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.ipadx = 30;
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
@@ -602,7 +677,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         jLabel124.setText("TAP POSITION");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.ipadx = 30;
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
@@ -628,25 +703,25 @@ public class EntryJFrame extends javax.swing.JFrame {
         jPanel13.add(txtEntryWeightMax, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 30;
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 44);
-        jPanel13.add(txtEntryThreadBoreMin, gridBagConstraints);
+        jPanel13.add(txtEntryThreadBoreBMin, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 30;
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
-        jPanel13.add(txtEntryThreadBoreMax, gridBagConstraints);
+        jPanel13.add(txtEntryThreadBoreBMax, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 30;
         gridBagConstraints.ipady = 4;
@@ -655,7 +730,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         jPanel13.add(txtEntryThreadNeckMin, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 30;
         gridBagConstraints.ipady = 4;
@@ -664,7 +739,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         jPanel13.add(txtEntryThreadNeckMax, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 30;
         gridBagConstraints.ipady = 4;
@@ -673,13 +748,41 @@ public class EntryJFrame extends javax.swing.JFrame {
         jPanel13.add(txtEntryTapPositionMin, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 30;
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
         jPanel13.add(txtEntryTapPositionMax, gridBagConstraints);
+
+        jLabel125.setText("THREAD BORE A");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 0);
+        jPanel13.add(jLabel125, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 44);
+        jPanel13.add(txtEntryThreadBoreAMin, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
+        jPanel13.add(txtEntryThreadBoreAMax, gridBagConstraints);
 
         pnlEditEntry.addTab("Settings", jPanel13);
 
@@ -1050,6 +1153,170 @@ public class EntryJFrame extends javax.swing.JFrame {
         jPanel11.add(cbWorker3, gridBagConstraints);
 
         pnlEditEntry.addTab("Staff", jPanel11);
+
+        pnlProductTab.setLayout(new java.awt.GridBagLayout());
+
+        pnlEditProduct.setLayout(new java.awt.GridBagLayout());
+
+        jLabel58.setText("POLYMER TYPE");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 28;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(19, 46, 2, 9);
+        pnlEditProduct.add(jLabel58, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 28;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(19, 2, 2, 25);
+        pnlEditProduct.add(cbProductPolymer, gridBagConstraints);
+
+        jLabel60.setText("ADDITIVE");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 28;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 46, 2, 9);
+        pnlEditProduct.add(jLabel60, gridBagConstraints);
+
+        jLabel67.setText("TYPE 1");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 28;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 46, 2, 9);
+        pnlEditProduct.add(jLabel67, gridBagConstraints);
+
+        jLabel68.setText("PERCENTAGE");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 28;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 46, 2, 9);
+        pnlEditProduct.add(jLabel68, gridBagConstraints);
+
+        jLabel69.setText("TYPE 2");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 28;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 46, 2, 9);
+        pnlEditProduct.add(jLabel69, gridBagConstraints);
+
+        jLabel70.setText("PERCENTAGE");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 28;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 46, 2, 9);
+        pnlEditProduct.add(jLabel70, gridBagConstraints);
+
+        jLabel71.setText("TYPE 3");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 28;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 46, 2, 9);
+        pnlEditProduct.add(jLabel71, gridBagConstraints);
+
+        jLabel72.setText("PERCENTAGE");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 28;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 46, 2, 9);
+        pnlEditProduct.add(jLabel72, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 28;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 25);
+        pnlEditProduct.add(cbProductAdditive1, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 28;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 25);
+        pnlEditProduct.add(txtProductPerc1, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 28;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 25);
+        pnlEditProduct.add(cbProductAdditive2, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 28;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 25);
+        pnlEditProduct.add(txtProductPerc2, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 28;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 25);
+        pnlEditProduct.add(cbProductAdditive3, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 28;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 25);
+        pnlEditProduct.add(txtProductPerc3, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        pnlProductTab.add(pnlEditProduct, gridBagConstraints);
+
+        pnlEditEntry.addTab("Product", pnlProductTab);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -1452,11 +1719,11 @@ public class EntryJFrame extends javax.swing.JFrame {
         if (!this.txtEntryWeightMin.getText().equals("")) {
             currentEntry.setWeightMin(Float.parseFloat(this.txtEntryWeightMin.getText()));
         }
-        if (!this.txtEntryThreadBoreMax.getText().equals("")) {
-            currentEntry.setThreadBoreMax(Float.parseFloat(this.txtEntryThreadBoreMax.getText()));
+        if (!this.txtEntryThreadBoreBMax.getText().equals("")) {
+            currentEntry.setThreadBoreMax(Float.parseFloat(this.txtEntryThreadBoreBMax.getText()));
         }
-        if (!this.txtEntryThreadBoreMin.getText().equals("")) {
-            currentEntry.setThreadBoreMin(Float.parseFloat(this.txtEntryThreadBoreMin.getText()));
+        if (!this.txtEntryThreadBoreBMin.getText().equals("")) {
+            currentEntry.setThreadBoreMin(Float.parseFloat(this.txtEntryThreadBoreBMin.getText()));
         }
         if (!this.txtEntryThreadNeckMax.getText().equals("")) {
             currentEntry.setThreadNeckMax(Float.parseFloat(this.txtEntryThreadNeckMax.getText()));
@@ -1541,6 +1808,28 @@ public class EntryJFrame extends javax.swing.JFrame {
             currentEntry.setWorker3(((ComboBoxItem<Staff>) this.cbWorker3.getSelectedItem()).getItem());
         }
         
+        if (this.cbProductPolymer.getSelectedIndex() != 0) {
+            currentEntry.setPolymerId(((ComboBoxItem<Polymer>) this.cbProductPolymer.getSelectedItem()).getItem());
+        }
+        if (this.cbProductAdditive1.getSelectedIndex() != 0) {
+            currentEntry.setAdditiveAId(((ComboBoxItem<Additive>) this.cbProductAdditive1.getSelectedItem()).getItem());
+        }
+        if (this.cbProductAdditive2.getSelectedIndex() != 0) {
+            currentEntry.setAdditiveBId(((ComboBoxItem<Additive>) this.cbProductAdditive2.getSelectedItem()).getItem());
+        }
+        if (this.cbProductAdditive3.getSelectedIndex() != 0) {
+            currentEntry.setAdditiveCId(((ComboBoxItem<Additive>) this.cbProductAdditive3.getSelectedItem()).getItem());
+        }
+        if (!this.txtProductPerc1.getText().equals("")) {
+            currentEntry.setAdditiveAPercentage(this.txtProductPerc1.getText());
+        }
+        if (!this.txtProductPerc2.getText().equals("")) {
+            currentEntry.setAdditiveBPercentage(this.txtProductPerc2.getText());
+        }
+        if (!this.txtProductPerc3.getText().equals("")) {
+            currentEntry.setAdditiveCPercentage(this.txtProductPerc3.getText());
+        }
+        
         this.entryService.UpdateEntity(currentEntry);
         this.UpdateTabEntry(currentEntry.getId());
     }//GEN-LAST:event_btnEntrySaveActionPerformed
@@ -1578,59 +1867,6 @@ public class EntryJFrame extends javax.swing.JFrame {
             txtEntryWeightMax.setText(currentProduct.getWeightMax() == null ? "" : currentProduct.getWeightMax().toString());;
             txtEntryTapPositionMin.setText(currentMould.getTapPositionMin() == null ? "" : currentMould.getTapPositionMin().toString());
             txtEntryTapPositionMax.setText(currentMould.getTapPositionMax() == null ? "" : currentMould.getTapPositionMax().toString());
-//            if (currentProduct.getDgnondg() != null) {
-//                switch (currentProduct.getDgnondg()) {
-//                    case 0:
-//                        this.txtEntryWallMin.setText(currentMould.getWallDgUnderHandleMin() == null ? "" : currentMould.getWallDgUnderHandleMin().toString());
-//                        this.txtEntryWallMax.setText(currentMould.getWallDgUnderHandleMax() == null ? "" : currentMould.getWallDgUnderHandleMax().toString());
-//                        break;
-//                    case 1:
-//                        this.txtEntryWallMin.setText(currentMould.getWallDgBaseMin() == null ? "" : currentMould.getWallDgBaseMin().toString());
-//                        this.txtEntryWallMax.setText(currentMould.getWallDgBaseMax() == null ? "" : currentMould.getWallDgBaseMax().toString());
-//                        break;
-//                    case 2:
-//                        this.txtEntryWallMin.setText(currentMould.getWallDgClosureMin() == null ? "" : currentMould.getWallDgClosureMin().toString());
-//                        this.txtEntryWallMax.setText(currentMould.getWallDgClosureMax() == null ? "" : currentMould.getWallDgClosureMax().toString());
-//                        break;
-//                    case 3:
-//                        this.txtEntryWallMin.setText(currentMould.getWallDgHandleBungMin() == null ? "" : currentMould.getWallDgHandleBungMin().toString());
-//                        this.txtEntryWallMax.setText(currentMould.getWallDgHandleBungMax() == null ? "" : currentMould.getWallDgHandleBungMax().toString());
-//                        break;
-//                    case 4:
-//                        this.txtEntryWallMin.setText(currentMould.getWallDgHandleLeftMin() == null ? "" : currentMould.getWallDgHandleLeftMin().toString());
-//                        this.txtEntryWallMax.setText(currentMould.getWallDgHandleLeftMax() == null ? "" : currentMould.getWallDgHandleLeftMax().toString());
-//                        break;
-//                    case 5:
-//                        this.txtEntryWallMin.setText(currentMould.getWallDgHandRightMin() == null ? "" : currentMould.getWallDgHandRightMin().toString());
-//                        this.txtEntryWallMax.setText(currentMould.getWallDgHandleRightMax() == null ? "" : currentMould.getWallDgHandleRightMax().toString());
-//                        break;
-//                    case 6:
-//                        this.txtEntryWallMin.setText(currentMould.getWallNonDgUnderHandleMin() == null ? "" : currentMould.getWallNonDgUnderHandleMin().toString());
-//                        this.txtEntryWallMax.setText(currentMould.getWallNonDgUnderHandleMax() == null ? "" : currentMould.getWallNonDgUnderHandleMax().toString());
-//                        break;
-//                    case 7:
-//                        this.txtEntryWallMin.setText(currentMould.getWallNonDgBaseMin() == null ? "" : currentMould.getWallNonDgBaseMin().toString());
-//                        this.txtEntryWallMax.setText(currentMould.getWallNonDgBaseMax() == null ? "" : currentMould.getWallNonDgBaseMax().toString());
-//                        break;
-//                    case 8:
-//                        this.txtEntryWallMin.setText(currentMould.getWallNonDgClosureMin() == null ? "" : currentMould.getWallNonDgClosureMin().toString());
-//                        this.txtEntryWallMax.setText(currentMould.getWallNonDgClosureMax() == null ? "" : currentMould.getWallNonDgClosureMax().toString());
-//                        break;
-//                    case 9:
-//                        this.txtEntryWallMin.setText(currentMould.getWallNonDgHandleBungMin() == null ? "" : currentMould.getWallNonDgHandleBungMin().toString());
-//                        this.txtEntryWallMax.setText(currentMould.getWallNonDgHandleBungMax() == null ? "" : currentMould.getWallNonDgHandleBungMax().toString());
-//                        break;
-//                    case 10:
-//                        this.txtEntryWallMin.setText(currentMould.getWallNonDgHandleLeftMin() == null ? "" : currentMould.getWallNonDgHandleLeftMin().toString());
-//                        this.txtEntryWallMax.setText(currentMould.getWallNonDgHandleLeftMax() == null ? "" : currentMould.getWallNonDgHandleLeftMax().toString());
-//                        break;
-//                    case 11:
-//                        this.txtEntryWallMin.setText(currentMould.getWallNonDgHandleRightMin() == null ? "" : currentMould.getWallNonDgHandleRightMin().toString());
-//                        this.txtEntryWallMax.setText(currentMould.getWallNonDgHandleRightMax() == null ? "" : currentMould.getWallNonDgHandleRightMax().toString());
-//                        break;
-//                }
-//            }
-
             if (currentProduct.getDgnondg() != null) {
                 switch (currentProduct.getDgnondg()) {
                     case 0:
@@ -1663,31 +1899,35 @@ public class EntryJFrame extends javax.swing.JFrame {
                         break;
                 }
             }
-            if (currentProduct.getThreadBore() != null) {
-                switch (currentProduct.getThreadBore()) {
+            if (currentProduct.getThreadBoreA() != null) {
+                switch (currentProduct.getThreadBoreA()) {
                     case 1:
-                        this.txtEntryThreadBoreMin.setText(currentMould.getThreadBoreAMin1() == null ? "" : currentMould.getThreadBoreAMin1().toString());
-                        this.txtEntryThreadBoreMax.setText(currentMould.getThreadBoreAMax1() == null ? "" : currentMould.getThreadBoreAMax1().toString());
+                        this.txtEntryThreadBoreAMin.setText(currentMould.getThreadBoreAMin1() == null ? "" : currentMould.getThreadBoreAMin1().toString());
+                        this.txtEntryThreadBoreAMax.setText(currentMould.getThreadBoreAMax1() == null ? "" : currentMould.getThreadBoreAMax1().toString());
                         break;
                     case 2:
-                        this.txtEntryThreadBoreMin.setText(currentMould.getThreadBoreAMin2() == null ? "" : currentMould.getThreadBoreAMin2().toString());
-                        this.txtEntryThreadBoreMax.setText(currentMould.getThreadBoreAMax2() == null ? "" : currentMould.getThreadBoreAMax2().toString());
+                        this.txtEntryThreadBoreAMin.setText(currentMould.getThreadBoreAMin2() == null ? "" : currentMould.getThreadBoreAMin2().toString());
+                        this.txtEntryThreadBoreAMax.setText(currentMould.getThreadBoreAMax2() == null ? "" : currentMould.getThreadBoreAMax2().toString());
                         break;
                     case 3:
-                        this.txtEntryThreadBoreMin.setText(currentMould.getThreadBoreAMin3() == null ? "" : currentMould.getThreadBoreAMin3().toString());
-                        this.txtEntryThreadBoreMax.setText(currentMould.getThreadBoreAMax3() == null ? "" : currentMould.getThreadBoreAMax3().toString());
+                        this.txtEntryThreadBoreAMin.setText(currentMould.getThreadBoreAMin3() == null ? "" : currentMould.getThreadBoreAMin3().toString());
+                        this.txtEntryThreadBoreAMax.setText(currentMould.getThreadBoreAMax3() == null ? "" : currentMould.getThreadBoreAMax3().toString());
                         break;
-                    case 4:
-                        this.txtEntryThreadBoreMin.setText(currentMould.getThreadBoreBMin1() == null ? "" : currentMould.getThreadBoreBMin1().toString());
-                        this.txtEntryThreadBoreMax.setText(currentMould.getThreadBoreBMax1() == null ? "" : currentMould.getThreadBoreBMax1().toString());
+                }
+            }
+            if (currentProduct.getThreadBoreB() != null) {
+                switch (currentProduct.getThreadBoreB()) {
+                    case 1:
+                        this.txtEntryThreadBoreBMin.setText(currentMould.getThreadBoreBMin1() == null ? "" : currentMould.getThreadBoreBMin1().toString());
+                        this.txtEntryThreadBoreBMax.setText(currentMould.getThreadBoreBMax1() == null ? "" : currentMould.getThreadBoreBMax1().toString());
                         break;
-                    case 5:
-                        this.txtEntryThreadBoreMin.setText(currentMould.getThreadBoreBMin2() == null ? "" : currentMould.getThreadBoreBMin2().toString());
-                        this.txtEntryThreadBoreMax.setText(currentMould.getThreadBoreBMax2() == null ? "" : currentMould.getThreadBoreBMax2().toString());
+                    case 2:
+                        this.txtEntryThreadBoreBMin.setText(currentMould.getThreadBoreBMin2() == null ? "" : currentMould.getThreadBoreBMin2().toString());
+                        this.txtEntryThreadBoreBMax.setText(currentMould.getThreadBoreBMax2() == null ? "" : currentMould.getThreadBoreBMax2().toString());
                         break;
-                    case 6:
-                        this.txtEntryThreadBoreMin.setText(currentMould.getThreadBoreBMin3() == null ? "" : currentMould.getThreadBoreBMin3().toString());
-                        this.txtEntryThreadBoreMax.setText(currentMould.getThreadBoreBMax3() == null ? "" : currentMould.getThreadBoreBMax3().toString());
+                    case 3:
+                        this.txtEntryThreadBoreBMin.setText(currentMould.getThreadBoreBMin3() == null ? "" : currentMould.getThreadBoreBMin3().toString());
+                        this.txtEntryThreadBoreBMax.setText(currentMould.getThreadBoreBMax3() == null ? "" : currentMould.getThreadBoreBMax3().toString());
                         break;
                 }
             }
@@ -1708,16 +1948,25 @@ public class EntryJFrame extends javax.swing.JFrame {
                 }
             }
         }
+        this.FillPolymerComboBox(this.cbProductPolymer, currentProduct.getPolymerId() != null ? currentProduct.getPolymerId().getId() : 0);
+        this.FillAdditiveComboBox(this.cbProductAdditive1, currentProduct.getAdditiveAId() != null ? currentProduct.getAdditiveAId().getId() : 0);
+        this.FillAdditiveComboBox(this.cbProductAdditive2, currentProduct.getAdditiveBId() != null ? currentProduct.getAdditiveAId().getId() : 0);
+        this.FillAdditiveComboBox(this.cbProductAdditive3, currentProduct.getAdditiveCId() != null ? currentProduct.getAdditiveCId().getId() : 0);
+        txtProductPerc1.setText(currentProduct.getAdditiveAPercentage() == null ? "" : currentProduct.getAdditiveAPercentage().toString());;
+        txtProductPerc2.setText(currentProduct.getAdditiveBPercentage() == null ? "" : currentProduct.getAdditiveBPercentage().toString());;
+        txtProductPerc3.setText(currentProduct.getAdditiveCPercentage() == null ? "" : currentProduct.getAdditiveCPercentage().toString());
     }//GEN-LAST:event_cbEntryProductActionPerformed
 
+    
+    
     private void UpdateEntryUI(Entry currentEntry) {
         this.labEntryCreatedDate.setText(currentEntry.getCreateDate() != null ? (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(currentEntry.getCreateDate()) : "");
         cbEntryInUse.setSelectedItem(currentEntry.getInUse());
         txtEntryShift.setText(currentEntry.getShift() == null || currentEntry.getShift() == "- Select -" ? "" : currentEntry.getShift().toString());;
         txtEntryWeightMin.setText(currentEntry.getWeightMin() == null ? "" : currentEntry.getWeightMin().toString());;
         txtEntryWeightMax.setText(currentEntry.getWeightMax() == null ? "" : currentEntry.getWeightMax().toString());;
-        txtEntryThreadBoreMin.setText(currentEntry.getThreadBoreMin() == null ? "" : currentEntry.getThreadBoreMin().toString());
-        txtEntryThreadBoreMax.setText(currentEntry.getThreadBoreMax() == null ? "" : currentEntry.getThreadBoreMax().toString());
+        txtEntryThreadBoreBMin.setText(currentEntry.getThreadBoreMin() == null ? "" : currentEntry.getThreadBoreMin().toString());
+        txtEntryThreadBoreBMax.setText(currentEntry.getThreadBoreMax() == null ? "" : currentEntry.getThreadBoreMax().toString());
         txtEntryThreadNeckMin.setText(currentEntry.getThreadNeckMin() == null ? "" : currentEntry.getThreadNeckMin().toString());
         txtEntryThreadNeckMax.setText(currentEntry.getThreadNeckMax() == null ? "" : currentEntry.getThreadNeckMax().toString());
         txtEntryTapPositionMin.setText(currentEntry.getTapPositionMin() == null ? "" : currentEntry.getTapPositionMin().toString());
@@ -1788,6 +2037,10 @@ public class EntryJFrame extends javax.swing.JFrame {
     private javax.swing.JComboBox cbEntryMachine;
     private javax.swing.JComboBox cbEntryMould;
     private javax.swing.JComboBox cbEntryProduct;
+    private javax.swing.JComboBox cbProductAdditive1;
+    private javax.swing.JComboBox cbProductAdditive2;
+    private javax.swing.JComboBox cbProductAdditive3;
+    private javax.swing.JComboBox cbProductPolymer;
     private javax.swing.JComboBox cbStaff;
     private javax.swing.JComboBox cbStaffJob;
     private javax.swing.JComboBox cbSupervisor1;
@@ -1808,6 +2061,7 @@ public class EntryJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel122;
     private javax.swing.JLabel jLabel123;
     private javax.swing.JLabel jLabel124;
+    private javax.swing.JLabel jLabel125;
     private javax.swing.JLabel jLabel126;
     private javax.swing.JLabel jLabel163;
     private javax.swing.JLabel jLabel18;
@@ -1828,6 +2082,14 @@ public class EntryJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel42;
     private javax.swing.JLabel jLabel43;
     private javax.swing.JLabel jLabel47;
+    private javax.swing.JLabel jLabel58;
+    private javax.swing.JLabel jLabel60;
+    private javax.swing.JLabel jLabel67;
+    private javax.swing.JLabel jLabel68;
+    private javax.swing.JLabel jLabel69;
+    private javax.swing.JLabel jLabel70;
+    private javax.swing.JLabel jLabel71;
+    private javax.swing.JLabel jLabel72;
     private javax.swing.JLabel jLabel73;
     private javax.swing.JLabel jLabel74;
     private javax.swing.JLabel jLabel75;
@@ -1847,14 +2109,18 @@ public class EntryJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel labEntryCreatedDate;
     private javax.swing.JLabel labEntryWall;
     private javax.swing.JTabbedPane pnlEditEntry;
+    private javax.swing.JPanel pnlEditProduct;
     private javax.swing.JPanel pnlEditStaff;
+    private javax.swing.JPanel pnlProductTab;
     private javax.swing.JTabbedPane tabSettings;
     private javax.swing.JTextField txtEntrySearch;
     private javax.swing.JTextField txtEntryShift;
     private javax.swing.JTextField txtEntryTapPositionMax;
     private javax.swing.JTextField txtEntryTapPositionMin;
-    private javax.swing.JTextField txtEntryThreadBoreMax;
-    private javax.swing.JTextField txtEntryThreadBoreMin;
+    private javax.swing.JTextField txtEntryThreadBoreAMax;
+    private javax.swing.JTextField txtEntryThreadBoreAMin;
+    private javax.swing.JTextField txtEntryThreadBoreBMax;
+    private javax.swing.JTextField txtEntryThreadBoreBMin;
     private javax.swing.JTextField txtEntryThreadNeckMax;
     private javax.swing.JTextField txtEntryThreadNeckMin;
     private javax.swing.JTextField txtEntryWeightMax;
@@ -1871,6 +2137,9 @@ public class EntryJFrame extends javax.swing.JFrame {
     private javax.swing.JTextField txtMouldHandleRightMin;
     private javax.swing.JTextField txtMouldUnderHandleMax;
     private javax.swing.JTextField txtMouldUnderHandleMin;
+    private javax.swing.JTextField txtProductPerc1;
+    private javax.swing.JTextField txtProductPerc2;
+    private javax.swing.JTextField txtProductPerc3;
     private javax.swing.JTextField txtStaffName;
     // End of variables declaration//GEN-END:variables
 

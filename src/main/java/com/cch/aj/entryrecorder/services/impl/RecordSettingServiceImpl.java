@@ -14,14 +14,20 @@ import com.cch.aj.entryrecorder.repositories.impl.RecordRepositoryImpl;
 import com.cch.aj.entryrecorder.services.RecordSettingService;
 import com.cch.aj.entryrecorder.services.SettingService;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author chacao
  */
+@Service("RecordSettingService")
 public class RecordSettingServiceImpl extends SettingServiceImpl<Record> implements RecordSettingService  {
     
     RecordSettingRepository recordSettingRepository=new RecordRepositoryImpl(this._connectionString);
+    
+    public RecordSettingServiceImpl() {
+        super(Record.class);
+    }
     
     public RecordSettingServiceImpl(Class<Record> type) {
         super(type);
