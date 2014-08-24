@@ -7,16 +7,18 @@
 package com.cch.aj.entryrecorder.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -28,8 +30,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Check.findAll", query = "SELECT c FROM Check c"),
     @NamedQuery(name = "Check.findById", query = "SELECT c FROM Check c WHERE c.id = :id"),
-    @NamedQuery(name = "Check.findByItemOrder", query = "SELECT c FROM Check c WHERE c.itemOrder = :itemOrder"),
-    @NamedQuery(name = "Check.findByDescription", query = "SELECT c FROM Check c WHERE c.description = :description")})
+    @NamedQuery(name = "Check.findByDescription", query = "SELECT c FROM Check c WHERE c.description = :description"),
+    @NamedQuery(name = "Check.findByIsDefault", query = "SELECT c FROM Check c WHERE c.isDefault = :isDefault")})
 public class Check implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -37,14 +39,13 @@ public class Check implements Serializable {
     @Column(name = "Id")
     private Integer id;
     @Basic(optional = false)
-    @Column(name = "ItemOrder")
-    private int itemOrder;
-    @Basic(optional = false)
     @Column(name = "Description")
     private String description;
-    @JoinColumn(name = "Product", referencedColumnName = "Id")
-    @ManyToOne(optional = false)
-    private Product product;
+    @Basic(optional = false)
+    @Column(name = "IsDefault")
+    private boolean isDefault;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "check1")
+    private Collection<Productcheck> productcheckCollection;
 
     public Check() {
     }
@@ -53,10 +54,10 @@ public class Check implements Serializable {
         this.id = id;
     }
 
-    public Check(Integer id, int itemOrder, String description) {
+    public Check(Integer id, String description, boolean isDefault) {
         this.id = id;
-        this.itemOrder = itemOrder;
         this.description = description;
+        this.isDefault = isDefault;
     }
 
     public Integer getId() {
@@ -67,14 +68,6 @@ public class Check implements Serializable {
         this.id = id;
     }
 
-    public int getItemOrder() {
-        return itemOrder;
-    }
-
-    public void setItemOrder(int itemOrder) {
-        this.itemOrder = itemOrder;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -83,12 +76,21 @@ public class Check implements Serializable {
         this.description = description;
     }
 
-    public Product getProduct() {
-        return product;
+    public boolean getIsDefault() {
+        return isDefault;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setIsDefault(boolean isDefault) {
+        this.isDefault = isDefault;
+    }
+
+    @XmlTransient
+    public Collection<Productcheck> getProductcheckCollection() {
+        return productcheckCollection;
+    }
+
+    public void setProductcheckCollection(Collection<Productcheck> productcheckCollection) {
+        this.productcheckCollection = productcheckCollection;
     }
 
     @Override

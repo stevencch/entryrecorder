@@ -75,4 +75,10 @@ public class AppHelper {
             Logger.getLogger(SettingsJFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public static boolean CheckTwoDigit(String input){
+        boolean result=false;
+        result=input.matches("\\d*\\.[\\d]{2}");
+        return result;
+    }
 }

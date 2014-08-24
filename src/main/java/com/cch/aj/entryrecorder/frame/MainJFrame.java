@@ -108,7 +108,7 @@ public class MainJFrame extends javax.swing.JFrame {
         this.labWeightStaff.setVisible(false);
         this.txtWeightStaff.setVisible(false);
         datasetWeight = new DefaultCategoryDataset();
-        
+
         List<Record> recordsWeight = records.stream().filter(x -> x.getRecordKey().equals("PRODUCT_WEIGHT")).collect(Collectors.toList());
         DefaultTableModel modelWeight = (DefaultTableModel) this.tblWeight.getModel();
         modelWeight.setRowCount(0);
@@ -149,7 +149,7 @@ public class MainJFrame extends javax.swing.JFrame {
             String staff = record.getStaff() == null ? "" : record.getStaff();
             String pass = record.getIsPass() == null ? "" : record.getIsPass();
             datasetTap.addValue(record.getNumberValue(), "Tap", time);
-            modelTap.addRow(new Object[]{time, record.getNumberValue(), pass, staff});
+            modelTap.addRow(new Object[]{time, record.getStringValue(), pass, staff});
         }
         ((AbstractTableModel) this.tblTap.getModel()).fireTableDataChanged();
         JFreeChart chartTap = ChartFactory.createLineChart(
@@ -179,7 +179,7 @@ public class MainJFrame extends javax.swing.JFrame {
             String staff = record.getStaff() == null ? "" : record.getStaff();
             String pass = record.getIsPass() == null ? "" : record.getIsPass();
             String name = record.getRecordKey();
-            modelCheck.addRow(new Object[]{time, name, record.getNumberValue(), pass, staff});
+            modelCheck.addRow(new Object[]{time, name, record.getStringValue(), pass, staff});
         }
         ((AbstractTableModel) this.tblCheck.getModel()).fireTableDataChanged();
         //Drop
@@ -189,9 +189,8 @@ public class MainJFrame extends javax.swing.JFrame {
         for (Record record : recordsDrop) {
             String time = new SimpleDateFormat("HH:mm").format(record.getCreatedTime());
             String staff = record.getStaff() == null ? "" : record.getStaff();
-            String pass = record.getIsPass() == null ? "" : record.getIsPass();
             String name = record.getRecordKey();
-            modelDrop.addRow(new Object[]{time, name, record.getNumberValue(), pass, staff});
+            modelDrop.addRow(new Object[]{time, name, record.getStringValue(), staff});
         }
         ((AbstractTableModel) this.tblDrop.getModel()).fireTableDataChanged();
         //Bung
@@ -201,10 +200,34 @@ public class MainJFrame extends javax.swing.JFrame {
         for (Record record : recordsBung) {
             String time = new SimpleDateFormat("HH:mm").format(record.getCreatedTime());
             String staff = record.getStaff() == null ? "" : record.getStaff();
-            String pass = record.getIsPass() == null ? "" : record.getIsPass();
-            modelBung.addRow(new Object[]{time, record.getNumberValue(), pass, staff});
+            modelBung.addRow(new Object[]{time, record.getStringValue(), staff});
         }
-        
+        //Cycle
+        List<Record> recordsCycle = records.stream().filter(x -> x.getRecordKey().equals("CYCLE")).collect(Collectors.toList());
+        DefaultTableModel modelCycle = (DefaultTableModel) this.tblCycle.getModel();
+        modelCycle.setRowCount(0);
+        for (Record record : recordsCycle) {
+            String time = new SimpleDateFormat("HH:mm").format(record.getCreatedTime());
+            String staff = record.getStaff() == null ? "" : record.getStaff();
+            modelCycle.addRow(new Object[]{time, record.getStringValue(), staff});
+        }
+        //Seconds
+        List<Record> recordsSeconds = records.stream().filter(x -> x.getRecordKey().equals("SECONDS")).collect(Collectors.toList());
+        DefaultTableModel modelSeconds = (DefaultTableModel) this.tblSeconds.getModel();
+        modelSeconds.setRowCount(0);
+        for (Record record : recordsSeconds) {
+            String time = new SimpleDateFormat("HH:mm").format(record.getCreatedTime());
+            modelSeconds.addRow(new Object[]{time, record.getStringValue()});
+        }
+        //Rejects
+        List<Record> recordsRejects = records.stream().filter(x -> x.getRecordKey().equals("REJECTS")).collect(Collectors.toList());
+        DefaultTableModel modelRejects = (DefaultTableModel) this.tblRejects.getModel();
+        modelRejects.setRowCount(0);
+        for (Record record : recordsRejects) {
+            String time = new SimpleDateFormat("HH:mm").format(record.getCreatedTime());
+            modelRejects.addRow(new Object[]{time, record.getNumberValue()});
+        }
+
     }
 
     private int FillEntryComboBox(JComboBox comboBox, int id) {
@@ -213,7 +236,8 @@ public class MainJFrame extends javax.swing.JFrame {
         if (allEntrys.size() > 0) {
             List<Entry> entrys = allEntrys.stream().filter(x -> x.getInUse().equals("YES")).collect(Collectors.toList());
             if (entrys.size() > 0) {
-                List<ComboBoxItem<Entry>> entryNames = entrys.stream().sorted(comparing(x -> x.getCreateDate())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getShift() + "-" + (x.getMachineId() != null ? x.getMachineId().getMachineNo() : ""), x.getId())).collect(Collectors.toList());
+                List<ComboBoxItem<Entry>> entryNames = entrys.stream().sorted(comparing(x -> x.getCreateDate())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getShift() + " # " + (x.getMachineId() != null ? x.getMachineId().getMachineNo() : "")
+                        + " # " + (x.getProductId() != null ? x.getProductId().getCode() : ""), x.getId())).collect(Collectors.toList());
                 ComboBoxItem[] entryNamesArray = entryNames.toArray(new ComboBoxItem[entryNames.size()]);
                 comboBox.setModel(new DefaultComboBoxModel(entryNamesArray));
                 if (id != 0) {
@@ -272,6 +296,16 @@ public class MainJFrame extends javax.swing.JFrame {
         btnWeight = new javax.swing.JButton();
         txtWeight = new javax.swing.JTextField();
         pnlChartWeight = new javax.swing.JPanel();
+        jPanel37 = new javax.swing.JPanel();
+        jPanel38 = new javax.swing.JPanel();
+        jScrollPane10 = new javax.swing.JScrollPane();
+        tblCycle = new javax.swing.JTable();
+        jPanel39 = new javax.swing.JPanel();
+        jLabel44 = new javax.swing.JLabel();
+        labBungStaff1 = new javax.swing.JLabel();
+        btnCycle = new javax.swing.JButton();
+        txtCycle = new javax.swing.JTextField();
+        txtCycleStaff = new javax.swing.JTextField();
         jPanel17 = new javax.swing.JPanel();
         jPanel18 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -379,6 +413,29 @@ public class MainJFrame extends javax.swing.JFrame {
         cbDrop8 = new javax.swing.JComboBox();
         txtDropStaff = new javax.swing.JTextField();
         jPanel13 = new javax.swing.JPanel();
+        jPanel8 = new javax.swing.JPanel();
+        jPanel9 = new javax.swing.JPanel();
+        jPanel33 = new javax.swing.JPanel();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        tblRejects = new javax.swing.JTable();
+        jPanel34 = new javax.swing.JPanel();
+        jLabel40 = new javax.swing.JLabel();
+        btnRejects = new javax.swing.JButton();
+        txtRejects = new javax.swing.JTextField();
+        jPanel10 = new javax.swing.JPanel();
+        jLabel42 = new javax.swing.JLabel();
+        labRejectsTotal = new javax.swing.JLabel();
+        jPanel11 = new javax.swing.JPanel();
+        jPanel35 = new javax.swing.JPanel();
+        jScrollPane9 = new javax.swing.JScrollPane();
+        tblSeconds = new javax.swing.JTable();
+        jPanel36 = new javax.swing.JPanel();
+        jLabel41 = new javax.swing.JLabel();
+        btnSeconds = new javax.swing.JButton();
+        txtSeconds = new javax.swing.JTextField();
+        jPanel12 = new javax.swing.JPanel();
+        jLabel43 = new javax.swing.JLabel();
+        labSecondsTotal = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
 
@@ -692,6 +749,99 @@ public class MainJFrame extends javax.swing.JFrame {
         jPanel5.add(pnlChartWeight, gridBagConstraints);
 
         jTabbedPane1.addTab("Weight", jPanel5);
+
+        jPanel37.setLayout(new java.awt.GridBagLayout());
+
+        jPanel38.setLayout(new java.awt.GridBagLayout());
+
+        tblCycle.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Time", "Value", "Staff"
+            }
+        ));
+        jScrollPane10.setViewportView(tblCycle);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        jPanel38.add(jScrollPane10, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.7;
+        jPanel37.add(jPanel38, gridBagConstraints);
+
+        jPanel39.setLayout(new java.awt.GridBagLayout());
+
+        jLabel44.setText("Cycle Time");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(9, 27, 9, 27);
+        jPanel39.add(jLabel44, gridBagConstraints);
+
+        labBungStaff1.setText("Check By");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(9, 27, 9, 27);
+        jPanel39.add(labBungStaff1, gridBagConstraints);
+
+        btnCycle.setText("Add");
+        btnCycle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCycleActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.insets = new java.awt.Insets(9, 27, 9, 27);
+        jPanel39.add(btnCycle, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(9, 27, 9, 27);
+        jPanel39.add(txtCycle, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(9, 27, 9, 27);
+        jPanel39.add(txtCycleStaff, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.3;
+        jPanel37.add(jPanel39, gridBagConstraints);
+
+        jTabbedPane1.addTab("Cycle Time", jPanel37);
 
         jPanel17.setLayout(new java.awt.GridBagLayout());
 
@@ -1252,7 +1402,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Time", "Name", "Value", "Pass", "Staff"
+                "Time", "Name", "Value", "Staff"
             }
         ));
         jScrollPane5.setViewportView(tblCheck);
@@ -1487,7 +1637,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Time", "Name", "Value", "Pass", "Staff"
+                "Time", "Name", "Value", "Staff"
             }
         ));
         jScrollPane6.setViewportView(tblDrop);
@@ -1734,6 +1884,228 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Quantity Produced", jPanel13);
 
+        jPanel8.setLayout(new java.awt.GridBagLayout());
+
+        jPanel9.setLayout(new java.awt.GridBagLayout());
+
+        jPanel33.setLayout(new java.awt.GridBagLayout());
+
+        tblRejects.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Time", "Value"
+            }
+        ));
+        jScrollPane8.setViewportView(tblRejects);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        jPanel33.add(jScrollPane8, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.7;
+        jPanel9.add(jPanel33, gridBagConstraints);
+
+        jPanel34.setLayout(new java.awt.GridBagLayout());
+
+        jLabel40.setText("Rejects");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.ipady = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(21, 28, 4, 28);
+        jPanel34.add(jLabel40, gridBagConstraints);
+
+        btnRejects.setText("Add");
+        btnRejects.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRejectsActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.ipadx = 2;
+        gridBagConstraints.ipady = 2;
+        gridBagConstraints.insets = new java.awt.Insets(11, 11, 11, 11);
+        jPanel34.add(btnRejects, gridBagConstraints);
+
+        txtRejects.setToolTipText("");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.ipady = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(21, 28, 4, 28);
+        jPanel34.add(txtRejects, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.3;
+        jPanel9.add(jPanel34, gridBagConstraints);
+
+        jPanel10.setLayout(new java.awt.GridBagLayout());
+
+        jLabel42.setText("Rejects Total : ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(8, 8, 8, 8);
+        jPanel10.add(jLabel42, gridBagConstraints);
+
+        labRejectsTotal.setText("NA");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        jPanel10.add(labRejectsTotal, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        jPanel9.add(jPanel10, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 0.5;
+        jPanel8.add(jPanel9, gridBagConstraints);
+
+        jPanel11.setLayout(new java.awt.GridBagLayout());
+
+        jPanel35.setLayout(new java.awt.GridBagLayout());
+
+        tblSeconds.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Time", "Value"
+            }
+        ));
+        jScrollPane9.setViewportView(tblSeconds);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        jPanel35.add(jScrollPane9, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.7;
+        jPanel11.add(jPanel35, gridBagConstraints);
+
+        jPanel36.setLayout(new java.awt.GridBagLayout());
+
+        jLabel41.setText("Seconds");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.ipady = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(21, 28, 4, 28);
+        jPanel36.add(jLabel41, gridBagConstraints);
+
+        btnSeconds.setText("Add");
+        btnSeconds.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSecondsActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.ipadx = 2;
+        gridBagConstraints.ipady = 2;
+        gridBagConstraints.insets = new java.awt.Insets(11, 11, 11, 11);
+        jPanel36.add(btnSeconds, gridBagConstraints);
+
+        txtSeconds.setToolTipText("");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.ipady = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(21, 28, 4, 28);
+        jPanel36.add(txtSeconds, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.3;
+        jPanel11.add(jPanel36, gridBagConstraints);
+
+        jPanel12.setLayout(new java.awt.GridBagLayout());
+
+        jLabel43.setText("Seconds Total : ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(8, 8, 8, 8);
+        jPanel12.add(jLabel43, gridBagConstraints);
+
+        labSecondsTotal.setText("NA");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        jPanel12.add(labSecondsTotal, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        jPanel11.add(jPanel12, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 0.5;
+        jPanel8.add(jPanel11, gridBagConstraints);
+
+        jTabbedPane1.addTab("Seconds / Rejects", jPanel8);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -1779,7 +2151,7 @@ public class MainJFrame extends javax.swing.JFrame {
         String staff = "";
         String pass = "NO";
         if (this.currentEntry != null) {
-            if (NumberUtils.isNumber(this.txtWeight.getText())) {
+            if (AppHelper.CheckTwoDigit(this.txtWeight.getText())) {
                 if (recordValidationService.Validate(currentEntry, RecordKey.PRODUCT_WEIGHT, Float.parseFloat(this.txtWeight.getText()))) {
                     isSave = true;
                     pass = "YES";
@@ -1787,16 +2159,16 @@ public class MainJFrame extends javax.swing.JFrame {
                     if (!this.txtWeightStaff.getText().equals("")) {
                         isSave = true;
 
-                        staff = this.txtWeightStaff.getText();
-                        this.txtWeightStaff.setText("");
                     } else {
                         JOptionPane.showMessageDialog(this, "the value is over the limit, please entry supervisor name.", "Warning", JOptionPane.OK_OPTION);
                         this.labWeightStaff.setVisible(true);
                         this.txtWeightStaff.setVisible(true);
                     }
                 }
+                staff = this.txtWeightStaff.getText();
+                this.txtWeightStaff.setText("");
             } else {
-                JOptionPane.showMessageDialog(this, "Please entry the valid number.", "Warning", JOptionPane.OK_OPTION);
+                JOptionPane.showMessageDialog(this, "Please entry the valid number like (123.45).", "Warning", JOptionPane.OK_OPTION);
             }
 
             if (isSave) {
@@ -1804,13 +2176,13 @@ public class MainJFrame extends javax.swing.JFrame {
                 Date now = new Date();
                 String time = new SimpleDateFormat("HH:mm").format(now);
                 Float value = Float.parseFloat(this.txtWeight.getText());
-                model.addRow(new Object[]{time, value,pass, staff});
+                model.addRow(new Object[]{time, value, pass, staff});
                 ((AbstractTableModel) this.tblWeight.getModel()).fireTableDataChanged();
                 datasetWeight.addValue(value, "Weight", time);
                 this.labWeightStaff.setVisible(false);
                 this.txtWeightStaff.setVisible(false);
                 this.txtWeight.setText("");
-                UpdateEntryData(now, value, RecordKey.PRODUCT_WEIGHT, staff, pass);
+                UpdateEntryData(now, value, RecordKey.PRODUCT_WEIGHT, staff, pass, "");
             }
         }
     }//GEN-LAST:event_btnWeightActionPerformed
@@ -1825,9 +2197,9 @@ public class MainJFrame extends javax.swing.JFrame {
         String staff = "";
         String pass = "NO";
         if (this.currentEntry != null) {
-            if (NumberUtils.isNumber(this.txtWallBase.getText()) && NumberUtils.isNumber(this.txtWallHandleBung.getText())
-                    && NumberUtils.isNumber(this.txtWallClosure.getText()) && NumberUtils.isNumber(this.txtWallHandleLeft.getText())
-                    && NumberUtils.isNumber(this.txtWallHandleRight.getText()) && NumberUtils.isNumber(this.txtWallUnderHandle.getText())) {
+            if (AppHelper.CheckTwoDigit(this.txtWallBase.getText()) && AppHelper.CheckTwoDigit(this.txtWallHandleBung.getText())
+                    && AppHelper.CheckTwoDigit(this.txtWallClosure.getText()) && AppHelper.CheckTwoDigit(this.txtWallHandleLeft.getText())
+                    && AppHelper.CheckTwoDigit(this.txtWallHandleRight.getText()) && AppHelper.CheckTwoDigit(this.txtWallUnderHandle.getText())) {
                 if (recordValidationService.Validate(currentEntry, RecordKey.WALL_BASE, Float.parseFloat(this.txtWallBase.getText()))
                         && recordValidationService.Validate(currentEntry, RecordKey.WALL_CLOSURE, Float.parseFloat(this.txtWallClosure.getText()))
                         && recordValidationService.Validate(currentEntry, RecordKey.WALL_HANDLE_BUNG, Float.parseFloat(this.txtWallHandleBung.getText()))
@@ -1839,14 +2211,15 @@ public class MainJFrame extends javax.swing.JFrame {
                 } else {
                     if (!this.txtWallStaff.getText().equals("")) {
                         isSave = true;
-                        staff = this.txtWallStaff.getText();
-                        this.txtWallStaff.setText("");
+
                     } else {
                         JOptionPane.showMessageDialog(this, "the value is over the limit, please entry supervisor name.", "Warning", JOptionPane.OK_OPTION);
                     }
                 }
+                staff = this.txtWallStaff.getText();
+                this.txtWallStaff.setText("");
             } else {
-                JOptionPane.showMessageDialog(this, "Please entry the valid number.", "Warning", JOptionPane.OK_OPTION);
+                JOptionPane.showMessageDialog(this, "Please entry the valid number like (123.45).", "Warning", JOptionPane.OK_OPTION);
             }
 
             if (isSave) {
@@ -1859,16 +2232,38 @@ public class MainJFrame extends javax.swing.JFrame {
                 Float valueHandleBung = Float.parseFloat(this.txtWallHandleBung.getText());
                 Float valueHandleLeft = Float.parseFloat(this.txtWallHandleLeft.getText());
                 Float valueHandleRight = Float.parseFloat(this.txtWallHandleRight.getText());
-                model.addRow(new Object[]{time, RecordKey.WALL_UNDER_HANDLE, valueUnderHandle, pass, staff});
-                model.addRow(new Object[]{time, RecordKey.WALL_BASE, valueBase, pass, staff});
-                model.addRow(new Object[]{time, RecordKey.WALL_CLOSURE, valueClosure, pass, staff});
-                model.addRow(new Object[]{time, RecordKey.WALL_HANDLE_BUNG, valueHandleBung, pass, staff});
-                model.addRow(new Object[]{time, RecordKey.WALL_HANDLE_LEFT, valueHandleLeft, pass, staff});
-                model.addRow(new Object[]{time, RecordKey.WALL_HANDLE_RIGHT, valueHandleRight, pass, staff});
+                if (recordValidationService.Validate(currentEntry, RecordKey.WALL_UNDER_HANDLE, Float.parseFloat(this.txtWallUnderHandle.getText()))) {
+                    model.addRow(new Object[]{time, RecordKey.WALL_UNDER_HANDLE, valueUnderHandle, "YES", staff});
+                } else {
+                    model.addRow(new Object[]{time, RecordKey.WALL_UNDER_HANDLE, valueUnderHandle, "NO", staff});
+                }
+                if (recordValidationService.Validate(currentEntry, RecordKey.WALL_BASE, Float.parseFloat(this.txtWallBase.getText()))) {
+                    model.addRow(new Object[]{time, RecordKey.WALL_BASE, valueBase, "YES", staff});
+                } else {
+                    model.addRow(new Object[]{time, RecordKey.WALL_BASE, valueBase, "NO", staff});
+                }
+                if (recordValidationService.Validate(currentEntry, RecordKey.WALL_CLOSURE, Float.parseFloat(this.txtWallClosure.getText()))) {
+                    model.addRow(new Object[]{time, RecordKey.WALL_CLOSURE, valueClosure, "YES", staff});
+                } else {
+                    model.addRow(new Object[]{time, RecordKey.WALL_CLOSURE, valueClosure, "NO", staff});
+                }
+                if (recordValidationService.Validate(currentEntry, RecordKey.WALL_HANDLE_BUNG, Float.parseFloat(this.txtWallHandleBung.getText()))) {
+                    model.addRow(new Object[]{time, RecordKey.WALL_HANDLE_BUNG, valueHandleBung, "YES", staff});
+                } else {
+                    model.addRow(new Object[]{time, RecordKey.WALL_HANDLE_BUNG, valueHandleBung, "NO", staff});
+                }
+                if (recordValidationService.Validate(currentEntry, RecordKey.WALL_HANDLE_LEFT, Float.parseFloat(this.txtWallHandleLeft.getText()))) {
+                    model.addRow(new Object[]{time, RecordKey.WALL_HANDLE_LEFT, valueHandleLeft, "YES", staff});
+                } else {
+                    model.addRow(new Object[]{time, RecordKey.WALL_HANDLE_LEFT, valueHandleLeft, "NO", staff});
+                }
+                if (recordValidationService.Validate(currentEntry, RecordKey.WALL_HANDLE_RIGHT, Float.parseFloat(this.txtWallHandleRight.getText()))) {
+                    model.addRow(new Object[]{time, RecordKey.WALL_HANDLE_RIGHT, valueHandleRight, "YES", staff});
+                } else {
+                    model.addRow(new Object[]{time, RecordKey.WALL_HANDLE_RIGHT, valueHandleRight, "NO", staff});
+                }
 
                 ((AbstractTableModel) this.tblWall.getModel()).fireTableDataChanged();
-                this.labWallStaff.setVisible(false);
-                this.txtWallStaff.setVisible(false);
                 this.txtWallUnderHandle.setText("");
                 this.txtWallBase.setText("");
                 this.txtWallClosure.setText("");
@@ -1876,12 +2271,12 @@ public class MainJFrame extends javax.swing.JFrame {
                 this.txtWallHandleLeft.setText("");
                 this.txtWallHandleRight.setText("");
                 //
-                UpdateEntryData(now, valueUnderHandle, RecordKey.WALL_UNDER_HANDLE, staff, pass);
-                UpdateEntryData(now, valueBase, RecordKey.WALL_BASE, staff, pass);
-                UpdateEntryData(now, valueClosure, RecordKey.WALL_CLOSURE, staff, pass);
-                UpdateEntryData(now, valueHandleBung, RecordKey.WALL_HANDLE_BUNG, staff, pass);
-                UpdateEntryData(now, valueHandleLeft, RecordKey.WALL_HANDLE_LEFT, staff, pass);
-                UpdateEntryData(now, valueHandleRight, RecordKey.WALL_HANDLE_RIGHT, staff, pass);
+                UpdateEntryData(now, valueUnderHandle, RecordKey.WALL_UNDER_HANDLE, staff, pass, "");
+                UpdateEntryData(now, valueBase, RecordKey.WALL_BASE, staff, pass, "");
+                UpdateEntryData(now, valueClosure, RecordKey.WALL_CLOSURE, staff, pass, "");
+                UpdateEntryData(now, valueHandleBung, RecordKey.WALL_HANDLE_BUNG, staff, pass, "");
+                UpdateEntryData(now, valueHandleLeft, RecordKey.WALL_HANDLE_LEFT, staff, pass, "");
+                UpdateEntryData(now, valueHandleRight, RecordKey.WALL_HANDLE_RIGHT, staff, pass, "");
             }
         }
     }//GEN-LAST:event_btnWallActionPerformed
@@ -1898,13 +2293,13 @@ public class MainJFrame extends javax.swing.JFrame {
                 } else {
                     if (!this.txtTapStaff.getText().equals("")) {
                         isSave = true;
-                        staff = txtTapStaff.getText();
-                        this.txtTapStaff.setText("");
 
                     } else {
                         JOptionPane.showMessageDialog(this, "the value is over the limit, please entry supervisor name.", "Warning", JOptionPane.OK_OPTION);
                     }
                 }
+                staff = txtTapStaff.getText();
+                this.txtTapStaff.setText("");
             } else {
                 JOptionPane.showMessageDialog(this, "Please select the tap position.", "Warning", JOptionPane.OK_OPTION);
             }
@@ -1914,13 +2309,12 @@ public class MainJFrame extends javax.swing.JFrame {
                 Date now = new Date();
                 String time = new SimpleDateFormat("HH:mm").format(now);
                 Float value = (float) this.cbTap.getSelectedIndex();
-                model.addRow(new Object[]{time, value, pass, staff});
+                String stringValue = this.cbTap.getSelectedItem().toString();
+                model.addRow(new Object[]{time, stringValue, pass, staff});
                 ((AbstractTableModel) this.tblTap.getModel()).fireTableDataChanged();
                 datasetTap.addValue(value, "Tap", time);
-                this.labTapStaff.setVisible(false);
-                this.txtTapStaff.setVisible(false);
                 this.cbTap.setSelectedIndex(0);
-                UpdateEntryData(now, value, RecordKey.TAP_POSITION, staff, pass);
+                UpdateEntryData(now, value, RecordKey.TAP_POSITION, staff, pass, stringValue);
             }
         }
     }//GEN-LAST:event_btnTapActionPerformed
@@ -1930,8 +2324,8 @@ public class MainJFrame extends javax.swing.JFrame {
         String staff = "";
         String pass = "NO";
         if (this.currentEntry != null) {
-            if (NumberUtils.isNumber(this.txtBore1.getText()) && NumberUtils.isNumber(this.txtBore2.getText())
-                    && NumberUtils.isNumber(this.txtNeck.getText())) {
+            if (AppHelper.CheckTwoDigit(this.txtBore1.getText()) && AppHelper.CheckTwoDigit(this.txtBore2.getText())
+                    && AppHelper.CheckTwoDigit(this.txtNeck.getText())) {
                 if (recordValidationService.Validate(currentEntry, RecordKey.THREAD_BORE, Float.parseFloat(this.txtBore1.getText()))
                         && recordValidationService.Validate(currentEntry, RecordKey.THREAD_BORE, Float.parseFloat(this.txtBore2.getText()))
                         && recordValidationService.Validate(currentEntry, RecordKey.THREAD_NECK, Float.parseFloat(this.txtNeck.getText()))) {
@@ -1940,14 +2334,15 @@ public class MainJFrame extends javax.swing.JFrame {
                 } else {
                     if (!this.txtBoreStaff.getText().equals("")) {
                         isSave = true;
-                        staff = this.txtBoreStaff.getText();
-                        this.txtBoreStaff.setText("");
+
                     } else {
                         JOptionPane.showMessageDialog(this, "the value is over the limit, please entry supervisor name.", "Warning", JOptionPane.OK_OPTION);
                     }
                 }
+                staff = this.txtBoreStaff.getText();
+                this.txtBoreStaff.setText("");
             } else {
-                JOptionPane.showMessageDialog(this, "Please entry the valid number.", "Warning", JOptionPane.OK_OPTION);
+                JOptionPane.showMessageDialog(this, "Please entry the valid number like (123.45).", "Warning", JOptionPane.OK_OPTION);
             }
 
             if (isSave) {
@@ -1957,20 +2352,31 @@ public class MainJFrame extends javax.swing.JFrame {
                 Float valueBore1 = Float.parseFloat(this.txtBore1.getText());
                 Float valueBore2 = Float.parseFloat(this.txtBore2.getText());
                 Float valueNeck = Float.parseFloat(this.txtNeck.getText());
-                model.addRow(new Object[]{time, RecordKey.THREAD_BORE1, valueBore1, pass, staff});
-                model.addRow(new Object[]{time, RecordKey.THREAD_BORE2, valueBore2, pass, staff});
-                model.addRow(new Object[]{time, RecordKey.THREAD_NECK, valueNeck, pass, staff});
+                if (recordValidationService.Validate(currentEntry, RecordKey.THREAD_BORE1, valueBore1)) {
+                    model.addRow(new Object[]{time, RecordKey.THREAD_BORE1, valueBore1, "YES", staff});
+                } else {
+                    model.addRow(new Object[]{time, RecordKey.THREAD_BORE1, valueBore1, "NO", staff});
+                }
+                if (recordValidationService.Validate(currentEntry, RecordKey.THREAD_BORE2, valueBore1)) {
+                    model.addRow(new Object[]{time, RecordKey.THREAD_BORE2, valueBore2, "YES", staff});
+                } else {
+                    model.addRow(new Object[]{time, RecordKey.THREAD_BORE2, valueBore2, "NO", staff});
+                }
+                if (recordValidationService.Validate(currentEntry, RecordKey.THREAD_NECK, valueNeck)) {
+                    model.addRow(new Object[]{time, RecordKey.THREAD_NECK, valueNeck, "YES", staff});
+                } else {
+                    model.addRow(new Object[]{time, RecordKey.THREAD_NECK, valueNeck, "NO", staff});
+                }
 
                 ((AbstractTableModel) this.tblBore.getModel()).fireTableDataChanged();
-                this.labBoreStaff.setVisible(false);
-                this.txtBoreStaff.setVisible(false);
                 this.txtBore1.setText("");
                 this.txtBore2.setText("");
                 this.txtNeck.setText("");
                 //
-                UpdateEntryData(now, valueBore1, RecordKey.THREAD_BORE1, staff, pass);
-                UpdateEntryData(now, valueBore2, RecordKey.THREAD_BORE2, staff, pass);
-                UpdateEntryData(now, valueNeck, RecordKey.THREAD_NECK, staff, pass);
+                UpdateEntryData(now, valueBore1, RecordKey.THREAD_BORE1, staff, pass, "");
+                UpdateEntryData(now, valueBore2, RecordKey.THREAD_BORE2, staff, pass, "");
+                UpdateEntryData(now, valueNeck, RecordKey.THREAD_NECK, staff, pass, "");
+
             }
         }
     }//GEN-LAST:event_btnBoreActionPerformed
@@ -1991,12 +2397,13 @@ public class MainJFrame extends javax.swing.JFrame {
                 } else {
                     if (!this.txtCheckStaff.getText().equals("")) {
                         isSave = true;
-                        staff = this.txtCheckStaff.getText();
-                        this.txtCheckStaff.setText("");
+
                     } else {
                         JOptionPane.showMessageDialog(this, "Fail to pass all the checks, please entry supervisor name.", "Warning", JOptionPane.OK_OPTION);
                     }
                 }
+                staff = this.txtCheckStaff.getText();
+                this.txtCheckStaff.setText("");
             } else {
                 JOptionPane.showMessageDialog(this, "Please complete all the checks.", "Warning", JOptionPane.OK_OPTION);
             }
@@ -2005,18 +2412,27 @@ public class MainJFrame extends javax.swing.JFrame {
                 DefaultTableModel model = (DefaultTableModel) this.tblCheck.getModel();
                 Date now = new Date();
                 String time = new SimpleDateFormat("HH:mm").format(now);
-                model.addRow(new Object[]{time, RecordKey.CHECK_NECK_ROUND, this.cbNeckRound.getSelectedItem(), pass, staff});
-                model.addRow(new Object[]{time, RecordKey.CHECK_NECK_COMPLETE, this.cbNeckComplete.getSelectedItem(), pass, staff});
-                model.addRow(new Object[]{time, RecordKey.CHECK_UNDER_THE_HANDLE, this.cbUnderTheHandle.getSelectedItem(), pass, staff});
-                model.addRow(new Object[]{time, RecordKey.CHECK_BUNG_IF_DRILLED, this.cbBungIfDrilled.getSelectedItem(), pass, staff});
-                model.addRow(new Object[]{time, RecordKey.CHECK_BASE, this.cbBase.getSelectedItem(), pass, staff});
-                model.addRow(new Object[]{time, RecordKey.CHECK_STRENGTH_OF_DRUM, this.cbStrengthOfDrum.getSelectedItem(), pass, staff});
-                model.addRow(new Object[]{time, RecordKey.CHECK_WEIGHT_WITHIN_RANGE, this.cbWeightWithinRange.getSelectedItem(), pass, staff});
-                model.addRow(new Object[]{time, RecordKey.CHECK_COLOUR_TEXTURE, this.cbColourTexture.getSelectedItem(), pass, staff});
+                model.addRow(new Object[]{time, RecordKey.CHECK_NECK_ROUND, this.cbNeckRound.getSelectedItem(), staff});
+                model.addRow(new Object[]{time, RecordKey.CHECK_NECK_COMPLETE, this.cbNeckComplete.getSelectedItem(), staff});
+                model.addRow(new Object[]{time, RecordKey.CHECK_UNDER_THE_HANDLE, this.cbUnderTheHandle.getSelectedItem(), staff});
+                model.addRow(new Object[]{time, RecordKey.CHECK_BUNG_IF_DRILLED, this.cbBungIfDrilled.getSelectedItem(), staff});
+                model.addRow(new Object[]{time, RecordKey.CHECK_BASE, this.cbBase.getSelectedItem(), staff});
+                model.addRow(new Object[]{time, RecordKey.CHECK_STRENGTH_OF_DRUM, this.cbStrengthOfDrum.getSelectedItem(), staff});
+                model.addRow(new Object[]{time, RecordKey.CHECK_WEIGHT_WITHIN_RANGE, this.cbWeightWithinRange.getSelectedItem(), staff});
+                model.addRow(new Object[]{time, RecordKey.CHECK_COLOUR_TEXTURE, this.cbColourTexture.getSelectedItem(), staff});
 
                 ((AbstractTableModel) this.tblCheck.getModel()).fireTableDataChanged();
-                this.labCheckStaff.setVisible(false);
-                this.txtCheckStaff.setVisible(false);
+                
+                //
+                UpdateEntryData(now, (float) this.cbNeckRound.getSelectedIndex(), RecordKey.CHECK_NECK_ROUND, staff, pass, this.cbNeckRound.getSelectedItem().toString());
+                UpdateEntryData(now, (float) this.cbNeckComplete.getSelectedIndex(), RecordKey.CHECK_NECK_COMPLETE, staff, pass, this.cbNeckComplete.getSelectedItem().toString());
+                UpdateEntryData(now, (float) this.cbUnderTheHandle.getSelectedIndex(), RecordKey.CHECK_UNDER_THE_HANDLE, staff, pass, this.cbUnderTheHandle.getSelectedItem().toString());
+                UpdateEntryData(now, (float) this.cbBungIfDrilled.getSelectedIndex(), RecordKey.CHECK_BUNG_IF_DRILLED, staff, pass, this.cbBungIfDrilled.getSelectedItem().toString());
+                UpdateEntryData(now, (float) this.cbBase.getSelectedIndex(), RecordKey.CHECK_BASE, staff, pass, this.cbBase.getSelectedItem().toString());
+                UpdateEntryData(now, (float) this.cbStrengthOfDrum.getSelectedIndex(), RecordKey.CHECK_STRENGTH_OF_DRUM, staff, pass, this.cbStrengthOfDrum.getSelectedItem().toString());
+                UpdateEntryData(now, (float) this.cbWeightWithinRange.getSelectedIndex(), RecordKey.CHECK_WEIGHT_WITHIN_RANGE, staff, pass, this.cbWeightWithinRange.getSelectedItem().toString());
+                UpdateEntryData(now, (float) this.cbColourTexture.getSelectedIndex(), RecordKey.CHECK_COLOUR_TEXTURE, staff, pass, this.cbColourTexture.getSelectedItem().toString());
+                
                 this.cbNeckRound.setSelectedIndex(0);
                 this.cbNeckComplete.setSelectedIndex(0);
                 this.cbUnderTheHandle.setSelectedIndex(0);
@@ -2025,15 +2441,6 @@ public class MainJFrame extends javax.swing.JFrame {
                 this.cbStrengthOfDrum.setSelectedIndex(0);
                 this.cbWeightWithinRange.setSelectedIndex(0);
                 this.cbColourTexture.setSelectedIndex(0);
-                //
-                UpdateEntryData(now, (float) this.cbNeckRound.getSelectedIndex(), RecordKey.CHECK_NECK_ROUND, staff, pass);
-                UpdateEntryData(now, (float) this.cbNeckComplete.getSelectedIndex(), RecordKey.CHECK_NECK_COMPLETE, staff, pass);
-                UpdateEntryData(now, (float) this.cbUnderTheHandle.getSelectedIndex(), RecordKey.CHECK_UNDER_THE_HANDLE, staff, pass);
-                UpdateEntryData(now, (float) this.cbBungIfDrilled.getSelectedIndex(), RecordKey.CHECK_BUNG_IF_DRILLED, staff, pass);
-                UpdateEntryData(now, (float) this.cbBase.getSelectedIndex(), RecordKey.CHECK_BASE, staff, pass);
-                UpdateEntryData(now, (float) this.cbStrengthOfDrum.getSelectedIndex(), RecordKey.CHECK_STRENGTH_OF_DRUM, staff, pass);
-                UpdateEntryData(now, (float) this.cbWeightWithinRange.getSelectedIndex(), RecordKey.CHECK_WEIGHT_WITHIN_RANGE, staff, pass);
-                UpdateEntryData(now, (float) this.cbColourTexture.getSelectedIndex(), RecordKey.CHECK_COLOUR_TEXTURE, staff, pass);
             }
         }
     }//GEN-LAST:event_btnCheckActionPerformed
@@ -2054,12 +2461,13 @@ public class MainJFrame extends javax.swing.JFrame {
                 } else {
                     if (!this.txtDropStaff.getText().equals("")) {
                         isSave = true;
-                        staff = this.txtDropStaff.getText();
-                        this.txtDropStaff.setText("");
+
                     } else {
                         JOptionPane.showMessageDialog(this, "Fail to pass all the tests, please entry supervisor name.", "Warning", JOptionPane.OK_OPTION);
                     }
                 }
+                staff = this.txtDropStaff.getText();
+                this.txtDropStaff.setText("");
             } else {
                 JOptionPane.showMessageDialog(this, "Please complete all the tests.", "Warning", JOptionPane.OK_OPTION);
             }
@@ -2068,18 +2476,26 @@ public class MainJFrame extends javax.swing.JFrame {
                 DefaultTableModel model = (DefaultTableModel) this.tblDrop.getModel();
                 Date now = new Date();
                 String time = new SimpleDateFormat("HH:mm").format(now);
-                model.addRow(new Object[]{time, RecordKey.DROP_TEST_1, this.cbDrop1.getSelectedItem(), pass, staff});
-                model.addRow(new Object[]{time, RecordKey.DROP_TEST_2, this.cbDrop2.getSelectedItem(), pass, staff});
-                model.addRow(new Object[]{time, RecordKey.DROP_TEST_3, this.cbDrop3.getSelectedItem(), pass, staff});
-                model.addRow(new Object[]{time, RecordKey.DROP_TEST_4, this.cbDrop4.getSelectedItem(), pass, staff});
-                model.addRow(new Object[]{time, RecordKey.DROP_TEST_5, this.cbDrop5.getSelectedItem(), pass, staff});
-                model.addRow(new Object[]{time, RecordKey.DROP_TEST_6, this.cbDrop6.getSelectedItem(), pass, staff});
-                model.addRow(new Object[]{time, RecordKey.DROP_TEST_7, this.cbDrop7.getSelectedItem(), pass, staff});
-                model.addRow(new Object[]{time, RecordKey.DROP_TEST_8, this.cbDrop8.getSelectedItem(), pass, staff});
+                model.addRow(new Object[]{time, RecordKey.DROP_TEST_1, this.cbDrop1.getSelectedItem(), staff});
+                model.addRow(new Object[]{time, RecordKey.DROP_TEST_2, this.cbDrop2.getSelectedItem(), staff});
+                model.addRow(new Object[]{time, RecordKey.DROP_TEST_3, this.cbDrop3.getSelectedItem(), staff});
+                model.addRow(new Object[]{time, RecordKey.DROP_TEST_4, this.cbDrop4.getSelectedItem(), staff});
+                model.addRow(new Object[]{time, RecordKey.DROP_TEST_5, this.cbDrop5.getSelectedItem(), staff});
+                model.addRow(new Object[]{time, RecordKey.DROP_TEST_6, this.cbDrop6.getSelectedItem(), staff});
+                model.addRow(new Object[]{time, RecordKey.DROP_TEST_7, this.cbDrop7.getSelectedItem(), staff});
+                model.addRow(new Object[]{time, RecordKey.DROP_TEST_8, this.cbDrop8.getSelectedItem(), staff});
 
                 ((AbstractTableModel) this.tblDrop.getModel()).fireTableDataChanged();
-                this.labDropStaff.setVisible(false);
-                this.txtDropStaff.setVisible(false);
+                
+                //
+                UpdateEntryData(now, (float) this.cbDrop1.getSelectedIndex(), RecordKey.DROP_TEST_1, pass, staff, this.cbDrop1.getSelectedItem().toString());
+                UpdateEntryData(now, (float) this.cbDrop2.getSelectedIndex(), RecordKey.DROP_TEST_2, pass, staff, this.cbDrop2.getSelectedItem().toString());
+                UpdateEntryData(now, (float) this.cbDrop3.getSelectedIndex(), RecordKey.DROP_TEST_3, pass, staff, this.cbDrop3.getSelectedItem().toString());
+                UpdateEntryData(now, (float) this.cbDrop4.getSelectedIndex(), RecordKey.DROP_TEST_4, pass, staff, this.cbDrop4.getSelectedItem().toString());
+                UpdateEntryData(now, (float) this.cbDrop5.getSelectedIndex(), RecordKey.DROP_TEST_5, pass, staff, this.cbDrop5.getSelectedItem().toString());
+                UpdateEntryData(now, (float) this.cbDrop6.getSelectedIndex(), RecordKey.DROP_TEST_6, pass, staff, this.cbDrop6.getSelectedItem().toString());
+                UpdateEntryData(now, (float) this.cbDrop7.getSelectedIndex(), RecordKey.DROP_TEST_7, pass, staff, this.cbDrop7.getSelectedItem().toString());
+                UpdateEntryData(now, (float) this.cbDrop8.getSelectedIndex(), RecordKey.DROP_TEST_8, pass, staff, this.cbDrop8.getSelectedItem().toString());
                 this.cbDrop1.setSelectedIndex(0);
                 this.cbDrop2.setSelectedIndex(0);
                 this.cbDrop3.setSelectedIndex(0);
@@ -2088,15 +2504,6 @@ public class MainJFrame extends javax.swing.JFrame {
                 this.cbDrop6.setSelectedIndex(0);
                 this.cbDrop7.setSelectedIndex(0);
                 this.cbDrop8.setSelectedIndex(0);
-                //
-                UpdateEntryData(now, (float) this.cbDrop1.getSelectedIndex(), RecordKey.DROP_TEST_1, pass, staff);
-                UpdateEntryData(now, (float) this.cbDrop2.getSelectedIndex(), RecordKey.DROP_TEST_2, pass, staff);
-                UpdateEntryData(now, (float) this.cbDrop3.getSelectedIndex(), RecordKey.DROP_TEST_3, pass, staff);
-                UpdateEntryData(now, (float) this.cbDrop4.getSelectedIndex(), RecordKey.DROP_TEST_4, pass, staff);
-                UpdateEntryData(now, (float) this.cbDrop5.getSelectedIndex(), RecordKey.DROP_TEST_5, pass, staff);
-                UpdateEntryData(now, (float) this.cbDrop6.getSelectedIndex(), RecordKey.DROP_TEST_6, pass, staff);
-                UpdateEntryData(now, (float) this.cbDrop7.getSelectedIndex(), RecordKey.DROP_TEST_7, pass, staff);
-                UpdateEntryData(now, (float) this.cbDrop8.getSelectedIndex(), RecordKey.DROP_TEST_8, pass, staff);
             }
         }
     }//GEN-LAST:event_btnDropActionPerformed
@@ -2113,13 +2520,13 @@ public class MainJFrame extends javax.swing.JFrame {
                 } else {
                     if (!this.txtBungStaff.getText().equals("")) {
                         isSave = true;
-                        staff = txtBungStaff.getText();
-                        this.txtBungStaff.setText("");
 
                     } else {
                         JOptionPane.showMessageDialog(this, "the value is over the limit, please entry supervisor name.", "Warning", JOptionPane.OK_OPTION);
                     }
                 }
+                staff = txtBungStaff.getText();
+                this.txtBungStaff.setText("");
             } else {
                 JOptionPane.showMessageDialog(this, "Please select the tap position.", "Warning", JOptionPane.OK_OPTION);
             }
@@ -2129,17 +2536,52 @@ public class MainJFrame extends javax.swing.JFrame {
                 Date now = new Date();
                 String time = new SimpleDateFormat("HH:mm").format(now);
                 Float value = (float) this.cbBung.getSelectedIndex();
-                model.addRow(new Object[]{time, value, pass, staff});
+                String stringValue = this.cbBung.getSelectedItem().toString();
+                model.addRow(new Object[]{time, stringValue, pass, staff});
                 ((AbstractTableModel) this.tblBung.getModel()).fireTableDataChanged();
-                this.labBungStaff.setVisible(false);
-                this.txtBungStaff.setVisible(false);
                 this.cbBung.setSelectedIndex(0);
-                UpdateEntryData(now, value, RecordKey.BUNG, staff, pass);
+                UpdateEntryData(now, value, RecordKey.BUNG, staff, pass, stringValue);
             }
         }
     }//GEN-LAST:event_btnBungActionPerformed
 
-    private void UpdateEntryData(Date now, Float valueUnderHandle, RecordKey key, String staff, String pass) {
+    private void btnRejectsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRejectsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnRejectsActionPerformed
+
+    private void btnSecondsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSecondsActionPerformed
+        
+    }//GEN-LAST:event_btnSecondsActionPerformed
+
+    private void btnCycleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCycleActionPerformed
+        Boolean isSave = false;
+        String staff = "";
+        String pass = "NO";
+        if (this.currentEntry != null) {
+            if (!this.txtCycle.getText().equals("")) {
+                isSave = true;
+                pass = "YES";
+                staff = txtCycleStaff.getText();
+                this.txtCycleStaff.setText("");
+            } else {
+                JOptionPane.showMessageDialog(this, "Please entry the value of cycle time.", "Warning", JOptionPane.OK_OPTION);
+            }
+
+            if (isSave) {
+                DefaultTableModel model = (DefaultTableModel) this.tblCycle.getModel();
+                Date now = new Date();
+                String time = new SimpleDateFormat("HH:mm").format(now);
+                Float value = (float) 0;
+                String stringValue = this.txtCycle.getText();
+                model.addRow(new Object[]{time, stringValue, staff});
+                ((AbstractTableModel) this.tblCycle.getModel()).fireTableDataChanged();
+                this.txtCycle.setText("");
+                UpdateEntryData(now, value, RecordKey.CYCLE, staff, pass, stringValue);
+            }
+        }
+    }//GEN-LAST:event_btnCycleActionPerformed
+
+    private void UpdateEntryData(Date now, Float valueUnderHandle, RecordKey key, String staff, String pass, String stringValue) {
         int recordId = this.recordService.CreateEntity();
         Record record = this.recordService.FindEntity(recordId);
         record.setEntryId(this.currentEntry);
@@ -2148,6 +2590,7 @@ public class MainJFrame extends javax.swing.JFrame {
         record.setIsPass(pass);
         record.setRecordKey(key.toString());
         record.setStaff(staff);
+        record.setStringValue(stringValue);
         this.recordService.UpdateEntity(record);
     }
 
@@ -2190,7 +2633,10 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnBore;
     private javax.swing.JButton btnBung;
     private javax.swing.JButton btnCheck;
+    private javax.swing.JButton btnCycle;
     private javax.swing.JButton btnDrop;
+    private javax.swing.JButton btnRejects;
+    private javax.swing.JButton btnSeconds;
     private javax.swing.JButton btnTap;
     private javax.swing.JButton btnWall;
     private javax.swing.JButton btnWeight;
@@ -2247,12 +2693,20 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel40;
+    private javax.swing.JLabel jLabel41;
+    private javax.swing.JLabel jLabel42;
+    private javax.swing.JLabel jLabel43;
+    private javax.swing.JLabel jLabel44;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
@@ -2275,23 +2729,38 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel30;
     private javax.swing.JPanel jPanel31;
     private javax.swing.JPanel jPanel32;
+    private javax.swing.JPanel jPanel33;
+    private javax.swing.JPanel jPanel34;
+    private javax.swing.JPanel jPanel35;
+    private javax.swing.JPanel jPanel36;
+    private javax.swing.JPanel jPanel37;
+    private javax.swing.JPanel jPanel38;
+    private javax.swing.JPanel jPanel39;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel labBoreStaff;
     private javax.swing.JLabel labBungStaff;
+    private javax.swing.JLabel labBungStaff1;
     private javax.swing.JLabel labCheckStaff;
     private javax.swing.JLabel labDropStaff;
     private javax.swing.JLabel labProductImage;
+    private javax.swing.JLabel labRejectsTotal;
+    private javax.swing.JLabel labSecondsTotal;
     private javax.swing.JLabel labTapStaff;
     private javax.swing.JLabel labWallStaff;
     private javax.swing.JLabel labWeightStaff;
@@ -2301,7 +2770,10 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JTable tblBore;
     private javax.swing.JTable tblBung;
     private javax.swing.JTable tblCheck;
+    private javax.swing.JTable tblCycle;
     private javax.swing.JTable tblDrop;
+    private javax.swing.JTable tblRejects;
+    private javax.swing.JTable tblSeconds;
     private javax.swing.JTable tblTap;
     private javax.swing.JTable tblWall;
     private javax.swing.JTable tblWeight;
@@ -2310,6 +2782,8 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JTextField txtBoreStaff;
     private javax.swing.JTextField txtBungStaff;
     private javax.swing.JTextField txtCheckStaff;
+    private javax.swing.JTextField txtCycle;
+    private javax.swing.JTextField txtCycleStaff;
     private javax.swing.JTextField txtDropStaff;
     private javax.swing.JTextField txtNeck;
     private javax.swing.JLabel txtProductBung;
@@ -2319,6 +2793,8 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel txtProductGrade;
     private javax.swing.JLabel txtProductPierced;
     private javax.swing.JLabel txtProductWeight;
+    private javax.swing.JTextField txtRejects;
+    private javax.swing.JTextField txtSeconds;
     private javax.swing.JTextField txtTapStaff;
     private javax.swing.JTextField txtWallBase;
     private javax.swing.JTextField txtWallClosure;

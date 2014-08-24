@@ -49,6 +49,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Product.findByThreadNeck", query = "SELECT p FROM Product p WHERE p.threadNeck = :threadNeck"),
     @NamedQuery(name = "Product.findByDgnondg", query = "SELECT p FROM Product p WHERE p.dgnondg = :dgnondg")})
 public class Product implements Serializable,SettingEntity {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product1")
+    private Collection<Productcheck> productcheckCollection;
     @OneToMany(mappedBy = "productId")
     private Collection<Entry> entryCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
@@ -314,5 +316,14 @@ public class Product implements Serializable,SettingEntity {
 
     public void setCheckCollection(Collection<Check> checkCollection) {
         this.checkCollection = checkCollection;
+    }
+
+    @XmlTransient
+    public Collection<Productcheck> getProductcheckCollection() {
+        return productcheckCollection;
+    }
+
+    public void setProductcheckCollection(Collection<Productcheck> productcheckCollection) {
+        this.productcheckCollection = productcheckCollection;
     }
 }

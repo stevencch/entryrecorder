@@ -40,5 +40,6 @@ public enum RecordKey {
     DROP_TEST_6,
     DROP_TEST_7,
     DROP_TEST_8,
-    BUNG
+    BUNG,
+    CYCLE,
 }
