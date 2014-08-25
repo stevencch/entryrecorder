@@ -8,9 +8,7 @@ package com.cch.aj.entryrecorder.entities;
 
 import com.cch.aj.entryrecorder.common.SettingEntity;
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,10 +18,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -48,13 +44,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Product.findByThreadBoreB", query = "SELECT p FROM Product p WHERE p.threadBoreB = :threadBoreB"),
     @NamedQuery(name = "Product.findByThreadNeck", query = "SELECT p FROM Product p WHERE p.threadNeck = :threadNeck"),
     @NamedQuery(name = "Product.findByDgnondg", query = "SELECT p FROM Product p WHERE p.dgnondg = :dgnondg")})
-public class Product implements Serializable,SettingEntity {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product1")
-    private Collection<Productcheck> productcheckCollection;
-    @OneToMany(mappedBy = "productId")
-    private Collection<Entry> entryCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
-    private Collection<Check> checkCollection;
+public class Product implements Serializable,SettingEntity{
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -112,10 +102,9 @@ public class Product implements Serializable,SettingEntity {
         this.id = id;
     }
 
-    public Product(Integer id, String code, int threadBoreB) {
+    public Product(Integer id, String code) {
         this.id = id;
         this.code = code;
-        this.threadBoreB = threadBoreB;
     }
 
     public Integer getId() {
@@ -299,31 +288,5 @@ public class Product implements Serializable,SettingEntity {
     public void setDefaultValue() {
         this.code="Product Code";
     }
-
-    @XmlTransient
-    public Collection<Entry> getEntryCollection() {
-        return entryCollection;
-    }
-
-    public void setEntryCollection(Collection<Entry> entryCollection) {
-        this.entryCollection = entryCollection;
-    }
-
-    @XmlTransient
-    public Collection<Check> getCheckCollection() {
-        return checkCollection;
-    }
-
-    public void setCheckCollection(Collection<Check> checkCollection) {
-        this.checkCollection = checkCollection;
-    }
-
-    @XmlTransient
-    public Collection<Productcheck> getProductcheckCollection() {
-        return productcheckCollection;
-    }
-
-    public void setProductcheckCollection(Collection<Productcheck> productcheckCollection) {
-        this.productcheckCollection = productcheckCollection;
-    }
+    
 }
