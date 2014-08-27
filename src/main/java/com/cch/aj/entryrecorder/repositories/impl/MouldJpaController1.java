@@ -25,9 +25,9 @@ import javax.persistence.EntityManagerFactory;
  *
  * @author chacao
  */
-public class MouldJpaController implements Serializable {
+public class MouldJpaController1 implements Serializable {
 
-    public MouldJpaController(EntityManagerFactory emf) {
+    public MouldJpaController1(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;

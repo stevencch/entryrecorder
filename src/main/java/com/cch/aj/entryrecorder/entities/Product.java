@@ -8,6 +8,7 @@ package com.cch.aj.entryrecorder.entities;
 
 import com.cch.aj.entryrecorder.common.SettingEntity;
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,11 +16,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -43,8 +47,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Product.findByThreadBoreA", query = "SELECT p FROM Product p WHERE p.threadBoreA = :threadBoreA"),
     @NamedQuery(name = "Product.findByThreadBoreB", query = "SELECT p FROM Product p WHERE p.threadBoreB = :threadBoreB"),
     @NamedQuery(name = "Product.findByThreadNeck", query = "SELECT p FROM Product p WHERE p.threadNeck = :threadNeck"),
-    @NamedQuery(name = "Product.findByDgnondg", query = "SELECT p FROM Product p WHERE p.dgnondg = :dgnondg")})
-public class Product implements Serializable,SettingEntity{
+    @NamedQuery(name = "Product.findByDgnondg", query = "SELECT p FROM Product p WHERE p.dgnondg = :dgnondg"),
+    @NamedQuery(name = "Product.findByViewLine", query = "SELECT p FROM Product p WHERE p.viewLine = :viewLine")})
+public class Product implements Serializable,SettingEntity {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -79,6 +84,13 @@ public class Product implements Serializable,SettingEntity{
     private Integer threadNeck;
     @Column(name = "DGNONDG")
     private Integer dgnondg;
+    @Column(name = "ViewLine")
+    private String viewLine;
+    @JoinTable(name = "productcheck", joinColumns = {
+        @JoinColumn(name = "Product", referencedColumnName = "Id")}, inverseJoinColumns = {
+        @JoinColumn(name = "CheckItem", referencedColumnName = "Id")})
+    @ManyToMany
+    private Collection<Checkitem> checkitemCollection;
     @JoinColumn(name = "MouldId", referencedColumnName = "Id")
     @ManyToOne
     private Mould mouldId;
@@ -219,6 +231,23 @@ public class Product implements Serializable,SettingEntity{
         this.dgnondg = dgnondg;
     }
 
+    public String getViewLine() {
+        return viewLine;
+    }
+
+    public void setViewLine(String viewLine) {
+        this.viewLine = viewLine;
+    }
+
+    @XmlTransient
+    public Collection<Checkitem> getCheckitemCollection() {
+        return checkitemCollection;
+    }
+
+    public void setCheckitemCollection(Collection<Checkitem> checkitemCollection) {
+        this.checkitemCollection = checkitemCollection;
+    }
+
     public Mould getMouldId() {
         return mouldId;
     }
@@ -283,10 +312,10 @@ public class Product implements Serializable,SettingEntity{
     public String toString() {
         return "com.cch.aj.entryrecorder.entities.Product[ id=" + id + " ]";
     }
-    
+
     @Override
     public void setDefaultValue() {
-        this.code="Product Code";
+        this.code="New";
     }
     
 }

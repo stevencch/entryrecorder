@@ -10,8 +10,10 @@ import com.cch.aj.entryrecorder.common.ComboBoxItem;
 import com.cch.aj.entryrecorder.common.ComboBoxItemConvertor;
 import com.cch.aj.entryrecorder.common.ComboBoxRender;
 import com.cch.aj.entryrecorder.common.RecordKey;
+import com.cch.aj.entryrecorder.entities.Additive;
 import com.cch.aj.entryrecorder.entities.Entry;
 import com.cch.aj.entryrecorder.entities.Machine;
+import com.cch.aj.entryrecorder.entities.Polymer;
 import com.cch.aj.entryrecorder.entities.Product;
 import com.cch.aj.entryrecorder.entities.Record;
 import com.cch.aj.entryrecorder.entities.Staff;
@@ -73,6 +75,8 @@ public class MainJFrame extends javax.swing.JFrame {
     private RecordSettingService recordService = new RecordSettingServiceImpl(Record.class);
     private SettingService<Staff> staffService = new SettingServiceImpl<Staff>(Staff.class);
     private SettingService<Entry> entryService = new SettingServiceImpl<Entry>(Entry.class);
+    private SettingService<Polymer> polymerService = new SettingServiceImpl<Polymer>(Polymer.class);
+    private SettingService<Additive> additiveService = new SettingServiceImpl<Additive>(Additive.class);
     private Entry currentEntry = null;
 
     DefaultCategoryDataset datasetWeight = new DefaultCategoryDataset();
@@ -93,6 +97,20 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
         this.cbEntry.setRenderer(new ComboBoxRender());
+        this.cbSupervisor1.setRenderer(new ComboBoxRender());
+        this.cbSupervisor2.setRenderer(new ComboBoxRender());
+        this.cbSupervisor3.setRenderer(new ComboBoxRender());
+        this.cbTechnician1.setRenderer(new ComboBoxRender());
+        this.cbTechnician2.setRenderer(new ComboBoxRender());
+        this.cbTechnician3.setRenderer(new ComboBoxRender());
+        this.cbWorker1.setRenderer(new ComboBoxRender());
+        this.cbWorker2.setRenderer(new ComboBoxRender());
+        this.cbWorker3.setRenderer(new ComboBoxRender());
+        this.cbProductAdditive1.setRenderer(new ComboBoxRender());
+        this.cbProductAdditive2.setRenderer(new ComboBoxRender());
+        this.cbProductAdditive3.setRenderer(new ComboBoxRender());
+        this.cbProductPolymer.setRenderer(new ComboBoxRender());
+        
         FillEntryComboBox(this.cbEntry, 0);
 
         if (this.currentEntry != null) {
@@ -212,23 +230,120 @@ public class MainJFrame extends javax.swing.JFrame {
             modelCycle.addRow(new Object[]{time, record.getStringValue(), staff});
         }
         //Seconds
+        float totalSeconds=0f;
         List<Record> recordsSeconds = records.stream().filter(x -> x.getRecordKey().equals("SECONDS")).collect(Collectors.toList());
         DefaultTableModel modelSeconds = (DefaultTableModel) this.tblSeconds.getModel();
         modelSeconds.setRowCount(0);
         for (Record record : recordsSeconds) {
             String time = new SimpleDateFormat("HH:mm").format(record.getCreatedTime());
-            modelSeconds.addRow(new Object[]{time, record.getStringValue()});
+            modelSeconds.addRow(new Object[]{time, record.getNumberValue()});
+            totalSeconds+=record.getNumberValue();
         }
+        this.labSecondsTotal.setText( Float.toString(totalSeconds));
         //Rejects
+        float totalRejects=0f;
         List<Record> recordsRejects = records.stream().filter(x -> x.getRecordKey().equals("REJECTS")).collect(Collectors.toList());
         DefaultTableModel modelRejects = (DefaultTableModel) this.tblRejects.getModel();
         modelRejects.setRowCount(0);
         for (Record record : recordsRejects) {
             String time = new SimpleDateFormat("HH:mm").format(record.getCreatedTime());
             modelRejects.addRow(new Object[]{time, record.getNumberValue()});
+            totalRejects+=record.getNumberValue();
         }
-
+        this.labRejectsTotal.setText(Float.toString(totalRejects));
+        //material
+        Product currentProduct=this.currentEntry.getProductId();
+        this.FillPolymerComboBox(this.cbProductPolymer, currentProduct.getPolymerId() != null ? currentProduct.getPolymerId().getId() : 0);
+        this.FillAdditiveComboBox(this.cbProductAdditive1, currentProduct.getAdditiveAId() != null ? currentProduct.getAdditiveAId().getId() : 0);
+        this.FillAdditiveComboBox(this.cbProductAdditive2, currentProduct.getAdditiveBId() != null ? currentProduct.getAdditiveAId().getId() : 0);
+        this.FillAdditiveComboBox(this.cbProductAdditive3, currentProduct.getAdditiveCId() != null ? currentProduct.getAdditiveCId().getId() : 0);
+        txtProductPerc1.setText(currentProduct.getAdditiveAPercentage() == null ? "" : currentProduct.getAdditiveAPercentage().toString());
+        txtProductPerc2.setText(currentProduct.getAdditiveBPercentage() == null ? "" : currentProduct.getAdditiveBPercentage().toString());
+        txtProductPerc3.setText(currentProduct.getAdditiveCPercentage() == null ? "" : currentProduct.getAdditiveCPercentage().toString());
+        //staff
+        this.FillStaffComboBox(this.cbSupervisor1, currentEntry.getSupervisor1() != null ? currentEntry.getSupervisor1().getId() : 0,"SUPERVISOR");
+        this.FillStaffComboBox(this.cbSupervisor2, currentEntry.getSupervisor2() != null ? currentEntry.getSupervisor2().getId() : 0,"SUPERVISOR");
+        this.FillStaffComboBox(this.cbSupervisor3, currentEntry.getSupervisor3() != null ? currentEntry.getSupervisor3().getId() : 0,"SUPERVISOR");
+        this.FillStaffComboBox(this.cbTechnician1, currentEntry.getTechnician1() != null ? currentEntry.getTechnician1().getId() : 0,"TECHNICIAN");
+        this.FillStaffComboBox(this.cbTechnician2, currentEntry.getTechnician2() != null ? currentEntry.getTechnician2().getId() : 0,"TECHNICIAN");
+        this.FillStaffComboBox(this.cbTechnician3, currentEntry.getTechnician3() != null ? currentEntry.getTechnician3().getId() : 0,"TECHNICIAN");
+        this.FillStaffComboBox(this.cbWorker1, currentEntry.getWorker1() != null ? currentEntry.getWorker1().getId() : 0,"PROCESS WORKER");
+        this.FillStaffComboBox(this.cbWorker2, currentEntry.getWorker2() != null ? currentEntry.getWorker2().getId() : 0,"PROCESS WORKER");
+        this.FillStaffComboBox(this.cbWorker3, currentEntry.getWorker3() != null ? currentEntry.getWorker3().getId() : 0,"PROCESS WORKER");
+        
+        
     }
+    
+    private int FillStaffComboBox(JComboBox comboBox, int id, String jobType) {
+        int result = -1;
+        List<Staff> staffs = this.staffService.GetAllEntities();
+        if(!jobType.equals("")){
+            staffs=staffs.stream().filter(x->x.getJobType().equals(jobType)).collect(Collectors.toList());
+        }
+        if (staffs.size() > 0) {
+            List<ComboBoxItem<Staff>> staffNames = staffs.stream().sorted(comparing(x -> x.getJobType() + " " + x.getName())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getJobType() + " " + x.getName(), x.getId())).collect(Collectors.toList());
+            Staff staff = new Staff();
+            staff.setId(0);
+            staff.setName("- Select -");
+            staffNames.add(0, new ComboBoxItem<Staff>(staff, staff.getName(), staff.getId()));
+            ComboBoxItem[] staffNamesArray = staffNames.toArray(new ComboBoxItem[staffNames.size()]);
+            comboBox.setModel(new DefaultComboBoxModel(staffNamesArray));
+            if (id != 0) {
+                ComboBoxItem<Staff> currentStaffName = staffNames.stream().filter(x -> x.getId() == id).findFirst().get();
+                result = staffNames.indexOf(currentStaffName);
+            } else {
+                result = 0;
+            }
+            comboBox.setSelectedIndex(result);
+        }
+        return result;
+    }
+
+    
+    private int FillPolymerComboBox(JComboBox comboBox, int id) {
+        int result = -1;
+        List<Polymer> polymers = this.polymerService.GetAllEntities();
+        if (polymers.size() > 0) {
+            List<ComboBoxItem<Polymer>> polymerNames = polymers.stream().sorted(comparing(x -> x.getGrade())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getGrade()+" # "+x.getDescription(), x.getId())).collect(Collectors.toList());
+            Polymer polymer = new Polymer();
+            polymer.setId(0);
+            polymer.setCompany("- Select -");
+            polymerNames.add(0, new ComboBoxItem<Polymer>(polymer, polymer.getCompany(), polymer.getId()));
+            ComboBoxItem[] polymerNamesArray = polymerNames.toArray(new ComboBoxItem[polymerNames.size()]);
+            comboBox.setModel(new DefaultComboBoxModel(polymerNamesArray));
+            if (id != 0) {
+                ComboBoxItem<Polymer> currentPolymerName = polymerNames.stream().filter(x -> x.getId() == id).findFirst().get();
+                result = polymerNames.indexOf(currentPolymerName);
+            } else {
+                result = 0;
+            }
+            comboBox.setSelectedIndex(result);
+        }
+        return result;
+    }
+    
+    private int FillAdditiveComboBox(JComboBox comboBox, int id) {
+        int result = -1;
+        List<Additive> additives = this.additiveService.GetAllEntities();
+        if (additives.size() > 0) {
+            List<ComboBoxItem<Additive>> additiveNames = additives.stream().sorted(comparing(x -> x.getGrade())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getGrade()+" # "+x.getDescription(), x.getId())).collect(Collectors.toList());
+            Additive additive = new Additive();
+            additive.setId(0);
+            additive.setCompany("- Select -");
+            additiveNames.add(0, new ComboBoxItem<Additive>(additive, additive.getCompany(), additive.getId()));
+            ComboBoxItem[] additiveNamesArray = additiveNames.toArray(new ComboBoxItem[additiveNames.size()]);
+            comboBox.setModel(new DefaultComboBoxModel(additiveNamesArray));
+            if (id != 0) {
+                ComboBoxItem<Additive> currentAdditiveName = additiveNames.stream().filter(x -> x.getId() == id).findFirst().get();
+                result = additiveNames.indexOf(currentAdditiveName);
+            } else {
+                result = 0;
+            }
+            comboBox.setSelectedIndex(result);
+        }
+        return result;
+    }
+
 
     private int FillEntryComboBox(JComboBox comboBox, int id) {
         int result = -1;
@@ -236,8 +351,9 @@ public class MainJFrame extends javax.swing.JFrame {
         if (allEntrys.size() > 0) {
             List<Entry> entrys = allEntrys.stream().filter(x -> x.getInUse().equals("YES")).collect(Collectors.toList());
             if (entrys.size() > 0) {
-                List<ComboBoxItem<Entry>> entryNames = entrys.stream().sorted(comparing(x -> x.getCreateDate())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getShift() + " # " + (x.getMachineId() != null ? x.getMachineId().getMachineNo() : "")
-                        + " # " + (x.getProductId() != null ? x.getProductId().getCode() : ""), x.getId())).collect(Collectors.toList());
+                List<ComboBoxItem<Entry>> entryNames = entrys.stream().sorted(comparing(x -> x.getCreateDate())).map(x -> ComboBoxItemConvertor
+                        .ConvertToComboBoxItem(x,  (x.getMachineId() != null ? x.getMachineId().getMachineNo() : "")
+                        + "/" + (x.getProductId() != null ? x.getProductId().getCode() : ""), x.getId())).collect(Collectors.toList());
                 ComboBoxItem[] entryNamesArray = entryNames.toArray(new ComboBoxItem[entryNames.size()]);
                 comboBox.setModel(new DefaultComboBoxModel(entryNamesArray));
                 if (id != 0) {
@@ -436,6 +552,75 @@ public class MainJFrame extends javax.swing.JFrame {
         jPanel12 = new javax.swing.JPanel();
         jLabel43 = new javax.swing.JLabel();
         labSecondsTotal = new javax.swing.JLabel();
+        jPanel40 = new javax.swing.JPanel();
+        jPanel41 = new javax.swing.JPanel();
+        jScrollPane11 = new javax.swing.JScrollPane();
+        tblBung1 = new javax.swing.JTable();
+        jPanel42 = new javax.swing.JPanel();
+        jLabel45 = new javax.swing.JLabel();
+        jLabel46 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        jLabel47 = new javax.swing.JLabel();
+        jLabel48 = new javax.swing.JLabel();
+        jLabel49 = new javax.swing.JLabel();
+        jLabel50 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
+        jLabel51 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox();
+        jButton2 = new javax.swing.JButton();
+        jLabel52 = new javax.swing.JLabel();
+        jScrollPane12 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        pnlProductTab = new javax.swing.JPanel();
+        pnlEditProduct = new javax.swing.JPanel();
+        jLabel62 = new javax.swing.JLabel();
+        cbProductPolymer = new javax.swing.JComboBox();
+        jLabel63 = new javax.swing.JLabel();
+        jLabel67 = new javax.swing.JLabel();
+        jLabel68 = new javax.swing.JLabel();
+        jLabel69 = new javax.swing.JLabel();
+        jLabel70 = new javax.swing.JLabel();
+        jLabel71 = new javax.swing.JLabel();
+        jLabel72 = new javax.swing.JLabel();
+        cbProductAdditive1 = new javax.swing.JComboBox();
+        txtProductPerc1 = new javax.swing.JTextField();
+        cbProductAdditive2 = new javax.swing.JComboBox();
+        txtProductPerc2 = new javax.swing.JTextField();
+        cbProductAdditive3 = new javax.swing.JComboBox();
+        txtProductPerc3 = new javax.swing.JTextField();
+        jLabel64 = new javax.swing.JLabel();
+        jLabel65 = new javax.swing.JLabel();
+        jLabel66 = new javax.swing.JLabel();
+        jLabel73 = new javax.swing.JLabel();
+        jLabel74 = new javax.swing.JLabel();
+        jLabel75 = new javax.swing.JLabel();
+        jTextField3 = new javax.swing.JTextField();
+        jTextField4 = new javax.swing.JTextField();
+        jTextField5 = new javax.swing.JTextField();
+        jTextField6 = new javax.swing.JTextField();
+        jTextField7 = new javax.swing.JTextField();
+        btnMaterialSave = new javax.swing.JButton();
+        jPanel43 = new javax.swing.JPanel();
+        jLabel53 = new javax.swing.JLabel();
+        jLabel54 = new javax.swing.JLabel();
+        jLabel55 = new javax.swing.JLabel();
+        jLabel56 = new javax.swing.JLabel();
+        jLabel57 = new javax.swing.JLabel();
+        jLabel58 = new javax.swing.JLabel();
+        jLabel59 = new javax.swing.JLabel();
+        jLabel60 = new javax.swing.JLabel();
+        jLabel61 = new javax.swing.JLabel();
+        cbSupervisor1 = new javax.swing.JComboBox();
+        cbSupervisor2 = new javax.swing.JComboBox();
+        cbSupervisor3 = new javax.swing.JComboBox();
+        cbTechnician1 = new javax.swing.JComboBox();
+        cbTechnician2 = new javax.swing.JComboBox();
+        cbTechnician3 = new javax.swing.JComboBox();
+        cbWorker1 = new javax.swing.JComboBox();
+        cbWorker2 = new javax.swing.JComboBox();
+        cbWorker3 = new javax.swing.JComboBox();
+        btnStaffSave = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
 
@@ -1626,7 +1811,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.weightx = 0.3;
         jPanel25.add(jPanel27, gridBagConstraints);
 
-        jTabbedPane1.addTab("Quanlity Check", jPanel25);
+        jTabbedPane1.addTab("Quality Check", jPanel25);
 
         jPanel28.setLayout(new java.awt.GridBagLayout());
 
@@ -2106,6 +2291,666 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Seconds / Rejects", jPanel8);
 
+        jPanel40.setLayout(new java.awt.GridBagLayout());
+
+        jPanel41.setLayout(new java.awt.GridBagLayout());
+
+        tblBung1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Time", "Name", "Value"
+            }
+        ));
+        jScrollPane11.setViewportView(tblBung1);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        jPanel41.add(jScrollPane11, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.7;
+        jPanel40.add(jPanel41, gridBagConstraints);
+
+        jPanel42.setLayout(new java.awt.GridBagLayout());
+
+        jLabel45.setText("Stage 1 Testing");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 3;
+        gridBagConstraints.ipady = 3;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(3, 13, 3, 13);
+        jPanel42.add(jLabel45, gridBagConstraints);
+
+        jLabel46.setText("Water filled by");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 3;
+        gridBagConstraints.ipady = 3;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(3, 13, 3, 13);
+        jPanel42.add(jLabel46, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 3;
+        gridBagConstraints.ipady = 3;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(3, 13, 3, 13);
+        jPanel42.add(jTextField1, gridBagConstraints);
+
+        jButton1.setText("Add");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.ipadx = 3;
+        gridBagConstraints.ipady = 3;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(3, 13, 3, 13);
+        jPanel42.add(jButton1, gridBagConstraints);
+
+        jLabel47.setText("Stage 2 Examination");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 3;
+        gridBagConstraints.ipady = 3;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(35, 13, 3, 13);
+        jPanel42.add(jLabel47, gridBagConstraints);
+
+        jLabel48.setText("Time filled");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 3;
+        gridBagConstraints.ipady = 3;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(3, 13, 3, 13);
+        jPanel42.add(jLabel48, gridBagConstraints);
+
+        jLabel49.setText("time");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 3;
+        gridBagConstraints.ipady = 3;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(3, 13, 3, 13);
+        jPanel42.add(jLabel49, gridBagConstraints);
+
+        jLabel50.setText("Checked By");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 3;
+        gridBagConstraints.ipady = 3;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(3, 13, 3, 13);
+        jPanel42.add(jLabel50, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 3;
+        gridBagConstraints.ipady = 3;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(3, 13, 3, 13);
+        jPanel42.add(jTextField2, gridBagConstraints);
+
+        jLabel51.setText("Any Leaks");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 3;
+        gridBagConstraints.ipady = 3;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(3, 13, 3, 13);
+        jPanel42.add(jLabel51, gridBagConstraints);
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "YES", "NO" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 3;
+        gridBagConstraints.ipady = 3;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(3, 13, 3, 13);
+        jPanel42.add(jComboBox1, gridBagConstraints);
+
+        jButton2.setText("Add");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.ipadx = 3;
+        gridBagConstraints.ipady = 3;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(3, 13, 3, 13);
+        jPanel42.add(jButton2, gridBagConstraints);
+
+        jLabel52.setText("jLabel52");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 3;
+        gridBagConstraints.ipady = 3;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(3, 13, 3, 13);
+        jPanel42.add(jLabel52, gridBagConstraints);
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane12.setViewportView(jTextArea1);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 3;
+        gridBagConstraints.ipady = 3;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(3, 13, 3, 13);
+        jPanel42.add(jScrollPane12, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.3;
+        jPanel40.add(jPanel42, gridBagConstraints);
+
+        jTabbedPane1.addTab("Leak Test", jPanel40);
+
+        pnlProductTab.setLayout(new java.awt.GridBagLayout());
+
+        pnlEditProduct.setLayout(new java.awt.GridBagLayout());
+
+        jLabel62.setText("POLYMER TYPE");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(2, 33, 2, 29);
+        pnlEditProduct.add(jLabel62, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(2, 29, 2, 29);
+        pnlEditProduct.add(cbProductPolymer, gridBagConstraints);
+
+        jLabel63.setText("ADDITIVE");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(2, 33, 2, 29);
+        pnlEditProduct.add(jLabel63, gridBagConstraints);
+
+        jLabel67.setText("TYPE 1");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(2, 33, 2, 29);
+        pnlEditProduct.add(jLabel67, gridBagConstraints);
+
+        jLabel68.setText("PERCENTAGE");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(2, 33, 2, 29);
+        pnlEditProduct.add(jLabel68, gridBagConstraints);
+
+        jLabel69.setText("TYPE 2");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(2, 33, 2, 29);
+        pnlEditProduct.add(jLabel69, gridBagConstraints);
+
+        jLabel70.setText("PERCENTAGE");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(2, 33, 2, 29);
+        pnlEditProduct.add(jLabel70, gridBagConstraints);
+
+        jLabel71.setText("TYPE 3");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(2, 33, 2, 29);
+        pnlEditProduct.add(jLabel71, gridBagConstraints);
+
+        jLabel72.setText("PERCENTAGE");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(2, 33, 2, 29);
+        pnlEditProduct.add(jLabel72, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(2, 29, 2, 29);
+        pnlEditProduct.add(cbProductAdditive1, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(2, 29, 2, 29);
+        pnlEditProduct.add(txtProductPerc1, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(2, 29, 2, 29);
+        pnlEditProduct.add(cbProductAdditive2, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(2, 29, 2, 29);
+        pnlEditProduct.add(txtProductPerc2, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(2, 29, 2, 29);
+        pnlEditProduct.add(cbProductAdditive3, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(2, 29, 2, 29);
+        pnlEditProduct.add(txtProductPerc3, gridBagConstraints);
+
+        jLabel64.setText("jLabel64");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 9;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(2, 29, 2, 29);
+        pnlEditProduct.add(jLabel64, gridBagConstraints);
+
+        jLabel65.setText("jLabel65");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(2, 29, 2, 29);
+        pnlEditProduct.add(jLabel65, gridBagConstraints);
+
+        jLabel66.setText("jLabel66");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(2, 29, 2, 29);
+        pnlEditProduct.add(jLabel66, gridBagConstraints);
+
+        jLabel73.setText("jLabel73");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(2, 29, 2, 29);
+        pnlEditProduct.add(jLabel73, gridBagConstraints);
+
+        jLabel74.setText("jLabel74");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(2, 29, 2, 29);
+        pnlEditProduct.add(jLabel74, gridBagConstraints);
+
+        jLabel75.setText("jLabel75");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(2, 29, 2, 29);
+        pnlEditProduct.add(jLabel75, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(2, 29, 2, 29);
+        pnlEditProduct.add(jTextField3, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(2, 29, 2, 29);
+        pnlEditProduct.add(jTextField4, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(2, 29, 2, 29);
+        pnlEditProduct.add(jTextField5, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(2, 29, 2, 29);
+        pnlEditProduct.add(jTextField6, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 9;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.ipady = 6;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(2, 29, 2, 29);
+        pnlEditProduct.add(jTextField7, gridBagConstraints);
+
+        btnMaterialSave.setText("Save");
+        btnMaterialSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMaterialSaveActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 10;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.insets = new java.awt.Insets(13, 13, 13, 13);
+        pnlEditProduct.add(btnMaterialSave, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        pnlProductTab.add(pnlEditProduct, gridBagConstraints);
+
+        jTabbedPane1.addTab("Raw Material", pnlProductTab);
+
+        jPanel43.setLayout(new java.awt.GridBagLayout());
+
+        jLabel53.setText("SUPERVISOR 1");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 20, 2, 20);
+        jPanel43.add(jLabel53, gridBagConstraints);
+
+        jLabel54.setText("SUPERVISOR 2");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 20, 2, 20);
+        jPanel43.add(jLabel54, gridBagConstraints);
+
+        jLabel55.setText("SUPERVISOR 3");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 20, 2, 20);
+        jPanel43.add(jLabel55, gridBagConstraints);
+
+        jLabel56.setText("TECHNICIAN 1");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 20, 2, 20);
+        jPanel43.add(jLabel56, gridBagConstraints);
+
+        jLabel57.setText("TECHNICIAN 2");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 20, 2, 20);
+        jPanel43.add(jLabel57, gridBagConstraints);
+
+        jLabel58.setText("TECHNICIAN 3");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 20, 2, 20);
+        jPanel43.add(jLabel58, gridBagConstraints);
+
+        jLabel59.setText("MACHINE OPERATOR 1");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 20, 2, 20);
+        jPanel43.add(jLabel59, gridBagConstraints);
+
+        jLabel60.setText("MACHINE OPERATOR 2");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 20, 2, 20);
+        jPanel43.add(jLabel60, gridBagConstraints);
+
+        jLabel61.setText("MACHINE OPERATOR 3");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 20, 2, 20);
+        jPanel43.add(jLabel61, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 20, 2, 20);
+        jPanel43.add(cbSupervisor1, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 20, 2, 20);
+        jPanel43.add(cbSupervisor2, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 20, 2, 20);
+        jPanel43.add(cbSupervisor3, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 20, 2, 20);
+        jPanel43.add(cbTechnician1, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 20, 2, 20);
+        jPanel43.add(cbTechnician2, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 20, 2, 20);
+        jPanel43.add(cbTechnician3, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 20, 2, 20);
+        jPanel43.add(cbWorker1, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 20, 2, 20);
+        jPanel43.add(cbWorker2, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(2, 20, 2, 20);
+        jPanel43.add(cbWorker3, gridBagConstraints);
+
+        btnStaffSave.setText("Save");
+        btnStaffSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnStaffSaveActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 9;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.insets = new java.awt.Insets(11, 11, 11, 11);
+        jPanel43.add(btnStaffSave, gridBagConstraints);
+
+        jTabbedPane1.addTab("Staff", jPanel43);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -2546,11 +3391,53 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBungActionPerformed
 
     private void btnRejectsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRejectsActionPerformed
-        // TODO add your handling code here:
+        Boolean isSave = false;
+        String staff = "";
+        String pass = "NO";
+        if (this.currentEntry != null) {
+            if (this.txtRejects.getText().equals("")) {
+                    isSave = true;
+                    pass = "YES";
+            } else {
+                JOptionPane.showMessageDialog(this, "Please entry the mount of the seconds.", "Warning", JOptionPane.OK_OPTION);
+            }
+
+            if (isSave) {
+                DefaultTableModel model = (DefaultTableModel) this.tblRejects.getModel();
+                Date now = new Date();
+                String time = new SimpleDateFormat("HH:mm").format(now);
+                Float value = Float.parseFloat(this.txtRejects.getText());
+                model.addRow(new Object[]{time, value});
+                ((AbstractTableModel) this.tblRejects.getModel()).fireTableDataChanged();
+                this.txtRejects.setText("");
+                UpdateEntryData(now, value, RecordKey.BUNG, staff, pass, "");
+            }
+        }
     }//GEN-LAST:event_btnRejectsActionPerformed
 
     private void btnSecondsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSecondsActionPerformed
-        
+        Boolean isSave = false;
+        String staff = "";
+        String pass = "NO";
+        if (this.currentEntry != null) {
+            if (this.txtSeconds.getText().equals("")) {
+                    isSave = true;
+                    pass = "YES";
+            } else {
+                JOptionPane.showMessageDialog(this, "Please entry the mount of the seconds.", "Warning", JOptionPane.OK_OPTION);
+            }
+
+            if (isSave) {
+                DefaultTableModel model = (DefaultTableModel) this.tblSeconds.getModel();
+                Date now = new Date();
+                String time = new SimpleDateFormat("HH:mm").format(now);
+                Float value = Float.parseFloat(this.txtSeconds.getText());
+                model.addRow(new Object[]{time, value});
+                ((AbstractTableModel) this.tblSeconds.getModel()).fireTableDataChanged();
+                this.txtSeconds.setText("");
+                UpdateEntryData(now, value, RecordKey.BUNG, staff, pass, "");
+            }
+        }
     }//GEN-LAST:event_btnSecondsActionPerformed
 
     private void btnCycleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCycleActionPerformed
@@ -2580,6 +3467,64 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnCycleActionPerformed
+
+    private void btnMaterialSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMaterialSaveActionPerformed
+        //material
+        if (this.cbProductPolymer.getSelectedIndex() != 0) {
+            currentEntry.setPolymerId(((ComboBoxItem<Polymer>) this.cbProductPolymer.getSelectedItem()).getItem());
+        }
+        if (this.cbProductAdditive1.getSelectedIndex() != 0) {
+            currentEntry.setAdditiveAId(((ComboBoxItem<Additive>) this.cbProductAdditive1.getSelectedItem()).getItem());
+        }
+        if (this.cbProductAdditive2.getSelectedIndex() != 0) {
+            currentEntry.setAdditiveBId(((ComboBoxItem<Additive>) this.cbProductAdditive2.getSelectedItem()).getItem());
+        }
+        if (this.cbProductAdditive3.getSelectedIndex() != 0) {
+            currentEntry.setAdditiveCId(((ComboBoxItem<Additive>) this.cbProductAdditive3.getSelectedItem()).getItem());
+        }
+        if (!this.txtProductPerc1.getText().equals("")) {
+            currentEntry.setAdditiveAPercentage(this.txtProductPerc1.getText());
+        }
+        if (!this.txtProductPerc2.getText().equals("")) {
+            currentEntry.setAdditiveBPercentage(this.txtProductPerc2.getText());
+        }
+        if (!this.txtProductPerc3.getText().equals("")) {
+            currentEntry.setAdditiveCPercentage(this.txtProductPerc3.getText());
+        }
+        this.entryService.UpdateEntity(currentEntry);
+    }//GEN-LAST:event_btnMaterialSaveActionPerformed
+
+    private void btnStaffSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStaffSaveActionPerformed
+        //staff
+        if (this.cbSupervisor1.getSelectedItem() != null && this.cbSupervisor1.getSelectedIndex() != 0) {
+            currentEntry.setSupervisor1(((ComboBoxItem<Staff>) this.cbSupervisor1.getSelectedItem()).getItem());
+        }
+        if (this.cbSupervisor2.getSelectedItem() != null && this.cbSupervisor2.getSelectedIndex() != 0) {
+            currentEntry.setSupervisor2(((ComboBoxItem<Staff>) this.cbSupervisor2.getSelectedItem()).getItem());
+        }
+        if (this.cbSupervisor3.getSelectedItem() != null && this.cbSupervisor3.getSelectedIndex() != 0) {
+            currentEntry.setSupervisor3(((ComboBoxItem<Staff>) this.cbSupervisor3.getSelectedItem()).getItem());
+        }
+        if (this.cbTechnician1.getSelectedItem() != null && this.cbTechnician1.getSelectedIndex() != 0) {
+            currentEntry.setTechnician1(((ComboBoxItem<Staff>) this.cbTechnician1.getSelectedItem()).getItem());
+        }
+        if (this.cbTechnician2.getSelectedItem() != null && this.cbTechnician2.getSelectedIndex() != 0) {
+            currentEntry.setTechnician2(((ComboBoxItem<Staff>) this.cbTechnician2.getSelectedItem()).getItem());
+        }
+        if (this.cbTechnician3.getSelectedItem() != null && this.cbTechnician3.getSelectedIndex() != 0) {
+            currentEntry.setTechnician3(((ComboBoxItem<Staff>) this.cbTechnician3.getSelectedItem()).getItem());
+        }
+        if (this.cbWorker1.getSelectedItem() != null && this.cbWorker1.getSelectedIndex() != 0) {
+            currentEntry.setWorker1(((ComboBoxItem<Staff>) this.cbWorker1.getSelectedItem()).getItem());
+        }
+        if (this.cbWorker2.getSelectedItem() != null && this.cbWorker2.getSelectedIndex() != 0) {
+            currentEntry.setWorker2(((ComboBoxItem<Staff>) this.cbWorker2.getSelectedItem()).getItem());
+        }
+        if (this.cbWorker3.getSelectedItem() != null && this.cbWorker3.getSelectedIndex() != 0) {
+            currentEntry.setWorker3(((ComboBoxItem<Staff>) this.cbWorker3.getSelectedItem()).getItem());
+        }
+        this.entryService.UpdateEntity(currentEntry);
+    }//GEN-LAST:event_btnStaffSaveActionPerformed
 
     private void UpdateEntryData(Date now, Float valueUnderHandle, RecordKey key, String staff, String pass, String stringValue) {
         int recordId = this.recordService.CreateEntity();
@@ -2635,8 +3580,10 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnCheck;
     private javax.swing.JButton btnCycle;
     private javax.swing.JButton btnDrop;
+    private javax.swing.JButton btnMaterialSave;
     private javax.swing.JButton btnRejects;
     private javax.swing.JButton btnSeconds;
+    private javax.swing.JButton btnStaffSave;
     private javax.swing.JButton btnTap;
     private javax.swing.JButton btnWall;
     private javax.swing.JButton btnWeight;
@@ -2655,10 +3602,26 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JComboBox cbEntry;
     private javax.swing.JComboBox cbNeckComplete;
     private javax.swing.JComboBox cbNeckRound;
+    private javax.swing.JComboBox cbProductAdditive1;
+    private javax.swing.JComboBox cbProductAdditive2;
+    private javax.swing.JComboBox cbProductAdditive3;
+    private javax.swing.JComboBox cbProductPolymer;
     private javax.swing.JComboBox cbStrengthOfDrum;
+    private javax.swing.JComboBox cbSupervisor1;
+    private javax.swing.JComboBox cbSupervisor2;
+    private javax.swing.JComboBox cbSupervisor3;
     private javax.swing.JComboBox cbTap;
+    private javax.swing.JComboBox cbTechnician1;
+    private javax.swing.JComboBox cbTechnician2;
+    private javax.swing.JComboBox cbTechnician3;
     private javax.swing.JComboBox cbUnderTheHandle;
     private javax.swing.JComboBox cbWeightWithinRange;
+    private javax.swing.JComboBox cbWorker1;
+    private javax.swing.JComboBox cbWorker2;
+    private javax.swing.JComboBox cbWorker3;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -2698,9 +3661,40 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel42;
     private javax.swing.JLabel jLabel43;
     private javax.swing.JLabel jLabel44;
+    private javax.swing.JLabel jLabel45;
+    private javax.swing.JLabel jLabel46;
+    private javax.swing.JLabel jLabel47;
+    private javax.swing.JLabel jLabel48;
+    private javax.swing.JLabel jLabel49;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel50;
+    private javax.swing.JLabel jLabel51;
+    private javax.swing.JLabel jLabel52;
+    private javax.swing.JLabel jLabel53;
+    private javax.swing.JLabel jLabel54;
+    private javax.swing.JLabel jLabel55;
+    private javax.swing.JLabel jLabel56;
+    private javax.swing.JLabel jLabel57;
+    private javax.swing.JLabel jLabel58;
+    private javax.swing.JLabel jLabel59;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel60;
+    private javax.swing.JLabel jLabel61;
+    private javax.swing.JLabel jLabel62;
+    private javax.swing.JLabel jLabel63;
+    private javax.swing.JLabel jLabel64;
+    private javax.swing.JLabel jLabel65;
+    private javax.swing.JLabel jLabel66;
+    private javax.swing.JLabel jLabel67;
+    private javax.swing.JLabel jLabel68;
+    private javax.swing.JLabel jLabel69;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel70;
+    private javax.swing.JLabel jLabel71;
+    private javax.swing.JLabel jLabel72;
+    private javax.swing.JLabel jLabel73;
+    private javax.swing.JLabel jLabel74;
+    private javax.swing.JLabel jLabel75;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
@@ -2737,6 +3731,10 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel38;
     private javax.swing.JPanel jPanel39;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel40;
+    private javax.swing.JPanel jPanel41;
+    private javax.swing.JPanel jPanel42;
+    private javax.swing.JPanel jPanel43;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
@@ -2744,6 +3742,8 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
+    private javax.swing.JScrollPane jScrollPane11;
+    private javax.swing.JScrollPane jScrollPane12;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
@@ -2753,6 +3753,14 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField jTextField7;
     private javax.swing.JLabel labBoreStaff;
     private javax.swing.JLabel labBungStaff;
     private javax.swing.JLabel labBungStaff1;
@@ -2766,9 +3774,12 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel labWeightStaff;
     private javax.swing.JPanel pnlChartTap;
     private javax.swing.JPanel pnlChartWeight;
+    private javax.swing.JPanel pnlEditProduct;
     private javax.swing.JPanel pnlMouldImage;
+    private javax.swing.JPanel pnlProductTab;
     private javax.swing.JTable tblBore;
     private javax.swing.JTable tblBung;
+    private javax.swing.JTable tblBung1;
     private javax.swing.JTable tblCheck;
     private javax.swing.JTable tblCycle;
     private javax.swing.JTable tblDrop;
@@ -2791,6 +3802,9 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel txtProductColor;
     private javax.swing.JLabel txtProductDesc;
     private javax.swing.JLabel txtProductGrade;
+    private javax.swing.JTextField txtProductPerc1;
+    private javax.swing.JTextField txtProductPerc2;
+    private javax.swing.JTextField txtProductPerc3;
     private javax.swing.JLabel txtProductPierced;
     private javax.swing.JLabel txtProductWeight;
     private javax.swing.JTextField txtRejects;

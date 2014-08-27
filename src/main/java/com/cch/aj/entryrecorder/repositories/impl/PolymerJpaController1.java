@@ -25,9 +25,9 @@ import javax.persistence.EntityManagerFactory;
  *
  * @author chacao
  */
-public class PolymerJpaController implements Serializable {
+public class PolymerJpaController1 implements Serializable {
 
-    public PolymerJpaController(EntityManagerFactory emf) {
+    public PolymerJpaController1(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;

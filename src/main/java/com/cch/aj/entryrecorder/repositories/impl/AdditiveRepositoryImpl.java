@@ -7,7 +7,6 @@
 package com.cch.aj.entryrecorder.repositories.impl;
 
 import com.cch.aj.entryrecorder.entities.Additive;
-import com.cch.aj.entryrecorder.entities.Polymer;
 import com.cch.aj.entryrecorder.repositories.SettingRepository;
 import com.cch.aj.entryrecorder.repositories.impl.exceptions.NonexistentEntityException;
 import java.util.List;

@@ -10,6 +10,7 @@ import com.cch.aj.entryrecorder.common.ComboBoxItem;
 import com.cch.aj.entryrecorder.common.ComboBoxItemConvertor;
 import com.cch.aj.entryrecorder.common.ComboBoxRender;
 import com.cch.aj.entryrecorder.entities.Additive;
+import com.cch.aj.entryrecorder.entities.Checkitem;
 import com.cch.aj.entryrecorder.entities.Entry;
 import com.cch.aj.entryrecorder.entities.Machine;
 import com.cch.aj.entryrecorder.entities.Mould;
@@ -25,9 +26,11 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import static java.util.Arrays.stream;
+import java.util.Collection;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparing;
@@ -41,6 +44,12 @@ import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparing;
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.comparing;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -56,22 +65,31 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
  * @author Administrator
  */
-public class SettingsJFrame extends javax.swing.JFrame {
+public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionListener {
 
     private int settingMouldId = 0;
     private int settingMouldPreviousId = 0;
     private Mould settingMould = new Mould();
+    private Product settingProduct = new Product();
+    private int settingCheckId = 0;
 
     private SettingService<Machine> machineService = new SettingServiceImpl<Machine>(Machine.class);
     private SettingService<Polymer> polymerService = new SettingServiceImpl<Polymer>(Polymer.class);
     private SettingService<Additive> additiveService = new SettingServiceImpl<Additive>(Additive.class);
     private SettingService<Mould> mouldService = new SettingServiceImpl<Mould>(Mould.class);
     private SettingService<Product> productService = new SettingServiceImpl<Product>(Product.class);
+    private SettingService<Checkitem> checkitemService = new SettingServiceImpl<Checkitem>(Checkitem.class);
 
     /**
      * Creates new form SettingsJFrame
@@ -79,8 +97,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
     public SettingsJFrame() {
 
         initComponents();
-        this.tblCheck.getColumnModel().getColumn(1).setPreferredWidth(20);
-        this.tblCheck.getColumnModel().getColumn(2).setPreferredWidth(20);
+
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         //load Machine
         this.cbMachine.setRenderer(new ComboBoxRender());
@@ -101,8 +118,12 @@ public class SettingsJFrame extends javax.swing.JFrame {
         this.cbProductAdditive1.setRenderer(new ComboBoxRender());
         this.cbProductAdditive2.setRenderer(new ComboBoxRender());
         this.cbProductAdditive3.setRenderer(new ComboBoxRender());
-        UpdateTabProduct(0);
 
+        UpdateTabProduct(0);
+        ListSelectionModel model = tblCheck.getSelectionModel();
+        model.addListSelectionListener(this);
+
+        this.tblCheck.getColumnModel().getColumn(0).setMaxWidth(40);
     }
 
     private void UpdateTabMachine(int id) {
@@ -124,8 +145,8 @@ public class SettingsJFrame extends javax.swing.JFrame {
             this.txtMachineSerial.setText("");
             this.txtMachineYear.setText("");
         }
-        
-        if (this.cbMachine.getSelectedItem()==null || ((ComboBoxItem<Machine>) this.cbMachine.getSelectedItem()).getId() == 0) {
+
+        if (this.cbMachine.getSelectedItem() == null || ((ComboBoxItem<Machine>) this.cbMachine.getSelectedItem()).getId() == 0) {
             this.pnlEditMachine.setVisible(false);
             this.btnMachineDelete.setVisible(false);
             this.btnMachineSave.setVisible(false);
@@ -152,8 +173,8 @@ public class SettingsJFrame extends javax.swing.JFrame {
             this.txtPolymerDesc.setText("");
             this.txtPolymerGrade.setText("");
         }
-        
-        if (this.cbPolymer.getSelectedItem()==null || ((ComboBoxItem<Polymer>) this.cbPolymer.getSelectedItem()).getId() == 0) {
+
+        if (this.cbPolymer.getSelectedItem() == null || ((ComboBoxItem<Polymer>) this.cbPolymer.getSelectedItem()).getId() == 0) {
             this.pnlEditPolymer.setVisible(false);
             this.btnPolymerDelete.setVisible(false);
             this.btnPolymerSave.setVisible(false);
@@ -180,8 +201,8 @@ public class SettingsJFrame extends javax.swing.JFrame {
             this.txtAdditiveDesc.setText("");
             this.txtAdditiveGrade.setText("");
         }
-        
-        if (this.cbAdditive.getSelectedItem()==null || ((ComboBoxItem<Additive>) this.cbAdditive.getSelectedItem()).getId() == 0) {
+
+        if (this.cbAdditive.getSelectedItem() == null || ((ComboBoxItem<Additive>) this.cbAdditive.getSelectedItem()).getId() == 0) {
             this.pnlEditAdditive.setVisible(false);
             this.btnAdditiveDelete.setVisible(false);
             this.btnAdditiveSave.setVisible(false);
@@ -207,8 +228,8 @@ public class SettingsJFrame extends javax.swing.JFrame {
             this.cbMould.setModel(new DefaultComboBoxModel(new ComboBoxItem[]{}));
             this.UpdateMouldUI(new Mould());
         }
-        
-        if (this.cbMould.getSelectedItem()==null || ((ComboBoxItem<Mould>) this.cbMould.getSelectedItem()).getId() == 0) {
+
+        if (this.cbMould.getSelectedItem() == null || ((ComboBoxItem<Mould>) this.cbMould.getSelectedItem()).getId() == 0) {
             this.pnlEditMould.setVisible(false);
             this.btnMouldDelete.setVisible(false);
             this.btnMouldSave.setVisible(false);
@@ -228,14 +249,15 @@ public class SettingsJFrame extends javax.swing.JFrame {
         int selectedIndex = FillProductComboBox(this.cbProduct, id, this.settingMouldId);
         if (selectedIndex >= 0) {
             currentProduct = ((ComboBoxItem<Product>) this.cbProduct.getSelectedItem()).getItem();
+            this.settingProduct = currentProduct;
             this.UpdateProductUI(currentProduct);
 
         } else {
             this.cbProduct.setModel(new DefaultComboBoxModel(new ComboBoxItem[]{}));
             this.UpdateProductUI(new Product());
         }
-        
-        if (this.cbProduct.getSelectedItem()==null || ((ComboBoxItem<Product>) this.cbProduct.getSelectedItem()).getId() == 0) {
+
+        if (this.cbProduct.getSelectedItem() == null || ((ComboBoxItem<Product>) this.cbProduct.getSelectedItem()).getId() == 0) {
             this.pnlEditProduct.setVisible(false);
             this.btnProductDelete.setVisible(false);
             this.btnProductSave.setVisible(false);
@@ -275,7 +297,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         int result = -1;
         List<Polymer> polymers = this.polymerService.GetAllEntities();
         if (polymers.size() > 0) {
-            List<ComboBoxItem<Polymer>> polymerNames = polymers.stream().sorted(comparing(x -> x.getGrade())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getGrade()+" # "+x.getDescription(), x.getId())).collect(Collectors.toList());
+            List<ComboBoxItem<Polymer>> polymerNames = polymers.stream().sorted(comparing(x -> x.getGrade())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getGrade() + " # " + x.getDescription(), x.getId())).collect(Collectors.toList());
             Polymer polymer = new Polymer();
             polymer.setId(0);
             polymer.setCompany("- Select -");
@@ -297,7 +319,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         int result = -1;
         List<Additive> additives = this.additiveService.GetAllEntities();
         if (additives.size() > 0) {
-            List<ComboBoxItem<Additive>> additiveNames = additives.stream().sorted(comparing(x -> x.getGrade())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getGrade()+" # "+x.getDescription()  , x.getId())).collect(Collectors.toList());
+            List<ComboBoxItem<Additive>> additiveNames = additives.stream().sorted(comparing(x -> x.getGrade())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getGrade() + " # " + x.getDescription(), x.getId())).collect(Collectors.toList());
             Additive additive = new Additive();
             additive.setId(0);
             additive.setCompany("- Select -");
@@ -612,23 +634,19 @@ public class SettingsJFrame extends javax.swing.JFrame {
         jLabel61 = new javax.swing.JLabel();
         jLabel69 = new javax.swing.JLabel();
         cbProductBoreA = new javax.swing.JComboBox();
+        cbProductViewLine = new javax.swing.JComboBox();
         jPanel7 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblCheck = new javax.swing.JTable();
         jPanel12 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jLabel74 = new javax.swing.JLabel();
-        jPanel9 = new javax.swing.JPanel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
-        jTextField2 = new javax.swing.JTextField();
+        btnCheckUpdate = new javax.swing.JButton();
         jLabel47 = new javax.swing.JLabel();
-        jLabel73 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        btnCheckDelete = new javax.swing.JButton();
+        txtCheckDesc = new javax.swing.JTextField();
+        btnCheckInsert = new javax.swing.JButton();
         jPanel13 = new javax.swing.JPanel();
-        jComboBox1 = new javax.swing.JComboBox();
-        jButton3 = new javax.swing.JButton();
+        btnCheckPaste = new javax.swing.JButton();
+        btnCheckCopy = new javax.swing.JButton();
         jTabbedPane5 = new javax.swing.JTabbedPane();
         jPanel10 = new javax.swing.JPanel();
         pnlEditPolymer = new javax.swing.JPanel();
@@ -895,7 +913,9 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
         jPanel19.add(pnlEditMachine, gridBagConstraints);
 
         pnlEditSetting.addTab("Machine", jPanel19);
@@ -2319,6 +2339,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
         jPanel16.add(pnlEditMould, gridBagConstraints);
 
@@ -2501,6 +2522,12 @@ public class SettingsJFrame extends javax.swing.JFrame {
         pnlProductTab.add(jPanel27, gridBagConstraints);
 
         pnlEditProduct.setLayout(new java.awt.GridBagLayout());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        pnlProductTab.add(pnlEditProduct, gridBagConstraints);
 
         jPanel6.setLayout(new java.awt.GridBagLayout());
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2651,7 +2678,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 9);
         jPanel6.add(cbProductMould, gridBagConstraints);
 
-        jLabel63.setText("MAX");
+        jLabel63.setText("WEIGHT MAX");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 6;
@@ -2757,7 +2784,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 25);
         jPanel6.add(cbProductBung, gridBagConstraints);
 
-        jLabel62.setText("MIN");
+        jLabel62.setText("WEIGHT MIN");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
@@ -2861,7 +2888,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 25);
         jPanel6.add(cbProductPierced, gridBagConstraints);
 
-        jLabel61.setText("WEIGHT RANGE");
+        jLabel61.setText("VIEW LINE");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
@@ -2892,23 +2919,31 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 9);
         jPanel6.add(cbProductBoreA, gridBagConstraints);
 
+        cbProductViewLine.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "YES", "NO" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 28;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 9);
+        jPanel6.add(cbProductViewLine, gridBagConstraints);
+
         jTabbedPane2.addTab("General", jPanel6);
 
         jPanel7.setLayout(new java.awt.GridBagLayout());
 
         tblCheck.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
-                "Description", "Is Default", "Order"
+                "Id", "Description"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Object.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -2930,82 +2965,57 @@ public class SettingsJFrame extends javax.swing.JFrame {
         jPanel12.setBorder(javax.swing.BorderFactory.createTitledBorder("Detail"));
         jPanel12.setLayout(new java.awt.GridBagLayout());
 
-        jButton1.setText("Update");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.weightx = 0.33;
-        gridBagConstraints.insets = new java.awt.Insets(5, 20, 5, 20);
-        jPanel12.add(jButton1, gridBagConstraints);
-
-        jLabel74.setText("Order");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.weightx = 0.33;
-        gridBagConstraints.insets = new java.awt.Insets(5, 20, 5, 20);
-        jPanel12.add(jLabel74, gridBagConstraints);
-
-        jPanel9.setLayout(new java.awt.GridBagLayout());
-
-        buttonGroup1.add(jRadioButton1);
-        jRadioButton1.setText("YES");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        jPanel9.add(jRadioButton1, gridBagConstraints);
-
-        buttonGroup1.add(jRadioButton2);
-        jRadioButton2.setText("NO");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        jPanel9.add(jRadioButton2, gridBagConstraints);
-
+        btnCheckUpdate.setText("Update");
+        btnCheckUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCheckUpdateActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.weightx = 0.33;
         gridBagConstraints.insets = new java.awt.Insets(5, 20, 5, 20);
-        jPanel12.add(jPanel9, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 0.33;
-        gridBagConstraints.insets = new java.awt.Insets(5, 20, 5, 20);
-        jPanel12.add(jTextField2, gridBagConstraints);
+        jPanel12.add(btnCheckUpdate, gridBagConstraints);
 
         jLabel47.setText("Description");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.weightx = 0.33;
+        gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(5, 20, 5, 20);
         jPanel12.add(jLabel47, gridBagConstraints);
 
-        jLabel73.setText("Is Default");
+        btnCheckDelete.setText("Delete");
+        btnCheckDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCheckDeleteActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(5, 20, 5, 20);
+        jPanel12.add(btnCheckDelete, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.weightx = 0.33;
-        gridBagConstraints.insets = new java.awt.Insets(5, 20, 5, 20);
-        jPanel12.add(jLabel73, gridBagConstraints);
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 11, 5, 11);
+        jPanel12.add(txtCheckDesc, gridBagConstraints);
 
-        jButton2.setText("Delete");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.weightx = 0.33;
-        gridBagConstraints.insets = new java.awt.Insets(5, 20, 5, 20);
-        jPanel12.add(jButton2, gridBagConstraints);
+        btnCheckInsert.setText("Insert");
+        btnCheckInsert.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCheckInsertActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 0.33;
         gridBagConstraints.insets = new java.awt.Insets(5, 20, 5, 20);
-        jPanel12.add(jTextField1, gridBagConstraints);
+        jPanel12.add(btnCheckInsert, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -3018,19 +3028,30 @@ public class SettingsJFrame extends javax.swing.JFrame {
         jPanel7.add(jPanel12, gridBagConstraints);
 
         jPanel13.setLayout(new java.awt.GridBagLayout());
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 0.5;
-        jPanel13.add(jComboBox1, gridBagConstraints);
 
-        jButton3.setText("Add");
+        btnCheckPaste.setText("Paste Template");
+        btnCheckPaste.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCheckPasteActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.weightx = 0.5;
-        jPanel13.add(jButton3, gridBagConstraints);
+        jPanel13.add(btnCheckPaste, gridBagConstraints);
+
+        btnCheckCopy.setText("Copy Template");
+        btnCheckCopy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCheckCopyActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.weightx = 0.5;
+        jPanel13.add(btnCheckCopy, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -3045,18 +3066,12 @@ public class SettingsJFrame extends javax.swing.JFrame {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        pnlEditProduct.add(jTabbedPane2, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        pnlProductTab.add(pnlEditProduct, gridBagConstraints);
+        pnlProductTab.add(jTabbedPane2, gridBagConstraints);
 
         pnlEditSetting.addTab("Product", pnlProductTab);
 
@@ -3132,8 +3147,9 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         jPanel10.add(pnlEditPolymer, gridBagConstraints);
 
@@ -3296,8 +3312,9 @@ public class SettingsJFrame extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         jPanel14.add(pnlEditAdditive, gridBagConstraints);
 
@@ -3973,6 +3990,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
         currentProduct.setBung(this.cbProductBung.getSelectedItem().toString());
         currentProduct.setPierced(this.cbProductPierced.getSelectedItem().toString());
         currentProduct.setDgnondg(this.cbProductDg.getSelectedIndex());
+        currentProduct.setViewLine(this.cbProductViewLine.getSelectedItem().toString());
         currentProduct.setMouldId(((ComboBoxItem<Mould>) this.cbProductMould.getSelectedItem()).getItem());
         if (this.cbProductPolymer.getSelectedIndex() != 0) {
             currentProduct.setPolymerId(((ComboBoxItem<Polymer>) this.cbProductPolymer.getSelectedItem()).getItem());
@@ -4050,6 +4068,57 @@ public class SettingsJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_pnlEditSettingAncestorAdded
 
+    private void btnCheckInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckInsertActionPerformed
+        if (!this.txtCheckDesc.getText().equals("")) {
+            String desc = this.txtCheckDesc.getText();
+
+            int checkId = this.checkitemService.CreateEntity();
+            Checkitem check = this.checkitemService.FindEntity(checkId);
+            check.setDescription(desc);
+            List<Product> list = new ArrayList<Product>();
+            list.add(this.settingProduct);
+            check.setProductCollection(list);
+            this.checkitemService.UpdateEntity(check);
+            DefaultTableModel model = (DefaultTableModel) this.tblCheck.getModel();
+            model.addRow(new Object[]{check.getId(), desc});
+            this.txtCheckDesc.setText("");
+        } else {
+            JOptionPane.showMessageDialog(this, "please enter the valid data", "Warming", JOptionPane.OK_OPTION);
+        }
+    }//GEN-LAST:event_btnCheckInsertActionPerformed
+
+    private void btnCheckPasteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckPasteActionPerformed
+
+    }//GEN-LAST:event_btnCheckPasteActionPerformed
+
+    private void btnCheckUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckUpdateActionPerformed
+        Checkitem item = this.checkitemService.FindEntity(this.settingCheckId);
+        if (item != null) {
+            item.setDescription(this.txtCheckDesc.getText());
+        }
+        this.checkitemService.UpdateEntity(item);
+        this.UpdateProductUI(settingProduct);
+    }//GEN-LAST:event_btnCheckUpdateActionPerformed
+
+    private void btnCheckDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckDeleteActionPerformed
+        Checkitem item = null;
+        for (Checkitem check : this.settingProduct.getCheckitemCollection()) {
+            if (check.getId() == this.settingCheckId) {
+                item = check;
+                break;
+            }
+        }
+        if (item != null) {
+            this.settingProduct.getCheckitemCollection().remove(item);
+        }
+        this.productService.UpdateEntity(settingProduct);
+        this.UpdateProductUI(settingProduct);
+    }//GEN-LAST:event_btnCheckDeleteActionPerformed
+
+    private void btnCheckCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckCopyActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCheckCopyActionPerformed
+
     private void UpdateProductUI(Product currentProduct) {
         txtProductCode.setText(currentProduct.getCode() == null || currentProduct.getCode() == "- Select -" ? "" : currentProduct.getCode().toString());;
         txtProductDesc.setText(currentProduct.getDescription() == null ? "" : currentProduct.getDescription().toString());;
@@ -4106,6 +4175,9 @@ public class SettingsJFrame extends javax.swing.JFrame {
         if (currentProduct.getPierced() != null && !currentProduct.getPierced().equals("")) {
             this.cbProductPierced.setSelectedItem(currentProduct.getPierced().toString());
         }
+        if (currentProduct.getViewLine() != null && !currentProduct.getViewLine().equals("")) {
+            this.cbProductViewLine.setSelectedItem(currentProduct.getViewLine().toString());
+        }
         if (currentProduct.getDgnondg() != null) {
             this.cbProductDg.setSelectedIndex(currentProduct.getDgnondg());
         }
@@ -4118,7 +4190,26 @@ public class SettingsJFrame extends javax.swing.JFrame {
         if (currentProduct.getThreadNeck() != null) {
             this.cbProductNeck.setSelectedIndex(currentProduct.getThreadNeck());
         }
-
+        //
+        DefaultTableModel model = (DefaultTableModel) this.tblCheck.getModel();
+        model.setRowCount(0);
+        model.fireTableDataChanged();
+        List<Checkitem> checks = this.checkitemService.GetAllEntities();
+        List<Checkitem> list = new ArrayList<Checkitem>();
+        for (Checkitem ci : checks) {
+            if (ci.getProductCollection().contains(this.settingProduct)) {
+                list.add(ci);
+            }
+        }
+        if (list != null) {
+            for (Checkitem item : list) {
+                model.addRow(new Object[]{item.getId(), item.getDescription()});
+            }
+        }
+        this.txtCheckDesc.setText("");
+        //
+        this.txtProductWeightMin.setText(this.settingMould.getWeightDgMin().toString());
+        this.txtProductWeightMax.setText(this.settingMould.getWeightDgMax().toString());
     }
 
     /**
@@ -4135,16 +4226,21 @@ public class SettingsJFrame extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SettingsJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SettingsJFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SettingsJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SettingsJFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SettingsJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SettingsJFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SettingsJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SettingsJFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -4163,6 +4259,11 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnAdditiveUndo;
     private javax.swing.JButton btnBoreAImage;
     private javax.swing.JButton btnBoreBImage;
+    private javax.swing.JButton btnCheckCopy;
+    private javax.swing.JButton btnCheckDelete;
+    private javax.swing.JButton btnCheckInsert;
+    private javax.swing.JButton btnCheckPaste;
+    private javax.swing.JButton btnCheckUpdate;
     private javax.swing.JButton btnDgImage;
     private javax.swing.JButton btnDrawingImage;
     private javax.swing.JButton btnMachineDelete;
@@ -4201,10 +4302,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private javax.swing.JComboBox cbProductNeck;
     private javax.swing.JComboBox cbProductPierced;
     private javax.swing.JComboBox cbProductPolymer;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JComboBox cbProductViewLine;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel100;
@@ -4284,8 +4382,6 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel70;
     private javax.swing.JLabel jLabel71;
     private javax.swing.JLabel jLabel72;
-    private javax.swing.JLabel jLabel73;
-    private javax.swing.JLabel jLabel74;
     private javax.swing.JLabel jLabel79;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel80;
@@ -4336,15 +4432,10 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTabbedPane jTabbedPane5;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JLabel labBoreAImage;
     private javax.swing.JLabel labBoreBImage;
     private javax.swing.JLabel labDgImage;
@@ -4370,6 +4461,7 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private javax.swing.JTextField txtAdditiveCompany;
     private javax.swing.JTextField txtAdditiveDesc;
     private javax.swing.JTextField txtAdditiveGrade;
+    private javax.swing.JTextField txtCheckDesc;
     private javax.swing.JTextField txtMachineCapacity;
     private javax.swing.JTextField txtMachineDesc;
     private javax.swing.JTextField txtMachineManufa;
@@ -4449,5 +4541,16 @@ public class SettingsJFrame extends javax.swing.JFrame {
     private javax.swing.JTextField txtProductWeightMax;
     private javax.swing.JTextField txtProductWeightMin;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+        if (!e.getValueIsAdjusting() && tblCheck.getSelectedRow() != -1) {
+            TableModel model = tblCheck.getModel();
+            int checkId = (int) model.getValueAt(tblCheck.getSelectedRow(), 0);
+            String desc = model.getValueAt(tblCheck.getSelectedRow(), 1).toString();
+            this.settingCheckId = checkId;
+            this.txtCheckDesc.setText(desc);
+        }
+    }
 
 }

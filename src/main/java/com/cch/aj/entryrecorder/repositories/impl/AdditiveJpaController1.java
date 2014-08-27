@@ -25,9 +25,9 @@ import javax.persistence.EntityManagerFactory;
  *
  * @author chacao
  */
-public class AdditiveJpaController implements Serializable {
+public class AdditiveJpaController1 implements Serializable {
 
-    public AdditiveJpaController(EntityManagerFactory emf) {
+    public AdditiveJpaController1(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;

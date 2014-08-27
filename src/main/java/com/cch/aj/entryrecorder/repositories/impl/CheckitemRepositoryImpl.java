@@ -6,6 +6,7 @@
 
 package com.cch.aj.entryrecorder.repositories.impl;
 
+import com.cch.aj.entryrecorder.entities.Checkitem;
 import com.cch.aj.entryrecorder.entities.Product;
 import com.cch.aj.entryrecorder.repositories.SettingRepository;
 import com.cch.aj.entryrecorder.repositories.impl.exceptions.IllegalOrphanException;
@@ -20,18 +21,22 @@ import javax.persistence.EntityManagerFactory;
  *
  * @author chacao
  */
-public class ProductRepositoryImpl implements SettingRepository<Product>{
+public class CheckitemRepositoryImpl implements SettingRepository<Checkitem>{
 
-    ProductJpaController controller;
+    CheckitemJpaController controller;
     
-    public ProductRepositoryImpl(String dbConnectionString) {
+    public CheckitemRepositoryImpl(String dbConnectionString) {
         EntityManagerFactory emf=javax.persistence.Persistence.createEntityManagerFactory(dbConnectionString);
-        this.controller=new ProductJpaController(emf);
+        this.controller=new CheckitemJpaController(emf);
     }
 
     @Override
-    public void create(Product item) {
-        this.controller.create(item);
+    public void create(Checkitem item) {
+        try {
+            this.controller.create(item);
+        } catch (Exception ex) {
+            Logger.getLogger(CheckitemRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
@@ -41,23 +46,23 @@ public class ProductRepositoryImpl implements SettingRepository<Product>{
     }
 
     @Override
-    public void edit(Product item) throws NonexistentEntityException, Exception {
+    public void edit(Checkitem item) throws NonexistentEntityException, Exception {
         this.controller.edit(item);
     }
 
     @Override
-    public Product findEntity(Integer id) {
-       return  this.controller.findProduct(id);
+    public Checkitem findEntity(Integer id) {
+       return  this.controller.findCheckitem(id);
     }
 
     @Override
-    public List<Product> findEntities() {
-        return this.controller.findProductEntities();
+    public List<Checkitem> findEntities() {
+        return this.controller.findCheckitemEntities();
     }
 
     @Override
-    public List<Product> findEntities(int maxResults, int firstResult) {
-        return this.controller.findProductEntities(maxResults, firstResult);
+    public List<Checkitem> findEntities(int maxResults, int firstResult) {
+        return this.controller.findCheckitemEntities(maxResults, firstResult);
     }
 
     @Override
@@ -67,7 +72,7 @@ public class ProductRepositoryImpl implements SettingRepository<Product>{
 
     @Override
     public int getEntityCount() {
-        return this.controller.getProductCount();
+        return this.controller.getCheckitemCount();
     }
 
     

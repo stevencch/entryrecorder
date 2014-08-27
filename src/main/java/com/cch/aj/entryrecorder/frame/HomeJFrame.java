@@ -41,13 +41,12 @@ public class HomeJFrame extends javax.swing.JFrame {
         btnShift = new javax.swing.JButton();
         btnEntry = new javax.swing.JButton();
         btnSettings = new javax.swing.JButton();
-        btnStaff = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(400, 500));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        btnShift.setText("Shift");
+        btnShift.setText("New Entry");
         btnShift.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnShiftActionPerformed(evt);
@@ -55,14 +54,14 @@ public class HomeJFrame extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 9;
         gridBagConstraints.ipady = 9;
         gridBagConstraints.insets = new java.awt.Insets(15, 15, 15, 15);
         getContentPane().add(btnShift, gridBagConstraints);
 
-        btnEntry.setText("Main Form");
+        btnEntry.setText("Main Record");
         btnEntry.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEntryActionPerformed(evt);
@@ -70,7 +69,7 @@ public class HomeJFrame extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 9;
         gridBagConstraints.ipady = 9;
@@ -94,21 +93,6 @@ public class HomeJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(15, 15, 15, 15);
         getContentPane().add(btnSettings, gridBagConstraints);
 
-        btnStaff.setText("Staff");
-        btnStaff.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnStaffActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipadx = 9;
-        gridBagConstraints.ipady = 9;
-        gridBagConstraints.insets = new java.awt.Insets(15, 15, 15, 15);
-        getContentPane().add(btnStaff, gridBagConstraints);
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -126,12 +110,6 @@ public class HomeJFrame extends javax.swing.JFrame {
         SettingsJFrame sf = new SettingsJFrame();
         sf.setVisible(true);
     }//GEN-LAST:event_btnSettingsActionPerformed
-
-    private void btnStaffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStaffActionPerformed
-        EntryJFrame ef = new EntryJFrame();
-        ef.setVisible(true);
-        ef.ActiveStaffTab();
-    }//GEN-LAST:event_btnStaffActionPerformed
 
     /**
      * @param args the command line arguments
@@ -174,6 +152,5 @@ public class HomeJFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnEntry;
     private javax.swing.JButton btnSettings;
     private javax.swing.JButton btnShift;
-    private javax.swing.JButton btnStaff;
     // End of variables declaration//GEN-END:variables
 }

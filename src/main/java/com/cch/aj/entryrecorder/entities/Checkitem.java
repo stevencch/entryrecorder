@@ -6,16 +6,18 @@
 
 package com.cch.aj.entryrecorder.entities;
 
+import com.cch.aj.entryrecorder.common.SettingEntity;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -25,39 +27,35 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author chacao
  */
 @Entity
-@Table(name = "check")
+@Table(name = "checkitem")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Check.findAll", query = "SELECT c FROM Check c"),
-    @NamedQuery(name = "Check.findById", query = "SELECT c FROM Check c WHERE c.id = :id"),
-    @NamedQuery(name = "Check.findByDescription", query = "SELECT c FROM Check c WHERE c.description = :description"),
-    @NamedQuery(name = "Check.findByIsDefault", query = "SELECT c FROM Check c WHERE c.isDefault = :isDefault")})
-public class Check implements Serializable {
+    @NamedQuery(name = "Checkitem.findAll", query = "SELECT c FROM Checkitem c"),
+    @NamedQuery(name = "Checkitem.findById", query = "SELECT c FROM Checkitem c WHERE c.id = :id"),
+    @NamedQuery(name = "Checkitem.findByDescription", query = "SELECT c FROM Checkitem c WHERE c.description = :description")})
+public class Checkitem implements Serializable,SettingEntity {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "Id")
     private Integer id;
     @Basic(optional = false)
     @Column(name = "Description")
     private String description;
-    @Basic(optional = false)
-    @Column(name = "IsDefault")
-    private boolean isDefault;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "check1")
-    private Collection<Productcheck> productcheckCollection;
+    @ManyToMany(mappedBy = "checkitemCollection")
+    private Collection<Product> productCollection;
 
-    public Check() {
+    public Checkitem() {
     }
 
-    public Check(Integer id) {
+    public Checkitem(Integer id) {
         this.id = id;
     }
 
-    public Check(Integer id, String description, boolean isDefault) {
+    public Checkitem(Integer id, String description) {
         this.id = id;
         this.description = description;
-        this.isDefault = isDefault;
     }
 
     public Integer getId() {
@@ -76,21 +74,13 @@ public class Check implements Serializable {
         this.description = description;
     }
 
-    public boolean getIsDefault() {
-        return isDefault;
-    }
-
-    public void setIsDefault(boolean isDefault) {
-        this.isDefault = isDefault;
-    }
-
     @XmlTransient
-    public Collection<Productcheck> getProductcheckCollection() {
-        return productcheckCollection;
+    public Collection<Product> getProductCollection() {
+        return productCollection;
     }
 
-    public void setProductcheckCollection(Collection<Productcheck> productcheckCollection) {
-        this.productcheckCollection = productcheckCollection;
+    public void setProductCollection(Collection<Product> productCollection) {
+        this.productCollection = productCollection;
     }
 
     @Override
@@ -103,10 +93,10 @@ public class Check implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Check)) {
+        if (!(object instanceof Checkitem)) {
             return false;
         }
-        Check other = (Check) object;
+        Checkitem other = (Checkitem) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -115,7 +105,12 @@ public class Check implements Serializable {
 
     @Override
     public String toString() {
-        return "com.cch.aj.entryrecorder.entities.Check[ id=" + id + " ]";
+        return "com.cch.aj.entryrecorder.entities.Checkitem[ id=" + id + " ]";
+    }
+
+    @Override
+    public void setDefaultValue() {
+        this.description="New";
     }
     
 }
