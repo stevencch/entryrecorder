@@ -5,6 +5,8 @@
  */
 package com.cch.aj.entryrecorder.common;
 
+import com.cch.aj.entryrecorder.entities.Entry;
+import com.cch.aj.entryrecorder.entities.Product;
 import com.cch.aj.entryrecorder.frame.SettingsJFrame;
 import java.awt.Component;
 import java.awt.FlowLayout;
@@ -32,6 +34,8 @@ public class AppHelper {
     public static String currentDir = System.getProperty("user.dir");
     public static JFileChooser fc = new JFileChooser(currentDir + "\\images");
     public static String defaultShift="shift";
+    public static Product entryProduct=null;
+    public static Entry currentEntry=null;
 
     public static Image getScaledImage(Image srcImg, int w, int h) {
         BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);

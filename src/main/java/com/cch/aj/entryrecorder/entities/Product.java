@@ -21,6 +21,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -50,6 +51,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Product.findByDgnondg", query = "SELECT p FROM Product p WHERE p.dgnondg = :dgnondg"),
     @NamedQuery(name = "Product.findByViewLine", query = "SELECT p FROM Product p WHERE p.viewLine = :viewLine")})
 public class Product implements Serializable,SettingEntity {
+    @OneToMany(mappedBy = "productId")
+    private Collection<Entry> entryCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -316,6 +319,15 @@ public class Product implements Serializable,SettingEntity {
     @Override
     public void setDefaultValue() {
         this.code="New";
+    }
+
+    @XmlTransient
+    public Collection<Entry> getEntryCollection() {
+        return entryCollection;
+    }
+
+    public void setEntryCollection(Collection<Entry> entryCollection) {
+        this.entryCollection = entryCollection;
     }
     
 }

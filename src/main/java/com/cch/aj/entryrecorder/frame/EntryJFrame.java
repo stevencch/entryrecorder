@@ -287,7 +287,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         int result = -1;
         List<Polymer> polymers = this.polymerService.GetAllEntities();
         if (polymers.size() > 0) {
-            List<ComboBoxItem<Polymer>> polymerNames = polymers.stream().sorted(comparing(x -> x.getGrade())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getGrade()+" # "+x.getDescription(), x.getId())).collect(Collectors.toList());
+            List<ComboBoxItem<Polymer>> polymerNames = polymers.stream().sorted(comparing(x -> x.getGrade())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getGrade()+" # "+x.getCompany(), x.getId())).collect(Collectors.toList());
             Polymer polymer = new Polymer();
             polymer.setId(0);
             polymer.setCompany("- Select -");
@@ -309,7 +309,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         int result = -1;
         List<Additive> additives = this.additiveService.GetAllEntities();
         if (additives.size() > 0) {
-            List<ComboBoxItem<Additive>> additiveNames = additives.stream().sorted(comparing(x -> x.getGrade())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getGrade()+" # "+x.getDescription(), x.getId())).collect(Collectors.toList());
+            List<ComboBoxItem<Additive>> additiveNames = additives.stream().sorted(comparing(x -> x.getGrade())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getGrade()+" # "+x.getCompany(), x.getId())).collect(Collectors.toList());
             Additive additive = new Additive();
             additive.setId(0);
             additive.setCompany("- Select -");
@@ -443,7 +443,7 @@ public class EntryJFrame extends javax.swing.JFrame {
 
         jPanel9.setLayout(new java.awt.GridBagLayout());
 
-        jLabel47.setText("SHIFT");
+        jLabel47.setText("SHIFT班次");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -468,7 +468,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(3, 27, 3, 45);
         jPanel9.add(txtEntryShift, gridBagConstraints);
 
-        jLabel74.setText("MACHINE No");
+        jLabel74.setText("MACHINE No机器");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -478,7 +478,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(3, 27, 3, 45);
         jPanel9.add(jLabel74, gridBagConstraints);
 
-        jLabel75.setText("MOULD");
+        jLabel75.setText("MOULD型号");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -488,7 +488,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(3, 27, 3, 45);
         jPanel9.add(jLabel75, gridBagConstraints);
 
-        jLabel76.setText("PRODUCT CODE");
+        jLabel76.setText("PRODUCT CODE产品");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
@@ -534,7 +534,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(3, 27, 3, 45);
         jPanel9.add(cbEntryProduct, gridBagConstraints);
 
-        jLabel73.setText("IN USE");
+        jLabel73.setText("IN USE启用");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
@@ -572,7 +572,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(3, 27, 3, 45);
         jPanel9.add(labEntryCreatedDate, gridBagConstraints);
 
-        pnlEditEntry.addTab("General", jPanel9);
+        pnlEditEntry.addTab("General基本", jPanel9);
 
         jPanel13.setLayout(new java.awt.GridBagLayout());
 
@@ -596,7 +596,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
         jPanel13.add(jLabel119, gridBagConstraints);
 
-        jLabel120.setText("PRODUCT WEIGHT");
+        jLabel120.setText("PRODUCT WEIGHT重量");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -606,7 +606,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 0);
         jPanel13.add(jLabel120, gridBagConstraints);
 
-        jLabel122.setText("THREAD BORE B");
+        jLabel122.setText("THREAD BORE B钻孔");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
@@ -616,7 +616,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 0);
         jPanel13.add(jLabel122, gridBagConstraints);
 
-        jLabel123.setText("THREAD NECK");
+        jLabel123.setText("THREAD NECK颈长");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
@@ -626,7 +626,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 0);
         jPanel13.add(jLabel123, gridBagConstraints);
 
-        jLabel124.setText("TAP POSITION");
+        jLabel124.setText("TAP POSITION龙头");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
@@ -708,7 +708,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
         jPanel13.add(txtEntryTapPositionMax, gridBagConstraints);
 
-        jLabel125.setText("THREAD BORE A");
+        jLabel125.setText("THREAD BORE A钻孔");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -736,11 +736,11 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
         jPanel13.add(txtEntryThreadBoreAMax, gridBagConstraints);
 
-        pnlEditEntry.addTab("Settings", jPanel13);
+        pnlEditEntry.addTab("Settings设置", jPanel13);
 
         jPanel3.setLayout(new java.awt.GridBagLayout());
 
-        labEntryWall.setText("WALL THICKNESS NON-DG");
+        labEntryWall.setText("WALL THICKNESS壁厚");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -770,7 +770,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
         jPanel3.add(jLabel19, gridBagConstraints);
 
-        jLabel20.setText("UNDER THE HANDLE");
+        jLabel20.setText("UNDER THE HANDLE把手下");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -800,7 +800,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 0);
         jPanel3.add(jLabel22, gridBagConstraints);
 
-        jLabel23.setText("END OF HANDLE SIDE - BUNG");
+        jLabel23.setText("END OF HANDLE SIDE - BUNG把手塞子");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
@@ -810,7 +810,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 0);
         jPanel3.add(jLabel23, gridBagConstraints);
 
-        jLabel24.setText("END OF HANDLE SIDE - LEFT");
+        jLabel24.setText("END OF HANDLE SIDE - LEFT把手左");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
@@ -820,7 +820,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 0);
         jPanel3.add(jLabel24, gridBagConstraints);
 
-        jLabel25.setText("END OF HANDLE SIDE - RIGHT");
+        jLabel25.setText("END OF HANDLE SIDE - RIGHT把手右");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 6;
@@ -938,7 +938,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
         jPanel3.add(txtMouldHandleRightMax, gridBagConstraints);
 
-        pnlEditEntry.addTab("Wall", jPanel3);
+        pnlEditEntry.addTab("Wall壁厚", jPanel3);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -997,7 +997,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(9, 9, 9, 9);
         jPanel47.add(btnEntryDelete, gridBagConstraints);
 
-        jLabel126.setText("SHIFT");
+        jLabel126.setText("SHIFT班次");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -1077,7 +1077,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
         jPanel38.add(jPanel48, gridBagConstraints);
 
-        tabSettings.addTab("Entry", jPanel38);
+        tabSettings.addTab("Entry登记", jPanel38);
 
         jPanel29.setLayout(new java.awt.GridBagLayout());
 
@@ -1222,7 +1222,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         jPanel29.add(pnlEditStaff, gridBagConstraints);
 
-        tabSettings.addTab("Staff", jPanel29);
+        tabSettings.addTab("Staff员工", jPanel29);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;

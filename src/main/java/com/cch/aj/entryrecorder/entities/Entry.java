@@ -9,7 +9,6 @@ package com.cch.aj.entryrecorder.entities;
 import com.cch.aj.entryrecorder.common.AppHelper;
 import com.cch.aj.entryrecorder.common.SettingEntity;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -21,12 +20,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -61,12 +58,20 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Entry.findByWallHandleLeftMax", query = "SELECT e FROM Entry e WHERE e.wallHandleLeftMax = :wallHandleLeftMax"),
     @NamedQuery(name = "Entry.findByWallHandleRightMin", query = "SELECT e FROM Entry e WHERE e.wallHandleRightMin = :wallHandleRightMin"),
     @NamedQuery(name = "Entry.findByWallHandleRightMax", query = "SELECT e FROM Entry e WHERE e.wallHandleRightMax = :wallHandleRightMax"),
-    @NamedQuery(name = "Entry.findByAdditiveAPercentage", query = "SELECT e FROM Entry e WHERE e.additiveAPercentage = :additiveAPercentage"),
-    @NamedQuery(name = "Entry.findByAdditiveBPercentage", query = "SELECT e FROM Entry e WHERE e.additiveBPercentage = :additiveBPercentage"),
-    @NamedQuery(name = "Entry.findByAdditiveCPercentage", query = "SELECT e FROM Entry e WHERE e.additiveCPercentage = :additiveCPercentage")})
+    @NamedQuery(name = "Entry.findByAdditiveABatchA", query = "SELECT e FROM Entry e WHERE e.additiveABatchA = :additiveABatchA"),
+    @NamedQuery(name = "Entry.findByAdditiveBBatchA", query = "SELECT e FROM Entry e WHERE e.additiveBBatchA = :additiveBBatchA"),
+    @NamedQuery(name = "Entry.findByAdditiveCBatchA", query = "SELECT e FROM Entry e WHERE e.additiveCBatchA = :additiveCBatchA"),
+    @NamedQuery(name = "Entry.findByAdditiveABatchB", query = "SELECT e FROM Entry e WHERE e.additiveABatchB = :additiveABatchB"),
+    @NamedQuery(name = "Entry.findByAdditiveBBatchB", query = "SELECT e FROM Entry e WHERE e.additiveBBatchB = :additiveBBatchB"),
+    @NamedQuery(name = "Entry.findByAdditiveCBatchB", query = "SELECT e FROM Entry e WHERE e.additiveCBatchB = :additiveCBatchB"),
+    @NamedQuery(name = "Entry.findByPolymerBatchA", query = "SELECT e FROM Entry e WHERE e.polymerBatchA = :polymerBatchA"),
+    @NamedQuery(name = "Entry.findByPolymerBatchB", query = "SELECT e FROM Entry e WHERE e.polymerBatchB = :polymerBatchB"),
+    @NamedQuery(name = "Entry.findByPalletQuantity", query = "SELECT e FROM Entry e WHERE e.palletQuantity = :palletQuantity"),
+    @NamedQuery(name = "Entry.findByPalletProducedA", query = "SELECT e FROM Entry e WHERE e.palletProducedA = :palletProducedA"),
+    @NamedQuery(name = "Entry.findByPalletProducedB", query = "SELECT e FROM Entry e WHERE e.palletProducedB = :palletProducedB"),
+    @NamedQuery(name = "Entry.findByOtherQuantity", query = "SELECT e FROM Entry e WHERE e.otherQuantity = :otherQuantity"),
+    @NamedQuery(name = "Entry.findByIsChecked", query = "SELECT e FROM Entry e WHERE e.isChecked = :isChecked")})
 public class Entry implements Serializable,SettingEntity {
-    @OneToMany(mappedBy = "entryId")
-    private Collection<Record> recordCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -122,30 +127,44 @@ public class Entry implements Serializable,SettingEntity {
     private Float wallHandleRightMin;
     @Column(name = "WallHandleRightMax")
     private Float wallHandleRightMax;
-    @Column(name = "AdditiveAPercentage")
-    private String additiveAPercentage;
-    @Column(name = "AdditiveBPercentage")
-    private String additiveBPercentage;
-    @Column(name = "AdditiveCPercentage")
-    private String additiveCPercentage;
+    @Column(name = "AdditiveABatchA")
+    private String additiveABatchA;
+    @Column(name = "AdditiveBBatchA")
+    private String additiveBBatchA;
+    @Column(name = "AdditiveCBatchA")
+    private String additiveCBatchA;
+    @Column(name = "AdditiveABatchB")
+    private String additiveABatchB;
+    @Column(name = "AdditiveBBatchB")
+    private String additiveBBatchB;
+    @Column(name = "AdditiveCBatchB")
+    private String additiveCBatchB;
+    @Column(name = "PolymerBatchA")
+    private String polymerBatchA;
+    @Column(name = "PolymerBatchB")
+    private String polymerBatchB;
+    @Column(name = "PalletQuantity")
+    private Integer palletQuantity;
+    @Column(name = "PalletProducedA")
+    private Integer palletProducedA;
+    @Column(name = "PalletProducedB")
+    private Integer palletProducedB;
+    @Column(name = "OtherQuantity")
+    private Integer otherQuantity;
+    @Column(name = "IsChecked")
+    private Boolean isChecked;
+    @JoinColumn(name = "Worker3", referencedColumnName = "Id")
+    @ManyToOne
+    private Staff worker3;
     @JoinColumn(name = "MachineId", referencedColumnName = "Id")
     @ManyToOne
     private Machine machineId;
     @JoinColumn(name = "Worker1", referencedColumnName = "Id")
     @ManyToOne
     private Staff worker1;
-    @JoinColumn(name = "Supervisor2", referencedColumnName = "Id")
-    @ManyToOne
-    private Staff supervisor2;
-    @JoinColumn(name = "Technician3", referencedColumnName = "Id")
-    @ManyToOne
-    private Staff technician3;
     @JoinColumn(name = "Worker2", referencedColumnName = "Id")
     @ManyToOne
     private Staff worker2;
-    @JoinColumn(name = "Worker3", referencedColumnName = "Id")
-    @ManyToOne
-    private Staff worker3;
     @JoinColumn(name = "PolymerId", referencedColumnName = "Id")
     @ManyToOne
     private Polymer polymerId;
@@ -155,27 +174,33 @@ public class Entry implements Serializable,SettingEntity {
     @JoinColumn(name = "AdditiveBId", referencedColumnName = "Id")
     @ManyToOne
     private Additive additiveBId;
-    @JoinColumn(name = "Supervisor3", referencedColumnName = "Id")
-    @ManyToOne
-    private Staff supervisor3;
     @JoinColumn(name = "AdditiveCId", referencedColumnName = "Id")
     @ManyToOne
     private Additive additiveCId;
+    @JoinColumn(name = "Technician3", referencedColumnName = "Id")
+    @ManyToOne
+    private Staff technician3;
+    @JoinColumn(name = "Supervisor3", referencedColumnName = "Id")
+    @ManyToOne
+    private Staff supervisor3;
     @JoinColumn(name = "MouldId", referencedColumnName = "Id")
     @ManyToOne
     private Mould mouldId;
-    @JoinColumn(name = "ProductId", referencedColumnName = "Id")
-    @ManyToOne
-    private Product productId;
-    @JoinColumn(name = "Supervisor1", referencedColumnName = "Id")
-    @ManyToOne
-    private Staff supervisor1;
     @JoinColumn(name = "Technician2", referencedColumnName = "Id")
     @ManyToOne
     private Staff technician2;
+    @JoinColumn(name = "ProductId", referencedColumnName = "Id")
+    @ManyToOne
+    private Product productId;
+    @JoinColumn(name = "Supervisor2", referencedColumnName = "Id")
+    @ManyToOne
+    private Staff supervisor2;
     @JoinColumn(name = "Technician1", referencedColumnName = "Id")
     @ManyToOne
     private Staff technician1;
+    @JoinColumn(name = "Supervisor1", referencedColumnName = "Id")
+    @ManyToOne
+    private Staff supervisor1;
 
     public Entry() {
     }
@@ -381,28 +406,116 @@ public class Entry implements Serializable,SettingEntity {
         this.wallHandleRightMax = wallHandleRightMax;
     }
 
-    public String getAdditiveAPercentage() {
-        return additiveAPercentage;
+    public String getAdditiveABatchA() {
+        return additiveABatchA;
     }
 
-    public void setAdditiveAPercentage(String additiveAPercentage) {
-        this.additiveAPercentage = additiveAPercentage;
+    public void setAdditiveABatchA(String additiveABatchA) {
+        this.additiveABatchA = additiveABatchA;
     }
 
-    public String getAdditiveBPercentage() {
-        return additiveBPercentage;
+    public String getAdditiveBBatchA() {
+        return additiveBBatchA;
     }
 
-    public void setAdditiveBPercentage(String additiveBPercentage) {
-        this.additiveBPercentage = additiveBPercentage;
+    public void setAdditiveBBatchA(String additiveBBatchA) {
+        this.additiveBBatchA = additiveBBatchA;
     }
 
-    public String getAdditiveCPercentage() {
-        return additiveCPercentage;
+    public String getAdditiveCBatchA() {
+        return additiveCBatchA;
     }
 
-    public void setAdditiveCPercentage(String additiveCPercentage) {
-        this.additiveCPercentage = additiveCPercentage;
+    public void setAdditiveCBatchA(String additiveCBatchA) {
+        this.additiveCBatchA = additiveCBatchA;
+    }
+
+    public String getAdditiveABatchB() {
+        return additiveABatchB;
+    }
+
+    public void setAdditiveABatchB(String additiveABatchB) {
+        this.additiveABatchB = additiveABatchB;
+    }
+
+    public String getAdditiveBBatchB() {
+        return additiveBBatchB;
+    }
+
+    public void setAdditiveBBatchB(String additiveBBatchB) {
+        this.additiveBBatchB = additiveBBatchB;
+    }
+
+    public String getAdditiveCBatchB() {
+        return additiveCBatchB;
+    }
+
+    public void setAdditiveCBatchB(String additiveCBatchB) {
+        this.additiveCBatchB = additiveCBatchB;
+    }
+
+    public String getPolymerBatchA() {
+        return polymerBatchA;
+    }
+
+    public void setPolymerBatchA(String polymerBatchA) {
+        this.polymerBatchA = polymerBatchA;
+    }
+
+    public String getPolymerBatchB() {
+        return polymerBatchB;
+    }
+
+    public void setPolymerBatchB(String polymerBatchB) {
+        this.polymerBatchB = polymerBatchB;
+    }
+
+    public Integer getPalletQuantity() {
+        return palletQuantity;
+    }
+
+    public void setPalletQuantity(Integer palletQuantity) {
+        this.palletQuantity = palletQuantity;
+    }
+
+    public Integer getPalletProducedA() {
+        return palletProducedA;
+    }
+
+    public void setPalletProducedA(Integer palletProducedA) {
+        this.palletProducedA = palletProducedA;
+    }
+
+    public Integer getPalletProducedB() {
+        return palletProducedB;
+    }
+
+    public void setPalletProducedB(Integer palletProducedB) {
+        this.palletProducedB = palletProducedB;
+    }
+
+    public Integer getOtherQuantity() {
+        return otherQuantity;
+    }
+
+    public void setOtherQuantity(Integer otherQuantity) {
+        this.otherQuantity = otherQuantity;
+    }
+
+    public Boolean getIsChecked() {
+        return isChecked;
+    }
+
+    public void setIsChecked(Boolean isChecked) {
+        this.isChecked = isChecked;
+    }
+
+    public Staff getWorker3() {
+        return worker3;
+    }
+
+    public void setWorker3(Staff worker3) {
+        this.worker3 = worker3;
     }
 
     public Machine getMachineId() {
@@ -421,36 +534,12 @@ public class Entry implements Serializable,SettingEntity {
         this.worker1 = worker1;
     }
 
-    public Staff getSupervisor2() {
-        return supervisor2;
-    }
-
-    public void setSupervisor2(Staff supervisor2) {
-        this.supervisor2 = supervisor2;
-    }
-
-    public Staff getTechnician3() {
-        return technician3;
-    }
-
-    public void setTechnician3(Staff technician3) {
-        this.technician3 = technician3;
-    }
-
     public Staff getWorker2() {
         return worker2;
     }
 
     public void setWorker2(Staff worker2) {
         this.worker2 = worker2;
-    }
-
-    public Staff getWorker3() {
-        return worker3;
-    }
-
-    public void setWorker3(Staff worker3) {
-        this.worker3 = worker3;
     }
 
     public Polymer getPolymerId() {
@@ -477,20 +566,28 @@ public class Entry implements Serializable,SettingEntity {
         this.additiveBId = additiveBId;
     }
 
-    public Staff getSupervisor3() {
-        return supervisor3;
-    }
-
-    public void setSupervisor3(Staff supervisor3) {
-        this.supervisor3 = supervisor3;
-    }
-
     public Additive getAdditiveCId() {
         return additiveCId;
     }
 
     public void setAdditiveCId(Additive additiveCId) {
         this.additiveCId = additiveCId;
+    }
+
+    public Staff getTechnician3() {
+        return technician3;
+    }
+
+    public void setTechnician3(Staff technician3) {
+        this.technician3 = technician3;
+    }
+
+    public Staff getSupervisor3() {
+        return supervisor3;
+    }
+
+    public void setSupervisor3(Staff supervisor3) {
+        this.supervisor3 = supervisor3;
     }
 
     public Mould getMouldId() {
@@ -501,22 +598,6 @@ public class Entry implements Serializable,SettingEntity {
         this.mouldId = mouldId;
     }
 
-    public Product getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Product productId) {
-        this.productId = productId;
-    }
-
-    public Staff getSupervisor1() {
-        return supervisor1;
-    }
-
-    public void setSupervisor1(Staff supervisor1) {
-        this.supervisor1 = supervisor1;
-    }
-
     public Staff getTechnician2() {
         return technician2;
     }
@@ -525,12 +606,36 @@ public class Entry implements Serializable,SettingEntity {
         this.technician2 = technician2;
     }
 
+    public Product getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Product productId) {
+        this.productId = productId;
+    }
+
+    public Staff getSupervisor2() {
+        return supervisor2;
+    }
+
+    public void setSupervisor2(Staff supervisor2) {
+        this.supervisor2 = supervisor2;
+    }
+
     public Staff getTechnician1() {
         return technician1;
     }
 
     public void setTechnician1(Staff technician1) {
         this.technician1 = technician1;
+    }
+
+    public Staff getSupervisor1() {
+        return supervisor1;
+    }
+
+    public void setSupervisor1(Staff supervisor1) {
+        this.supervisor1 = supervisor1;
     }
 
     @Override
@@ -557,20 +662,12 @@ public class Entry implements Serializable,SettingEntity {
     public String toString() {
         return "com.cch.aj.entryrecorder.entities.Entry[ id=" + id + " ]";
     }
-    
-     @Override
+
+    @Override
     public void setDefaultValue() {
         this.inUse="YES";
         this.createDate=new Date();
         this.shift=AppHelper.defaultShift;
     }
-
-    @XmlTransient
-    public Collection<Record> getRecordCollection() {
-        return recordCollection;
-    }
-
-    public void setRecordCollection(Collection<Record> recordCollection) {
-        this.recordCollection = recordCollection;
-    }
+    
 }

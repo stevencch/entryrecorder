@@ -52,6 +52,19 @@
             </Constraint>
           </Constraints>
         </Component>
+        <Component class="javax.swing.JButton" name="btnDone">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Done"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDoneActionPerformed"/>
+          </Events>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+              <GridBagConstraints gridX="1" gridY="0" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="14" insetsBottom="0" insetsRight="6" anchor="10" weightX="0.0" weightY="0.0"/>
+            </Constraint>
+          </Constraints>
+        </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="jPanel2">
@@ -157,7 +170,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Dialog" size="14" style="1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="COLOUR"/>
+                <Property name="text" type="java.lang.String" value="COLOUR&#x989c;&#x8272;"/>
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -170,7 +183,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Dialog" size="14" style="1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="DESCRIPTION"/>
+                <Property name="text" type="java.lang.String" value="DESCRIPTION&#x63cf;&#x8ff0;"/>
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -183,7 +196,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Dialog" size="14" style="1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="BUNG"/>
+                <Property name="text" type="java.lang.String" value="BUNG&#x585e;&#x5b50;"/>
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -196,7 +209,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Dialog" size="14" style="1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="WEIGHT RANGE"/>
+                <Property name="text" type="java.lang.String" value="WEIGHT RANGE&#x91cd;&#x91cf;"/>
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -209,7 +222,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Dialog" size="14" style="1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="PIERCED"/>
+                <Property name="text" type="java.lang.String" value="PIERCED&#x94bb;&#x7a7f;"/>
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -222,7 +235,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Dialog" size="14" style="1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="GRADE"/>
+                <Property name="text" type="java.lang.String" value="GRADE&#x7b49;&#x7ea7;"/>
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -300,8 +313,8 @@
             <Container class="javax.swing.JPanel" name="jPanel5">
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                  <JTabbedPaneConstraints tabName="Weight">
-                    <Property name="tabTitle" type="java.lang.String" value="Weight"/>
+                  <JTabbedPaneConstraints tabName="Weight&#x91cd;&#x91cf;">
+                    <Property name="tabTitle" type="java.lang.String" value="Weight&#x91cd;&#x91cf;"/>
                   </JTabbedPaneConstraints>
                 </Constraint>
               </Constraints>
@@ -356,7 +369,7 @@
                   <SubComponents>
                     <Component class="javax.swing.JLabel" name="jLabel21">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Product Weight (kg)"/>
+                        <Property name="text" type="java.lang.String" value="Product Weight (grams)&#x91cd;&#x91cf;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -376,7 +389,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="labWeightStaff">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Check By"/>
+                        <Property name="text" type="java.lang.String" value="Check By&#x68c0;&#x67e5;&#x4eba;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -428,8 +441,8 @@
             <Container class="javax.swing.JPanel" name="jPanel37">
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                  <JTabbedPaneConstraints tabName="Cycle Time">
-                    <Property name="tabTitle" type="java.lang.String" value="Cycle Time"/>
+                  <JTabbedPaneConstraints tabName="Cycle Time&#x5faa;&#x73af;">
+                    <Property name="tabTitle" type="java.lang.String" value="Cycle Time&#x5faa;&#x73af;"/>
                   </JTabbedPaneConstraints>
                 </Constraint>
               </Constraints>
@@ -483,7 +496,7 @@
                   <SubComponents>
                     <Component class="javax.swing.JLabel" name="jLabel44">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Cycle Time"/>
+                        <Property name="text" type="java.lang.String" value="Cycle Time&#x5faa;&#x73af;&#x65f6;&#x95f4;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -493,7 +506,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="labBungStaff1">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Check By"/>
+                        <Property name="text" type="java.lang.String" value="Check By&#x68c0;&#x67e5;&#x4eba;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -535,8 +548,8 @@
             <Container class="javax.swing.JPanel" name="jPanel17">
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                  <JTabbedPaneConstraints tabName="Wall Thickness">
-                    <Property name="tabTitle" type="java.lang.String" value="Wall Thickness"/>
+                  <JTabbedPaneConstraints tabName="Wall Thickness&#x58c1;&#x539a;">
+                    <Property name="tabTitle" type="java.lang.String" value="Wall Thickness&#x58c1;&#x539a;"/>
                   </JTabbedPaneConstraints>
                 </Constraint>
               </Constraints>
@@ -592,7 +605,7 @@
                   <SubComponents>
                     <Component class="javax.swing.JLabel" name="jLabel22">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="END OF HANDLE SIDE-RIGHT"/>
+                        <Property name="text" type="java.lang.String" value="END OF HANDLE SIDE-RIGHT&#x628a;&#x624b;&#x53f3;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -612,7 +625,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="labWallStaff">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Record By"/>
+                        <Property name="text" type="java.lang.String" value="Record By&#x68c0;&#x67e5;&#x4eba;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -635,7 +648,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel2">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="UNDER THE HANDLE"/>
+                        <Property name="text" type="java.lang.String" value="UNDER THE HANDLE&#x628a;&#x624b;&#x4e0b;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -665,7 +678,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel6">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="END OF HANDLE SIDE-BUNG"/>
+                        <Property name="text" type="java.lang.String" value="END OF HANDLE SIDE-BUNG&#x628a;&#x624b;&#x585e;&#x5b50;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -675,7 +688,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel8">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="END OF HANDLE SIDE-LEFT"/>
+                        <Property name="text" type="java.lang.String" value="END OF HANDLE SIDE-LEFT&#x628a;&#x624b;&#x5de6;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -735,8 +748,8 @@
             <Container class="javax.swing.JPanel" name="jPanel6">
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                  <JTabbedPaneConstraints tabName="Tap Position">
-                    <Property name="tabTitle" type="java.lang.String" value="Tap Position"/>
+                  <JTabbedPaneConstraints tabName="Tap Position&#x9f99;&#x5934;">
+                    <Property name="tabTitle" type="java.lang.String" value="Tap Position&#x9f99;&#x5934;"/>
                   </JTabbedPaneConstraints>
                 </Constraint>
               </Constraints>
@@ -791,7 +804,7 @@
                   <SubComponents>
                     <Component class="javax.swing.JLabel" name="jLabel23">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Tap"/>
+                        <Property name="text" type="java.lang.String" value="Tap&#x9f99;&#x5934;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -801,7 +814,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="labTapStaff">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Check By"/>
+                        <Property name="text" type="java.lang.String" value="Check By&#x68c0;&#x67e5;&#x4eba;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -876,8 +889,8 @@
             <Container class="javax.swing.JPanel" name="jPanel7">
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                  <JTabbedPaneConstraints tabName="Bung">
-                    <Property name="tabTitle" type="java.lang.String" value="Bung"/>
+                  <JTabbedPaneConstraints tabName="Bung&#x585e;&#x5b50;">
+                    <Property name="tabTitle" type="java.lang.String" value="Bung&#x585e;&#x5b50;"/>
                   </JTabbedPaneConstraints>
                 </Constraint>
               </Constraints>
@@ -932,7 +945,7 @@
                   <SubComponents>
                     <Component class="javax.swing.JLabel" name="jLabel39">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Tap"/>
+                        <Property name="text" type="java.lang.String" value="Bung&#x585e;&#x5b50;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -942,7 +955,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="labBungStaff">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Check By"/>
+                        <Property name="text" type="java.lang.String" value="Check By&#x68c0;&#x67e5;&#x4eba;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -994,8 +1007,8 @@
             <Container class="javax.swing.JPanel" name="jPanel22">
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                  <JTabbedPaneConstraints tabName="Bore / Neck">
-                    <Property name="tabTitle" type="java.lang.String" value="Bore / Neck"/>
+                  <JTabbedPaneConstraints tabName="Bore / Neck&#x94bb;&#x5b54;&#x9888;&#x957f;">
+                    <Property name="tabTitle" type="java.lang.String" value="Bore / Neck&#x94bb;&#x5b54;&#x9888;&#x957f;"/>
                   </JTabbedPaneConstraints>
                 </Constraint>
               </Constraints>
@@ -1051,7 +1064,7 @@
                   <SubComponents>
                     <Component class="javax.swing.JLabel" name="labBoreStaff">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Check By"/>
+                        <Property name="text" type="java.lang.String" value="Check By&#x68c0;&#x67e5;&#x4eba;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -1074,7 +1087,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel10">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="BORE DIAMETRE 1"/>
+                        <Property name="text" type="java.lang.String" value="BORE DIAMETRE 1&#x94bb;&#x5b54;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -1084,7 +1097,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel12">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="BORE DIAMETRE 2"/>
+                        <Property name="text" type="java.lang.String" value="BORE DIAMETRE 2&#x94bb;&#x5b54;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -1094,7 +1107,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel14">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="NECK HEIGHT"/>
+                        <Property name="text" type="java.lang.String" value="NECK HEIGHT&#x9888;&#x957f;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -1173,8 +1186,8 @@
             <Container class="javax.swing.JPanel" name="jPanel25">
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                  <JTabbedPaneConstraints tabName="Quality Check">
-                    <Property name="tabTitle" type="java.lang.String" value="Quality Check"/>
+                  <JTabbedPaneConstraints tabName="Quality Check&#x8d28;&#x68c0;">
+                    <Property name="tabTitle" type="java.lang.String" value="Quality Check&#x8d28;&#x68c0;"/>
                   </JTabbedPaneConstraints>
                 </Constraint>
               </Constraints>
@@ -1229,7 +1242,7 @@
                   <SubComponents>
                     <Component class="javax.swing.JLabel" name="jLabel24">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="STRENGTH OF DRUM"/>
+                        <Property name="text" type="java.lang.String" value="STRENGTH OF DRUM&#x6876;&#x5f3a;&#x5ea6;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -1239,7 +1252,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="labCheckStaff">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Check By"/>
+                        <Property name="text" type="java.lang.String" value="Check By&#x68c0;&#x67e5;&#x4eba;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -1262,7 +1275,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel16">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="NECK ROUND"/>
+                        <Property name="text" type="java.lang.String" value="NECK ROUND&#x9888;&#x5706;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -1272,7 +1285,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel17">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="NECK COMPLETE"/>
+                        <Property name="text" type="java.lang.String" value="NECK COMPLETE&#x9888;&#x5b8c;&#x6210;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -1282,7 +1295,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel18">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="UNDER THE HANDLE"/>
+                        <Property name="text" type="java.lang.String" value="UNDER THE HANDLE&#x628a;&#x624b;&#x4e0b;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -1292,7 +1305,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel19">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="BUNG, IF DRILLED"/>
+                        <Property name="text" type="java.lang.String" value="BUNG, IF DRILLED&#x585e;&#x5b50;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -1312,7 +1325,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel25">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="WEIGHT WITHIN RANGE"/>
+                        <Property name="text" type="java.lang.String" value="WEIGHT WITHIN RANGE&#x91cd;&#x91cf;&#x7b26;&#x5408;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -1322,7 +1335,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel26">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="COLOUR / TEXTURE"/>
+                        <Property name="text" type="java.lang.String" value="COLOUR / TEXTURE&#x989c;&#x8272;&#x6750;&#x8d28;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -1472,8 +1485,8 @@
             <Container class="javax.swing.JPanel" name="jPanel28">
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                  <JTabbedPaneConstraints tabName="Drop Test">
-                    <Property name="tabTitle" type="java.lang.String" value="Drop Test"/>
+                  <JTabbedPaneConstraints tabName="Drop Test&#x6454;&#x843d;">
+                    <Property name="tabTitle" type="java.lang.String" value="Drop Test&#x6454;&#x843d;"/>
                   </JTabbedPaneConstraints>
                 </Constraint>
               </Constraints>
@@ -1540,7 +1553,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="labDropStaff">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Test By"/>
+                        <Property name="text" type="java.lang.String" value="Test By&#x68c0;&#x67e5;&#x4eba;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -1787,30 +1800,142 @@
             <Container class="javax.swing.JPanel" name="jPanel13">
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                  <JTabbedPaneConstraints tabName="Quantity Produced">
-                    <Property name="tabTitle" type="java.lang.String" value="Quantity Produced"/>
+                  <JTabbedPaneConstraints tabName="Quantity Produced&#x6570;&#x91cf;">
+                    <Property name="tabTitle" type="java.lang.String" value="Quantity Produced&#x6570;&#x91cf;"/>
                   </JTabbedPaneConstraints>
                 </Constraint>
               </Constraints>
 
-              <Layout>
-                <DimensionLayout dim="0">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="1093" max="32767" attributes="0"/>
-                  </Group>
-                </DimensionLayout>
-                <DimensionLayout dim="1">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="640" max="32767" attributes="0"/>
-                  </Group>
-                </DimensionLayout>
-              </Layout>
+              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
+              <SubComponents>
+                <Component class="javax.swing.JLabel" name="jLabel49">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Pallet Quantity"/>
+                  </Properties>
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                      <GridBagConstraints gridX="0" gridY="0" gridWidth="1" gridHeight="1" fill="2" ipadX="9" ipadY="9" insetsTop="7" insetsLeft="22" insetsBottom="7" insetsRight="22" anchor="10" weightX="0.3" weightY="0.0"/>
+                    </Constraint>
+                  </Constraints>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jLabel76">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Pallets Produced"/>
+                  </Properties>
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                      <GridBagConstraints gridX="2" gridY="0" gridWidth="1" gridHeight="1" fill="2" ipadX="9" ipadY="9" insetsTop="7" insetsLeft="22" insetsBottom="7" insetsRight="22" anchor="10" weightX="0.3" weightY="0.0"/>
+                    </Constraint>
+                  </Constraints>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtPalletQuantity">
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                      <GridBagConstraints gridX="0" gridY="1" gridWidth="1" gridHeight="1" fill="2" ipadX="9" ipadY="9" insetsTop="7" insetsLeft="22" insetsBottom="7" insetsRight="22" anchor="10" weightX="0.3" weightY="0.0"/>
+                    </Constraint>
+                  </Constraints>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtPalletProducedA">
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                      <GridBagConstraints gridX="2" gridY="1" gridWidth="1" gridHeight="1" fill="2" ipadX="9" ipadY="9" insetsTop="7" insetsLeft="22" insetsBottom="7" insetsRight="22" anchor="10" weightX="0.3" weightY="0.0"/>
+                    </Constraint>
+                  </Constraints>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jLabel77">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="X"/>
+                  </Properties>
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                      <GridBagConstraints gridX="1" gridY="1" gridWidth="1" gridHeight="1" fill="0" ipadX="9" ipadY="9" insetsTop="7" insetsLeft="22" insetsBottom="7" insetsRight="22" anchor="10" weightX="0.3" weightY="0.0"/>
+                    </Constraint>
+                  </Constraints>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jLabel78">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Other Quantity"/>
+                  </Properties>
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                      <GridBagConstraints gridX="0" gridY="2" gridWidth="1" gridHeight="1" fill="2" ipadX="9" ipadY="9" insetsTop="7" insetsLeft="22" insetsBottom="7" insetsRight="22" anchor="10" weightX="0.3" weightY="0.0"/>
+                    </Constraint>
+                  </Constraints>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jLabel79">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Pallets Produced"/>
+                  </Properties>
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                      <GridBagConstraints gridX="2" gridY="2" gridWidth="1" gridHeight="1" fill="2" ipadX="9" ipadY="9" insetsTop="7" insetsLeft="22" insetsBottom="7" insetsRight="22" anchor="10" weightX="0.3" weightY="0.0"/>
+                    </Constraint>
+                  </Constraints>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtOtherQuantity">
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                      <GridBagConstraints gridX="0" gridY="3" gridWidth="1" gridHeight="1" fill="2" ipadX="9" ipadY="9" insetsTop="7" insetsLeft="22" insetsBottom="7" insetsRight="22" anchor="10" weightX="0.3" weightY="0.0"/>
+                    </Constraint>
+                  </Constraints>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jLabel80">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="X"/>
+                  </Properties>
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                      <GridBagConstraints gridX="1" gridY="3" gridWidth="1" gridHeight="1" fill="0" ipadX="9" ipadY="9" insetsTop="7" insetsLeft="22" insetsBottom="7" insetsRight="22" anchor="10" weightX="0.3" weightY="0.0"/>
+                    </Constraint>
+                  </Constraints>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtPalletProducedB">
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                      <GridBagConstraints gridX="2" gridY="3" gridWidth="1" gridHeight="1" fill="2" ipadX="9" ipadY="9" insetsTop="7" insetsLeft="22" insetsBottom="7" insetsRight="22" anchor="10" weightX="0.3" weightY="0.0"/>
+                    </Constraint>
+                  </Constraints>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jLabel81">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Total Produced"/>
+                  </Properties>
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                      <GridBagConstraints gridX="0" gridY="4" gridWidth="1" gridHeight="1" fill="2" ipadX="9" ipadY="9" insetsTop="7" insetsLeft="22" insetsBottom="7" insetsRight="22" anchor="10" weightX="0.3" weightY="0.0"/>
+                    </Constraint>
+                  </Constraints>
+                </Component>
+                <Component class="javax.swing.JLabel" name="labQuantityTotal">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="total"/>
+                  </Properties>
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                      <GridBagConstraints gridX="1" gridY="4" gridWidth="1" gridHeight="1" fill="0" ipadX="9" ipadY="9" insetsTop="7" insetsLeft="22" insetsBottom="7" insetsRight="22" anchor="10" weightX="0.3" weightY="0.0"/>
+                    </Constraint>
+                  </Constraints>
+                </Component>
+                <Component class="javax.swing.JButton" name="btnQuantity">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Save"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnQuantityActionPerformed"/>
+                  </Events>
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                      <GridBagConstraints gridX="0" gridY="5" gridWidth="3" gridHeight="1" fill="0" ipadX="9" ipadY="9" insetsTop="7" insetsLeft="22" insetsBottom="7" insetsRight="22" anchor="10" weightX="0.0" weightY="0.0"/>
+                    </Constraint>
+                  </Constraints>
+                </Component>
+              </SubComponents>
             </Container>
             <Container class="javax.swing.JPanel" name="jPanel8">
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                  <JTabbedPaneConstraints tabName="Seconds / Rejects">
-                    <Property name="tabTitle" type="java.lang.String" value="Seconds / Rejects"/>
+                  <JTabbedPaneConstraints tabName="Seconds / Rejects&#x4e8c;&#x624b;&#x6b21;&#x54c1;">
+                    <Property name="tabTitle" type="java.lang.String" value="Seconds / Rejects&#x4e8c;&#x624b;&#x6b21;&#x54c1;"/>
                   </JTabbedPaneConstraints>
                 </Constraint>
               </Constraints>
@@ -1872,7 +1997,7 @@
                       <SubComponents>
                         <Component class="javax.swing.JLabel" name="jLabel40">
                           <Properties>
-                            <Property name="text" type="java.lang.String" value="Rejects"/>
+                            <Property name="text" type="java.lang.String" value="Rejects&#x6b21;&#x54c1;"/>
                           </Properties>
                           <Constraints>
                             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -1993,7 +2118,7 @@
                       <SubComponents>
                         <Component class="javax.swing.JLabel" name="jLabel41">
                           <Properties>
-                            <Property name="text" type="java.lang.String" value="Seconds"/>
+                            <Property name="text" type="java.lang.String" value="Seconds&#x4e8c;&#x624b;"/>
                           </Properties>
                           <Constraints>
                             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -2064,8 +2189,8 @@
             <Container class="javax.swing.JPanel" name="jPanel40">
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                  <JTabbedPaneConstraints tabName="Leak Test">
-                    <Property name="tabTitle" type="java.lang.String" value="Leak Test"/>
+                  <JTabbedPaneConstraints tabName="Leak Test&#x6f0f;&#x6c34;">
+                    <Property name="tabTitle" type="java.lang.String" value="Leak Test&#x6f0f;&#x6c34;"/>
                   </JTabbedPaneConstraints>
                 </Constraint>
               </Constraints>
@@ -2093,7 +2218,7 @@
 
                       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                       <SubComponents>
-                        <Component class="javax.swing.JTable" name="tblBung1">
+                        <Component class="javax.swing.JTable" name="tblLeak">
                           <Properties>
                             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                               <Table columnCount="3" rowCount="0">
@@ -2119,7 +2244,7 @@
                   <SubComponents>
                     <Component class="javax.swing.JLabel" name="jLabel45">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Stage 1 Testing"/>
+                        <Property name="text" type="java.lang.String" value="Stage 1 Testing&#x6d4b;&#x8bd5;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -2129,7 +2254,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel46">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Water filled by"/>
+                        <Property name="text" type="java.lang.String" value="Water filled by&#x6ce8;&#x6c34;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -2137,17 +2262,20 @@
                         </Constraint>
                       </Constraints>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="jTextField1">
+                    <Component class="javax.swing.JTextField" name="txtLeakFill">
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
                           <GridBagConstraints gridX="1" gridY="1" gridWidth="1" gridHeight="1" fill="2" ipadX="3" ipadY="3" insetsTop="3" insetsLeft="13" insetsBottom="3" insetsRight="13" anchor="10" weightX="0.5" weightY="0.0"/>
                         </Constraint>
                       </Constraints>
                     </Component>
-                    <Component class="javax.swing.JButton" name="jButton1">
+                    <Component class="javax.swing.JButton" name="btnLeakFill">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Add"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLeakFillActionPerformed"/>
+                      </Events>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
                           <GridBagConstraints gridX="0" gridY="2" gridWidth="2" gridHeight="1" fill="0" ipadX="3" ipadY="3" insetsTop="3" insetsLeft="13" insetsBottom="3" insetsRight="13" anchor="10" weightX="0.5" weightY="0.0"/>
@@ -2156,7 +2284,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel47">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Stage 2 Examination"/>
+                        <Property name="text" type="java.lang.String" value="Stage 2 Examination&#x68c0;&#x67e5;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -2166,7 +2294,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel48">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Time filled"/>
+                        <Property name="text" type="java.lang.String" value="Time filled&#x65f6;&#x95f4;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -2174,7 +2302,7 @@
                         </Constraint>
                       </Constraints>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel49">
+                    <Component class="javax.swing.JLabel" name="labLeakTime">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="time"/>
                       </Properties>
@@ -2186,7 +2314,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel50">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Checked By"/>
+                        <Property name="text" type="java.lang.String" value="Checked By&#x68c0;&#x67e5;&#x4eba;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -2194,7 +2322,7 @@
                         </Constraint>
                       </Constraints>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="jTextField2">
+                    <Component class="javax.swing.JTextField" name="txtLeakCheck">
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
                           <GridBagConstraints gridX="1" gridY="5" gridWidth="1" gridHeight="1" fill="2" ipadX="3" ipadY="3" insetsTop="3" insetsLeft="13" insetsBottom="3" insetsRight="13" anchor="10" weightX="0.5" weightY="0.0"/>
@@ -2203,7 +2331,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel51">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Any Leaks"/>
+                        <Property name="text" type="java.lang.String" value="Any Leaks&#x6f0f;&#x6c34;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -2211,7 +2339,7 @@
                         </Constraint>
                       </Constraints>
                     </Component>
-                    <Component class="javax.swing.JComboBox" name="jComboBox1">
+                    <Component class="javax.swing.JComboBox" name="cbLeak">
                       <Properties>
                         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                           <StringArray count="2">
@@ -2220,16 +2348,22 @@
                           </StringArray>
                         </Property>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbLeakActionPerformed"/>
+                      </Events>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
                           <GridBagConstraints gridX="1" gridY="6" gridWidth="1" gridHeight="1" fill="2" ipadX="3" ipadY="3" insetsTop="3" insetsLeft="13" insetsBottom="3" insetsRight="13" anchor="10" weightX="0.5" weightY="0.0"/>
                         </Constraint>
                       </Constraints>
                     </Component>
-                    <Component class="javax.swing.JButton" name="jButton2">
+                    <Component class="javax.swing.JButton" name="btnLeakCheck">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Add"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLeakCheckActionPerformed"/>
+                      </Events>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
                           <GridBagConstraints gridX="0" gridY="8" gridWidth="2" gridHeight="1" fill="0" ipadX="3" ipadY="3" insetsTop="3" insetsLeft="13" insetsBottom="3" insetsRight="13" anchor="10" weightX="0.5" weightY="0.0"/>
@@ -2238,7 +2372,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel52">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="jLabel52"/>
+                        <Property name="text" type="java.lang.String" value="Notes"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -2258,7 +2392,7 @@
 
                       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                       <SubComponents>
-                        <Component class="javax.swing.JTextArea" name="jTextArea1">
+                        <Component class="javax.swing.JTextArea" name="txtLeakNotes">
                           <Properties>
                             <Property name="columns" type="int" value="20"/>
                             <Property name="rows" type="int" value="5"/>
@@ -2273,8 +2407,8 @@
             <Container class="javax.swing.JPanel" name="pnlProductTab">
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                  <JTabbedPaneConstraints tabName="Raw Material">
-                    <Property name="tabTitle" type="java.lang.String" value="Raw Material"/>
+                  <JTabbedPaneConstraints tabName="Raw Material&#x539f;&#x6599;">
+                    <Property name="tabTitle" type="java.lang.String" value="Raw Material&#x539f;&#x6599;"/>
                   </JTabbedPaneConstraints>
                 </Constraint>
               </Constraints>
@@ -2292,7 +2426,7 @@
                   <SubComponents>
                     <Component class="javax.swing.JLabel" name="jLabel62">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="POLYMER TYPE"/>
+                        <Property name="text" type="java.lang.String" value="POLYMER&#x805a;&#x5408;&#x7269;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -2309,7 +2443,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel63">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="ADDITIVE"/>
+                        <Property name="text" type="java.lang.String" value="ADDITIVE&#x6dfb;&#x52a0;&#x7269;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -2329,7 +2463,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel68">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="PERCENTAGE"/>
+                        <Property name="text" type="java.lang.String" value="Batch Number 1"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -2349,7 +2483,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel70">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="PERCENTAGE"/>
+                        <Property name="text" type="java.lang.String" value="Batch Number 1"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -2369,7 +2503,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel72">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="PERCENTAGE"/>
+                        <Property name="text" type="java.lang.String" value="Batch Number 1"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -2384,7 +2518,7 @@
                         </Constraint>
                       </Constraints>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="txtProductPerc1">
+                    <Component class="javax.swing.JTextField" name="txtAdditiveABatchA">
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
                           <GridBagConstraints gridX="3" gridY="2" gridWidth="1" gridHeight="1" fill="2" ipadX="6" ipadY="6" insetsTop="2" insetsLeft="29" insetsBottom="2" insetsRight="29" anchor="10" weightX="0.25" weightY="0.0"/>
@@ -2398,7 +2532,7 @@
                         </Constraint>
                       </Constraints>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="txtProductPerc2">
+                    <Component class="javax.swing.JTextField" name="txtAdditiveBBatchA">
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
                           <GridBagConstraints gridX="3" gridY="5" gridWidth="1" gridHeight="1" fill="2" ipadX="6" ipadY="6" insetsTop="2" insetsLeft="29" insetsBottom="2" insetsRight="29" anchor="10" weightX="0.25" weightY="0.0"/>
@@ -2412,7 +2546,7 @@
                         </Constraint>
                       </Constraints>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="txtProductPerc3">
+                    <Component class="javax.swing.JTextField" name="txtAdditiveCBatchA">
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
                           <GridBagConstraints gridX="3" gridY="8" gridWidth="1" gridHeight="1" fill="2" ipadX="6" ipadY="6" insetsTop="2" insetsLeft="29" insetsBottom="2" insetsRight="29" anchor="10" weightX="0.25" weightY="0.0"/>
@@ -2421,7 +2555,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel64">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="jLabel64"/>
+                        <Property name="text" type="java.lang.String" value="Batch Number 2"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -2431,7 +2565,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel65">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="jLabel65"/>
+                        <Property name="text" type="java.lang.String" value="Polymer Type"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -2441,7 +2575,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel66">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="jLabel66"/>
+                        <Property name="text" type="java.lang.String" value="Batch Number 1"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -2451,7 +2585,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel73">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="jLabel73"/>
+                        <Property name="text" type="java.lang.String" value="Batch Number 2"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -2461,7 +2595,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel74">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="jLabel74"/>
+                        <Property name="text" type="java.lang.String" value="Batch Number 2"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -2471,7 +2605,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel75">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="jLabel75"/>
+                        <Property name="text" type="java.lang.String" value="Batch Number 2"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -2479,35 +2613,35 @@
                         </Constraint>
                       </Constraints>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="jTextField3">
+                    <Component class="javax.swing.JTextField" name="txtPolymerBatchA">
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
                           <GridBagConstraints gridX="1" gridY="2" gridWidth="1" gridHeight="1" fill="2" ipadX="6" ipadY="6" insetsTop="2" insetsLeft="29" insetsBottom="2" insetsRight="29" anchor="10" weightX="0.25" weightY="0.0"/>
                         </Constraint>
                       </Constraints>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="jTextField4">
+                    <Component class="javax.swing.JTextField" name="txtPolymerBatchB">
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
                           <GridBagConstraints gridX="1" gridY="3" gridWidth="1" gridHeight="1" fill="2" ipadX="6" ipadY="6" insetsTop="2" insetsLeft="29" insetsBottom="2" insetsRight="29" anchor="10" weightX="0.25" weightY="0.0"/>
                         </Constraint>
                       </Constraints>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="jTextField5">
+                    <Component class="javax.swing.JTextField" name="txtAdditiveABatchB">
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
                           <GridBagConstraints gridX="3" gridY="3" gridWidth="1" gridHeight="1" fill="2" ipadX="6" ipadY="6" insetsTop="2" insetsLeft="29" insetsBottom="2" insetsRight="29" anchor="10" weightX="0.25" weightY="0.0"/>
                         </Constraint>
                       </Constraints>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="jTextField6">
+                    <Component class="javax.swing.JTextField" name="txtAdditiveBBatchB">
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
                           <GridBagConstraints gridX="3" gridY="6" gridWidth="1" gridHeight="1" fill="2" ipadX="6" ipadY="6" insetsTop="2" insetsLeft="29" insetsBottom="2" insetsRight="29" anchor="10" weightX="0.25" weightY="0.0"/>
                         </Constraint>
                       </Constraints>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="jTextField7">
+                    <Component class="javax.swing.JTextField" name="txtAdditiveCBatchB">
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
                           <GridBagConstraints gridX="3" gridY="9" gridWidth="1" gridHeight="1" fill="2" ipadX="6" ipadY="6" insetsTop="2" insetsLeft="29" insetsBottom="2" insetsRight="29" anchor="10" weightX="0.25" weightY="0.0"/>
@@ -2534,8 +2668,8 @@
             <Container class="javax.swing.JPanel" name="jPanel43">
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                  <JTabbedPaneConstraints tabName="Staff">
-                    <Property name="tabTitle" type="java.lang.String" value="Staff"/>
+                  <JTabbedPaneConstraints tabName="Staff&#x5458;&#x5de5;">
+                    <Property name="tabTitle" type="java.lang.String" value="Staff&#x5458;&#x5de5;"/>
                   </JTabbedPaneConstraints>
                 </Constraint>
               </Constraints>
@@ -2544,7 +2678,7 @@
               <SubComponents>
                 <Component class="javax.swing.JLabel" name="jLabel53">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="SUPERVISOR 1"/>
+                    <Property name="text" type="java.lang.String" value="SUPERVISOR 1&#x76d1;&#x7ba1;&#x4eba;"/>
                   </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -2554,7 +2688,7 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel54">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="SUPERVISOR 2"/>
+                    <Property name="text" type="java.lang.String" value="SUPERVISOR 2&#x76d1;&#x7ba1;&#x4eba;"/>
                   </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -2564,7 +2698,7 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel55">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="SUPERVISOR 3"/>
+                    <Property name="text" type="java.lang.String" value="SUPERVISOR 3&#x76d1;&#x7ba1;&#x4eba;"/>
                   </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -2574,7 +2708,7 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel56">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="TECHNICIAN 1"/>
+                    <Property name="text" type="java.lang.String" value="TECHNICIAN 1&#x6280;&#x672f;&#x5458;"/>
                   </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -2584,7 +2718,7 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel57">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="TECHNICIAN 2"/>
+                    <Property name="text" type="java.lang.String" value="TECHNICIAN 2&#x6280;&#x672f;&#x5458;"/>
                   </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -2594,7 +2728,7 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel58">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="TECHNICIAN 3"/>
+                    <Property name="text" type="java.lang.String" value="TECHNICIAN 3&#x6280;&#x672f;&#x5458;"/>
                   </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -2604,7 +2738,7 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel59">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="MACHINE OPERATOR 1"/>
+                    <Property name="text" type="java.lang.String" value="MACHINE OPERATOR 1&#x64cd;&#x4f5c;&#x5458;"/>
                   </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -2614,7 +2748,7 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel60">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="MACHINE OPERATOR 2"/>
+                    <Property name="text" type="java.lang.String" value="MACHINE OPERATOR 2&#x64cd;&#x4f5c;&#x5458;"/>
                   </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -2624,7 +2758,7 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel61">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="MACHINE OPERATOR 3"/>
+                    <Property name="text" type="java.lang.String" value="MACHINE OPERATOR 3&#x64cd;&#x4f5c;&#x5458;"/>
                   </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">

@@ -42,4 +42,8 @@ public enum RecordKey {
     DROP_TEST_8,
     BUNG,
     CYCLE,
+    LEAK_FILL,
+    LEAK_CHECK,
+    ANY_LEAK,
+    LEAK_NOTES,
 }
