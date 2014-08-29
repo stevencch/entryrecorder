@@ -15,6 +15,9 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -22,7 +25,7 @@ import javax.swing.table.TableModel;
  *
  * @author chacao
  */
-public class SearchJFrame extends javax.swing.JFrame {
+public class SearchJFrame extends javax.swing.JFrame implements ListSelectionListener {
 
     EntrySearchService entrySearchService=new EntrySearchServiceImpl(Entry.class);
     /**
@@ -31,6 +34,8 @@ public class SearchJFrame extends javax.swing.JFrame {
     public SearchJFrame() {
         initComponents();
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        ListSelectionModel model = tblSearch.getSelectionModel();
+        model.addListSelectionListener(this);
     }
 
     /**
@@ -48,7 +53,6 @@ public class SearchJFrame extends javax.swing.JFrame {
         jPanel18 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblSearch = new javax.swing.JTable();
-        btnSave = new javax.swing.JButton();
         jPanel19 = new javax.swing.JPanel();
         btnSearch = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
@@ -71,11 +75,11 @@ public class SearchJFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "EntryId", "Shift", "Product Code", "Created Date", "Show"
+                "EntryId", "Shift", "Product Code", "Created Date"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+                java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -91,18 +95,6 @@ public class SearchJFrame extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         jPanel18.add(jScrollPane2, gridBagConstraints);
-
-        btnSave.setText("Save");
-        btnSave.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSaveActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(14, 14, 14, 14);
-        jPanel18.add(btnSave, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -225,27 +217,9 @@ public class SearchJFrame extends javax.swing.JFrame {
         List<Entry> list=this.entrySearchService.Search(txtShift.getText(), txtProduct.getText(),txtBatch.getText());
         DefaultTableModel model = (DefaultTableModel) this.tblSearch.getModel();
         for(Entry entry:list){
-            model.addRow(new Object[]{entry.getId(),entry.getShift(),entry.getProductId().getCode(),(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(entry.getCreateDate()), false});
+            model.addRow(new Object[]{entry.getId(),entry.getShift(),entry.getProductId().getCode(),(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(entry.getCreateDate())});
         }
     }//GEN-LAST:event_btnSearchActionPerformed
-
-    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        int count = this.tblSearch.getRowCount();
-        TableModel model = tblSearch.getModel();
-        for (int i = 0; i < count; i++) {
-            int id = (int) model.getValueAt(i, 0);
-            Boolean isChecked = (Boolean) model.getValueAt(i, 4);
-            Entry entry=this.entrySearchService.FindEntity(id);
-            if (isChecked) {
-                entry.setInUse("YES");
-            }
-            else{
-                entry.setInUse("NO");
-            }
-            this.entrySearchService.UpdateEntity(entry);
-        }
-        JOptionPane.showMessageDialog(this, "Done", "Info", JOptionPane.OK_OPTION);
-    }//GEN-LAST:event_btnSaveActionPerformed
 
     /**
      * @param args the command line arguments
@@ -283,7 +257,6 @@ public class SearchJFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnSave;
     private javax.swing.JButton btnSearch;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -298,4 +271,14 @@ public class SearchJFrame extends javax.swing.JFrame {
     private javax.swing.JTextField txtProduct;
     private javax.swing.JTextField txtShift;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+        if (!e.getValueIsAdjusting() && tblSearch.getSelectedRow() != -1) {
+            TableModel model = tblSearch.getModel();
+            int checkId = (int) model.getValueAt(tblSearch.getSelectedRow(), 0);
+            MainJFrame mf=new MainJFrame(checkId);
+            mf.setVisible(true);
+        }
+    }
 }

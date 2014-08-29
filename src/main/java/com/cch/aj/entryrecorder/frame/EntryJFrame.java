@@ -83,9 +83,7 @@ public class EntryJFrame extends javax.swing.JFrame {
 
         initComponents();
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        //load staff
-        this.cbStaff.setRenderer(new ComboBoxRender());
-        UpdateTabStaff(0);
+        
         //load entry
         this.cbEntry.setRenderer(new ComboBoxRender());
         this.cbEntryMachine.setRenderer(new ComboBoxRender());
@@ -105,30 +103,6 @@ public class EntryJFrame extends javax.swing.JFrame {
         this.tabSettings.setSelectedIndex(1);
     }
 
-    private void UpdateTabStaff(int id) {
-        int selectedIndex = FillStaffComboBox(this.cbStaff, id,"");
-        if (selectedIndex >= 0) {
-            Staff currentStaff = ((ComboBoxItem<Staff>) this.cbStaff.getSelectedItem()).getItem();
-            //
-            this.cbStaffJob.setSelectedItem(currentStaff.getJobType());
-            this.txtStaffName.setText(currentStaff.getName());
-        } else {
-            this.cbStaff.setModel(new DefaultComboBoxModel(new ComboBoxItem[]{}));
-            this.txtStaffName.setText("");
-        }
-
-        if (this.cbStaff.getSelectedItem() == null || ((ComboBoxItem<Staff>) this.cbStaff.getSelectedItem()).getId() == 0) {
-            this.pnlEditStaff.setVisible(false);
-            this.btnStaffDelete.setVisible(false);
-            this.btnStaffSave.setVisible(false);
-            this.btnStaffUndo.setVisible(false);
-        } else {
-            this.pnlEditStaff.setVisible(true);
-            this.btnStaffDelete.setVisible(true);
-            this.btnStaffSave.setVisible(true);
-            this.btnStaffUndo.setVisible(true);
-        }
-    }
 
     private void UpdateTabEntry(int id) {
 
@@ -404,20 +378,6 @@ public class EntryJFrame extends javax.swing.JFrame {
         btnEntryUndo = new javax.swing.JButton();
         btnEntrySave = new javax.swing.JButton();
         jLabel163 = new javax.swing.JLabel();
-        jPanel29 = new javax.swing.JPanel();
-        jPanel30 = new javax.swing.JPanel();
-        btnStaffNew = new javax.swing.JButton();
-        cbStaff = new javax.swing.JComboBox();
-        btnStaffDelete = new javax.swing.JButton();
-        jPanel31 = new javax.swing.JPanel();
-        btnStaffUndo = new javax.swing.JButton();
-        btnStaffSave = new javax.swing.JButton();
-        jLabel101 = new javax.swing.JLabel();
-        pnlEditStaff = new javax.swing.JPanel();
-        jLabel78 = new javax.swing.JLabel();
-        txtStaffName = new javax.swing.JTextField();
-        jLabel90 = new javax.swing.JLabel();
-        cbStaffJob = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(750, 700));
@@ -1079,151 +1039,6 @@ public class EntryJFrame extends javax.swing.JFrame {
 
         tabSettings.addTab("Entry登记", jPanel38);
 
-        jPanel29.setLayout(new java.awt.GridBagLayout());
-
-        jPanel30.setLayout(new java.awt.GridBagLayout());
-
-        btnStaffNew.setText("New");
-        btnStaffNew.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnStaffNewActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.weightx = 0.25;
-        jPanel30.add(btnStaffNew, gridBagConstraints);
-
-        cbStaff.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbStaffActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 0.5;
-        jPanel30.add(cbStaff, gridBagConstraints);
-
-        btnStaffDelete.setText("Delete");
-        btnStaffDelete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnStaffDeleteActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.weightx = 0.25;
-        jPanel30.add(btnStaffDelete, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
-        jPanel29.add(jPanel30, gridBagConstraints);
-
-        jPanel31.setLayout(new java.awt.GridBagLayout());
-
-        btnStaffUndo.setText("Undo");
-        btnStaffUndo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnStaffUndoActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.weightx = 0.25;
-        jPanel31.add(btnStaffUndo, gridBagConstraints);
-
-        btnStaffSave.setText("Save");
-        btnStaffSave.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnStaffSaveActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.weightx = 0.25;
-        jPanel31.add(btnStaffSave, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.weightx = 0.5;
-        jPanel31.add(jLabel101, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
-        jPanel29.add(jPanel31, gridBagConstraints);
-
-        pnlEditStaff.setLayout(new java.awt.GridBagLayout());
-
-        jLabel78.setText("NAME");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.ipadx = 4;
-        gridBagConstraints.ipady = 4;
-        gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.insets = new java.awt.Insets(14, 0, 6, 20);
-        pnlEditStaff.add(jLabel78, gridBagConstraints);
-
-        txtStaffName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtStaffNameActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.ipadx = 4;
-        gridBagConstraints.ipady = 4;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(14, 0, 6, 55);
-        pnlEditStaff.add(txtStaffName, gridBagConstraints);
-
-        jLabel90.setText("JOB TITLE");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.ipadx = 4;
-        gridBagConstraints.ipady = 4;
-        gridBagConstraints.insets = new java.awt.Insets(14, 0, 6, 20);
-        pnlEditStaff.add(jLabel90, gridBagConstraints);
-
-        cbStaffJob.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "PROCESS WORKER", "TECHNICIAN", "SUPERVISOR" }));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.ipadx = 4;
-        gridBagConstraints.ipady = 4;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(14, 0, 6, 55);
-        pnlEditStaff.add(cbStaffJob, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        jPanel29.add(pnlEditStaff, gridBagConstraints);
-
-        tabSettings.addTab("Staff员工", jPanel29);
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -1238,52 +1053,6 @@ public class EntryJFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void txtStaffNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtStaffNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtStaffNameActionPerformed
-
-    private void btnStaffNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStaffNewActionPerformed
-        // TODO add your handling code here:
-        int newId = this.staffService.CreateEntity();
-        UpdateTabStaff(newId);
-    }//GEN-LAST:event_btnStaffNewActionPerformed
-
-    private void cbStaffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbStaffActionPerformed
-        Staff currentStaff = ((ComboBoxItem<Staff>) this.cbStaff.getSelectedItem()).getItem();
-        UpdateTabStaff(currentStaff.getId());
-    }//GEN-LAST:event_cbStaffActionPerformed
-
-    private void btnStaffSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStaffSaveActionPerformed
-        // TODO add your handling code here:
-        Staff currentStaff = ((ComboBoxItem<Staff>) this.cbStaff.getSelectedItem()).getItem();
-        if ("- Select -".equals(currentStaff.getName())) {
-            return;
-        }
-        currentStaff.setJobType((String) this.cbStaffJob.getSelectedItem());
-        currentStaff.setName(this.txtStaffName.getText());
-        this.staffService.UpdateEntity(currentStaff);
-        this.UpdateTabStaff(currentStaff.getId());
-    }//GEN-LAST:event_btnStaffSaveActionPerformed
-
-    private void btnStaffDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStaffDeleteActionPerformed
-        // TODO add your handling code here:
-        int result = JOptionPane.showConfirmDialog(this, "Are you sure to delete this item", "Warning", JOptionPane.OK_CANCEL_OPTION);
-        if (result == 0) {
-            Staff currentStaff = ((ComboBoxItem<Staff>) this.cbStaff.getSelectedItem()).getItem();
-            if ("- Select -".equals(currentStaff.getName())) {
-                return;
-            }
-            this.staffService.DeleteEntity(currentStaff.getId());
-            this.UpdateTabStaff(0);
-        }
-    }//GEN-LAST:event_btnStaffDeleteActionPerformed
-
-    private void btnStaffUndoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStaffUndoActionPerformed
-        // TODO add your handling code here:
-        Staff currentStaff = ((ComboBoxItem<Staff>) this.cbStaff.getSelectedItem()).getItem();
-        this.UpdateTabStaff(currentStaff.getId());
-    }//GEN-LAST:event_btnStaffUndoActionPerformed
 
 
     private void tabSettingsStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabSettingsStateChanged
@@ -1588,20 +1357,13 @@ public class EntryJFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnEntryNew;
     private javax.swing.JButton btnEntrySave;
     private javax.swing.JButton btnEntryUndo;
-    private javax.swing.JButton btnStaffDelete;
-    private javax.swing.JButton btnStaffNew;
-    private javax.swing.JButton btnStaffSave;
-    private javax.swing.JButton btnStaffUndo;
     private javax.swing.JComboBox cbEntry;
     private javax.swing.JComboBox cbEntryInUse;
     private javax.swing.JComboBox cbEntryMachine;
     private javax.swing.JComboBox cbEntryMould;
     private javax.swing.JComboBox cbEntryProduct;
-    private javax.swing.JComboBox cbStaff;
-    private javax.swing.JComboBox cbStaffJob;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel101;
     private javax.swing.JLabel jLabel118;
     private javax.swing.JLabel jLabel119;
     private javax.swing.JLabel jLabel120;
@@ -1624,13 +1386,8 @@ public class EntryJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel74;
     private javax.swing.JLabel jLabel75;
     private javax.swing.JLabel jLabel76;
-    private javax.swing.JLabel jLabel78;
-    private javax.swing.JLabel jLabel90;
     private javax.swing.JPanel jPanel13;
-    private javax.swing.JPanel jPanel29;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel30;
-    private javax.swing.JPanel jPanel31;
     private javax.swing.JPanel jPanel38;
     private javax.swing.JPanel jPanel47;
     private javax.swing.JPanel jPanel48;
@@ -1638,7 +1395,6 @@ public class EntryJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel labEntryCreatedDate;
     private javax.swing.JLabel labEntryWall;
     private javax.swing.JTabbedPane pnlEditEntry;
-    private javax.swing.JPanel pnlEditStaff;
     private javax.swing.JTabbedPane tabSettings;
     private javax.swing.JTextField txtEntrySearch;
     private javax.swing.JTextField txtEntryShift;
@@ -1664,7 +1420,6 @@ public class EntryJFrame extends javax.swing.JFrame {
     private javax.swing.JTextField txtMouldHandleRightMin;
     private javax.swing.JTextField txtMouldUnderHandleMax;
     private javax.swing.JTextField txtMouldUnderHandleMin;
-    private javax.swing.JTextField txtStaffName;
     // End of variables declaration//GEN-END:variables
 
 }

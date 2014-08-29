@@ -88,6 +88,13 @@ public class MainJFrame extends javax.swing.JFrame {
      * Creates new form MainJFrame
      */
     public MainJFrame() {
+
+        LoadMainForm();
+
+        FillEntryComboBox(this.cbEntry, 0);
+    }
+
+    private void LoadMainForm() {
         initComponents();
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -110,8 +117,17 @@ public class MainJFrame extends javax.swing.JFrame {
         this.cbProductAdditive2.setRenderer(new ComboBoxRender());
         this.cbProductAdditive3.setRenderer(new ComboBoxRender());
         this.cbProductPolymer.setRenderer(new ComboBoxRender());
+    }
 
-        FillEntryComboBox(this.cbEntry, 0);
+    MainJFrame(int checkId) {
+        LoadMainForm();
+        this.currentEntry = this.entryService.FindEntity(checkId);
+        AppHelper.entryProduct = currentEntry.getProductId();
+        AppHelper.currentEntry = currentEntry;
+        this.UpdateEntryForm();
+        this.btnDone.setVisible(false);
+        this.labShift.setText(this.currentEntry.getShift()+"/"+this.currentEntry.getMachineId().getMachineNo()
+        +"/"+this.currentEntry.getProductId().getCode());
     }
 
     private void UpdateEntryForm() {
@@ -406,6 +422,7 @@ public class MainJFrame extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         cbEntry = new javax.swing.JComboBox();
         btnDone = new javax.swing.JButton();
+        labShift = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jPanel15 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
@@ -676,7 +693,7 @@ public class MainJFrame extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         jPanel1.add(cbEntry, gridBagConstraints);
@@ -689,9 +706,18 @@ public class MainJFrame extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new java.awt.Insets(0, 14, 0, 6);
         jPanel1.add(btnDone, gridBagConstraints);
+
+        labShift.setText("shift");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 1, 6, 1);
+        jPanel1.add(labShift, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -3227,6 +3253,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private void cbEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEntryActionPerformed
         if (this.cbEntry.getSelectedIndex() != 0) {
             this.currentEntry = ((ComboBoxItem<Entry>) this.cbEntry.getSelectedItem()).getItem();
+            this.labShift.setText(this.currentEntry.getShift());
             AppHelper.entryProduct = currentEntry.getProductId();
             AppHelper.currentEntry = currentEntry;
             if (currentEntry.getIsChecked() == null || !currentEntry.getIsChecked()) {
@@ -4080,6 +4107,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel labQuantityTotal;
     private javax.swing.JLabel labRejectsTotal;
     private javax.swing.JLabel labSecondsTotal;
+    private javax.swing.JLabel labShift;
     private javax.swing.JLabel labTapStaff;
     private javax.swing.JLabel labWallStaff;
     private javax.swing.JLabel labWeightStaff;

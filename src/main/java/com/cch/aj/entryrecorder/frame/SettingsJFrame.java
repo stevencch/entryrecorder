@@ -83,7 +83,7 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
     private Mould settingMould = new Mould();
     private Product settingProduct = new Product();
     private int settingCheckId = 0;
-    private int templateProdcutId=0;
+    private int templateProdcutId = 0;
 
     private SettingService<Machine> machineService = new SettingServiceImpl<Machine>(Machine.class);
     private SettingService<Polymer> polymerService = new SettingServiceImpl<Polymer>(Polymer.class);
@@ -91,6 +91,7 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
     private SettingService<Mould> mouldService = new SettingServiceImpl<Mould>(Mould.class);
     private SettingService<Product> productService = new SettingServiceImpl<Product>(Product.class);
     private SettingService<Checkitem> checkitemService = new SettingServiceImpl<Checkitem>(Checkitem.class);
+    private SettingService<Staff> staffService = new SettingServiceImpl<Staff>(Staff.class);
 
     /**
      * Creates new form SettingsJFrame
@@ -125,6 +126,9 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         model.addListSelectionListener(this);
 
         this.tblCheck.getColumnModel().getColumn(0).setMaxWidth(40);
+        //load staff
+        this.cbStaff.setRenderer(new ComboBoxRender());
+        UpdateTabStaff(0);
     }
 
     private void UpdateTabMachine(int id) {
@@ -242,6 +246,31 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
             this.btnMouldUndo.setVisible(true);
         }
     }
+    
+    private void UpdateTabStaff(int id) {
+        int selectedIndex = FillStaffComboBox(this.cbStaff, id,"");
+        if (selectedIndex >= 0) {
+            Staff currentStaff = ((ComboBoxItem<Staff>) this.cbStaff.getSelectedItem()).getItem();
+            //
+            this.cbStaffJob.setSelectedItem(currentStaff.getJobType());
+            this.txtStaffName.setText(currentStaff.getName());
+        } else {
+            this.cbStaff.setModel(new DefaultComboBoxModel(new ComboBoxItem[]{}));
+            this.txtStaffName.setText("");
+        }
+
+        if (this.cbStaff.getSelectedItem() == null || ((ComboBoxItem<Staff>) this.cbStaff.getSelectedItem()).getId() == 0) {
+            this.pnlEditStaff.setVisible(false);
+            this.btnStaffDelete.setVisible(false);
+            this.btnStaffSave.setVisible(false);
+            this.btnStaffUndo.setVisible(false);
+        } else {
+            this.pnlEditStaff.setVisible(true);
+            this.btnStaffDelete.setVisible(true);
+            this.btnStaffSave.setVisible(true);
+            this.btnStaffUndo.setVisible(true);
+        }
+    }
 
     private void UpdateTabProduct(int id) {
         //product
@@ -259,12 +288,12 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         }
 
         if (this.cbProduct.getSelectedItem() == null || ((ComboBoxItem<Product>) this.cbProduct.getSelectedItem()).getId() == 0) {
-            this.pnlEditProduct.setVisible(false);
+            this.pnlProductEdit.setVisible(false);
             this.btnProductDelete.setVisible(false);
             this.btnProductSave.setVisible(false);
             this.btnProductUndo.setVisible(false);
         } else {
-            this.pnlEditProduct.setVisible(true);
+            this.pnlProductEdit.setVisible(true);
             this.btnProductDelete.setVisible(true);
             this.btnProductSave.setVisible(true);
             this.btnProductUndo.setVisible(true);
@@ -272,6 +301,31 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
 
     }
 
+    private int FillStaffComboBox(JComboBox comboBox, int id, String jobType) {
+        int result = -1;
+        List<Staff> staffs = this.staffService.GetAllEntities();
+        if(!jobType.equals("")){
+            staffs=staffs.stream().filter(x->x.getJobType().equals(jobType)).collect(Collectors.toList());
+        }
+        if (staffs.size() > 0) {
+            List<ComboBoxItem<Staff>> staffNames = staffs.stream().sorted(comparing(x -> x.getJobType() + " " + x.getName())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getJobType() + " " + x.getName(), x.getId())).collect(Collectors.toList());
+            Staff staff = new Staff();
+            staff.setId(0);
+            staff.setName("- Select -");
+            staffNames.add(0, new ComboBoxItem<Staff>(staff, staff.getName(), staff.getId()));
+            ComboBoxItem[] staffNamesArray = staffNames.toArray(new ComboBoxItem[staffNames.size()]);
+            comboBox.setModel(new DefaultComboBoxModel(staffNamesArray));
+            if (id != 0) {
+                ComboBoxItem<Staff> currentStaffName = staffNames.stream().filter(x -> x.getId() == id).findFirst().get();
+                result = staffNames.indexOf(currentStaffName);
+            } else {
+                result = 0;
+            }
+            comboBox.setSelectedIndex(result);
+        }
+        return result;
+    }
+    
     private int FillMouldComboBox(JComboBox comboBox, int id) {
         int result = -1;
         List<Mould> moulds = this.mouldService.GetAllEntities();
@@ -595,7 +649,7 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         btnProductSave = new javax.swing.JButton();
         jLabel100 = new javax.swing.JLabel();
         pnlEditProduct = new javax.swing.JPanel();
-        jTabbedPane2 = new javax.swing.JTabbedPane();
+        pnlProductEdit = new javax.swing.JTabbedPane();
         jPanel6 = new javax.swing.JPanel();
         txtProductCode = new javax.swing.JTextField();
         cbProductPolymer = new javax.swing.JComboBox();
@@ -683,6 +737,20 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         btnAdditiveUndo = new javax.swing.JButton();
         btnAdditiveSave = new javax.swing.JButton();
         jLabel110 = new javax.swing.JLabel();
+        jPanel29 = new javax.swing.JPanel();
+        jPanel30 = new javax.swing.JPanel();
+        btnStaffNew = new javax.swing.JButton();
+        cbStaff = new javax.swing.JComboBox();
+        btnStaffDelete = new javax.swing.JButton();
+        jPanel31 = new javax.swing.JPanel();
+        btnStaffUndo = new javax.swing.JButton();
+        btnStaffSave = new javax.swing.JButton();
+        jLabel101 = new javax.swing.JLabel();
+        pnlEditStaff = new javax.swing.JPanel();
+        jLabel78 = new javax.swing.JLabel();
+        txtStaffName = new javax.swing.JTextField();
+        jLabel90 = new javax.swing.JLabel();
+        cbStaffJob = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(908, 668));
@@ -2931,7 +2999,7 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 9);
         jPanel6.add(cbProductViewLine, gridBagConstraints);
 
-        jTabbedPane2.addTab("General基本", jPanel6);
+        pnlProductEdit.addTab("General基本", jPanel6);
 
         jPanel7.setLayout(new java.awt.GridBagLayout());
 
@@ -3063,7 +3131,7 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         gridBagConstraints.insets = new java.awt.Insets(12, 7, 12, 7);
         jPanel7.add(jPanel13, gridBagConstraints);
 
-        jTabbedPane2.addTab("Check List检查表", jPanel7);
+        pnlProductEdit.addTab("Check List检查表", jPanel7);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -3072,7 +3140,7 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        pnlProductTab.add(jTabbedPane2, gridBagConstraints);
+        pnlProductTab.add(pnlProductEdit, gridBagConstraints);
 
         pnlEditSetting.addTab("Product产品", pnlProductTab);
 
@@ -3407,6 +3475,151 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         jTabbedPane5.addTab("Additive添加物", jPanel14);
 
         pnlEditSetting.addTab("Raw Material原料", jTabbedPane5);
+
+        jPanel29.setLayout(new java.awt.GridBagLayout());
+
+        jPanel30.setLayout(new java.awt.GridBagLayout());
+
+        btnStaffNew.setText("New");
+        btnStaffNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnStaffNewActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.weightx = 0.25;
+        jPanel30.add(btnStaffNew, gridBagConstraints);
+
+        cbStaff.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbStaffActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.5;
+        jPanel30.add(cbStaff, gridBagConstraints);
+
+        btnStaffDelete.setText("Delete");
+        btnStaffDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnStaffDeleteActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.weightx = 0.25;
+        jPanel30.add(btnStaffDelete, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
+        jPanel29.add(jPanel30, gridBagConstraints);
+
+        jPanel31.setLayout(new java.awt.GridBagLayout());
+
+        btnStaffUndo.setText("Undo");
+        btnStaffUndo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnStaffUndoActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.weightx = 0.25;
+        jPanel31.add(btnStaffUndo, gridBagConstraints);
+
+        btnStaffSave.setText("Save");
+        btnStaffSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnStaffSaveActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.weightx = 0.25;
+        jPanel31.add(btnStaffSave, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.weightx = 0.5;
+        jPanel31.add(jLabel101, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
+        jPanel29.add(jPanel31, gridBagConstraints);
+
+        pnlEditStaff.setLayout(new java.awt.GridBagLayout());
+
+        jLabel78.setText("NAME");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(14, 0, 6, 20);
+        pnlEditStaff.add(jLabel78, gridBagConstraints);
+
+        txtStaffName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtStaffNameActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(14, 0, 6, 55);
+        pnlEditStaff.add(txtStaffName, gridBagConstraints);
+
+        jLabel90.setText("JOB TITLE");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(14, 0, 6, 20);
+        pnlEditStaff.add(jLabel90, gridBagConstraints);
+
+        cbStaffJob.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "PROCESS WORKER", "TECHNICIAN", "SUPERVISOR" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(14, 0, 6, 55);
+        pnlEditStaff.add(cbStaffJob, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        jPanel29.add(pnlEditStaff, gridBagConstraints);
+
+        pnlEditSetting.addTab("Staff员工", jPanel29);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -3916,14 +4129,13 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
             if (settingMouldPreviousId != settingMouldId) {
                 this.UpdateTabProduct(0);
             }
-            ;
             if (this.cbProduct.getSelectedItem() == null || ((ComboBoxItem<Product>) this.cbProduct.getSelectedItem()).getId() == 0) {
-                this.pnlEditProduct.setVisible(false);
+                this.pnlProductEdit.setVisible(false);
                 this.btnProductDelete.setVisible(false);
                 this.btnProductSave.setVisible(false);
                 this.btnProductUndo.setVisible(false);
             } else {
-                this.pnlEditProduct.setVisible(true);
+                this.pnlProductEdit.setVisible(true);
                 this.btnProductDelete.setVisible(true);
                 this.btnProductSave.setVisible(true);
                 this.btnProductUndo.setVisible(true);
@@ -3995,15 +4207,23 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         currentProduct.setMouldId(((ComboBoxItem<Mould>) this.cbProductMould.getSelectedItem()).getItem());
         if (this.cbProductPolymer.getSelectedIndex() != 0) {
             currentProduct.setPolymerId(((ComboBoxItem<Polymer>) this.cbProductPolymer.getSelectedItem()).getItem());
+        } else {
+            currentProduct.setPolymerId(null);
         }
         if (this.cbProductAdditive1.getSelectedIndex() != 0) {
             currentProduct.setAdditiveAId(((ComboBoxItem<Additive>) this.cbProductAdditive1.getSelectedItem()).getItem());
+        } else {
+            currentProduct.setAdditiveAId(null);
         }
         if (this.cbProductAdditive2.getSelectedIndex() != 0) {
             currentProduct.setAdditiveBId(((ComboBoxItem<Additive>) this.cbProductAdditive2.getSelectedItem()).getItem());
+        } else {
+            currentProduct.setAdditiveBId(null);
         }
         if (this.cbProductAdditive3.getSelectedIndex() != 0) {
             currentProduct.setAdditiveCId(((ComboBoxItem<Additive>) this.cbProductAdditive3.getSelectedItem()).getItem());
+        } else {
+            currentProduct.setAdditiveCId(null);
         }
         if (!this.txtProductPerc1.getText().equals("")) {
             currentProduct.setAdditiveAPercentage(this.txtProductPerc1.getText());
@@ -4016,12 +4236,18 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         }
         if (this.cbProductBoreA.getSelectedIndex() != 0) {
             currentProduct.setThreadBoreA(this.cbProductBoreA.getSelectedIndex());
+        } else {
+            currentProduct.setThreadBoreA(null);
         }
         if (this.cbProductBoreB.getSelectedIndex() != 0) {
             currentProduct.setThreadBoreB(this.cbProductBoreB.getSelectedIndex());
+        } else {
+            currentProduct.setThreadBoreB(null);
         }
         if (this.cbProductNeck.getSelectedIndex() != 0) {
             currentProduct.setThreadNeck(this.cbProductNeck.getSelectedIndex());
+        } else {
+            currentProduct.setThreadNeck(null);
         }
 
         this.productService.UpdateEntity(currentProduct);
@@ -4089,9 +4315,9 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
     }//GEN-LAST:event_btnCheckInsertActionPerformed
 
     private void btnCheckPasteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckPasteActionPerformed
-        if(this.templateProdcutId!=0 && this.templateProdcutId!=this.settingProduct.getId()){
-            Product product=this.productService.FindEntity(this.templateProdcutId);
-            for(Checkitem ci:product.getCheckitemCollection()){
+        if (this.templateProdcutId != 0 && this.templateProdcutId != this.settingProduct.getId()) {
+            Product product = this.productService.FindEntity(this.templateProdcutId);
+            for (Checkitem ci : product.getCheckitemCollection()) {
                 this.settingProduct.getCheckitemCollection().add(ci);
             }
         }
@@ -4124,8 +4350,54 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
     }//GEN-LAST:event_btnCheckDeleteActionPerformed
 
     private void btnCheckCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckCopyActionPerformed
-        templateProdcutId=this.settingProduct.getId();
+        templateProdcutId = this.settingProduct.getId();
     }//GEN-LAST:event_btnCheckCopyActionPerformed
+
+    private void btnStaffNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStaffNewActionPerformed
+        // TODO add your handling code here:
+        int newId = this.staffService.CreateEntity();
+        UpdateTabStaff(newId);
+    }//GEN-LAST:event_btnStaffNewActionPerformed
+
+    private void cbStaffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbStaffActionPerformed
+        Staff currentStaff = ((ComboBoxItem<Staff>) this.cbStaff.getSelectedItem()).getItem();
+        UpdateTabStaff(currentStaff.getId());
+    }//GEN-LAST:event_cbStaffActionPerformed
+
+    private void btnStaffDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStaffDeleteActionPerformed
+        // TODO add your handling code here:
+        int result = JOptionPane.showConfirmDialog(this, "Are you sure to delete this item", "Warning", JOptionPane.OK_CANCEL_OPTION);
+        if (result == 0) {
+            Staff currentStaff = ((ComboBoxItem<Staff>) this.cbStaff.getSelectedItem()).getItem();
+            if ("- Select -".equals(currentStaff.getName())) {
+                return;
+            }
+            this.staffService.DeleteEntity(currentStaff.getId());
+            this.UpdateTabStaff(0);
+        }
+    }//GEN-LAST:event_btnStaffDeleteActionPerformed
+
+    private void btnStaffUndoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStaffUndoActionPerformed
+        // TODO add your handling code here:
+        Staff currentStaff = ((ComboBoxItem<Staff>) this.cbStaff.getSelectedItem()).getItem();
+        this.UpdateTabStaff(currentStaff.getId());
+    }//GEN-LAST:event_btnStaffUndoActionPerformed
+
+    private void btnStaffSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStaffSaveActionPerformed
+        // TODO add your handling code here:
+        Staff currentStaff = ((ComboBoxItem<Staff>) this.cbStaff.getSelectedItem()).getItem();
+        if ("- Select -".equals(currentStaff.getName())) {
+            return;
+        }
+        currentStaff.setJobType((String) this.cbStaffJob.getSelectedItem());
+        currentStaff.setName(this.txtStaffName.getText());
+        this.staffService.UpdateEntity(currentStaff);
+        this.UpdateTabStaff(currentStaff.getId());
+    }//GEN-LAST:event_btnStaffSaveActionPerformed
+
+    private void txtStaffNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtStaffNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtStaffNameActionPerformed
 
     private void UpdateProductUI(Product currentProduct) {
         txtProductCode.setText(currentProduct.getCode() == null || currentProduct.getCode() == "- Select -" ? "" : currentProduct.getCode().toString());;
@@ -4139,7 +4411,7 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         this.FillMouldComboBox(this.cbProductMould, currentProduct.getMouldId() != null ? currentProduct.getMouldId().getId() : 0);
         this.FillPolymerComboBox(this.cbProductPolymer, currentProduct.getPolymerId() != null ? currentProduct.getPolymerId().getId() : 0);
         this.FillAdditiveComboBox(this.cbProductAdditive1, currentProduct.getAdditiveAId() != null ? currentProduct.getAdditiveAId().getId() : 0);
-        this.FillAdditiveComboBox(this.cbProductAdditive2, currentProduct.getAdditiveBId() != null ? currentProduct.getAdditiveAId().getId() : 0);
+        this.FillAdditiveComboBox(this.cbProductAdditive2, currentProduct.getAdditiveBId() != null ? currentProduct.getAdditiveBId().getId() : 0);
         this.FillAdditiveComboBox(this.cbProductAdditive3, currentProduct.getAdditiveCId() != null ? currentProduct.getAdditiveCId().getId() : 0);
         List<String> threadBoresA = new ArrayList<String>();
         threadBoresA.add("- Select -");
@@ -4216,8 +4488,8 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         }
         this.txtCheckDesc.setText("");
         //
-        this.txtProductWeightMin.setText(this.settingMould.getWeightDgMin()!=null?this.settingMould.getWeightDgMin().toString():"");
-        this.txtProductWeightMax.setText(this.settingMould.getWeightDgMax()!=null?this.settingMould.getWeightDgMax().toString():"");
+        this.txtProductWeightMin.setText(this.settingMould.getWeightDgMin() != null ? this.settingMould.getWeightDgMin().toString() : "");
+        this.txtProductWeightMax.setText(this.settingMould.getWeightDgMax() != null ? this.settingMould.getWeightDgMax().toString() : "");
     }
 
     /**
@@ -4292,6 +4564,10 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
     private javax.swing.JButton btnProductNew;
     private javax.swing.JButton btnProductSave;
     private javax.swing.JButton btnProductUndo;
+    private javax.swing.JButton btnStaffDelete;
+    private javax.swing.JButton btnStaffNew;
+    private javax.swing.JButton btnStaffSave;
+    private javax.swing.JButton btnStaffUndo;
     private javax.swing.JButton btnTapImage;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox cbAdditive;
@@ -4311,9 +4587,12 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
     private javax.swing.JComboBox cbProductPierced;
     private javax.swing.JComboBox cbProductPolymer;
     private javax.swing.JComboBox cbProductViewLine;
+    private javax.swing.JComboBox cbStaff;
+    private javax.swing.JComboBox cbStaffJob;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel100;
+    private javax.swing.JLabel jLabel101;
     private javax.swing.JLabel jLabel102;
     private javax.swing.JLabel jLabel103;
     private javax.swing.JLabel jLabel105;
@@ -4390,6 +4669,7 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
     private javax.swing.JLabel jLabel70;
     private javax.swing.JLabel jLabel71;
     private javax.swing.JLabel jLabel72;
+    private javax.swing.JLabel jLabel78;
     private javax.swing.JLabel jLabel79;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel80;
@@ -4402,6 +4682,7 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
     private javax.swing.JLabel jLabel87;
     private javax.swing.JLabel jLabel88;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabel90;
     private javax.swing.JLabel jLabel91;
     private javax.swing.JLabel jLabel92;
     private javax.swing.JLabel jLabel93;
@@ -4428,7 +4709,10 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
     private javax.swing.JPanel jPanel24;
     private javax.swing.JPanel jPanel26;
     private javax.swing.JPanel jPanel27;
+    private javax.swing.JPanel jPanel29;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel30;
+    private javax.swing.JPanel jPanel31;
     private javax.swing.JPanel jPanel32;
     private javax.swing.JPanel jPanel33;
     private javax.swing.JPanel jPanel34;
@@ -4442,7 +4726,6 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTabbedPane jTabbedPane5;
     private javax.swing.JLabel labBoreAImage;
     private javax.swing.JLabel labBoreBImage;
@@ -4461,8 +4744,10 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
     private javax.swing.JPanel pnlEditPolymer;
     private javax.swing.JPanel pnlEditProduct;
     private javax.swing.JTabbedPane pnlEditSetting;
+    private javax.swing.JPanel pnlEditStaff;
     private javax.swing.JPanel pnlNeckImage;
     private javax.swing.JPanel pnlNonDgImage;
+    private javax.swing.JTabbedPane pnlProductEdit;
     private javax.swing.JPanel pnlProductTab;
     private javax.swing.JPanel pnlTapImage;
     private javax.swing.JTable tblCheck;
@@ -4548,6 +4833,7 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
     private javax.swing.JTextField txtProductPerc3;
     private javax.swing.JTextField txtProductWeightMax;
     private javax.swing.JTextField txtProductWeightMin;
+    private javax.swing.JTextField txtStaffName;
     // End of variables declaration//GEN-END:variables
 
     @Override
