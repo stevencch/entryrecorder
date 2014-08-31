@@ -3990,83 +3990,164 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         if (!this.txtMouldSize1.getText().equals("")) {
             currentMould.setThreadNeckSize1(this.txtMouldSize1.getText());
         }
+        else{
+            currentMould.setThreadNeckSize1(null);
+        }
         if (!this.txtMouldSize1Max.getText().equals("")) {
             currentMould.setThreadNeckMax1(Float.parseFloat(this.txtMouldSize1Max.getText()));
+        }
+        else{
+            currentMould.setThreadNeckMax1(null);
         }
         if (!this.txtMouldSize1Min.getText().equals("")) {
             currentMould.setThreadNeckMin1(Float.parseFloat(this.txtMouldSize1Min.getText()));
         }
+        else{
+            currentMould.setThreadNeckMin1(null);
+        }
         if (!this.txtMouldSize2.getText().equals("")) {
             currentMould.setThreadNeckSize2(this.txtMouldSize2.getText());
+        }
+        else{
+            currentMould.setThreadNeckSize2(null);
         }
         if (!this.txtMouldSize2Max.getText().equals("")) {
             currentMould.setThreadNeckMax2(Float.parseFloat(this.txtMouldSize2Max.getText()));
         }
+        else{
+            currentMould.setThreadNeckMax2(null);
+        }
         if (!this.txtMouldSize2Min.getText().equals("")) {
             currentMould.setThreadNeckMin2(Float.parseFloat(this.txtMouldSize2Min.getText()));
+        }
+        else{
+            currentMould.setThreadNeckMin2(null);
         }
         if (!this.txtMouldSize3.getText().equals("")) {
             currentMould.setThreadNeckSize3(this.txtMouldSize3.getText());
         }
+        else{
+            currentMould.setThreadNeckSize3(null);
+        }
         if (!this.txtMouldSize3Max.getText().equals("")) {
             currentMould.setThreadNeckMax3(Float.parseFloat(this.txtMouldSize3Max.getText()));
+        }
+        else{
+            currentMould.setThreadNeckMax3(null);
         }
         if (!this.txtMouldSize3Min.getText().equals("")) {
             currentMould.setThreadNeckMin3(Float.parseFloat(this.txtMouldSize3Min.getText()));
         }
+        else{
+            currentMould.setThreadNeckMin3(null);
+        }
         if (!this.txtMouldSizeA1.getText().equals("")) {
             currentMould.setThreadBoreASize1(this.txtMouldSizeA1.getText());
+        }
+        else{
+            currentMould.setThreadBoreASize1(null);
         }
         if (!this.txtMouldSizeA1Max.getText().equals("")) {
             currentMould.setThreadBoreAMax1(Float.parseFloat(this.txtMouldSizeA1Max.getText()));
         }
+        else{
+            currentMould.setThreadBoreAMax1(null);
+        }
         if (!this.txtMouldSizeA1Min.getText().equals("")) {
             currentMould.setThreadBoreAMin1(Float.parseFloat(this.txtMouldSizeA1Min.getText()));
+        }
+        else{
+            currentMould.setThreadBoreAMin1(null);
         }
         if (!this.txtMouldSizeA2.getText().equals("")) {
             currentMould.setThreadBoreASize2(this.txtMouldSizeA2.getText());
         }
+        else{
+            currentMould.setThreadBoreASize2(null);
+        }
         if (!this.txtMouldSizeA2Max.getText().equals("")) {
             currentMould.setThreadBoreAMax2(Float.parseFloat(this.txtMouldSizeA2Max.getText()));
+        }
+        else{
+            currentMould.setThreadBoreAMax2(null);
         }
         if (!this.txtMouldSizeA2Min.getText().equals("")) {
             currentMould.setThreadBoreAMin2(Float.parseFloat(this.txtMouldSizeA2Min.getText()));
         }
+        else{
+            currentMould.setThreadBoreAMin2(null);
+        }
         if (!this.txtMouldSizeA3.getText().equals("")) {
             currentMould.setThreadBoreASize3(this.txtMouldSizeA3.getText());
+        }
+        else{
+            currentMould.setThreadBoreASize3(null);
         }
         if (!this.txtMouldSizeA3Max.getText().equals("")) {
             currentMould.setThreadBoreAMax3(Float.parseFloat(this.txtMouldSizeA3Max.getText()));
         }
+        else{
+            currentMould.setThreadBoreAMax3(null);
+        }
         if (!this.txtMouldSizeA3Min.getText().equals("")) {
             currentMould.setThreadBoreAMin3(Float.parseFloat(this.txtMouldSizeA3Min.getText()));
+        }
+        else{
+            currentMould.setThreadBoreAMin3(null);
         }
         if (!this.txtMouldSizeB1.getText().equals("")) {
             currentMould.setThreadBoreBSize1(this.txtMouldSizeB1.getText());
         }
+        else{
+            currentMould.setThreadBoreBSize1(null);
+        }
         if (!this.txtMouldSizeB1Max.getText().equals("")) {
             currentMould.setThreadBoreBMax1(Float.parseFloat(this.txtMouldSizeB1Max.getText()));
+        }
+        else{
+            currentMould.setThreadBoreBMax1(null);
         }
         if (!this.txtMouldSizeB1Min.getText().equals("")) {
             currentMould.setThreadBoreBMin1(Float.parseFloat(this.txtMouldSizeB1Min.getText()));
         }
+        else{
+            currentMould.setThreadBoreBMin1(null);
+        }
         if (!this.txtMouldSizeB2.getText().equals("")) {
             currentMould.setThreadBoreBSize2(this.txtMouldSizeB2.getText());
+        }
+        else{
+            currentMould.setThreadBoreBSize2(null);
         }
         if (!this.txtMouldSizeB2Max.getText().equals("")) {
             currentMould.setThreadBoreBMax2(Float.parseFloat(this.txtMouldSizeB2Max.getText()));
         }
+        else{
+            currentMould.setThreadBoreBMax2(null);
+        }
         if (!this.txtMouldSizeB2Min.getText().equals("")) {
             currentMould.setThreadBoreBMin2(Float.parseFloat(this.txtMouldSizeB2Min.getText()));
+        }
+        else{
+            currentMould.setThreadBoreBMin2(null);
         }
         if (!this.txtMouldSizeB3.getText().equals("")) {
             currentMould.setThreadBoreBSize3(this.txtMouldSizeB3.getText());
         }
+        else{
+            currentMould.setThreadBoreBSize3(null);
+        }
         if (!this.txtMouldSizeB3Max.getText().equals("")) {
             currentMould.setThreadBoreBMax3(Float.parseFloat(this.txtMouldSizeB3Max.getText()));
         }
+        else{
+            currentMould.setThreadBoreBMax3(null);
+        }
         if (!this.txtMouldSizeB3Min.getText().equals("")) {
             currentMould.setThreadBoreBMin3(Float.parseFloat(this.txtMouldSizeB3Min.getText()));
+        }
+        else{
+            currentMould.setThreadBoreBMin3(null);
         }
         if (!this.txtMouldTapMax.getText().equals("")) {
             currentMould.setTapPositionMax(Float.parseFloat(this.txtMouldTapMax.getText()));
