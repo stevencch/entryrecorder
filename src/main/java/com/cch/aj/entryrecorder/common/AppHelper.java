@@ -80,6 +80,18 @@ public class AppHelper {
         }
     }
     
+    public static void DisplayImageFromResource(String dir,  JPanel panel,int size) {
+        try {
+            BufferedImage myPicture = ImageIO.read(new File(currentDir + dir));
+            JLabel picLabel = new JLabel((AppHelper.getScaledImage(new ImageIcon(AppHelper.class.getResource(dir)), size,size)));
+            panel.setLayout(new FlowLayout());
+            panel.removeAll();
+            panel.add(picLabel);
+        } catch (IOException ex) {
+            Logger.getLogger(SettingsJFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public static boolean CheckTwoDigit(String input){
         boolean result=false;
         result=input.matches("\\d*\\.[\\d]{2}");

@@ -246,9 +246,9 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
             this.btnMouldUndo.setVisible(true);
         }
     }
-    
+
     private void UpdateTabStaff(int id) {
-        int selectedIndex = FillStaffComboBox(this.cbStaff, id,"");
+        int selectedIndex = FillStaffComboBox(this.cbStaff, id, "");
         if (selectedIndex >= 0) {
             Staff currentStaff = ((ComboBoxItem<Staff>) this.cbStaff.getSelectedItem()).getItem();
             //
@@ -304,8 +304,8 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
     private int FillStaffComboBox(JComboBox comboBox, int id, String jobType) {
         int result = -1;
         List<Staff> staffs = this.staffService.GetAllEntities();
-        if(!jobType.equals("")){
-            staffs=staffs.stream().filter(x->x.getJobType().equals(jobType)).collect(Collectors.toList());
+        if (!jobType.equals("")) {
+            staffs = staffs.stream().filter(x -> x.getJobType().equals(jobType)).collect(Collectors.toList());
         }
         if (staffs.size() > 0) {
             List<ComboBoxItem<Staff>> staffNames = staffs.stream().sorted(comparing(x -> x.getJobType() + " " + x.getName())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getJobType() + " " + x.getName(), x.getId())).collect(Collectors.toList());
@@ -325,7 +325,7 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         }
         return result;
     }
-    
+
     private int FillMouldComboBox(JComboBox comboBox, int id) {
         int result = -1;
         List<Mould> moulds = this.mouldService.GetAllEntities();
@@ -2936,6 +2936,11 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         jPanel6.add(jLabel66, gridBagConstraints);
 
         cbProductDg.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "DG", "NON-DG" }));
+        cbProductDg.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbProductDgActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
@@ -3989,164 +3994,137 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         }
         if (!this.txtMouldSize1.getText().equals("")) {
             currentMould.setThreadNeckSize1(this.txtMouldSize1.getText());
-        }
-        else{
+        } else {
             currentMould.setThreadNeckSize1(null);
         }
         if (!this.txtMouldSize1Max.getText().equals("")) {
             currentMould.setThreadNeckMax1(Float.parseFloat(this.txtMouldSize1Max.getText()));
-        }
-        else{
+        } else {
             currentMould.setThreadNeckMax1(null);
         }
         if (!this.txtMouldSize1Min.getText().equals("")) {
             currentMould.setThreadNeckMin1(Float.parseFloat(this.txtMouldSize1Min.getText()));
-        }
-        else{
+        } else {
             currentMould.setThreadNeckMin1(null);
         }
         if (!this.txtMouldSize2.getText().equals("")) {
             currentMould.setThreadNeckSize2(this.txtMouldSize2.getText());
-        }
-        else{
+        } else {
             currentMould.setThreadNeckSize2(null);
         }
         if (!this.txtMouldSize2Max.getText().equals("")) {
             currentMould.setThreadNeckMax2(Float.parseFloat(this.txtMouldSize2Max.getText()));
-        }
-        else{
+        } else {
             currentMould.setThreadNeckMax2(null);
         }
         if (!this.txtMouldSize2Min.getText().equals("")) {
             currentMould.setThreadNeckMin2(Float.parseFloat(this.txtMouldSize2Min.getText()));
-        }
-        else{
+        } else {
             currentMould.setThreadNeckMin2(null);
         }
         if (!this.txtMouldSize3.getText().equals("")) {
             currentMould.setThreadNeckSize3(this.txtMouldSize3.getText());
-        }
-        else{
+        } else {
             currentMould.setThreadNeckSize3(null);
         }
         if (!this.txtMouldSize3Max.getText().equals("")) {
             currentMould.setThreadNeckMax3(Float.parseFloat(this.txtMouldSize3Max.getText()));
-        }
-        else{
+        } else {
             currentMould.setThreadNeckMax3(null);
         }
         if (!this.txtMouldSize3Min.getText().equals("")) {
             currentMould.setThreadNeckMin3(Float.parseFloat(this.txtMouldSize3Min.getText()));
-        }
-        else{
+        } else {
             currentMould.setThreadNeckMin3(null);
         }
         if (!this.txtMouldSizeA1.getText().equals("")) {
             currentMould.setThreadBoreASize1(this.txtMouldSizeA1.getText());
-        }
-        else{
+        } else {
             currentMould.setThreadBoreASize1(null);
         }
         if (!this.txtMouldSizeA1Max.getText().equals("")) {
             currentMould.setThreadBoreAMax1(Float.parseFloat(this.txtMouldSizeA1Max.getText()));
-        }
-        else{
+        } else {
             currentMould.setThreadBoreAMax1(null);
         }
         if (!this.txtMouldSizeA1Min.getText().equals("")) {
             currentMould.setThreadBoreAMin1(Float.parseFloat(this.txtMouldSizeA1Min.getText()));
-        }
-        else{
+        } else {
             currentMould.setThreadBoreAMin1(null);
         }
         if (!this.txtMouldSizeA2.getText().equals("")) {
             currentMould.setThreadBoreASize2(this.txtMouldSizeA2.getText());
-        }
-        else{
+        } else {
             currentMould.setThreadBoreASize2(null);
         }
         if (!this.txtMouldSizeA2Max.getText().equals("")) {
             currentMould.setThreadBoreAMax2(Float.parseFloat(this.txtMouldSizeA2Max.getText()));
-        }
-        else{
+        } else {
             currentMould.setThreadBoreAMax2(null);
         }
         if (!this.txtMouldSizeA2Min.getText().equals("")) {
             currentMould.setThreadBoreAMin2(Float.parseFloat(this.txtMouldSizeA2Min.getText()));
-        }
-        else{
+        } else {
             currentMould.setThreadBoreAMin2(null);
         }
         if (!this.txtMouldSizeA3.getText().equals("")) {
             currentMould.setThreadBoreASize3(this.txtMouldSizeA3.getText());
-        }
-        else{
+        } else {
             currentMould.setThreadBoreASize3(null);
         }
         if (!this.txtMouldSizeA3Max.getText().equals("")) {
             currentMould.setThreadBoreAMax3(Float.parseFloat(this.txtMouldSizeA3Max.getText()));
-        }
-        else{
+        } else {
             currentMould.setThreadBoreAMax3(null);
         }
         if (!this.txtMouldSizeA3Min.getText().equals("")) {
             currentMould.setThreadBoreAMin3(Float.parseFloat(this.txtMouldSizeA3Min.getText()));
-        }
-        else{
+        } else {
             currentMould.setThreadBoreAMin3(null);
         }
         if (!this.txtMouldSizeB1.getText().equals("")) {
             currentMould.setThreadBoreBSize1(this.txtMouldSizeB1.getText());
-        }
-        else{
+        } else {
             currentMould.setThreadBoreBSize1(null);
         }
         if (!this.txtMouldSizeB1Max.getText().equals("")) {
             currentMould.setThreadBoreBMax1(Float.parseFloat(this.txtMouldSizeB1Max.getText()));
-        }
-        else{
+        } else {
             currentMould.setThreadBoreBMax1(null);
         }
         if (!this.txtMouldSizeB1Min.getText().equals("")) {
             currentMould.setThreadBoreBMin1(Float.parseFloat(this.txtMouldSizeB1Min.getText()));
-        }
-        else{
+        } else {
             currentMould.setThreadBoreBMin1(null);
         }
         if (!this.txtMouldSizeB2.getText().equals("")) {
             currentMould.setThreadBoreBSize2(this.txtMouldSizeB2.getText());
-        }
-        else{
+        } else {
             currentMould.setThreadBoreBSize2(null);
         }
         if (!this.txtMouldSizeB2Max.getText().equals("")) {
             currentMould.setThreadBoreBMax2(Float.parseFloat(this.txtMouldSizeB2Max.getText()));
-        }
-        else{
+        } else {
             currentMould.setThreadBoreBMax2(null);
         }
         if (!this.txtMouldSizeB2Min.getText().equals("")) {
             currentMould.setThreadBoreBMin2(Float.parseFloat(this.txtMouldSizeB2Min.getText()));
-        }
-        else{
+        } else {
             currentMould.setThreadBoreBMin2(null);
         }
         if (!this.txtMouldSizeB3.getText().equals("")) {
             currentMould.setThreadBoreBSize3(this.txtMouldSizeB3.getText());
-        }
-        else{
+        } else {
             currentMould.setThreadBoreBSize3(null);
         }
         if (!this.txtMouldSizeB3Max.getText().equals("")) {
             currentMould.setThreadBoreBMax3(Float.parseFloat(this.txtMouldSizeB3Max.getText()));
-        }
-        else{
+        } else {
             currentMould.setThreadBoreBMax3(null);
         }
         if (!this.txtMouldSizeB3Min.getText().equals("")) {
             currentMould.setThreadBoreBMin3(Float.parseFloat(this.txtMouldSizeB3Min.getText()));
-        }
-        else{
+        } else {
             currentMould.setThreadBoreBMin3(null);
         }
         if (!this.txtMouldTapMax.getText().equals("")) {
@@ -4177,7 +4155,7 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
             currentMould.setImageBoreA(this.labBoreAImage.getText());
         }
         if (!this.labBoreBImage.getText().equals("") && !this.labBoreBImage.getText().equals("Image File Path")) {
-            currentMould.setImageBoreB(this.labBoreAImage.getText());
+            currentMould.setImageBoreB(this.labBoreBImage.getText());
         }
         if (!this.labDgImage.getText().equals("") && !this.labDgImage.getText().equals("Image File Path")) {
             currentMould.setImageDg(this.labDgImage.getText());
@@ -4480,6 +4458,17 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         // TODO add your handling code here:
     }//GEN-LAST:event_txtStaffNameActionPerformed
 
+    private void cbProductDgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbProductDgActionPerformed
+        if(this.cbProductDg.getSelectedIndex()==0){
+            this.txtProductWeightMin.setText(this.settingMould.getWeightDgMin() != null ? this.settingMould.getWeightDgMin().toString() : "");
+            this.txtProductWeightMax.setText(this.settingMould.getWeightDgMax() != null ? this.settingMould.getWeightDgMax().toString() : "");
+        }
+        else{
+            this.txtProductWeightMin.setText(this.settingMould.getWeightNonDgMin() != null ? this.settingMould.getWeightNonDgMin().toString() : "");
+            this.txtProductWeightMax.setText(this.settingMould.getWeightNonDgMax() != null ? this.settingMould.getWeightNonDgMax().toString() : "");
+        }
+    }//GEN-LAST:event_cbProductDgActionPerformed
+
     private void UpdateProductUI(Product currentProduct) {
         txtProductCode.setText(currentProduct.getCode() == null || currentProduct.getCode() == "- Select -" ? "" : currentProduct.getCode().toString());;
         txtProductDesc.setText(currentProduct.getDescription() == null ? "" : currentProduct.getDescription().toString());;
@@ -4569,8 +4558,13 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         }
         this.txtCheckDesc.setText("");
         //
-        this.txtProductWeightMin.setText(this.settingMould.getWeightDgMin() != null ? this.settingMould.getWeightDgMin().toString() : "");
-        this.txtProductWeightMax.setText(this.settingMould.getWeightDgMax() != null ? this.settingMould.getWeightDgMax().toString() : "");
+        if (this.settingProduct.getWeightMin() == null && this.settingProduct.getWeightMax() == null) {
+            this.txtProductWeightMin.setText(this.settingMould.getWeightDgMin() != null ? this.settingMould.getWeightDgMin().toString() : "");
+            this.txtProductWeightMax.setText(this.settingMould.getWeightDgMax() != null ? this.settingMould.getWeightDgMax().toString() : "");
+        } else {
+            this.txtProductWeightMin.setText(this.settingProduct.getWeightMin() != null ? this.settingProduct.getWeightMin().toString() : "");
+            this.txtProductWeightMax.setText(this.settingProduct.getWeightMax() != null ? this.settingProduct.getWeightMax().toString() : "");
+        }
     }
 
     /**

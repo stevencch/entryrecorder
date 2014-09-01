@@ -918,12 +918,8 @@ public class EntryJFrame extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.ipadx = 4;
-        gridBagConstraints.ipady = 4;
-        gridBagConstraints.weightx = 0.25;
-        gridBagConstraints.insets = new java.awt.Insets(9, 9, 9, 9);
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
         jPanel47.add(btnEntryNew, gridBagConstraints);
 
         cbEntry.addActionListener(new java.awt.event.ActionListener() {
@@ -949,7 +945,7 @@ public class EntryJFrame extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.ipadx = 4;
         gridBagConstraints.ipady = 4;
