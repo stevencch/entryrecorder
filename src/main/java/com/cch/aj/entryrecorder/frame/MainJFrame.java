@@ -9,6 +9,7 @@ import com.cch.aj.entryrecorder.common.AppHelper;
 import com.cch.aj.entryrecorder.common.ComboBoxItem;
 import com.cch.aj.entryrecorder.common.ComboBoxItemConvertor;
 import com.cch.aj.entryrecorder.common.ComboBoxRender;
+import com.cch.aj.entryrecorder.common.ProcessBuilderWrapper;
 import com.cch.aj.entryrecorder.common.RecordKey;
 import com.cch.aj.entryrecorder.entities.Additive;
 import com.cch.aj.entryrecorder.entities.Entry;
@@ -23,10 +24,18 @@ import com.cch.aj.entryrecorder.services.SettingService;
 import com.cch.aj.entryrecorder.services.impl.RecordSettingServiceImpl;
 import com.cch.aj.entryrecorder.services.impl.RecordValidationServiceImpl;
 import com.cch.aj.entryrecorder.services.impl.SettingServiceImpl;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
+import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparing;
@@ -153,7 +162,7 @@ public class MainJFrame extends javax.swing.JFrame {
         } else {
             AppHelper.DisplayImageFromResource("/no_photo_small.png", this.pnlTapImage, 75);
         }
-        if (currentEntry.getProductId().getDgnondg()!=null && currentEntry.getProductId().getDgnondg()==0) {
+        if (currentEntry.getProductId().getDgnondg() != null && currentEntry.getProductId().getDgnondg() == 0) {
             if (currentEntry.getMouldId().getImageDg() != null) {
                 AppHelper.DisplayImage(currentEntry.getMouldId().getImageDg(), this.pnlWallImage, 75);
             } else {
@@ -255,7 +264,7 @@ public class MainJFrame extends javax.swing.JFrame {
             String staff = record.getStaff() == null ? "" : record.getStaff();
             String name = record.getRecordKey();
             String pass = record.getIsPass() == null ? "" : record.getIsPass();
-            modelDrop.addRow(new Object[]{time, name, record.getStringValue(),pass, staff});
+            modelDrop.addRow(new Object[]{time, name, record.getStringValue(), pass, staff});
         }
         ((AbstractTableModel) this.tblDrop.getModel()).fireTableDataChanged();
         //Bung
@@ -266,7 +275,7 @@ public class MainJFrame extends javax.swing.JFrame {
             String time = new SimpleDateFormat("HH:mm").format(record.getCreatedTime());
             String staff = record.getStaff() == null ? "" : record.getStaff();
             String pass = record.getIsPass() == null ? "" : record.getIsPass();
-            modelBung.addRow(new Object[]{time, record.getStringValue(),pass, staff});
+            modelBung.addRow(new Object[]{time, record.getStringValue(), pass, staff});
         }
         //Cycle
         List<Record> recordsCycle = records.stream().filter(x -> x.getRecordKey().equals("CYCLE")).collect(Collectors.toList());
@@ -376,7 +385,7 @@ public class MainJFrame extends javax.swing.JFrame {
         int result = -1;
         List<Polymer> polymers = this.polymerService.GetAllEntities();
         if (polymers.size() > 0) {
-            List<ComboBoxItem<Polymer>> polymerNames = polymers.stream().sorted(comparing(x -> x.getGrade())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getGrade() + " # " + x.getCompany(), x.getId())).collect(Collectors.toList());
+            List<ComboBoxItem<Polymer>> polymerNames = polymers.stream().sorted(comparing(x -> x.getGrade())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getGrade() + " / " + x.getCompany(), x.getId())).collect(Collectors.toList());
             Polymer polymer = new Polymer();
             polymer.setId(0);
             polymer.setCompany("- Select -");
@@ -398,7 +407,7 @@ public class MainJFrame extends javax.swing.JFrame {
         int result = -1;
         List<Additive> additives = this.additiveService.GetAllEntities();
         if (additives.size() > 0) {
-            List<ComboBoxItem<Additive>> additiveNames = additives.stream().sorted(comparing(x -> x.getGrade())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getGrade() + " # " + x.getCompany(), x.getId())).collect(Collectors.toList());
+            List<ComboBoxItem<Additive>> additiveNames = additives.stream().sorted(comparing(x -> x.getGrade())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getGrade() + " / " + x.getCompany(), x.getId())).collect(Collectors.toList());
             Additive additive = new Additive();
             additive.setId(0);
             additive.setCompany("- Select -");
@@ -3541,6 +3550,7 @@ public class MainJFrame extends javax.swing.JFrame {
         Boolean isSave = false;
         String staff = "";
         String pass = "NO";
+        String checker = "";
         if (this.currentEntry != null) {
             if (AppHelper.CheckTwoDigit(this.txtBore1.getText()) && AppHelper.CheckTwoDigit(this.txtBore2.getText())
                     && AppHelper.CheckTwoDigit(this.txtNeck.getText())) {
@@ -3548,10 +3558,10 @@ public class MainJFrame extends javax.swing.JFrame {
                         && recordValidationService.Validate(currentEntry, RecordKey.THREAD_BORE, Float.parseFloat(this.txtBore2.getText()))
                         && recordValidationService.Validate(currentEntry, RecordKey.THREAD_NECK, Float.parseFloat(this.txtNeck.getText()))) {
                     isSave = true;
-                    pass = "YES";
+
                 } else {
-                    String checker = JOptionPane.showInputDialog(this, "the value is not within the range, please entry technician name.", "Warning", JOptionPane.OK_OPTION);
-                    pass = "NO(" + checker + ")";
+                    checker = JOptionPane.showInputDialog(this, "the value is not within the range, please entry technician name.", "Warning", JOptionPane.OK_OPTION);
+
                     if (!checker.equals("")) {
                         isSave = true;
                     }
@@ -3570,29 +3580,32 @@ public class MainJFrame extends javax.swing.JFrame {
                 Float valueBore2 = Float.parseFloat(this.txtBore2.getText());
                 Float valueNeck = Float.parseFloat(this.txtNeck.getText());
                 if (recordValidationService.Validate(currentEntry, RecordKey.THREAD_BORE1, valueBore1)) {
-                    model.addRow(new Object[]{time, RecordKey.THREAD_BORE1, valueBore1, "YES", staff});
+                    pass = "YES";
                 } else {
-                    model.addRow(new Object[]{time, RecordKey.THREAD_BORE1, valueBore1, "NO", staff});
+                    pass = "NO(" + checker + ")";
                 }
+                model.addRow(new Object[]{time, RecordKey.THREAD_BORE1, valueBore1, pass, staff});
+                UpdateEntryData(now, valueBore1, RecordKey.THREAD_BORE1, staff, pass, "");
                 if (recordValidationService.Validate(currentEntry, RecordKey.THREAD_BORE2, valueBore1)) {
-                    model.addRow(new Object[]{time, RecordKey.THREAD_BORE2, valueBore2, "YES", staff});
+                    pass = "YES";
                 } else {
-                    model.addRow(new Object[]{time, RecordKey.THREAD_BORE2, valueBore2, "NO", staff});
+                    pass = "NO(" + checker + ")";
                 }
+                model.addRow(new Object[]{time, RecordKey.THREAD_BORE2, valueBore1, pass, staff});
+                UpdateEntryData(now, valueBore1, RecordKey.THREAD_BORE2, staff, pass, "");
                 if (recordValidationService.Validate(currentEntry, RecordKey.THREAD_NECK, valueNeck)) {
-                    model.addRow(new Object[]{time, RecordKey.THREAD_NECK, valueNeck, "YES", staff});
+                    pass = "YES";
                 } else {
-                    model.addRow(new Object[]{time, RecordKey.THREAD_NECK, valueNeck, "NO", staff});
+                    pass = "NO(" + checker + ")";
                 }
+                model.addRow(new Object[]{time, RecordKey.THREAD_NECK, valueBore1, pass, staff});
+                UpdateEntryData(now, valueBore1, RecordKey.THREAD_NECK, staff, pass, "");
 
                 ((AbstractTableModel) this.tblBore.getModel()).fireTableDataChanged();
                 this.txtBore1.setText("");
                 this.txtBore2.setText("");
                 this.txtNeck.setText("");
                 //
-                UpdateEntryData(now, valueBore1, RecordKey.THREAD_BORE1, staff, pass, "");
-                UpdateEntryData(now, valueBore2, RecordKey.THREAD_BORE2, staff, pass, "");
-                UpdateEntryData(now, valueNeck, RecordKey.THREAD_NECK, staff, pass, "");
 
             }
         }
@@ -3628,14 +3641,14 @@ public class MainJFrame extends javax.swing.JFrame {
                 DefaultTableModel model = (DefaultTableModel) this.tblCheck.getModel();
                 Date now = new Date();
                 String time = new SimpleDateFormat("HH:mm").format(now);
-                model.addRow(new Object[]{time, RecordKey.CHECK_NECK_ROUND, this.cbNeckRound.getSelectedItem(),pass, staff});
-                model.addRow(new Object[]{time, RecordKey.CHECK_NECK_COMPLETE, this.cbNeckComplete.getSelectedItem(),pass, staff});
-                model.addRow(new Object[]{time, RecordKey.CHECK_UNDER_THE_HANDLE, this.cbUnderTheHandle.getSelectedItem(),pass, staff});
-                model.addRow(new Object[]{time, RecordKey.CHECK_BUNG_IF_DRILLED, this.cbBungIfDrilled.getSelectedItem(),pass,  staff});
+                model.addRow(new Object[]{time, RecordKey.CHECK_NECK_ROUND, this.cbNeckRound.getSelectedItem(), pass, staff});
+                model.addRow(new Object[]{time, RecordKey.CHECK_NECK_COMPLETE, this.cbNeckComplete.getSelectedItem(), pass, staff});
+                model.addRow(new Object[]{time, RecordKey.CHECK_UNDER_THE_HANDLE, this.cbUnderTheHandle.getSelectedItem(), pass, staff});
+                model.addRow(new Object[]{time, RecordKey.CHECK_BUNG_IF_DRILLED, this.cbBungIfDrilled.getSelectedItem(), pass, staff});
                 model.addRow(new Object[]{time, RecordKey.CHECK_BASE, this.cbBase.getSelectedItem(), pass, staff});
-                model.addRow(new Object[]{time, RecordKey.CHECK_STRENGTH_OF_DRUM, this.cbStrengthOfDrum.getSelectedItem(),pass,  staff});
-                model.addRow(new Object[]{time, RecordKey.CHECK_WEIGHT_WITHIN_RANGE, this.cbWeightWithinRange.getSelectedItem(),pass,  staff});
-                model.addRow(new Object[]{time, RecordKey.CHECK_COLOUR_TEXTURE, this.cbColourTexture.getSelectedItem(),pass,  staff});
+                model.addRow(new Object[]{time, RecordKey.CHECK_STRENGTH_OF_DRUM, this.cbStrengthOfDrum.getSelectedItem(), pass, staff});
+                model.addRow(new Object[]{time, RecordKey.CHECK_WEIGHT_WITHIN_RANGE, this.cbWeightWithinRange.getSelectedItem(), pass, staff});
+                model.addRow(new Object[]{time, RecordKey.CHECK_COLOUR_TEXTURE, this.cbColourTexture.getSelectedItem(), pass, staff});
 
                 ((AbstractTableModel) this.tblCheck.getModel()).fireTableDataChanged();
 
@@ -3692,7 +3705,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 Date now = new Date();
                 String time = new SimpleDateFormat("HH:mm").format(now);
                 model.addRow(new Object[]{time, RecordKey.DROP_TEST_1, this.cbDrop1.getSelectedItem(), pass, staff});
-                model.addRow(new Object[]{time, RecordKey.DROP_TEST_2, this.cbDrop2.getSelectedItem(),pass,  staff});
+                model.addRow(new Object[]{time, RecordKey.DROP_TEST_2, this.cbDrop2.getSelectedItem(), pass, staff});
                 model.addRow(new Object[]{time, RecordKey.DROP_TEST_3, this.cbDrop3.getSelectedItem(), pass, staff});
                 model.addRow(new Object[]{time, RecordKey.DROP_TEST_4, this.cbDrop4.getSelectedItem(), pass, staff});
                 model.addRow(new Object[]{time, RecordKey.DROP_TEST_5, this.cbDrop5.getSelectedItem(), pass, staff});
@@ -4012,7 +4025,46 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     private void btnReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportActionPerformed
-        // TODO add your handling code here:
+        try {
+            final File batchFile = new File(AppHelper.currentDir +"\\pdfs\\genReport.bat");
+            List cmd = new ArrayList();
+            cmd.add(batchFile.getAbsolutePath());
+            cmd.add("-f");
+            cmd.add("PDF");
+            cmd.add("-p");
+            cmd.add("\"entryId="
+                    + AppHelper.currentEntry.getId() + "\"");
+            cmd.add("-o");
+            final String pdfFileName = AppHelper.currentDir + "\\pdfs\\report_" + AppHelper.currentEntry.getShift().replace(' ', '-') + "_"
+                    + AppHelper.currentEntry.getMachineId().getMachineNo().replace(' ', '-') + "_"
+                    + AppHelper.currentEntry.getProductId().getCode().replace(' ', '-') + "_" + (new SimpleDateFormat("yyyyMMdd")).format(new Date())
+                    + ".pdf";
+            cmd.add("\""+pdfFileName+"\"");
+            cmd.add("-F");
+            cmd.add("\"" + AppHelper.currentDir + "\\pdfs\\entry.rptdesign\"");
+            
+            ProcessBuilderWrapper pbd = new ProcessBuilderWrapper(new File(AppHelper.currentDir +"\\pdfs\\"), cmd);
+            System.out.println("Command has terminated with status: " + pbd.getStatus());
+            System.out.println("Output:\n" + pbd.getInfos());
+            System.out.println("Error: " + pbd.getErrors());
+            
+            //open
+            File pdfFile = new File(pdfFileName);
+		if (pdfFile.exists()) {
+ 
+			if (Desktop.isDesktopSupported()) {
+				Desktop.getDesktop().open(pdfFile);
+			} else {
+				System.out.println("Awt Desktop is not supported!");
+			}
+ 
+		} else {
+			System.out.println("File is not exists!");
+		}
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }//GEN-LAST:event_btnReportActionPerformed
 
     private void UpdateEntryData(Date now, Float valueUnderHandle, RecordKey key, String staff, String pass, String stringValue) {

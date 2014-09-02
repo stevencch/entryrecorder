@@ -352,7 +352,7 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         int result = -1;
         List<Polymer> polymers = this.polymerService.GetAllEntities();
         if (polymers.size() > 0) {
-            List<ComboBoxItem<Polymer>> polymerNames = polymers.stream().sorted(comparing(x -> x.getGrade())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getGrade() + " # " + x.getCompany(), x.getId())).collect(Collectors.toList());
+            List<ComboBoxItem<Polymer>> polymerNames = polymers.stream().sorted(comparing(x -> x.getGrade())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getGrade() + " / " + x.getCompany(), x.getId())).collect(Collectors.toList());
             Polymer polymer = new Polymer();
             polymer.setId(0);
             polymer.setCompany("- Select -");
@@ -374,7 +374,7 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         int result = -1;
         List<Additive> additives = this.additiveService.GetAllEntities();
         if (additives.size() > 0) {
-            List<ComboBoxItem<Additive>> additiveNames = additives.stream().sorted(comparing(x -> x.getGrade())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getGrade() + " # " + x.getCompany(), x.getId())).collect(Collectors.toList());
+            List<ComboBoxItem<Additive>> additiveNames = additives.stream().sorted(comparing(x -> x.getGrade())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getGrade() + " / " + x.getCompany(), x.getId())).collect(Collectors.toList());
             Additive additive = new Additive();
             additive.setId(0);
             additive.setCompany("- Select -");

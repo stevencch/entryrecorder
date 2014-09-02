@@ -235,7 +235,7 @@ public class EntryJFrame extends javax.swing.JFrame {
             List<Entry> entrys = allEntrys.stream().filter(x -> x.getShift().equals(this.txtEntrySearch.getText())).collect(Collectors.toList());
             if (entrys.size() > 0) {
                 List<ComboBoxItem<Entry>> entryNames = entrys.stream().sorted(comparing(x -> x.getCreateDate()))
-                        .map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, (x.getMachineId() != null ? x.getMachineId().getMachineNo() : "New")+" # "+(x.getProductId()!=null?x.getProductId().getCode():"NA"), x.getId())).collect(Collectors.toList());
+                        .map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, (x.getMachineId() != null ? x.getMachineId().getMachineNo() : "New")+" / "+(x.getProductId()!=null?x.getProductId().getCode():"NA"), x.getId())).collect(Collectors.toList());
                 Entry entry = new Entry();
                 entry.setId(0);
                 entry.setShift("- Select -");
@@ -261,7 +261,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         int result = -1;
         List<Polymer> polymers = this.polymerService.GetAllEntities();
         if (polymers.size() > 0) {
-            List<ComboBoxItem<Polymer>> polymerNames = polymers.stream().sorted(comparing(x -> x.getGrade())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getGrade()+" # "+x.getCompany(), x.getId())).collect(Collectors.toList());
+            List<ComboBoxItem<Polymer>> polymerNames = polymers.stream().sorted(comparing(x -> x.getGrade())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getGrade()+" / "+x.getCompany(), x.getId())).collect(Collectors.toList());
             Polymer polymer = new Polymer();
             polymer.setId(0);
             polymer.setCompany("- Select -");
@@ -283,7 +283,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         int result = -1;
         List<Additive> additives = this.additiveService.GetAllEntities();
         if (additives.size() > 0) {
-            List<ComboBoxItem<Additive>> additiveNames = additives.stream().sorted(comparing(x -> x.getGrade())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getGrade()+" # "+x.getCompany(), x.getId())).collect(Collectors.toList());
+            List<ComboBoxItem<Additive>> additiveNames = additives.stream().sorted(comparing(x -> x.getGrade())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getGrade()+" / "+x.getCompany(), x.getId())).collect(Collectors.toList());
             Additive additive = new Additive();
             additive.setId(0);
             additive.setCompany("- Select -");
