@@ -3425,6 +3425,7 @@ public class MainJFrame extends javax.swing.JFrame {
         Boolean isSave = false;
         String staff = "";
         String pass = "NO";
+        String checker = "";
         if (this.currentEntry != null) {
             if (AppHelper.CheckTwoDigit(this.txtWallBase.getText()) && AppHelper.CheckTwoDigit(this.txtWallHandleBung.getText())
                     && AppHelper.CheckTwoDigit(this.txtWallClosure.getText()) && AppHelper.CheckTwoDigit(this.txtWallHandleLeft.getText())
@@ -3436,10 +3437,8 @@ public class MainJFrame extends javax.swing.JFrame {
                         && recordValidationService.Validate(currentEntry, RecordKey.WALL_HANDLE_RIGHT, Float.parseFloat(this.txtWallHandleRight.getText()))
                         && recordValidationService.Validate(currentEntry, RecordKey.WALL_UNDER_HANDLE, Float.parseFloat(this.txtWallUnderHandle.getText()))) {
                     isSave = true;
-                    pass = "YES";
                 } else {
-                    String checker = JOptionPane.showInputDialog(this, "the value is not within the range, please entry technician name.", "Warning", JOptionPane.OK_OPTION);
-                    pass = "NO(" + checker + ")";
+                    checker = JOptionPane.showInputDialog(this, "the value is not within the range, please entry technician name.", "Warning", JOptionPane.OK_OPTION);
                     if (!checker.equals("")) {
                         isSave = true;
                     }
@@ -3461,36 +3460,48 @@ public class MainJFrame extends javax.swing.JFrame {
                 Float valueHandleLeft = Float.parseFloat(this.txtWallHandleLeft.getText());
                 Float valueHandleRight = Float.parseFloat(this.txtWallHandleRight.getText());
                 if (recordValidationService.Validate(currentEntry, RecordKey.WALL_UNDER_HANDLE, Float.parseFloat(this.txtWallUnderHandle.getText()))) {
-                    model.addRow(new Object[]{time, RecordKey.WALL_UNDER_HANDLE, valueUnderHandle, "YES", staff});
+                    pass = "YES";
                 } else {
-                    model.addRow(new Object[]{time, RecordKey.WALL_UNDER_HANDLE, valueUnderHandle, "NO", staff});
+                    pass = "NO(" + checker + ")";
                 }
+                model.addRow(new Object[]{time, RecordKey.WALL_UNDER_HANDLE, valueUnderHandle, pass, staff});
+                UpdateEntryData(now, valueUnderHandle, RecordKey.WALL_UNDER_HANDLE, staff, pass, "");
                 if (recordValidationService.Validate(currentEntry, RecordKey.WALL_BASE, Float.parseFloat(this.txtWallBase.getText()))) {
-                    model.addRow(new Object[]{time, RecordKey.WALL_BASE, valueBase, "YES", staff});
+                    pass = "YES";
                 } else {
-                    model.addRow(new Object[]{time, RecordKey.WALL_BASE, valueBase, "NO", staff});
+                    pass = "NO(" + checker + ")";
                 }
+                model.addRow(new Object[]{time, RecordKey.WALL_BASE, valueBase, "YES", staff});
+                UpdateEntryData(now, valueBase, RecordKey.WALL_BASE, staff, pass, "");
                 if (recordValidationService.Validate(currentEntry, RecordKey.WALL_CLOSURE, Float.parseFloat(this.txtWallClosure.getText()))) {
-                    model.addRow(new Object[]{time, RecordKey.WALL_CLOSURE, valueClosure, "YES", staff});
+                    pass = "YES";
                 } else {
-                    model.addRow(new Object[]{time, RecordKey.WALL_CLOSURE, valueClosure, "NO", staff});
+                    pass = "NO(" + checker + ")";
                 }
+                model.addRow(new Object[]{time, RecordKey.WALL_CLOSURE, valueClosure, pass, staff});
+                UpdateEntryData(now, valueClosure, RecordKey.WALL_CLOSURE, staff, pass, "");
                 if (recordValidationService.Validate(currentEntry, RecordKey.WALL_HANDLE_BUNG, Float.parseFloat(this.txtWallHandleBung.getText()))) {
-                    model.addRow(new Object[]{time, RecordKey.WALL_HANDLE_BUNG, valueHandleBung, "YES", staff});
+                    pass = "YES";
                 } else {
-                    model.addRow(new Object[]{time, RecordKey.WALL_HANDLE_BUNG, valueHandleBung, "NO", staff});
+                    pass = "NO(" + checker + ")";
                 }
+                model.addRow(new Object[]{time, RecordKey.WALL_HANDLE_BUNG, valueHandleBung, pass, staff});
+                UpdateEntryData(now, valueHandleBung, RecordKey.WALL_HANDLE_BUNG, staff, pass, "");
                 if (recordValidationService.Validate(currentEntry, RecordKey.WALL_HANDLE_LEFT, Float.parseFloat(this.txtWallHandleLeft.getText()))) {
-                    model.addRow(new Object[]{time, RecordKey.WALL_HANDLE_LEFT, valueHandleLeft, "YES", staff});
+                    pass = "YES";
                 } else {
-                    model.addRow(new Object[]{time, RecordKey.WALL_HANDLE_LEFT, valueHandleLeft, "NO", staff});
+                    pass = "NO(" + checker + ")";
                 }
+                model.addRow(new Object[]{time, RecordKey.WALL_HANDLE_LEFT, valueHandleLeft, pass, staff});
+                UpdateEntryData(now, valueHandleLeft, RecordKey.WALL_HANDLE_LEFT, staff, pass, "");
                 if (recordValidationService.Validate(currentEntry, RecordKey.WALL_HANDLE_RIGHT, Float.parseFloat(this.txtWallHandleRight.getText()))) {
-                    model.addRow(new Object[]{time, RecordKey.WALL_HANDLE_RIGHT, valueHandleRight, "YES", staff});
+                    pass = "YES";
                 } else {
-                    model.addRow(new Object[]{time, RecordKey.WALL_HANDLE_RIGHT, valueHandleRight, "NO", staff});
+                    pass = "NO(" + checker + ")";
                 }
-
+                model.addRow(new Object[]{time, RecordKey.WALL_HANDLE_RIGHT, valueHandleRight, pass, staff});
+                UpdateEntryData(now, valueHandleRight, RecordKey.WALL_HANDLE_RIGHT, staff, pass, "");
+                
                 ((AbstractTableModel) this.tblWall.getModel()).fireTableDataChanged();
                 this.txtWallUnderHandle.setText("");
                 this.txtWallBase.setText("");
@@ -3498,13 +3509,6 @@ public class MainJFrame extends javax.swing.JFrame {
                 this.txtWallHandleBung.setText("");
                 this.txtWallHandleLeft.setText("");
                 this.txtWallHandleRight.setText("");
-                //
-                UpdateEntryData(now, valueUnderHandle, RecordKey.WALL_UNDER_HANDLE, staff, pass, "");
-                UpdateEntryData(now, valueBase, RecordKey.WALL_BASE, staff, pass, "");
-                UpdateEntryData(now, valueClosure, RecordKey.WALL_CLOSURE, staff, pass, "");
-                UpdateEntryData(now, valueHandleBung, RecordKey.WALL_HANDLE_BUNG, staff, pass, "");
-                UpdateEntryData(now, valueHandleLeft, RecordKey.WALL_HANDLE_LEFT, staff, pass, "");
-                UpdateEntryData(now, valueHandleRight, RecordKey.WALL_HANDLE_RIGHT, staff, pass, "");
             }
         }
     }//GEN-LAST:event_btnWallActionPerformed
@@ -4026,7 +4030,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
     private void btnReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportActionPerformed
         try {
-            final File batchFile = new File(AppHelper.currentDir +"\\pdfs\\genReport.bat");
+            final File batchFile = new File(AppHelper.currentDir + "\\pdfs\\genReport.bat");
             List cmd = new ArrayList();
             cmd.add(batchFile.getAbsolutePath());
             cmd.add("-f");
@@ -4039,28 +4043,28 @@ public class MainJFrame extends javax.swing.JFrame {
                     + AppHelper.currentEntry.getMachineId().getMachineNo().replace(' ', '-') + "_"
                     + AppHelper.currentEntry.getProductId().getCode().replace(' ', '-') + "_" + (new SimpleDateFormat("yyyyMMdd")).format(new Date())
                     + ".pdf";
-            cmd.add("\""+pdfFileName+"\"");
+            cmd.add("\"" + pdfFileName + "\"");
             cmd.add("-F");
             cmd.add("\"" + AppHelper.currentDir + "\\pdfs\\entry.rptdesign\"");
-            
-            ProcessBuilderWrapper pbd = new ProcessBuilderWrapper(new File(AppHelper.currentDir +"\\pdfs\\"), cmd);
+
+            ProcessBuilderWrapper pbd = new ProcessBuilderWrapper(new File(AppHelper.currentDir + "\\pdfs\\"), cmd);
             System.out.println("Command has terminated with status: " + pbd.getStatus());
             System.out.println("Output:\n" + pbd.getInfos());
             System.out.println("Error: " + pbd.getErrors());
-            
+
             //open
             File pdfFile = new File(pdfFileName);
-		if (pdfFile.exists()) {
- 
-			if (Desktop.isDesktopSupported()) {
-				Desktop.getDesktop().open(pdfFile);
-			} else {
-				System.out.println("Awt Desktop is not supported!");
-			}
- 
-		} else {
-			System.out.println("File is not exists!");
-		}
+            if (pdfFile.exists()) {
+
+                if (Desktop.isDesktopSupported()) {
+                    Desktop.getDesktop().open(pdfFile);
+                } else {
+                    System.out.println("Awt Desktop is not supported!");
+                }
+
+            } else {
+                System.out.println("File is not exists!");
+            }
 
         } catch (Exception ex) {
             ex.printStackTrace();
