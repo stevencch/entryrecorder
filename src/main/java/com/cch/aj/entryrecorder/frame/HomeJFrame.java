@@ -5,11 +5,13 @@
  */
 package com.cch.aj.entryrecorder.frame;
 
+import com.cch.aj.entryrecorder.common.AppConfig;
 import com.cch.aj.entryrecorder.common.AppContext;
 import com.cch.aj.entryrecorder.common.ApplicationContextProvider;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
@@ -114,7 +116,8 @@ public class HomeJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntryActionPerformed
-        MainJFrame mf = AppContext.getApplicationContext().getBean("MainJFrame", com.cch.aj.entryrecorder.frame.MainJFrame.class);
+        MainJFrame mf = AppContext.getApplicationContext().getBean("MainJFrame", MainJFrame.class);
+        mf.init();
         mf.setVisible(true);
     }//GEN-LAST:event_btnEntryActionPerformed
 
@@ -166,8 +169,8 @@ public class HomeJFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                AppContext.setApplicationContext(new ClassPathXmlApplicationContext("applicationContext.xml"));
-                HomeJFrame hf = AppContext.getApplicationContext().getBean("HomeJFrame", com.cch.aj.entryrecorder.frame.HomeJFrame.class);
+                AppContext.setApplicationContext(new AnnotationConfigApplicationContext(AppConfig.class));
+                HomeJFrame hf =new HomeJFrame();
                 hf.setVisible(true);
             }
         });

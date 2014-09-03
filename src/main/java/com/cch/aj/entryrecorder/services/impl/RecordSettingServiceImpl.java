@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
  *
  * @author chacao
  */
-@Service("RecordSettingService")
 public class RecordSettingServiceImpl extends SettingServiceImpl<Record> implements RecordSettingService  {
     
     RecordSettingRepository recordSettingRepository=new RecordRepositoryImpl(this._connectionString);

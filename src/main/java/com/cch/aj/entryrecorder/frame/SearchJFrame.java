@@ -6,6 +6,7 @@
 
 package com.cch.aj.entryrecorder.frame;
 
+import com.cch.aj.entryrecorder.common.AppContext;
 import com.cch.aj.entryrecorder.common.AppHelper;
 import com.cch.aj.entryrecorder.entities.Checkitem;
 import com.cch.aj.entryrecorder.entities.Entry;
@@ -277,7 +278,8 @@ public class SearchJFrame extends javax.swing.JFrame implements ListSelectionLis
         if (!e.getValueIsAdjusting() && tblSearch.getSelectedRow() != -1) {
             TableModel model = tblSearch.getModel();
             int checkId = (int) model.getValueAt(tblSearch.getSelectedRow(), 0);
-            MainJFrame mf=new MainJFrame(checkId);
+            MainJFrame mf = AppContext.getApplicationContext().getBean("MainJFrame", MainJFrame.class);
+            mf.init(checkId);
             mf.setVisible(true);
         }
     }

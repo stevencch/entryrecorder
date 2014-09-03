@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
  *
  * @author chacao
  */
-@Service("recordValidationService")
 public class RecordValidationServiceImpl implements RecordValidationService {
 
     

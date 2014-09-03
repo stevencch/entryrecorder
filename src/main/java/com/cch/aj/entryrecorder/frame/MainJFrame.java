@@ -46,6 +46,7 @@ import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparing;
+import static java.util.Comparator.comparing;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -74,18 +75,29 @@ import org.springframework.stereotype.Component;
  *
  * @author Administrator
  */
-@Component("MainJFrame")
-@Scope(BeanDefinition.SCOPE_PROTOTYPE)
+//@Component("MainJFrame")
+//@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class MainJFrame extends javax.swing.JFrame {
 
     //private RecordValidationService recordValidationService = new RecordValidationServiceImpl();
     @Autowired
     private RecordValidationService recordValidationService;
-    private RecordSettingService recordService = new RecordSettingServiceImpl(Record.class);
-    private SettingService<Staff> staffService = new SettingServiceImpl<Staff>(Staff.class);
-    private SettingService<Entry> entryService = new SettingServiceImpl<Entry>(Entry.class);
-    private SettingService<Polymer> polymerService = new SettingServiceImpl<Polymer>(Polymer.class);
-    private SettingService<Additive> additiveService = new SettingServiceImpl<Additive>(Additive.class);
+
+    @Autowired
+    private RecordSettingService recordService;
+    @Autowired
+    private SettingService<Staff> staffService;
+    @Autowired
+    private SettingService<Entry> entryService;
+
+    @Autowired
+    public void setEntryService(SettingService<Entry> entryService) {
+        this.entryService = entryService;
+    }
+    @Autowired
+    private SettingService<Polymer> polymerService;
+    @Autowired
+    private SettingService<Additive> additiveService;
     private Entry currentEntry = null;
 
     DefaultCategoryDataset datasetWeight = new DefaultCategoryDataset();
@@ -97,14 +109,28 @@ public class MainJFrame extends javax.swing.JFrame {
      * Creates new form MainJFrame
      */
     public MainJFrame() {
+        initComponents();
+    }
 
+    public void init() {
         LoadMainForm();
 
         FillEntryComboBox(this.cbEntry, 0);
     }
+    
+    public void init(int checkId) {
+        LoadMainForm();
+        this.currentEntry = this.entryService.FindEntity(checkId);
+        AppHelper.entryProduct = currentEntry.getProductId();
+        AppHelper.currentEntry = currentEntry;
+        this.UpdateEntryForm();
+        this.btnDone.setVisible(false);
+        this.labShift.setText(this.currentEntry.getShift() + "/" + this.currentEntry.getMachineId().getMachineNo()
+                + "/" + this.currentEntry.getProductId().getCode());
+    }
 
     private void LoadMainForm() {
-        initComponents();
+        
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         //load entry
@@ -128,16 +154,7 @@ public class MainJFrame extends javax.swing.JFrame {
         this.cbProductPolymer.setRenderer(new ComboBoxRender());
     }
 
-    MainJFrame(int checkId) {
-        LoadMainForm();
-        this.currentEntry = this.entryService.FindEntity(checkId);
-        AppHelper.entryProduct = currentEntry.getProductId();
-        AppHelper.currentEntry = currentEntry;
-        this.UpdateEntryForm();
-        this.btnDone.setVisible(false);
-        this.labShift.setText(this.currentEntry.getShift() + "/" + this.currentEntry.getMachineId().getMachineNo()
-                + "/" + this.currentEntry.getProductId().getCode());
-    }
+    
 
     private void UpdateEntryForm() {
         List<Record> records = this.recordService.GetAllEntitiesByKeyAndRecord(RecordKey.ALL, this.currentEntry.getId());
@@ -678,7 +695,7 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabel51 = new javax.swing.JLabel();
         cbLeak = new javax.swing.JComboBox();
         btnLeakCheck = new javax.swing.JButton();
-        jLabel52 = new javax.swing.JLabel();
+        labLeakNotes = new javax.swing.JLabel();
         jScrollPane12 = new javax.swing.JScrollPane();
         txtLeakNotes = new javax.swing.JTextArea();
         pnlProductTab = new javax.swing.JPanel();
@@ -817,8 +834,6 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(2, 1, 2, 1);
         jPanel15.add(jLabel5, gridBagConstraints);
-
-        txtProductCode.setText("jLabel6");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -826,8 +841,6 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(2, 1, 2, 1);
         jPanel15.add(txtProductCode, gridBagConstraints);
-
-        txtProductColor.setText("jLabel12");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 9;
@@ -835,8 +848,6 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(2, 1, 2, 1);
         jPanel15.add(txtProductColor, gridBagConstraints);
-
-        txtProductWeight.setText("jLabel10");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
@@ -844,8 +855,6 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(2, 1, 2, 1);
         jPanel15.add(txtProductWeight, gridBagConstraints);
-
-        txtProductPierced.setText("jLabel16");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 13;
@@ -853,8 +862,6 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(2, 1, 2, 1);
         jPanel15.add(txtProductPierced, gridBagConstraints);
-
-        txtProductDesc.setText("jLabel8");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
@@ -862,8 +869,6 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(2, 1, 2, 1);
         jPanel15.add(txtProductDesc, gridBagConstraints);
-
-        txtProductBung.setText("jLabel14");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 11;
@@ -937,8 +942,6 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(2, 1, 2, 1);
         jPanel15.add(jLabel38, gridBagConstraints);
-
-        txtProductGrade.setText("jLabel12");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 7;
@@ -2786,7 +2789,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 13, 3, 13);
         jPanel42.add(jLabel51, gridBagConstraints);
 
-        cbLeak.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "YES", "NO" }));
+        cbLeak.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "- Select -", "YES", "NO" }));
         cbLeak.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbLeakActionPerformed(evt);
@@ -2818,7 +2821,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 13, 3, 13);
         jPanel42.add(btnLeakCheck, gridBagConstraints);
 
-        jLabel52.setText("Notes");
+        labLeakNotes.setText("Notes");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 7;
@@ -2827,7 +2830,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipady = 3;
         gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(2, 13, 3, 13);
-        jPanel42.add(jLabel52, gridBagConstraints);
+        jPanel42.add(labLeakNotes, gridBagConstraints);
 
         txtLeakNotes.setColumns(20);
         txtLeakNotes.setRows(5);
@@ -3501,7 +3504,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 }
                 model.addRow(new Object[]{time, RecordKey.WALL_HANDLE_RIGHT, valueHandleRight, pass, staff});
                 UpdateEntryData(now, valueHandleRight, RecordKey.WALL_HANDLE_RIGHT, staff, pass, "");
-                
+
                 ((AbstractTableModel) this.tblWall.getModel()).fireTableDataChanged();
                 this.txtWallUnderHandle.setText("");
                 this.txtWallBase.setText("");
@@ -4218,7 +4221,6 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel50;
     private javax.swing.JLabel jLabel51;
-    private javax.swing.JLabel jLabel52;
     private javax.swing.JLabel jLabel53;
     private javax.swing.JLabel jLabel54;
     private javax.swing.JLabel jLabel55;
@@ -4314,6 +4316,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel labBungStaff1;
     private javax.swing.JLabel labCheckStaff;
     private javax.swing.JLabel labDropStaff;
+    private javax.swing.JLabel labLeakNotes;
     private javax.swing.JLabel labLeakTime;
     private javax.swing.JLabel labNeckImage;
     private javax.swing.JLabel labProductImage;
@@ -4404,4 +4407,5 @@ public class MainJFrame extends javax.swing.JFrame {
         this.txtProductPierced.setText(currentEntry.getProductId().getPierced());
         this.txtProductWeight.setText(currentEntry.getProductId().getWeightMin() + " - " + currentEntry.getProductId().getWeightMax());
     }
+
 }
