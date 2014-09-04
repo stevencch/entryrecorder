@@ -30,6 +30,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  *
@@ -38,9 +39,12 @@ import java.util.logging.Logger;
  */
 public class SettingServiceImpl<T extends SettingEntity> implements SettingService<T> {
 
-    protected String _connectionString = "com.cch.aj_EntryRecorder_jar_1.0-SNAPSHOTPU";
+    @Value("${connectionString}")
+    protected String _connectionString;
+    
     protected SettingRepository repository;
     private T instance;
+    private Class<T> type;
 
     public SettingServiceImpl(Class<T> type) {
         try {
@@ -50,38 +54,47 @@ public class SettingServiceImpl<T extends SettingEntity> implements SettingServi
         } catch (IllegalAccessException ex) {
             Logger.getLogger(SettingServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if (type == Machine.class) {
-            this.repository = new MachineRepositoryImpl(this._connectionString);
+
+        this.type = type;
+
+    }
+
+    private SettingRepository getRepository() {
+        if (this.repository == null) {
+            if (type == Machine.class) {
+                this.repository = new MachineRepositoryImpl(this._connectionString);
+            }
+            if (type == Staff.class) {
+                this.repository = new StaffRepositoryImpl(this._connectionString);
+            }
+            if (type == Polymer.class) {
+                this.repository = new PolymerRepositoryImpl(this._connectionString);
+            }
+            if (type == Additive.class) {
+                this.repository = new AdditiveRepositoryImpl(this._connectionString);
+            }
+            if (type == Mould.class) {
+                this.repository = new MouldRepositoryImpl(this._connectionString);
+            }
+            if (type == Product.class) {
+                this.repository = new ProductRepositoryImpl(this._connectionString);
+            }
+            if (type == Entry.class) {
+                this.repository = new EntryRepositoryImpl(this._connectionString);
+            }
+            if (type == Record.class) {
+                this.repository = new RecordRepositoryImpl(this._connectionString);
+            }
+            if (type == Checkitem.class) {
+                this.repository = new CheckitemRepositoryImpl(this._connectionString);
+            }
         }
-        if (type == Staff.class) {
-            this.repository = new StaffRepositoryImpl(this._connectionString);
-        }
-        if (type == Polymer.class) {
-            this.repository = new PolymerRepositoryImpl(this._connectionString);
-        }
-        if (type == Additive.class) {
-            this.repository = new AdditiveRepositoryImpl(this._connectionString);
-        }
-        if (type == Mould.class) {
-            this.repository = new MouldRepositoryImpl(this._connectionString);
-        }
-        if (type == Product.class) {
-            this.repository = new ProductRepositoryImpl(this._connectionString);
-        }
-        if (type == Entry.class) {
-            this.repository = new EntryRepositoryImpl(this._connectionString);
-        }
-        if (type == Record.class) {
-            this.repository = new RecordRepositoryImpl(this._connectionString);
-        }
-        if (type == Checkitem.class) {
-            this.repository = new CheckitemRepositoryImpl(this._connectionString);
-        }
+        return this.repository;
     }
 
     @Override
     public List<T> GetAllEntities() {
-        return this.repository.findEntities();
+        return this.getRepository().findEntities();
     }
 
     @Override
@@ -90,7 +103,7 @@ public class SettingServiceImpl<T extends SettingEntity> implements SettingServi
         Integer result = 0;
         if (newItem != null) {
             newItem.setDefaultValue();
-            this.repository.create(newItem);
+            this.getRepository().create(newItem);
             result = newItem.getId();
         }
         return result;
@@ -99,7 +112,7 @@ public class SettingServiceImpl<T extends SettingEntity> implements SettingServi
     @Override
     public void UpdateEntity(T item) {
         try {
-            this.repository.edit(item);
+            this.getRepository().edit(item);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -108,7 +121,7 @@ public class SettingServiceImpl<T extends SettingEntity> implements SettingServi
     @Override
     public void DeleteEntity(Integer id) {
         try {
-            this.repository.destroy(id);
+            this.getRepository().destroy(id);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -116,7 +129,7 @@ public class SettingServiceImpl<T extends SettingEntity> implements SettingServi
 
     @Override
     public T FindEntity(Integer id) {
-        return (T) this.repository.findEntity(id);
+        return (T) this.getRepository().findEntity(id);
     }
 
 }

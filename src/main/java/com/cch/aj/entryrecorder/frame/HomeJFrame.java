@@ -7,6 +7,7 @@ package com.cch.aj.entryrecorder.frame;
 
 import com.cch.aj.entryrecorder.common.AppConfig;
 import com.cch.aj.entryrecorder.common.AppContext;
+import com.cch.aj.entryrecorder.common.AppHelper;
 import com.cch.aj.entryrecorder.common.ApplicationContextProvider;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -122,20 +123,20 @@ public class HomeJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEntryActionPerformed
 
     private void btnShiftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShiftActionPerformed
-        EntryJFrame ef = new EntryJFrame();
+        EntryJFrame ef = AppContext.getApplicationContext().getBean("EntryJFrame", EntryJFrame.class);
         ef.setVisible(true);
     }//GEN-LAST:event_btnShiftActionPerformed
 
     private void btnSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSettingsActionPerformed
         String login = JOptionPane.showInputDialog(this, "Please enter 'UserName/Password'");
         if (login!=null && (login.equals("aj") || login.equals("admin/ajpro123"))) {
-            SettingsJFrame sf = new SettingsJFrame();
+            SettingsJFrame sf = AppContext.getApplicationContext().getBean("SettingsJFrame", SettingsJFrame.class);
             sf.setVisible(true);
         }
     }//GEN-LAST:event_btnSettingsActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        SearchJFrame sf = new SearchJFrame();
+        SearchJFrame sf = AppContext.getApplicationContext().getBean("SearchJFrame", SearchJFrame.class);
         sf.setVisible(true);
     }//GEN-LAST:event_btnSearchActionPerformed
 
@@ -165,7 +166,7 @@ public class HomeJFrame extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(HomeJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        AppHelper.Logger.info("###Start the Program###");
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

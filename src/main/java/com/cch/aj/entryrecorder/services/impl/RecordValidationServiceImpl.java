@@ -20,8 +20,6 @@ import org.springframework.stereotype.Service;
 public class RecordValidationServiceImpl implements RecordValidationService {
 
     
-    private SettingService<Entry> entryService = new SettingServiceImpl<Entry>(Entry.class);
-
     @Override
     public Boolean Validate(Entry entry, RecordKey key, Float value) {
         Boolean result = true;

@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -23,13 +24,17 @@ import javax.swing.table.TableModel;
  */
 public class CheckJFrame extends javax.swing.JFrame {
 
-    private SettingService<Entry> entryService = new SettingServiceImpl<Entry>(Entry.class);
+    @Autowired
+    private SettingService<Entry> entryService;
 
     /**
      * Creates new form CheckJFrame
      */
     public CheckJFrame() {
         initComponents();
+    }
+
+    private void init() {
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.tblCheck.getColumnModel().getColumn(1).setMaxWidth(80);
         DefaultTableModel model = (DefaultTableModel) this.tblCheck.getModel();

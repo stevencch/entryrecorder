@@ -5,6 +5,7 @@
  */
 package com.cch.aj.entryrecorder.frame;
 
+import com.cch.aj.entryrecorder.common.AppContext;
 import com.cch.aj.entryrecorder.common.AppHelper;
 import com.cch.aj.entryrecorder.common.ComboBoxItem;
 import com.cch.aj.entryrecorder.common.ComboBoxItemConvertor;
@@ -89,11 +90,6 @@ public class MainJFrame extends javax.swing.JFrame {
     private SettingService<Staff> staffService;
     @Autowired
     private SettingService<Entry> entryService;
-
-    @Autowired
-    public void setEntryService(SettingService<Entry> entryService) {
-        this.entryService = entryService;
-    }
     @Autowired
     private SettingService<Polymer> polymerService;
     @Autowired
@@ -117,7 +113,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
         FillEntryComboBox(this.cbEntry, 0);
     }
-    
+
     public void init(int checkId) {
         LoadMainForm();
         this.currentEntry = this.entryService.FindEntity(checkId);
@@ -130,7 +126,7 @@ public class MainJFrame extends javax.swing.JFrame {
     }
 
     private void LoadMainForm() {
-        
+
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         //load entry
@@ -153,8 +149,6 @@ public class MainJFrame extends javax.swing.JFrame {
         this.cbProductAdditive3.setRenderer(new ComboBoxRender());
         this.cbProductPolymer.setRenderer(new ComboBoxRender());
     }
-
-    
 
     private void UpdateEntryForm() {
         List<Record> records = this.recordService.GetAllEntitiesByKeyAndRecord(RecordKey.ALL, this.currentEntry.getId());
@@ -3415,7 +3409,8 @@ public class MainJFrame extends javax.swing.JFrame {
             AppHelper.entryProduct = currentEntry.getProductId();
             AppHelper.currentEntry = currentEntry;
             if (currentEntry.getIsChecked() == null || !currentEntry.getIsChecked()) {
-                (new CheckJFrame()).setVisible(true);
+                CheckJFrame cf = AppContext.getApplicationContext().getBean("CheckJFrame", CheckJFrame.class);
+                cf.setVisible(true);
             }
             this.btnDone.setVisible(true);
             this.UpdateEntryForm();

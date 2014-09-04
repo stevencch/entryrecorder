@@ -42,6 +42,7 @@ import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparing;
+import static java.util.Comparator.comparing;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -57,6 +58,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -68,13 +70,20 @@ public class EntryJFrame extends javax.swing.JFrame {
     private int settingMouldPreviousId = 0;
     private Mould settingMould = new Mould();
 
-    private SettingService<Staff> staffService = new SettingServiceImpl<Staff>(Staff.class);
-    private SettingService<Machine> machineService = new SettingServiceImpl<Machine>(Machine.class);
-    private SettingService<Mould> mouldService = new SettingServiceImpl<Mould>(Mould.class);
-    private SettingService<Product> productService = new SettingServiceImpl<Product>(Product.class);
-    private SettingService<Entry> entryService = new SettingServiceImpl<Entry>(Entry.class);
-    private SettingService<Polymer> polymerService = new SettingServiceImpl<Polymer>(Polymer.class);
-    private SettingService<Additive> additiveService = new SettingServiceImpl<Additive>(Additive.class);
+    @Autowired
+    private SettingService<Staff> staffService ;
+    @Autowired
+    private SettingService<Machine> machineService ;
+    @Autowired
+    private SettingService<Mould> mouldService;
+    @Autowired
+    private SettingService<Product> productService ;
+    @Autowired
+    private SettingService<Entry> entryService ;
+    @Autowired
+    private SettingService<Polymer> polymerService ;
+    @Autowired
+    private SettingService<Additive> additiveService ;
 
     /**
      * Creates new form SettingsJFrame
@@ -82,6 +91,10 @@ public class EntryJFrame extends javax.swing.JFrame {
     public EntryJFrame() {
 
         initComponents();
+
+    }
+
+    private void init() {
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         
         //load entry
@@ -96,7 +109,6 @@ public class EntryJFrame extends javax.swing.JFrame {
         this.btnEntryDelete.setVisible(false);
         this.btnEntrySave.setVisible(false);
         this.btnEntryUndo.setVisible(false);
-
     }
 
     public void ActiveStaffTab() {

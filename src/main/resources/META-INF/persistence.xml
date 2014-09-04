@@ -29,6 +29,7 @@
       <property name="javax.persistence.jdbc.password" value="123123"/>
       <property name="eclipselink.cache.shared.default" value="false"/>
       <property name="eclipselink.logging.level" value="FINE"/>
+      <property name="eclipselink.logging.logger" value="org.eclipse.persistence.logging.CommonsLoggingSessionLog"/>
     </properties>
   </persistence-unit>
 </persistence>

@@ -14,6 +14,7 @@ import com.cch.aj.entryrecorder.repositories.impl.RecordRepositoryImpl;
 import com.cch.aj.entryrecorder.services.RecordSettingService;
 import com.cch.aj.entryrecorder.services.SettingService;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -22,7 +23,9 @@ import org.springframework.stereotype.Service;
  */
 public class RecordSettingServiceImpl extends SettingServiceImpl<Record> implements RecordSettingService  {
     
-    RecordSettingRepository recordSettingRepository=new RecordRepositoryImpl(this._connectionString);
+    
+    @Autowired
+    RecordSettingRepository recordSettingRepository;
     
     public RecordSettingServiceImpl() {
         super(Record.class);

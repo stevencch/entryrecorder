@@ -49,6 +49,7 @@ import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparing;
+import static java.util.Comparator.comparing;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -71,6 +72,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -85,13 +87,20 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
     private int settingCheckId = 0;
     private int templateProdcutId = 0;
 
-    private SettingService<Machine> machineService = new SettingServiceImpl<Machine>(Machine.class);
-    private SettingService<Polymer> polymerService = new SettingServiceImpl<Polymer>(Polymer.class);
-    private SettingService<Additive> additiveService = new SettingServiceImpl<Additive>(Additive.class);
-    private SettingService<Mould> mouldService = new SettingServiceImpl<Mould>(Mould.class);
-    private SettingService<Product> productService = new SettingServiceImpl<Product>(Product.class);
-    private SettingService<Checkitem> checkitemService = new SettingServiceImpl<Checkitem>(Checkitem.class);
-    private SettingService<Staff> staffService = new SettingServiceImpl<Staff>(Staff.class);
+    @Autowired
+    private SettingService<Machine> machineService ;
+    @Autowired
+    private SettingService<Polymer> polymerService ;
+    @Autowired
+    private SettingService<Additive> additiveService ;
+    @Autowired
+    private SettingService<Mould> mouldService;
+    @Autowired
+    private SettingService<Product> productService ;
+    @Autowired
+    private SettingService<Checkitem> checkitemService ;
+    @Autowired
+    private SettingService<Staff> staffService  ;
 
     /**
      * Creates new form SettingsJFrame
@@ -100,6 +109,9 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
 
         initComponents();
 
+    }
+
+    private void init() {
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         //load Machine
         this.cbMachine.setRenderer(new ComboBoxRender());

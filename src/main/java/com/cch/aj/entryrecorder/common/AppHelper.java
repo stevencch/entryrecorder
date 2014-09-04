@@ -16,14 +16,14 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -36,6 +36,8 @@ public class AppHelper {
     public static String defaultShift="shift";
     public static Product entryProduct=null;
     public static Entry currentEntry=null;
+    
+    public static final Logger Logger=LogManager.getLogger(AppHelper.class);
 
     public static Image getScaledImage(Image srcImg, int w, int h) {
         BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
@@ -76,7 +78,7 @@ public class AppHelper {
             panel.removeAll();
             panel.add(picLabel);
         } catch (IOException ex) {
-            Logger.getLogger(SettingsJFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.error("error on display image", ex);
         }
     }
     
@@ -88,7 +90,7 @@ public class AppHelper {
             panel.removeAll();
             panel.add(picLabel);
         } catch (IOException ex) {
-            Logger.getLogger(SettingsJFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.error("error on display image", ex);
         }
     }
     

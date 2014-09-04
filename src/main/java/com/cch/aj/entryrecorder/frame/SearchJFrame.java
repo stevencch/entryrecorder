@@ -21,6 +21,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -28,12 +29,16 @@ import javax.swing.table.TableModel;
  */
 public class SearchJFrame extends javax.swing.JFrame implements ListSelectionListener {
 
-    EntrySearchService entrySearchService=new EntrySearchServiceImpl(Entry.class);
+    @Autowired
+    EntrySearchService entrySearchService;
     /**
      * Creates new form SearchJFrame
      */
     public SearchJFrame() {
         initComponents();
+    }
+
+    private void init() {
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         ListSelectionModel model = tblSearch.getSelectionModel();
         model.addListSelectionListener(this);
