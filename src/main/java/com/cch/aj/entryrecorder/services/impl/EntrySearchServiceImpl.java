@@ -31,7 +31,7 @@ public class EntrySearchServiceImpl extends SettingServiceImpl<Entry> implements
         shift=shift.toLowerCase();
         product=product.toLowerCase();
         batch=batch.toLowerCase();
-        List<Entry> list=this.repository.findEntities();
+        List<Entry> list=this.getRepository().findEntities();
         if(!shift.equals("")){
             List<String> shifts=Arrays.asList(shift.split(","));
             list=list.stream().filter(x->shifts.contains(x.getShift().toLowerCase())).collect(Collectors.toList());

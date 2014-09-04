@@ -2452,7 +2452,7 @@ group by CreatedTime]]></xml-property>
             <page-footer>
                 <text id="3">
                     <property name="contentType">html</property>
-                    <text-property name="content"><![CDATA[<value-of>new Date()</value-of>]]></text-property>
+                    <text-property name="content"><![CDATA[#Time:<value-of>new Date()</value-of> #Page:<value-of> pageNumber </value-of> / <value-of> totalPage </value-of>]]></text-property>
                 </text>
             </page-footer>
         </simple-master-page>
@@ -3268,7 +3268,7 @@ group by CreatedTime]]></xml-property>
                                                 <label id="247">
                                                     <property name="fontWeight">bold</property>
                                                     <property name="textAlign">left</property>
-                                                    <text-property name="text">CreatedTime</text-property>
+                                                    <text-property name="text">Time</text-property>
                                                 </label>
                                             </cell>
                                             <cell id="234">
@@ -4115,7 +4115,9 @@ group by CreatedTime]]></xml-property>
                                         <property name="resultSetColumn">Staff</property>
                                     </data>
                                 </cell>
-                                <cell id="849"/>
+                                <cell id="849">
+                                    <data id="921"/>
+                                </cell>
                             </row>
                         </detail>
                         <footer>

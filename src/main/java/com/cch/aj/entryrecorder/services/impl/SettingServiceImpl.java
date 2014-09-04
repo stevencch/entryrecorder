@@ -59,7 +59,7 @@ public class SettingServiceImpl<T extends SettingEntity> implements SettingServi
 
     }
 
-    private SettingRepository getRepository() {
+    protected SettingRepository getRepository() {
         if (this.repository == null) {
             if (type == Machine.class) {
                 this.repository = new MachineRepositoryImpl(this._connectionString);
