@@ -19,4 +19,5 @@ public interface RecordValidationService {
 
     Boolean ValidateValues(String... values);
     
+    void UpdateEntryStatus(String message);
 }

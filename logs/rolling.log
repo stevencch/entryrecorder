@@ -1,0 +1,37 @@
+09:48:45,641 [main] INFO  AppHelper - ###Start the Program###
+09:48:45,836 [AWT-EventQueue-0] INFO  AnnotationConfigApplicationContext - Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@207ef9a: startup date [Fri Sep 05 09:48:45 EST 2014]; root of context hierarchy
+09:48:46,561 [AWT-EventQueue-0] INFO  AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+09:50:40,151 [main] WARN  AppHelper - ###Start the Program###
+09:58:02,378 [main] WARN  AppHelper - ###Start the Program###
+09:58:29,320 [main] WARN  AppHelper - ###Start the Program###
+10:10:08,187 [main] WARN  AppHelper - ###Start the Program###
+10:10:13,321 [AWT-EventQueue-0] WARN  CglibAopProxy - Unable to proxy method [public final boolean java.awt.Window.isAlwaysOnTop()] because it is final: All calls to this method via a proxy will NOT be routed to the target instance.
+10:10:13,321 [AWT-EventQueue-0] WARN  CglibAopProxy - Unable to proxy method [public final boolean java.awt.Window.isFocusCycleRoot()] because it is final: All calls to this method via a proxy will NOT be routed to the target instance.
+10:10:13,321 [AWT-EventQueue-0] WARN  CglibAopProxy - Unable to proxy method [public final boolean java.awt.Window.isFocusableWindow()] because it is final: All calls to this method via a proxy will NOT be routed to the target instance.
+10:10:13,322 [AWT-EventQueue-0] WARN  CglibAopProxy - Unable to proxy method [public final void java.awt.Window.setAlwaysOnTop(boolean) throws java.lang.SecurityException] because it is final: All calls to this method via a proxy will NOT be routed to the target instance.
+10:10:13,322 [AWT-EventQueue-0] WARN  CglibAopProxy - Unable to proxy method [public final void java.awt.Window.setFocusCycleRoot(boolean)] because it is final: All calls to this method via a proxy will NOT be routed to the target instance.
+10:10:13,322 [AWT-EventQueue-0] WARN  CglibAopProxy - Unable to proxy method [public final java.awt.Container java.awt.Window.getFocusCycleRootAncestor()] because it is final: All calls to this method via a proxy will NOT be routed to the target instance.
+10:10:13,322 [AWT-EventQueue-0] WARN  CglibAopProxy - Unable to proxy method [public final java.lang.String java.awt.Window.getWarningString()] because it is final: All calls to this method via a proxy will NOT be routed to the target instance.
+10:10:13,322 [AWT-EventQueue-0] WARN  CglibAopProxy - Unable to proxy method [public final boolean java.awt.Container.isFocusTraversalPolicyProvider()] because it is final: All calls to this method via a proxy will NOT be routed to the target instance.
+10:10:13,322 [AWT-EventQueue-0] WARN  CglibAopProxy - Unable to proxy method [public final void java.awt.Container.setFocusTraversalPolicyProvider(boolean)] because it is final: All calls to this method via a proxy will NOT be routed to the target instance.
+10:10:13,322 [AWT-EventQueue-0] WARN  CglibAopProxy - Unable to proxy method [public final void java.awt.Component.dispatchEvent(java.awt.AWTEvent)] because it is final: All calls to this method via a proxy will NOT be routed to the target instance.
+10:10:13,323 [AWT-EventQueue-0] WARN  CglibAopProxy - Unable to proxy method [public final java.lang.Object java.awt.Component.getTreeLock()] because it is final: All calls to this method via a proxy will NOT be routed to the target instance.
+10:11:54,694 [main] WARN  AppHelper - ###Start the Program###
+10:12:03,192 [AWT-EventQueue-0] WARN  CglibAopProxy - Unable to proxy method [public final boolean java.awt.Window.isAlwaysOnTop()] because it is final: All calls to this method via a proxy will NOT be routed to the target instance.
+10:12:03,192 [AWT-EventQueue-0] WARN  CglibAopProxy - Unable to proxy method [public final boolean java.awt.Window.isFocusCycleRoot()] because it is final: All calls to this method via a proxy will NOT be routed to the target instance.
+10:12:03,193 [AWT-EventQueue-0] WARN  CglibAopProxy - Unable to proxy method [public final boolean java.awt.Window.isFocusableWindow()] because it is final: All calls to this method via a proxy will NOT be routed to the target instance.
+10:12:03,193 [AWT-EventQueue-0] WARN  CglibAopProxy - Unable to proxy method [public final void java.awt.Window.setAlwaysOnTop(boolean) throws java.lang.SecurityException] because it is final: All calls to this method via a proxy will NOT be routed to the target instance.
+10:12:03,193 [AWT-EventQueue-0] WARN  CglibAopProxy - Unable to proxy method [public final void java.awt.Window.setFocusCycleRoot(boolean)] because it is final: All calls to this method via a proxy will NOT be routed to the target instance.
+10:12:03,193 [AWT-EventQueue-0] WARN  CglibAopProxy - Unable to proxy method [public final java.awt.Container java.awt.Window.getFocusCycleRootAncestor()] because it is final: All calls to this method via a proxy will NOT be routed to the target instance.
+10:12:03,193 [AWT-EventQueue-0] WARN  CglibAopProxy - Unable to proxy method [public final java.lang.String java.awt.Window.getWarningString()] because it is final: All calls to this method via a proxy will NOT be routed to the target instance.
+10:12:03,194 [AWT-EventQueue-0] WARN  CglibAopProxy - Unable to proxy method [public final boolean java.awt.Container.isFocusTraversalPolicyProvider()] because it is final: All calls to this method via a proxy will NOT be routed to the target instance.
+10:12:03,194 [AWT-EventQueue-0] WARN  CglibAopProxy - Unable to proxy method [public final void java.awt.Container.setFocusTraversalPolicyProvider(boolean)] because it is final: All calls to this method via a proxy will NOT be routed to the target instance.
+10:12:03,194 [AWT-EventQueue-0] WARN  CglibAopProxy - Unable to proxy method [public final void java.awt.Component.dispatchEvent(java.awt.AWTEvent)] because it is final: All calls to this method via a proxy will NOT be routed to the target instance.
+10:12:03,194 [AWT-EventQueue-0] WARN  CglibAopProxy - Unable to proxy method [public final java.lang.Object java.awt.Component.getTreeLock()] because it is final: All calls to this method via a proxy will NOT be routed to the target instance.
+10:19:10,935 [main] WARN  AppHelper - ###Start the Program###
+10:19:43,312 [main] WARN  AppHelper - ###Start the Program###
+10:20:24,444 [main] WARN  AppHelper - ###Start the Program###
+10:21:18,526 [main] WARN  AppHelper - ###Start the Program###
+10:24:39,840 [main] WARN  AppHelper - ###Start the Program###
+10:25:00,133 [AWT-EventQueue-0] WARN  AppHelper - ##entry 4 ## [Open Check List]
+10:26:36,580 [AWT-EventQueue-0] WARN  AppHelper - ##entry 4 ## [Close Entry]

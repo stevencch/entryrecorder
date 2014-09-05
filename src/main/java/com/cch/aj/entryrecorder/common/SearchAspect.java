@@ -22,10 +22,20 @@ import org.springframework.stereotype.Component;
 public class SearchAspect {
     @Before("DoSearch()")
     public void LogTime(JoinPoint joinPoint){
-        AppHelper.Logger.info("##Search##"+Arrays.toString(joinPoint.getArgs()));
+        AppHelper.Logger.warn("##Search##"+Arrays.toString(joinPoint.getArgs()));
     }
     
     @Pointcut("execution(public * Search(..))")
     public void DoSearch(){
+    }
+    
+    
+    @Pointcut("execution(void UpdateEntryStatus(String))")
+    public void UpdateEntryStatus(){
+    }
+    
+    @Before("UpdateEntryStatus()")
+    public void LogEntryTime(JoinPoint joinPoint){
+        AppHelper.Logger.warn("##entry "+AppHelper.currentEntry.getId()+" ## "+Arrays.toString(joinPoint.getArgs()));
     }
 }

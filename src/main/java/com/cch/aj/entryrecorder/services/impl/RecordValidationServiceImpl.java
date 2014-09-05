@@ -90,4 +90,9 @@ public class RecordValidationServiceImpl implements RecordValidationService {
         }
         return result;
     }
+    
+    @Override
+    public void UpdateEntryStatus(String message){
+        System.out.println(message);
+    }
 }

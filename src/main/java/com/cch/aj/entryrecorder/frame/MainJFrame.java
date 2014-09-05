@@ -67,6 +67,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -3409,6 +3410,7 @@ public class MainJFrame extends javax.swing.JFrame {
             AppHelper.entryProduct = currentEntry.getProductId();
             AppHelper.currentEntry = currentEntry;
             if (currentEntry.getIsChecked() == null || !currentEntry.getIsChecked()) {
+                recordValidationService.UpdateEntryStatus("Open Check List");
                 CheckJFrame cf = AppContext.getApplicationContext().getBean("CheckJFrame", CheckJFrame.class);
                 cf.setVisible(true);
             }
@@ -3418,6 +3420,7 @@ public class MainJFrame extends javax.swing.JFrame {
             this.btnDone.setVisible(false);
         }
     }//GEN-LAST:event_cbEntryActionPerformed
+
 
     private void btnWallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWallActionPerformed
         Boolean isSave = false;
@@ -4017,6 +4020,7 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnQuantityActionPerformed
 
     private void btnDoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDoneActionPerformed
+        recordValidationService.UpdateEntryStatus("Close Entry");
         this.currentEntry.setInUse("NO");
         this.entryService.UpdateEntity(currentEntry);
         this.FillEntryComboBox(this.cbEntry, 0);
