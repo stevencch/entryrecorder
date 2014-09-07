@@ -211,3 +211,8 @@ org.json.JSONException: JSONObject["items"] not found.
 21:14:01,760 [main] WARN  AppHelper - ###Start the Program###
 21:14:32,583 [AWT-EventQueue-0] WARN  AppHelper - ##entry 6 ## [Open Check List]
 21:16:02,235 [AWT-EventQueue-0] WARN  AppHelper - ##entry 6 ## [Open Check List]
+23:38:11,587 [main] WARN  AppHelper - ###Start the Program###
+23:40:32,840 [main] WARN  AppHelper - ###Start the Program###
+23:40:56,193 [AWT-EventQueue-0] WARN  AppHelper - ##entry 6 ## [Open Check List]
+23:41:42,011 [main] WARN  AppHelper - ###Start the Program###
+23:42:41,205 [main] WARN  AppHelper - ###Start the Program###
