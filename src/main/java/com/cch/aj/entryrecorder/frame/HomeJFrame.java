@@ -51,7 +51,7 @@ public class HomeJFrame extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(400, 500));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        btnShift.setText("New Entry新登记");
+        btnShift.setText("New Entry新建文档");
         btnShift.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnShiftActionPerformed(evt);

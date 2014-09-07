@@ -1,0 +1,1 @@
+ALTER TABLE `entry` ADD `Material` VARCHAR(1000) NULL ;

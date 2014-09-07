@@ -48,8 +48,12 @@ import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparing;
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.comparing;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -67,6 +71,9 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -238,7 +245,7 @@ public class MainJFrame extends javax.swing.JFrame {
         }
         ((AbstractTableModel) this.tblTap.getModel()).fireTableDataChanged();
         JFreeChart chartTap = ChartFactory.createLineChart(
-                "Product Tap (kg)", "", "",
+                "Tap Positio", "", "",
                 datasetTap, PlotOrientation.VERTICAL, false, true, false);
         ChartPanel cpTap = new ChartPanel(chartTap);
         this.pnlChartTap.removeAll();
@@ -321,16 +328,23 @@ public class MainJFrame extends javax.swing.JFrame {
         }
         this.labRejectsTotal.setText(Float.toString(totalRejects));
         //material
-        this.FillPolymerComboBox(this.cbProductPolymer, currentEntry.getPolymerId() != null ? currentEntry.getPolymerId().getId() : 0);
-        this.FillAdditiveComboBox(this.cbProductAdditive1, currentEntry.getAdditiveAId() != null ? currentEntry.getAdditiveAId().getId() : 0);
-        this.FillAdditiveComboBox(this.cbProductAdditive2, currentEntry.getAdditiveBId() != null ? currentEntry.getAdditiveAId().getId() : 0);
-        this.FillAdditiveComboBox(this.cbProductAdditive3, currentEntry.getAdditiveCId() != null ? currentEntry.getAdditiveCId().getId() : 0);
-        txtAdditiveABatchA.setText(currentEntry.getAdditiveABatchA() == null ? "" : currentEntry.getAdditiveABatchA().toString());
-        txtAdditiveBBatchA.setText(currentEntry.getAdditiveBBatchA() == null ? "" : currentEntry.getAdditiveBBatchA().toString());
-        txtAdditiveCBatchA.setText(currentEntry.getAdditiveCBatchA() == null ? "" : currentEntry.getAdditiveCBatchA().toString());
-        txtAdditiveABatchB.setText(currentEntry.getAdditiveABatchB() == null ? "" : currentEntry.getAdditiveABatchB().toString());
-        txtAdditiveBBatchB.setText(currentEntry.getAdditiveBBatchB() == null ? "" : currentEntry.getAdditiveBBatchB().toString());
-        txtAdditiveCBatchB.setText(currentEntry.getAdditiveCBatchB() == null ? "" : currentEntry.getAdditiveCBatchB().toString());
+        this.FillPolymerComboBox(this.cbProductPolymer, 0);
+        this.FillAdditiveComboBox(this.cbProductAdditive1, 0);
+        this.FillAdditiveComboBox(this.cbProductAdditive2, 0);
+        this.FillAdditiveComboBox(this.cbProductAdditive3, 0);
+        DefaultTableModel modelMaterial = (DefaultTableModel) this.tblMaterial.getModel();
+        modelMaterial.setRowCount(0);
+        if (currentEntry.getMaterial() != null && !currentEntry.getMaterial().equals("")) {
+            FillMaterialTable(currentEntry.getMaterial());
+        }
+        txtPolymerBatchA.setText("");
+        txtPolymerBatchB.setText("");
+        txtAdditiveABatchA.setText("");
+        txtAdditiveBBatchA.setText("");
+        txtAdditiveCBatchA.setText("");
+        txtAdditiveABatchB.setText("");
+        txtAdditiveBBatchB.setText("");
+        txtAdditiveCBatchB.setText("");
         //staff
         this.FillStaffComboBox(this.cbSupervisor1, currentEntry.getSupervisor1() != null ? currentEntry.getSupervisor1().getId() : 0, "SUPERVISOR");
         this.FillStaffComboBox(this.cbSupervisor2, currentEntry.getSupervisor2() != null ? currentEntry.getSupervisor2().getId() : 0, "SUPERVISOR");
@@ -612,6 +626,8 @@ public class MainJFrame extends javax.swing.JFrame {
         cbWeightWithinRange = new javax.swing.JComboBox();
         cbColourTexture = new javax.swing.JComboBox();
         txtCheckStaff = new javax.swing.JTextField();
+        jLabel52 = new javax.swing.JLabel();
+        cbBungProvision = new javax.swing.JComboBox();
         jPanel28 = new javax.swing.JPanel();
         jPanel29 = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
@@ -722,6 +738,8 @@ public class MainJFrame extends javax.swing.JFrame {
         txtAdditiveBBatchB = new javax.swing.JTextField();
         txtAdditiveCBatchB = new javax.swing.JTextField();
         btnMaterialSave = new javax.swing.JButton();
+        jScrollPane13 = new javax.swing.JScrollPane();
+        tblMaterial = new javax.swing.JTable();
         jPanel43 = new javax.swing.JPanel();
         jLabel53 = new javax.swing.JLabel();
         jLabel54 = new javax.swing.JLabel();
@@ -759,7 +777,7 @@ public class MainJFrame extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         jPanel1.add(cbEntry, gridBagConstraints);
@@ -772,7 +790,7 @@ public class MainJFrame extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.insets = new java.awt.Insets(0, 14, 0, 6);
         jPanel1.add(btnDone, gridBagConstraints);
 
@@ -792,8 +810,8 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new java.awt.Insets(4, 2, 4, 2);
         jPanel1.add(btnRefresh, gridBagConstraints);
 
@@ -804,8 +822,8 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
         jPanel1.add(btnReport, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -1268,7 +1286,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(9, 33, 9, 33);
         jPanel19.add(jLabel2, gridBagConstraints);
 
-        jLabel3.setText("BASE (CENTRE)");
+        jLabel3.setText("BASE (CENTRE)底部");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -1278,7 +1296,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(9, 33, 9, 33);
         jPanel19.add(jLabel3, gridBagConstraints);
 
-        jLabel4.setText("CLOSURE SIDE");
+        jLabel4.setText("CLOSURE SIDE塞子对面");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
@@ -1288,7 +1306,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(9, 33, 9, 33);
         jPanel19.add(jLabel4, gridBagConstraints);
 
-        jLabel6.setText("END OF HANDLE SIDE-BUNG把手塞子");
+        jLabel6.setText("END OF HANDLE SIDE-BUNG塞子面");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
@@ -1423,7 +1441,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jPanel21.setLayout(new java.awt.GridBagLayout());
 
-        jLabel23.setText("Tap龙头");
+        jLabel23.setText("Tap水龙头");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -1513,7 +1531,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.weighty = 1.0;
         jPanel6.add(pnlChartTap, gridBagConstraints);
 
-        jTabbedPane1.addTab("Tap Position龙头", jPanel6);
+        jTabbedPane1.addTab("Tap Position水龙头位置", jPanel6);
 
         jPanel7.setLayout(new java.awt.GridBagLayout());
 
@@ -1665,7 +1683,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(3, 27, 3, 27);
         jPanel24.add(btnBore, gridBagConstraints);
 
-        jLabel10.setText("BORE DIAMETRE 1钻孔");
+        jLabel10.setText("BORE DIAMETRE 1直径1");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -1675,7 +1693,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(3, 27, 3, 27);
         jPanel24.add(jLabel10, gridBagConstraints);
 
-        jLabel12.setText("BORE DIAMETRE 2钻孔");
+        jLabel12.setText("BORE DIAMETRE 2直径2");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -1685,7 +1703,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(3, 27, 3, 27);
         jPanel24.add(jLabel12, gridBagConstraints);
 
-        jLabel14.setText("NECK HEIGHT颈长");
+        jLabel14.setText("NECK HEIGHT颈高");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
@@ -1798,7 +1816,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.weightx = 0.3;
         jPanel22.add(jPanel24, gridBagConstraints);
 
-        jTabbedPane1.addTab("Bore / Neck钻孔颈长", jPanel22);
+        jTabbedPane1.addTab("Bore / Neck直径和颈高", jPanel22);
 
         jPanel25.setLayout(new java.awt.GridBagLayout());
 
@@ -1831,7 +1849,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jPanel27.setLayout(new java.awt.GridBagLayout());
 
-        jLabel24.setText("STRENGTH OF DRUM桶强度");
+        jLabel24.setText("STRENGTH OF DRUM桶角强度");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
@@ -1845,7 +1863,7 @@ public class MainJFrame extends javax.swing.JFrame {
         labCheckStaff.setText("Check By检查人");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridy = 9;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 4;
         gridBagConstraints.ipady = 4;
@@ -1861,14 +1879,14 @@ public class MainJFrame extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 9;
+        gridBagConstraints.gridy = 10;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.ipadx = 4;
         gridBagConstraints.ipady = 4;
         gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
         jPanel27.add(btnCheck, gridBagConstraints);
 
-        jLabel16.setText("NECK ROUND颈圆");
+        jLabel16.setText("NECK ROUND口圆");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -1878,7 +1896,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
         jPanel27.add(jLabel16, gridBagConstraints);
 
-        jLabel17.setText("NECK COMPLETE颈完成");
+        jLabel17.setText("NECK COMPLETE口面完整");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -1898,7 +1916,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
         jPanel27.add(jLabel18, gridBagConstraints);
 
-        jLabel19.setText("BUNG, IF DRILLED塞子");
+        jLabel19.setText("BUNG, IF DRILLED塞子滑牙");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
@@ -1908,7 +1926,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
         jPanel27.add(jLabel19, gridBagConstraints);
 
-        jLabel20.setText("BASE");
+        jLabel20.setText("BASE底部");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
@@ -2019,12 +2037,32 @@ public class MainJFrame extends javax.swing.JFrame {
         jPanel27.add(cbColourTexture, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridy = 9;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 4;
         gridBagConstraints.ipady = 4;
         gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
         jPanel27.add(txtCheckStaff, gridBagConstraints);
+
+        jLabel52.setText("BUNG PROVISION(BUBBLES/HOLES))塞子气泡和孔");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel27.add(jLabel52, gridBagConstraints);
+
+        cbBungProvision.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "- Select -", "Checked", "NA" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(3, 29, 3, 29);
+        jPanel27.add(cbBungProvision, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -2276,7 +2314,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         jPanel28.add(jPanel30, gridBagConstraints);
 
-        jTabbedPane1.addTab("Drop Test摔落", jPanel28);
+        jTabbedPane1.addTab("Drop Test跌破测试", jPanel28);
 
         jPanel13.setLayout(new java.awt.GridBagLayout());
 
@@ -2853,13 +2891,13 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(26, 3, 26, 3);
         jPanel40.add(jPanel42, gridBagConstraints);
 
-        jTabbedPane1.addTab("Leak Test漏水", jPanel40);
+        jTabbedPane1.addTab("Leak Test漏水测试", jPanel40);
 
         pnlProductTab.setLayout(new java.awt.GridBagLayout());
 
         pnlEditProduct.setLayout(new java.awt.GridBagLayout());
 
-        jLabel62.setText("POLYMER聚合物");
+        jLabel62.setText("POLYMER原料");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -2879,7 +2917,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 29, 2, 29);
         pnlEditProduct.add(cbProductPolymer, gridBagConstraints);
 
-        jLabel63.setText("ADDITIVE添加物");
+        jLabel63.setText("ADDITIVE添加(母粒,UV,添加剂)");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
@@ -2890,7 +2928,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 33, 2, 29);
         pnlEditProduct.add(jLabel63, gridBagConstraints);
 
-        jLabel67.setText("TYPE 1");
+        jLabel67.setText("TYPE 1类型1");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
@@ -2901,7 +2939,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 33, 2, 29);
         pnlEditProduct.add(jLabel67, gridBagConstraints);
 
-        jLabel68.setText("Batch Number 1");
+        jLabel68.setText("Batch Number 1批号1");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
@@ -2912,7 +2950,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 33, 2, 29);
         pnlEditProduct.add(jLabel68, gridBagConstraints);
 
-        jLabel69.setText("TYPE 2");
+        jLabel69.setText("TYPE 2类型");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 4;
@@ -2923,7 +2961,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 33, 2, 29);
         pnlEditProduct.add(jLabel69, gridBagConstraints);
 
-        jLabel70.setText("Batch Number 1");
+        jLabel70.setText("Batch Number 1批号1");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 5;
@@ -2934,7 +2972,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 33, 2, 29);
         pnlEditProduct.add(jLabel70, gridBagConstraints);
 
-        jLabel71.setText("TYPE 3");
+        jLabel71.setText("TYPE 3类型");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 7;
@@ -2945,7 +2983,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 33, 2, 29);
         pnlEditProduct.add(jLabel71, gridBagConstraints);
 
-        jLabel72.setText("Batch Number 1");
+        jLabel72.setText("Batch Number 1批号1");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 8;
@@ -3010,7 +3048,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 29, 2, 29);
         pnlEditProduct.add(txtAdditiveCBatchA, gridBagConstraints);
 
-        jLabel64.setText("Batch Number 2");
+        jLabel64.setText("Batch Number 2批号2");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 9;
@@ -3021,7 +3059,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 29, 2, 29);
         pnlEditProduct.add(jLabel64, gridBagConstraints);
 
-        jLabel65.setText("Polymer Type");
+        jLabel65.setText("Polymer Type料型");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -3032,7 +3070,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 29, 2, 29);
         pnlEditProduct.add(jLabel65, gridBagConstraints);
 
-        jLabel66.setText("Batch Number 1");
+        jLabel66.setText("Batch Number 1批号1");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -3043,7 +3081,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 29, 2, 29);
         pnlEditProduct.add(jLabel66, gridBagConstraints);
 
-        jLabel73.setText("Batch Number 2");
+        jLabel73.setText("Batch Number 2批号2");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 6;
@@ -3054,7 +3092,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 29, 2, 29);
         pnlEditProduct.add(jLabel73, gridBagConstraints);
 
-        jLabel74.setText("Batch Number 2");
+        jLabel74.setText("Batch Number 2批号2");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
@@ -3065,7 +3103,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 29, 2, 29);
         pnlEditProduct.add(jLabel74, gridBagConstraints);
 
-        jLabel75.setText("Batch Number 2");
+        jLabel75.setText("Batch Number 2批号2");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
@@ -3133,6 +3171,26 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.gridwidth = 4;
         gridBagConstraints.insets = new java.awt.Insets(13, 13, 13, 13);
         pnlEditProduct.add(btnMaterialSave, gridBagConstraints);
+
+        tblMaterial.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Time", "Type", "Batch Number"
+            }
+        ));
+        jScrollPane13.setViewportView(tblMaterial);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridheight = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.weighty = 1.0;
+        pnlEditProduct.add(jScrollPane13, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -3623,10 +3681,10 @@ public class MainJFrame extends javax.swing.JFrame {
         if (this.currentEntry != null) {
             if (this.cbNeckRound.getSelectedIndex() != 0 && this.cbNeckComplete.getSelectedIndex() != 0 && this.cbUnderTheHandle.getSelectedIndex() != 0
                     && this.cbBungIfDrilled.getSelectedIndex() != 0 && this.cbBase.getSelectedIndex() != 0 && this.cbStrengthOfDrum.getSelectedIndex() != 0
-                    && this.cbWeightWithinRange.getSelectedIndex() != 0 && this.cbColourTexture.getSelectedIndex() != 0) {
+                    && this.cbWeightWithinRange.getSelectedIndex() != 0 && this.cbColourTexture.getSelectedIndex() != 0 && this.cbBungProvision.getSelectedIndex() != 0) {
                 if (this.cbNeckRound.getSelectedIndex() != 2 && this.cbNeckComplete.getSelectedIndex() != 2 && this.cbUnderTheHandle.getSelectedIndex() != 2
                         && this.cbBungIfDrilled.getSelectedIndex() != 2 && this.cbBase.getSelectedIndex() != 2 && this.cbStrengthOfDrum.getSelectedIndex() != 2
-                        && this.cbWeightWithinRange.getSelectedIndex() != 2 && this.cbColourTexture.getSelectedIndex() != 2) {
+                        && this.cbWeightWithinRange.getSelectedIndex() != 2 && this.cbColourTexture.getSelectedIndex() != 2 && this.cbBungProvision.getSelectedIndex() != 2) {
                     isSave = true;
                     pass = "YES";
                 } else {
@@ -3654,7 +3712,8 @@ public class MainJFrame extends javax.swing.JFrame {
                 model.addRow(new Object[]{time, RecordKey.CHECK_STRENGTH_OF_DRUM, this.cbStrengthOfDrum.getSelectedItem(), pass, staff});
                 model.addRow(new Object[]{time, RecordKey.CHECK_WEIGHT_WITHIN_RANGE, this.cbWeightWithinRange.getSelectedItem(), pass, staff});
                 model.addRow(new Object[]{time, RecordKey.CHECK_COLOUR_TEXTURE, this.cbColourTexture.getSelectedItem(), pass, staff});
-
+                model.addRow(new Object[]{time, RecordKey.CHECK_BUNG_PROVISION, this.cbBungProvision.getSelectedItem(), pass, staff});
+                
                 ((AbstractTableModel) this.tblCheck.getModel()).fireTableDataChanged();
 
                 //
@@ -3666,7 +3725,8 @@ public class MainJFrame extends javax.swing.JFrame {
                 UpdateEntryData(now, (float) this.cbStrengthOfDrum.getSelectedIndex(), RecordKey.CHECK_STRENGTH_OF_DRUM, staff, pass, this.cbStrengthOfDrum.getSelectedItem().toString());
                 UpdateEntryData(now, (float) this.cbWeightWithinRange.getSelectedIndex(), RecordKey.CHECK_WEIGHT_WITHIN_RANGE, staff, pass, this.cbWeightWithinRange.getSelectedItem().toString());
                 UpdateEntryData(now, (float) this.cbColourTexture.getSelectedIndex(), RecordKey.CHECK_COLOUR_TEXTURE, staff, pass, this.cbColourTexture.getSelectedItem().toString());
-
+                UpdateEntryData(now, (float) this.cbBungProvision.getSelectedIndex(), RecordKey.CHECK_BUNG_PROVISION, staff, pass, this.cbBungProvision.getSelectedItem().toString());
+                
                 this.cbNeckRound.setSelectedIndex(0);
                 this.cbNeckComplete.setSelectedIndex(0);
                 this.cbUnderTheHandle.setSelectedIndex(0);
@@ -3675,6 +3735,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 this.cbStrengthOfDrum.setSelectedIndex(0);
                 this.cbWeightWithinRange.setSelectedIndex(0);
                 this.cbColourTexture.setSelectedIndex(0);
+                this.cbBungProvision.setSelectedIndex(0);
             }
         }
     }//GEN-LAST:event_btnCheckActionPerformed
@@ -3856,44 +3917,77 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCycleActionPerformed
 
     private void btnMaterialSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMaterialSaveActionPerformed
-        //material
-        if (this.cbProductPolymer.getSelectedIndex() != 0) {
-            currentEntry.setPolymerId(((ComboBoxItem<Polymer>) this.cbProductPolymer.getSelectedItem()).getItem());
+        JSONObject json = new JSONObject();
+        JSONArray items = new JSONArray();
+        String data = this.currentEntry.getMaterial();
+        try {
+            if (data != null && !data.equals("")) {
+                JSONObject jsonOld = new JSONObject(data);
+                items = (JSONArray) jsonOld.getJSONArray("items");
+            }
+            JSONObject dataset = new JSONObject();
+            Date now = new Date();
+            String time = new SimpleDateFormat("HH:mm").format(now);
+            dataset.put("time", time);
+            if (this.cbProductPolymer.getSelectedIndex() != 0) {
+                Polymer polymer = ((Polymer) ((ComboBoxItem) this.cbProductPolymer.getSelectedItem()).getItem());
+                dataset.put("polymer", polymer.getGrade() + "/" + polymer.getCompany());
+            } else {
+                dataset.put("polymer", "");
+            }
+            if (this.cbProductAdditive1.getSelectedIndex() != 0) {
+                Additive additive1 = ((Additive) ((ComboBoxItem) this.cbProductAdditive1.getSelectedItem()).getItem());
+                dataset.put("additive1", additive1.getGrade() + "/" + additive1.getCompany());
+            } else {
+                dataset.put("additive1", "");
+            }
+            if (this.cbProductAdditive2.getSelectedIndex() != 0) {
+                Additive additive2 = ((Additive) ((ComboBoxItem) this.cbProductAdditive2.getSelectedItem()).getItem());
+                dataset.put("additive2", additive2.getGrade() + "/" + additive2.getCompany());
+            } else {
+                dataset.put("additive2", "");
+            }
+            if (this.cbProductAdditive3.getSelectedIndex() != 0) {
+                Additive additive3 = ((Additive) ((ComboBoxItem) this.cbProductAdditive3.getSelectedItem()).getItem());
+                dataset.put("additive3", additive3.getGrade() + "/" + additive3.getCompany());
+            } else {
+                dataset.put("additive3", "");
+            }
+            dataset.put("polymer_batch1", this.txtPolymerBatchA.getText());
+            dataset.put("polymer_batch2", this.txtPolymerBatchB.getText());
+            dataset.put("additive1_batch1", this.txtAdditiveABatchA.getText());
+            dataset.put("additive1_batch2", this.txtAdditiveABatchB.getText());
+            dataset.put("additive2_batch1", this.txtAdditiveBBatchA.getText());
+            dataset.put("additive2_batch2", this.txtAdditiveBBatchB.getText());
+            dataset.put("additive3_batch1", this.txtAdditiveCBatchA.getText());
+            dataset.put("additive3_batch2", this.txtAdditiveCBatchB.getText());
+            items.put(dataset);
+            json.put("items", items);
+            this.currentEntry.setMaterial(json.toString());
+            this.entryService.UpdateEntity(currentEntry);
+
+            DefaultTableModel modelMaterial = (DefaultTableModel) this.tblMaterial.getModel();
+            modelMaterial.setRowCount(0);
+            FillMaterialTable(json.toString());
+
+            this.cbProductPolymer.setSelectedIndex(0);
+            this.cbProductAdditive1.setSelectedIndex(0);
+            this.cbProductAdditive2.setSelectedIndex(0);
+            this.cbProductAdditive3.setSelectedIndex(0);
+            txtPolymerBatchA.setText("");
+            txtPolymerBatchB.setText("");
+            txtAdditiveABatchA.setText("");
+            txtAdditiveBBatchA.setText("");
+            txtAdditiveCBatchA.setText("");
+            txtAdditiveABatchB.setText("");
+            txtAdditiveBBatchB.setText("");
+            txtAdditiveCBatchB.setText("");
+
+        } catch (JSONException ex) {
+            AppHelper.Logger.error("Json fail: " + data, ex);
         }
-        if (this.cbProductAdditive1.getSelectedIndex() != 0) {
-            currentEntry.setAdditiveAId(((ComboBoxItem<Additive>) this.cbProductAdditive1.getSelectedItem()).getItem());
-        }
-        if (this.cbProductAdditive2.getSelectedIndex() != 0) {
-            currentEntry.setAdditiveBId(((ComboBoxItem<Additive>) this.cbProductAdditive2.getSelectedItem()).getItem());
-        }
-        if (this.cbProductAdditive3.getSelectedIndex() != 0) {
-            currentEntry.setAdditiveCId(((ComboBoxItem<Additive>) this.cbProductAdditive3.getSelectedItem()).getItem());
-        }
-        if (!this.txtAdditiveABatchA.getText().equals("")) {
-            currentEntry.setAdditiveABatchA(this.txtAdditiveABatchA.getText());
-        }
-        if (!this.txtAdditiveBBatchA.getText().equals("")) {
-            currentEntry.setAdditiveBBatchA(this.txtAdditiveBBatchA.getText());
-        }
-        if (!this.txtAdditiveCBatchA.getText().equals("")) {
-            currentEntry.setAdditiveCBatchA(this.txtAdditiveCBatchA.getText());
-        }
-        if (!this.txtAdditiveABatchB.getText().equals("")) {
-            currentEntry.setAdditiveABatchB(this.txtAdditiveABatchB.getText());
-        }
-        if (!this.txtAdditiveBBatchB.getText().equals("")) {
-            currentEntry.setAdditiveBBatchB(this.txtAdditiveBBatchB.getText());
-        }
-        if (!this.txtAdditiveCBatchB.getText().equals("")) {
-            currentEntry.setAdditiveCBatchB(this.txtAdditiveCBatchB.getText());
-        }
-        if (!this.txtPolymerBatchA.getText().equals("")) {
-            currentEntry.setPolymerBatchA(this.txtPolymerBatchA.getText());
-        }
-        if (!this.txtPolymerBatchB.getText().equals("")) {
-            currentEntry.setPolymerBatchB(this.txtPolymerBatchB.getText());
-        }
-        this.entryService.UpdateEntity(currentEntry);
+
+
     }//GEN-LAST:event_btnMaterialSaveActionPerformed
 
     private void btnStaffSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStaffSaveActionPerformed
@@ -4143,6 +4237,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JComboBox cbBase;
     private javax.swing.JComboBox cbBung;
     private javax.swing.JComboBox cbBungIfDrilled;
+    private javax.swing.JComboBox cbBungProvision;
     private javax.swing.JComboBox cbColourTexture;
     private javax.swing.JComboBox cbDrop1;
     private javax.swing.JComboBox cbDrop2;
@@ -4220,6 +4315,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel50;
     private javax.swing.JLabel jLabel51;
+    private javax.swing.JLabel jLabel52;
     private javax.swing.JLabel jLabel53;
     private javax.swing.JLabel jLabel54;
     private javax.swing.JLabel jLabel55;
@@ -4300,6 +4396,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane11;
     private javax.swing.JScrollPane jScrollPane12;
+    private javax.swing.JScrollPane jScrollPane13;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
@@ -4342,6 +4439,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JTable tblCycle;
     private javax.swing.JTable tblDrop;
     private javax.swing.JTable tblLeak;
+    private javax.swing.JTable tblMaterial;
     private javax.swing.JTable tblRejects;
     private javax.swing.JTable tblSeconds;
     private javax.swing.JTable tblTap;
@@ -4405,6 +4503,68 @@ public class MainJFrame extends javax.swing.JFrame {
         this.txtProductDesc.setText(currentEntry.getProductId().getDescription());
         this.txtProductPierced.setText(currentEntry.getProductId().getPierced());
         this.txtProductWeight.setText(currentEntry.getProductId().getWeightMin() + " - " + currentEntry.getProductId().getWeightMax());
+    }
+
+    private void FillMaterialTable(String data) {
+        try {
+            JSONObject json = new JSONObject(data);
+            JSONArray items = (JSONArray) json.get("items");
+            for (int i = 0; i < items.length(); i++) {
+                JSONObject record = (JSONObject) items.get(i);
+                DefaultTableModel model = (DefaultTableModel) this.tblMaterial.getModel();
+                String time = record.getString("time");
+                String polymer = record.getString("polymer");
+                String additive1 = record.getString("additive1");
+                String additive2 = record.getString("additive2");
+                String additive3 = record.getString("additive3");
+                String polymer_batch1 = record.getString("polymer_batch1");
+                String polymer_batch2 = record.getString("polymer_batch2");
+                String additive1_batch1 = record.getString("additive1_batch1");
+                String additive1_batch2 = record.getString("additive1_batch2");
+                String additive2_batch1 = record.getString("additive2_batch1");
+                String additive2_batch2 = record.getString("additive2_batch2");
+                String additive3_batch1 = record.getString("additive3_batch1");
+                String additive3_batch2 = record.getString("additive3_batch2");
+                if (!polymer.equals("")) {
+                    model.addRow(new Object[]{time, "polymer", polymer});
+                }
+                if (!polymer_batch1.equals("")) {
+                    model.addRow(new Object[]{time, "polymer_batch1", polymer_batch1});
+                }
+                if (!polymer_batch2.equals("")) {
+                    model.addRow(new Object[]{time, "polymer_batch2", polymer_batch2});
+                }
+                if (!additive1.equals("")) {
+                    model.addRow(new Object[]{time, "additive1", additive1});
+                }
+                if (!additive1_batch1.equals("")) {
+                    model.addRow(new Object[]{time, "additive1_batch1", additive1_batch1});
+                }
+                if (!additive1_batch2.equals("")) {
+                    model.addRow(new Object[]{time, "additive1_batch2", additive1_batch2});
+                }
+                if (!additive2.equals("")) {
+                    model.addRow(new Object[]{time, "additive2", additive2});
+                }
+                if (!additive2_batch1.equals("")) {
+                    model.addRow(new Object[]{time, "additive2_batch1", additive2_batch1});
+                }
+                if (!additive2_batch2.equals("")) {
+                    model.addRow(new Object[]{time, "additive2_batch2", additive2_batch2});
+                }
+                if (!additive3.equals("")) {
+                    model.addRow(new Object[]{time, "additive3", additive3});
+                }
+                if (!additive3_batch1.equals("")) {
+                    model.addRow(new Object[]{time, "additive3_batch1", additive3_batch1});
+                }
+                if (!additive3_batch2.equals("")) {
+                    model.addRow(new Object[]{time, "additive3_batch2", additive3_batch2});
+                }
+            }
+        } catch (JSONException ex) {
+            Logger.getLogger(MainJFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

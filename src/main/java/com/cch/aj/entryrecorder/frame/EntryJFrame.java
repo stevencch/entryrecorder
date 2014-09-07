@@ -392,7 +392,6 @@ public class EntryJFrame extends javax.swing.JFrame {
         jLabel163 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(750, 700));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         tabSettings.setName(""); // NOI18N
@@ -440,7 +439,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(3, 27, 3, 45);
         jPanel9.add(txtEntryShift, gridBagConstraints);
 
-        jLabel74.setText("MACHINE No机器");
+        jLabel74.setText("MACHINE No机器号");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -450,7 +449,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(3, 27, 3, 45);
         jPanel9.add(jLabel74, gridBagConstraints);
 
-        jLabel75.setText("MOULD型号");
+        jLabel75.setText("MOULD模具型号");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -460,7 +459,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(3, 27, 3, 45);
         jPanel9.add(jLabel75, gridBagConstraints);
 
-        jLabel76.setText("PRODUCT CODE产品");
+        jLabel76.setText("PRODUCT CODE产品名称");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
@@ -506,7 +505,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(3, 27, 3, 45);
         jPanel9.add(cbEntryProduct, gridBagConstraints);
 
-        jLabel73.setText("IN USE启用");
+        jLabel73.setText("IN USE是否使用");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;

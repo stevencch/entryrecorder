@@ -70,7 +70,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Entry.findByPalletProducedA", query = "SELECT e FROM Entry e WHERE e.palletProducedA = :palletProducedA"),
     @NamedQuery(name = "Entry.findByPalletProducedB", query = "SELECT e FROM Entry e WHERE e.palletProducedB = :palletProducedB"),
     @NamedQuery(name = "Entry.findByOtherQuantity", query = "SELECT e FROM Entry e WHERE e.otherQuantity = :otherQuantity"),
-    @NamedQuery(name = "Entry.findByIsChecked", query = "SELECT e FROM Entry e WHERE e.isChecked = :isChecked")})
+    @NamedQuery(name = "Entry.findByIsChecked", query = "SELECT e FROM Entry e WHERE e.isChecked = :isChecked"),
+    @NamedQuery(name = "Entry.findByMaterial", query = "SELECT e FROM Entry e WHERE e.material = :material")})
 public class Entry implements Serializable,SettingEntity {
     private static final long serialVersionUID = 1L;
     @Id
@@ -153,9 +154,8 @@ public class Entry implements Serializable,SettingEntity {
     private Integer otherQuantity;
     @Column(name = "IsChecked")
     private Boolean isChecked;
-    @JoinColumn(name = "Worker3", referencedColumnName = "Id")
-    @ManyToOne
-    private Staff worker3;
+    @Column(name = "Material")
+    private String material;
     @JoinColumn(name = "MachineId", referencedColumnName = "Id")
     @ManyToOne
     private Machine machineId;
@@ -165,42 +165,45 @@ public class Entry implements Serializable,SettingEntity {
     @JoinColumn(name = "Worker2", referencedColumnName = "Id")
     @ManyToOne
     private Staff worker2;
+    @JoinColumn(name = "Supervisor3", referencedColumnName = "Id")
+    @ManyToOne
+    private Staff supervisor3;
+    @JoinColumn(name = "Technician2", referencedColumnName = "Id")
+    @ManyToOne
+    private Staff technician2;
+    @JoinColumn(name = "Worker3", referencedColumnName = "Id")
+    @ManyToOne
+    private Staff worker3;
     @JoinColumn(name = "PolymerId", referencedColumnName = "Id")
     @ManyToOne
     private Polymer polymerId;
+    @JoinColumn(name = "Supervisor2", referencedColumnName = "Id")
+    @ManyToOne
+    private Staff supervisor2;
     @JoinColumn(name = "AdditiveAId", referencedColumnName = "Id")
     @ManyToOne
     private Additive additiveAId;
     @JoinColumn(name = "AdditiveBId", referencedColumnName = "Id")
     @ManyToOne
     private Additive additiveBId;
-    @JoinColumn(name = "AdditiveCId", referencedColumnName = "Id")
-    @ManyToOne
-    private Additive additiveCId;
     @JoinColumn(name = "Technician3", referencedColumnName = "Id")
     @ManyToOne
     private Staff technician3;
-    @JoinColumn(name = "Supervisor3", referencedColumnName = "Id")
+    @JoinColumn(name = "AdditiveCId", referencedColumnName = "Id")
     @ManyToOne
-    private Staff supervisor3;
+    private Additive additiveCId;
     @JoinColumn(name = "MouldId", referencedColumnName = "Id")
     @ManyToOne
     private Mould mouldId;
-    @JoinColumn(name = "Technician2", referencedColumnName = "Id")
-    @ManyToOne
-    private Staff technician2;
     @JoinColumn(name = "ProductId", referencedColumnName = "Id")
     @ManyToOne
     private Product productId;
-    @JoinColumn(name = "Supervisor2", referencedColumnName = "Id")
-    @ManyToOne
-    private Staff supervisor2;
-    @JoinColumn(name = "Technician1", referencedColumnName = "Id")
-    @ManyToOne
-    private Staff technician1;
     @JoinColumn(name = "Supervisor1", referencedColumnName = "Id")
     @ManyToOne
     private Staff supervisor1;
+    @JoinColumn(name = "Technician1", referencedColumnName = "Id")
+    @ManyToOne
+    private Staff technician1;
 
     public Entry() {
     }
@@ -510,12 +513,12 @@ public class Entry implements Serializable,SettingEntity {
         this.isChecked = isChecked;
     }
 
-    public Staff getWorker3() {
-        return worker3;
+    public String getMaterial() {
+        return material;
     }
 
-    public void setWorker3(Staff worker3) {
-        this.worker3 = worker3;
+    public void setMaterial(String material) {
+        this.material = material;
     }
 
     public Machine getMachineId() {
@@ -542,12 +545,44 @@ public class Entry implements Serializable,SettingEntity {
         this.worker2 = worker2;
     }
 
+    public Staff getSupervisor3() {
+        return supervisor3;
+    }
+
+    public void setSupervisor3(Staff supervisor3) {
+        this.supervisor3 = supervisor3;
+    }
+
+    public Staff getTechnician2() {
+        return technician2;
+    }
+
+    public void setTechnician2(Staff technician2) {
+        this.technician2 = technician2;
+    }
+
+    public Staff getWorker3() {
+        return worker3;
+    }
+
+    public void setWorker3(Staff worker3) {
+        this.worker3 = worker3;
+    }
+
     public Polymer getPolymerId() {
         return polymerId;
     }
 
     public void setPolymerId(Polymer polymerId) {
         this.polymerId = polymerId;
+    }
+
+    public Staff getSupervisor2() {
+        return supervisor2;
+    }
+
+    public void setSupervisor2(Staff supervisor2) {
+        this.supervisor2 = supervisor2;
     }
 
     public Additive getAdditiveAId() {
@@ -566,14 +601,6 @@ public class Entry implements Serializable,SettingEntity {
         this.additiveBId = additiveBId;
     }
 
-    public Additive getAdditiveCId() {
-        return additiveCId;
-    }
-
-    public void setAdditiveCId(Additive additiveCId) {
-        this.additiveCId = additiveCId;
-    }
-
     public Staff getTechnician3() {
         return technician3;
     }
@@ -582,12 +609,12 @@ public class Entry implements Serializable,SettingEntity {
         this.technician3 = technician3;
     }
 
-    public Staff getSupervisor3() {
-        return supervisor3;
+    public Additive getAdditiveCId() {
+        return additiveCId;
     }
 
-    public void setSupervisor3(Staff supervisor3) {
-        this.supervisor3 = supervisor3;
+    public void setAdditiveCId(Additive additiveCId) {
+        this.additiveCId = additiveCId;
     }
 
     public Mould getMouldId() {
@@ -598,14 +625,6 @@ public class Entry implements Serializable,SettingEntity {
         this.mouldId = mouldId;
     }
 
-    public Staff getTechnician2() {
-        return technician2;
-    }
-
-    public void setTechnician2(Staff technician2) {
-        this.technician2 = technician2;
-    }
-
     public Product getProductId() {
         return productId;
     }
@@ -614,12 +633,12 @@ public class Entry implements Serializable,SettingEntity {
         this.productId = productId;
     }
 
-    public Staff getSupervisor2() {
-        return supervisor2;
+    public Staff getSupervisor1() {
+        return supervisor1;
     }
 
-    public void setSupervisor2(Staff supervisor2) {
-        this.supervisor2 = supervisor2;
+    public void setSupervisor1(Staff supervisor1) {
+        this.supervisor1 = supervisor1;
     }
 
     public Staff getTechnician1() {
@@ -628,14 +647,6 @@ public class Entry implements Serializable,SettingEntity {
 
     public void setTechnician1(Staff technician1) {
         this.technician1 = technician1;
-    }
-
-    public Staff getSupervisor1() {
-        return supervisor1;
-    }
-
-    public void setSupervisor1(Staff supervisor1) {
-        this.supervisor1 = supervisor1;
     }
 
     @Override
@@ -662,7 +673,7 @@ public class Entry implements Serializable,SettingEntity {
     public String toString() {
         return "com.cch.aj.entryrecorder.entities.Entry[ id=" + id + " ]";
     }
-
+    
     @Override
     public void setDefaultValue() {
         this.inUse="YES";

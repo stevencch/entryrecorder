@@ -95,7 +95,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel74">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="MACHINE No&#x673a;&#x5668;"/>
+                        <Property name="text" type="java.lang.String" value="MACHINE No&#x673a;&#x5668;&#x53f7;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -105,7 +105,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel75">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="MOULD&#x578b;&#x53f7;"/>
+                        <Property name="text" type="java.lang.String" value="MOULD&#x6a21;&#x5177;&#x578b;&#x53f7;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -115,7 +115,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel76">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="PRODUCT CODE&#x4ea7;&#x54c1;"/>
+                        <Property name="text" type="java.lang.String" value="PRODUCT CODE&#x4ea7;&#x54c1;&#x540d;&#x79f0;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -152,7 +152,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel73">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="IN USE&#x542f;&#x7528;"/>
+                        <Property name="text" type="java.lang.String" value="IN USE&#x662f;&#x5426;&#x4f7f;&#x7528;"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
