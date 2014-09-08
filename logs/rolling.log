@@ -350,3 +350,5 @@ Caused by: java.net.ConnectException: Connection refused: connect
 13:48:28,470 [main] WARN  AppHelper - ###Start the Program###
 13:52:51,046 [main] WARN  AppHelper - ###Start the Program###
 13:54:03,867 [main] WARN  AppHelper - ###Start the Program###
+13:55:25,665 [main] WARN  AppHelper - ###Start the Program###
+13:58:00,168 [main] WARN  AppHelper - ###Start the Program###

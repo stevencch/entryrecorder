@@ -779,16 +779,16 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridwidth = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         jPanel1.add(cbEntry, gridBagConstraints);
 
         btnDone.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tickbox_alt.png"))); // NOI18N
         btnDone.setToolTipText("Complete完成");
-        btnDone.setMaximumSize(new java.awt.Dimension(48, 48));
-        btnDone.setMinimumSize(new java.awt.Dimension(48, 48));
-        btnDone.setPreferredSize(new java.awt.Dimension(48, 48));
+        btnDone.setMaximumSize(new java.awt.Dimension(24, 24));
+        btnDone.setMinimumSize(new java.awt.Dimension(24, 24));
+        btnDone.setPreferredSize(new java.awt.Dimension(24, 24));
         btnDone.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDoneActionPerformed(evt);
@@ -797,7 +797,6 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 3;
         gridBagConstraints.ipady = 3;
         gridBagConstraints.insets = new java.awt.Insets(5, 2, 5, 2);
@@ -805,9 +804,9 @@ public class MainJFrame extends javax.swing.JFrame {
 
         btnRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/repeat.png"))); // NOI18N
         btnRefresh.setToolTipText("Refresh刷新");
-        btnRefresh.setMaximumSize(new java.awt.Dimension(48, 48));
-        btnRefresh.setMinimumSize(new java.awt.Dimension(48, 48));
-        btnRefresh.setPreferredSize(new java.awt.Dimension(48, 48));
+        btnRefresh.setMaximumSize(new java.awt.Dimension(24, 24));
+        btnRefresh.setMinimumSize(new java.awt.Dimension(24, 24));
+        btnRefresh.setPreferredSize(new java.awt.Dimension(24, 24));
         btnRefresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRefreshActionPerformed(evt);
@@ -816,7 +815,6 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 3;
         gridBagConstraints.ipady = 3;
         gridBagConstraints.insets = new java.awt.Insets(5, 2, 5, 2);
@@ -824,9 +822,9 @@ public class MainJFrame extends javax.swing.JFrame {
 
         btnReport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/printer.png"))); // NOI18N
         btnReport.setToolTipText("Report报表");
-        btnReport.setMaximumSize(new java.awt.Dimension(48, 48));
-        btnReport.setMinimumSize(new java.awt.Dimension(48, 48));
-        btnReport.setPreferredSize(new java.awt.Dimension(48, 48));
+        btnReport.setMaximumSize(new java.awt.Dimension(24, 24));
+        btnReport.setMinimumSize(new java.awt.Dimension(24, 24));
+        btnReport.setPreferredSize(new java.awt.Dimension(24, 24));
         btnReport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnReportActionPerformed(evt);
@@ -835,7 +833,6 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 3;
         gridBagConstraints.ipady = 3;
         gridBagConstraints.insets = new java.awt.Insets(5, 2, 5, 2);
