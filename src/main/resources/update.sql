@@ -1,1 +1,1 @@
-ALTER TABLE `entry` ADD `Material` VARCHAR(1000) NULL ;
+ALTER TABLE `entry` ADD `Material` VARCHAR(2000) NULL ;

@@ -129,6 +129,7 @@ public class MainJFrame extends javax.swing.JFrame {
         AppHelper.currentEntry = currentEntry;
         this.UpdateEntryForm();
         this.btnDone.setVisible(false);
+        this.btnReport.setVisible(false);
         this.labShift.setText(this.currentEntry.getShift() + "/" + this.currentEntry.getMachineId().getMachineNo()
                 + "/" + this.currentEntry.getProductId().getCode());
     }
@@ -493,7 +494,6 @@ public class MainJFrame extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         cbEntry = new javax.swing.JComboBox();
         btnDone = new javax.swing.JButton();
-        labShift = new javax.swing.JLabel();
         btnRefresh = new javax.swing.JButton();
         btnReport = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
@@ -762,6 +762,7 @@ public class MainJFrame extends javax.swing.JFrame {
         btnStaffSave = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        labShift = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1150, 600));
@@ -777,34 +778,36 @@ public class MainJFrame extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         jPanel1.add(cbEntry, gridBagConstraints);
 
-        btnDone.setText("Complete完成");
+        btnDone.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tickbox_alt.png"))); // NOI18N
+        btnDone.setToolTipText("Complete完成");
+        btnDone.setMaximumSize(new java.awt.Dimension(48, 48));
+        btnDone.setMinimumSize(new java.awt.Dimension(48, 48));
+        btnDone.setPreferredSize(new java.awt.Dimension(48, 48));
         btnDone.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDoneActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(0, 14, 0, 6);
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 3;
+        gridBagConstraints.ipady = 3;
+        gridBagConstraints.insets = new java.awt.Insets(5, 2, 5, 2);
         jPanel1.add(btnDone, gridBagConstraints);
 
-        labShift.setText("shift");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(9, 3, 10, 3);
-        jPanel1.add(labShift, gridBagConstraints);
-
-        btnRefresh.setText("Refresh刷新");
+        btnRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/repeat.png"))); // NOI18N
+        btnRefresh.setToolTipText("Refresh刷新");
+        btnRefresh.setMaximumSize(new java.awt.Dimension(48, 48));
+        btnRefresh.setMinimumSize(new java.awt.Dimension(48, 48));
+        btnRefresh.setPreferredSize(new java.awt.Dimension(48, 48));
         btnRefresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRefreshActionPerformed(evt);
@@ -813,10 +816,17 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.insets = new java.awt.Insets(4, 2, 4, 2);
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 3;
+        gridBagConstraints.ipady = 3;
+        gridBagConstraints.insets = new java.awt.Insets(5, 2, 5, 2);
         jPanel1.add(btnRefresh, gridBagConstraints);
 
-        btnReport.setText("Report报表");
+        btnReport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/printer.png"))); // NOI18N
+        btnReport.setToolTipText("Report报表");
+        btnReport.setMaximumSize(new java.awt.Dimension(48, 48));
+        btnReport.setMinimumSize(new java.awt.Dimension(48, 48));
+        btnReport.setPreferredSize(new java.awt.Dimension(48, 48));
         btnReport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnReportActionPerformed(evt);
@@ -825,6 +835,10 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 3;
+        gridBagConstraints.ipady = 3;
+        gridBagConstraints.insets = new java.awt.Insets(5, 2, 5, 2);
         jPanel1.add(btnReport, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -3411,6 +3425,12 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(8, 8, 8, 8);
         jPanel4.add(jLabel1, gridBagConstraints);
 
+        labShift.setText("shift");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        jPanel4.add(labShift, gridBagConstraints);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -3474,9 +3494,11 @@ public class MainJFrame extends javax.swing.JFrame {
                 cf.setVisible(true);
             }
             this.btnDone.setVisible(true);
+            this.btnReport.setVisible(true);
             this.UpdateEntryForm();
         } else {
             this.btnDone.setVisible(false);
+            this.btnReport.setVisible(false);
         }
     }//GEN-LAST:event_cbEntryActionPerformed
 

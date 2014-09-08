@@ -234,6 +234,7 @@ public class SearchJFrame extends javax.swing.JFrame implements ListSelectionLis
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         List<Entry> list=this.entrySearchService.Search(txtShift.getText(), txtProduct.getText(),txtBatch.getText());
         DefaultTableModel model = (DefaultTableModel) this.tblSearch.getModel();
+        model.setRowCount(0);
         for(Entry entry:list){
             model.addRow(new Object[]{entry.getId(),entry.getShift(),entry.getProductId().getCode(),(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(entry.getCreateDate())});
         }

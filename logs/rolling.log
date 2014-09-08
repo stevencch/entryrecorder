@@ -216,3 +216,137 @@ org.json.JSONException: JSONObject["items"] not found.
 23:40:56,193 [AWT-EventQueue-0] WARN  AppHelper - ##entry 6 ## [Open Check List]
 23:41:42,011 [main] WARN  AppHelper - ###Start the Program###
 23:42:41,205 [main] WARN  AppHelper - ###Start the Program###
+12:17:12,816 [main] WARN  AppHelper - ###Start the Program###
+12:17:51,609 [AWT-EventQueue-0] ERROR ejb - 08/09/2014 12:17:51 PM org.eclipse.persistence.session.file:/D:/Development/cch/AJ/entryrecorder-master/entryrecorder-master/target/classes/_com.cch.aj_EntryRecorder_jar_1.0-SNAPSHOTPU.ejb ServerSession(1314750027)
+SEVERE: Local Exception Stack: 
+Exception [EclipseLink-4002] (Eclipse Persistence Services - 2.5.1.v20130918-f2b9fc5): org.eclipse.persistence.exceptions.DatabaseException
+Internal Exception: com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+Error Code: 0
+	at org.eclipse.persistence.exceptions.DatabaseException.sqlException(DatabaseException.java:331)
+	at org.eclipse.persistence.exceptions.DatabaseException.sqlException(DatabaseException.java:326)
+	at org.eclipse.persistence.sessions.DefaultConnector.connect(DefaultConnector.java:138)
+	at org.eclipse.persistence.sessions.DatasourceLogin.connectToDatasource(DatasourceLogin.java:162)
+	at org.eclipse.persistence.internal.sessions.DatabaseSessionImpl.setOrDetectDatasource(DatabaseSessionImpl.java:204)
+	at org.eclipse.persistence.internal.sessions.DatabaseSessionImpl.loginAndDetectDatasource(DatabaseSessionImpl.java:741)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryProvider.login(EntityManagerFactoryProvider.java:239)
+	at org.eclipse.persistence.internal.jpa.EntityManagerSetupImpl.deploy(EntityManagerSetupImpl.java:685)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryDelegate.getAbstractSession(EntityManagerFactoryDelegate.java:204)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryDelegate.createEntityManagerImpl(EntityManagerFactoryDelegate.java:304)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryImpl.createEntityManagerImpl(EntityManagerFactoryImpl.java:336)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryImpl.createEntityManager(EntityManagerFactoryImpl.java:302)
+	at com.cch.aj.entryrecorder.repositories.impl.EntryJpaController.getEntityManager(EntryJpaController.java:35)
+	at com.cch.aj.entryrecorder.repositories.impl.EntryJpaController.findEntryEntities(EntryJpaController.java:105)
+	at com.cch.aj.entryrecorder.repositories.impl.EntryJpaController.findEntryEntities(EntryJpaController.java:97)
+	at com.cch.aj.entryrecorder.repositories.impl.EntryRepositoryImpl.findEntities(EntryRepositoryImpl.java:53)
+	at com.cch.aj.entryrecorder.services.impl.SettingServiceImpl.GetAllEntities(SettingServiceImpl.java:97)
+	at com.cch.aj.entryrecorder.frame.MainJFrame.FillEntryComboBox(MainJFrame.java:456)
+	at com.cch.aj.entryrecorder.frame.MainJFrame.init(MainJFrame.java:122)
+	at com.cch.aj.entryrecorder.frame.HomeJFrame.btnEntryActionPerformed(HomeJFrame.java:130)
+	at com.cch.aj.entryrecorder.frame.HomeJFrame.access$100(HomeJFrame.java:24)
+	at com.cch.aj.entryrecorder.frame.HomeJFrame$2.actionPerformed(HomeJFrame.java:72)
+	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2022)
+	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2346)
+	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:402)
+	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
+	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:252)
+	at java.awt.Component.processMouseEvent(Component.java:6527)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3321)
+	at java.awt.Component.processEvent(Component.java:6292)
+	at java.awt.Container.processEvent(Container.java:2234)
+	at java.awt.Component.dispatchEventImpl(Component.java:4883)
+	at java.awt.Container.dispatchEventImpl(Container.java:2292)
+	at java.awt.Component.dispatchEvent(Component.java:4705)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4898)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4533)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4462)
+	at java.awt.Container.dispatchEventImpl(Container.java:2278)
+	at java.awt.Window.dispatchEventImpl(Window.java:2739)
+	at java.awt.Component.dispatchEvent(Component.java:4705)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:746)
+	at java.awt.EventQueue.access$400(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:697)
+	at java.awt.EventQueue$3.run(EventQueue.java:691)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:75)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.awt.EventQueue$4.run(EventQueue.java:719)
+	at java.awt.EventQueue$4.run(EventQueue.java:717)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:75)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:716)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+Caused by: com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:408)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:408)
+	at com.mysql.jdbc.SQLError.createCommunicationsException(SQLError.java:1137)
+	at com.mysql.jdbc.MysqlIO.<init>(MysqlIO.java:356)
+	at com.mysql.jdbc.ConnectionImpl.coreConnect(ConnectionImpl.java:2504)
+	at com.mysql.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:2541)
+	at com.mysql.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:2323)
+	at com.mysql.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:832)
+	at com.mysql.jdbc.JDBC4Connection.<init>(JDBC4Connection.java:46)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:408)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:408)
+	at com.mysql.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:417)
+	at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:344)
+	at java.sql.DriverManager.getConnection(DriverManager.java:664)
+	at java.sql.DriverManager.getConnection(DriverManager.java:208)
+	at org.eclipse.persistence.sessions.DefaultConnector.connect(DefaultConnector.java:98)
+	... 55 more
+Caused by: java.net.ConnectException: Connection refused: connect
+	at java.net.DualStackPlainSocketImpl.connect0(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:79)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:345)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:172)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:589)
+	at java.net.Socket.connect(Socket.java:538)
+	at java.net.Socket.<init>(Socket.java:434)
+	at java.net.Socket.<init>(Socket.java:244)
+	at com.mysql.jdbc.StandardSocketFactory.connect(StandardSocketFactory.java:258)
+	at com.mysql.jdbc.MysqlIO.<init>(MysqlIO.java:306)
+	... 70 more
+
+12:18:28,955 [AWT-EventQueue-0] WARN  AppHelper - ##entry 6 ## [Open Check List]
+12:18:59,333 [AWT-EventQueue-0] WARN  AppHelper - ##Search##[shift, , ewew]
+12:19:07,477 [AWT-EventQueue-0] WARN  AppHelper - ##Search##[shift, , ]
+12:19:10,516 [AWT-EventQueue-0] WARN  AppHelper - ##Search##[shift, , ewew]
+12:19:14,669 [AWT-EventQueue-0] WARN  AppHelper - ##Search##[shift, , ewew]
+12:19:17,740 [AWT-EventQueue-0] WARN  AppHelper - ##Search##[shift, , kk]
+12:19:21,989 [AWT-EventQueue-0] WARN  AppHelper - ##Search##[shiftw, , ]
+12:19:27,572 [AWT-EventQueue-0] WARN  AppHelper - ##Search##[, , kk]
+12:19:35,061 [AWT-EventQueue-0] WARN  AppHelper - ##Search##[shift, , ]
+12:22:07,647 [main] WARN  AppHelper - ###Start the Program###
+12:22:19,760 [AWT-EventQueue-0] WARN  AppHelper - ##Search##[, , ewew]
+12:22:38,504 [AWT-EventQueue-0] WARN  AppHelper - ##Search##[, , ewew]
+12:24:10,862 [main] WARN  AppHelper - ###Start the Program###
+12:24:17,758 [AWT-EventQueue-0] WARN  AppHelper - ##Search##[, , ewew]
+12:24:26,336 [AWT-EventQueue-0] WARN  AppHelper - ##Search##[, , ewew,kk]
+12:29:06,726 [AWT-EventQueue-0] WARN  AppHelper - ##Search##[, , kk]
+13:16:23,097 [main] WARN  AppHelper - ###Start the Program###
+13:18:48,114 [main] WARN  AppHelper - ###Start the Program###
+13:20:06,986 [main] WARN  AppHelper - ###Start the Program###
+13:21:28,014 [main] WARN  AppHelper - ###Start the Program###
+13:22:11,422 [AWT-EventQueue-0] WARN  AppHelper - ##entry 6 ## [Open Check List]
+13:24:02,521 [main] WARN  AppHelper - ###Start the Program###
+13:47:15,135 [main] WARN  AppHelper - ###Start the Program###
+13:48:28,470 [main] WARN  AppHelper - ###Start the Program###
+13:52:51,046 [main] WARN  AppHelper - ###Start the Program###
+13:54:03,867 [main] WARN  AppHelper - ###Start the Program###

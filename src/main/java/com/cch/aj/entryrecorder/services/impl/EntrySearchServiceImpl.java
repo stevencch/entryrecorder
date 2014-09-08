@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.cch.aj.entryrecorder.services.impl;
 
 import com.cch.aj.entryrecorder.entities.Entry;
@@ -25,34 +24,26 @@ public class EntrySearchServiceImpl extends SettingServiceImpl<Entry> implements
     public EntrySearchServiceImpl(Class<Entry> type) {
         super(type);
     }
-    
+
     @Override
     public List<Entry> Search(String shift, String product, String batch) {
-        shift=shift.toLowerCase();
-        product=product.toLowerCase();
-        batch=batch.toLowerCase();
-        List<Entry> list=this.getRepository().findEntities();
-        if(!shift.equals("")){
-            List<String> shifts=Arrays.asList(shift.split(","));
-            list=list.stream().filter(x->shifts.contains(x.getShift().toLowerCase())).collect(Collectors.toList());
+        shift = shift.toLowerCase();
+        product = product.toLowerCase();
+        batch = batch.toLowerCase();
+        List<Entry> list = this.getRepository().findEntities();
+        if (!shift.equals("")) {
+            List<String> shifts = Arrays.asList(shift.split(","));
+            list = list.stream().filter(x -> shifts.contains(x.getShift().toLowerCase())).collect(Collectors.toList());
         }
-        if(!product.equals("")){
-            List<String> products=Arrays.asList(product.split(","));
-            list=list.stream().filter(x->products.contains(x.getProductId().getCode().toLowerCase())).collect(Collectors.toList());
+        if (!product.equals("")) {
+            List<String> products = Arrays.asList(product.split(","));
+            list = list.stream().filter(x -> products.contains(x.getProductId().getCode().toLowerCase())).collect(Collectors.toList());
         }
-        if(!batch.equals("")){
-            List<String> batchs=Arrays.asList(batch.split(","));
-            list=list.stream().filter(x->
-                    batchs.contains(x.getAdditiveABatchA().toLowerCase())
-                    ||batchs.contains(x.getAdditiveABatchB().toLowerCase())
-                    ||batchs.contains(x.getAdditiveBBatchA().toLowerCase())
-                    ||batchs.contains(x.getAdditiveBBatchB().toLowerCase())
-                    ||batchs.contains(x.getAdditiveCBatchA().toLowerCase())
-                    ||batchs.contains(x.getAdditiveCBatchB().toLowerCase())
-                    ||batchs.contains(x.getPolymerBatchA().toLowerCase())
-                    ||batchs.contains(x.getPolymerBatchB().toLowerCase())).collect(Collectors.toList());
+        if (!batch.equals("")) {
+            List<String> batchs = Arrays.asList(batch.split(","));
+            list = list.stream().filter(x -> batchs.stream().anyMatch(y -> (x.getMaterial()!=null && x.getMaterial().contains(y)))).collect(Collectors.toList());
         }
         return list;
     }
-    
+
 }
