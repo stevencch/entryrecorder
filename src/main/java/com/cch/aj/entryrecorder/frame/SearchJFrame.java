@@ -3,20 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.cch.aj.entryrecorder.frame;
 
 import com.cch.aj.entryrecorder.common.AppContext;
 import com.cch.aj.entryrecorder.common.AppHelper;
+import com.cch.aj.entryrecorder.common.ProcessBuilderWrapper;
 import com.cch.aj.entryrecorder.entities.Checkitem;
 import com.cch.aj.entryrecorder.entities.Entry;
 import com.cch.aj.entryrecorder.services.EntrySearchService;
 import com.cch.aj.entryrecorder.services.impl.EntrySearchServiceImpl;
+import java.awt.Desktop;
+import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingWorker;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -31,6 +36,7 @@ public class SearchJFrame extends javax.swing.JFrame implements ListSelectionLis
 
     @Autowired
     EntrySearchService entrySearchService;
+
     /**
      * Creates new form SearchJFrame
      */
@@ -232,12 +238,29 @@ public class SearchJFrame extends javax.swing.JFrame implements ListSelectionLis
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        List<Entry> list=this.entrySearchService.Search(txtShift.getText(), txtProduct.getText(),txtBatch.getText());
-        DefaultTableModel model = (DefaultTableModel) this.tblSearch.getModel();
-        model.setRowCount(0);
-        for(Entry entry:list){
-            model.addRow(new Object[]{entry.getId(),entry.getShift(),entry.getProductId().getCode(),(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(entry.getCreateDate())});
-        }
+        BusyJFrame bf = new BusyJFrame();
+        bf.setVisible(true);
+        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+
+            @Override
+            protected Void doInBackground() throws Exception {
+                List<Entry> list = entrySearchService.Search(txtShift.getText(), txtProduct.getText(), txtBatch.getText());
+                DefaultTableModel model = (DefaultTableModel) tblSearch.getModel();
+                model.setRowCount(0);
+                for (Entry entry : list) {
+                    model.addRow(new Object[]{entry.getId(), entry.getShift(), entry.getProductId().getCode(), (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(entry.getCreateDate())});
+                }
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                bf.setVisible(false);
+            }
+        };
+        worker.execute();
+
+
     }//GEN-LAST:event_btnSearchActionPerformed
 
     /**

@@ -50,6 +50,7 @@ import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparing;
+import static java.util.Comparator.comparing;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -59,6 +60,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import org.apache.commons.lang3.StringUtils;
@@ -795,7 +797,7 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.ipadx = 3;
         gridBagConstraints.ipady = 3;
@@ -831,7 +833,7 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.ipadx = 3;
         gridBagConstraints.ipady = 3;
@@ -3733,7 +3735,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 model.addRow(new Object[]{time, RecordKey.CHECK_WEIGHT_WITHIN_RANGE, this.cbWeightWithinRange.getSelectedItem(), pass, staff});
                 model.addRow(new Object[]{time, RecordKey.CHECK_COLOUR_TEXTURE, this.cbColourTexture.getSelectedItem(), pass, staff});
                 model.addRow(new Object[]{time, RecordKey.CHECK_BUNG_PROVISION, this.cbBungProvision.getSelectedItem(), pass, staff});
-                
+
                 ((AbstractTableModel) this.tblCheck.getModel()).fireTableDataChanged();
 
                 //
@@ -3746,7 +3748,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 UpdateEntryData(now, (float) this.cbWeightWithinRange.getSelectedIndex(), RecordKey.CHECK_WEIGHT_WITHIN_RANGE, staff, pass, this.cbWeightWithinRange.getSelectedItem().toString());
                 UpdateEntryData(now, (float) this.cbColourTexture.getSelectedIndex(), RecordKey.CHECK_COLOUR_TEXTURE, staff, pass, this.cbColourTexture.getSelectedItem().toString());
                 UpdateEntryData(now, (float) this.cbBungProvision.getSelectedIndex(), RecordKey.CHECK_BUNG_PROVISION, staff, pass, this.cbBungProvision.getSelectedItem().toString());
-                
+
                 this.cbNeckRound.setSelectedIndex(0);
                 this.cbNeckComplete.setSelectedIndex(0);
                 this.cbUnderTheHandle.setSelectedIndex(0);
@@ -4145,46 +4147,65 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     private void btnReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportActionPerformed
-        try {
-            final File batchFile = new File(AppHelper.currentDir + "\\pdfs\\genReport.bat");
-            List cmd = new ArrayList();
-            cmd.add(batchFile.getAbsolutePath());
-            cmd.add("-f");
-            cmd.add("PDF");
-            cmd.add("-p");
-            cmd.add("\"entryId="
-                    + AppHelper.currentEntry.getId() + "\"");
-            cmd.add("-o");
-            final String pdfFileName = AppHelper.currentDir + "\\pdfs\\report_" + AppHelper.currentEntry.getShift().replace(' ', '-') + "_"
-                    + AppHelper.currentEntry.getMachineId().getMachineNo().replace(' ', '-') + "_"
-                    + AppHelper.currentEntry.getProductId().getCode().replace(' ', '-') + "_" + (new SimpleDateFormat("yyyyMMdd")).format(new Date())
-                    + ".pdf";
-            cmd.add("\"" + pdfFileName + "\"");
-            cmd.add("-F");
-            cmd.add("\"" + AppHelper.currentDir + "\\pdfs\\entry.rptdesign\"");
+        BusyJFrame bf = new BusyJFrame();
+        bf.setVisible(true);
+        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
-            ProcessBuilderWrapper pbd = new ProcessBuilderWrapper(new File(AppHelper.currentDir + "\\pdfs\\"), cmd);
-            System.out.println("Command has terminated with status: " + pbd.getStatus());
-            System.out.println("Output:\n" + pbd.getInfos());
-            System.out.println("Error: " + pbd.getErrors());
+            @Override
+            protected Void doInBackground() throws Exception {
+                try {
 
-            //open
-            File pdfFile = new File(pdfFileName);
-            if (pdfFile.exists()) {
+                    final File batchFile = new File(AppHelper.currentDir + "\\pdfs\\genReport.bat");
+                    List cmd = new ArrayList();
+                    cmd.add(batchFile.getAbsolutePath());
+                    cmd.add("-f");
+                    cmd.add("PDF");
+                    cmd.add("-p");
+                    cmd.add("\"entryId="
+                            + AppHelper.currentEntry.getId() + "\"");
+                    cmd.add("-o");
+                    final String pdfFileName = AppHelper.currentDir + "\\pdfs\\report_" + AppHelper.currentEntry.getShift().replace(' ', '-') + "_"
+                            + AppHelper.currentEntry.getMachineId().getMachineNo().replace(' ', '-') + "_"
+                            + AppHelper.currentEntry.getProductId().getCode().replace(' ', '-') + "_" + (new SimpleDateFormat("yyyyMMdd")).format(new Date())
+                            + ".pdf";
+                    cmd.add("\"" + pdfFileName + "\"");
+                    cmd.add("-F");
+                    cmd.add("\"" + AppHelper.currentDir + "\\pdfs\\entry.rptdesign\"");
 
-                if (Desktop.isDesktopSupported()) {
-                    Desktop.getDesktop().open(pdfFile);
-                } else {
-                    System.out.println("Awt Desktop is not supported!");
+                    ProcessBuilderWrapper pbd = new ProcessBuilderWrapper(new File(AppHelper.currentDir + "\\pdfs\\"), cmd);
+                    System.out.println("Command has terminated with status: " + pbd.getStatus());
+                    System.out.println("Output:\n" + pbd.getInfos());
+                    System.out.println("Error: " + pbd.getErrors());
+
+                    //open
+                    File pdfFile = new File(pdfFileName);
+                    if (pdfFile.exists()) {
+
+                        if (Desktop.isDesktopSupported()) {
+                            Desktop.getDesktop().open(pdfFile);
+                        } else {
+                            System.out.println("Awt Desktop is not supported!");
+                        }
+
+                    } else {
+                        System.out.println("File is not exists!");
+                    }
+                    
+                    this.setProgress(100);
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
-
-            } else {
-                System.out.println("File is not exists!");
+                return null;
             }
 
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+            @Override
+            protected void done() {
+                bf.setVisible(false);
+            }
+        };
+        worker.execute();
+        
     }//GEN-LAST:event_btnReportActionPerformed
 
     private void UpdateEntryData(Date now, Float valueUnderHandle, RecordKey key, String staff, String pass, String stringValue) {
