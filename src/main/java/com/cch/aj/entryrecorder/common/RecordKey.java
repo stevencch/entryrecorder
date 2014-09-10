@@ -47,4 +47,7 @@ public enum RecordKey {
     LEAK_CHECK,
     ANY_LEAK,
     LEAK_NOTES,
+    THREAD_BORE1_2,
+    THREAD_BORE2_2,
+    THREAD_NECK_2,
 }

@@ -357,6 +357,15 @@ public class EntryJFrame extends javax.swing.JFrame {
         jLabel125 = new javax.swing.JLabel();
         txtEntryThreadBoreAMin = new javax.swing.JTextField();
         txtEntryThreadBoreAMax = new javax.swing.JTextField();
+        jLabel127 = new javax.swing.JLabel();
+        jLabel128 = new javax.swing.JLabel();
+        jLabel129 = new javax.swing.JLabel();
+        txtEntryThreadBoreAMin1 = new javax.swing.JTextField();
+        txtEntryThreadBoreBMin1 = new javax.swing.JTextField();
+        txtEntryThreadNeckMin1 = new javax.swing.JTextField();
+        txtEntryThreadBoreAMax1 = new javax.swing.JTextField();
+        txtEntryThreadBoreBMax1 = new javax.swing.JTextField();
+        txtEntryThreadNeckMax1 = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         labEntryWall = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
@@ -577,20 +586,20 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 0);
         jPanel13.add(jLabel120, gridBagConstraints);
 
-        jLabel122.setText("THREAD BORE B钻孔");
+        jLabel122.setText("1.THREAD BORE B钻孔");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.ipadx = 30;
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 0);
         jPanel13.add(jLabel122, gridBagConstraints);
 
-        jLabel123.setText("THREAD NECK颈长");
+        jLabel123.setText("1.THREAD NECK颈长");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.ipadx = 30;
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
@@ -600,7 +609,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         jLabel124.setText("TAP POSITION龙头");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.ipadx = 30;
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
@@ -626,7 +635,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         jPanel13.add(txtEntryWeightMax, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 30;
         gridBagConstraints.ipady = 4;
@@ -635,7 +644,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         jPanel13.add(txtEntryThreadBoreBMin, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 30;
         gridBagConstraints.ipady = 4;
@@ -644,7 +653,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         jPanel13.add(txtEntryThreadBoreBMax, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 30;
         gridBagConstraints.ipady = 4;
@@ -653,7 +662,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         jPanel13.add(txtEntryThreadNeckMin, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 30;
         gridBagConstraints.ipady = 4;
@@ -662,7 +671,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         jPanel13.add(txtEntryThreadNeckMax, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 30;
         gridBagConstraints.ipady = 4;
@@ -671,7 +680,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         jPanel13.add(txtEntryTapPositionMin, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 30;
         gridBagConstraints.ipady = 4;
@@ -679,10 +688,10 @@ public class EntryJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
         jPanel13.add(txtEntryTapPositionMax, gridBagConstraints);
 
-        jLabel125.setText("THREAD BORE A钻孔");
+        jLabel125.setText("1.THREAD BORE A钻孔");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.ipadx = 30;
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
@@ -690,7 +699,7 @@ public class EntryJFrame extends javax.swing.JFrame {
         jPanel13.add(jLabel125, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 30;
         gridBagConstraints.ipady = 4;
@@ -699,13 +708,97 @@ public class EntryJFrame extends javax.swing.JFrame {
         jPanel13.add(txtEntryThreadBoreAMin, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 30;
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
         jPanel13.add(txtEntryThreadBoreAMax, gridBagConstraints);
+
+        jLabel127.setText("2.THREAD NECK颈长");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 0);
+        jPanel13.add(jLabel127, gridBagConstraints);
+
+        jLabel128.setText("2.THREAD BORE B钻孔");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 0);
+        jPanel13.add(jLabel128, gridBagConstraints);
+
+        jLabel129.setText("2.THREAD BORE A钻孔");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 0);
+        jPanel13.add(jLabel129, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 44);
+        jPanel13.add(txtEntryThreadBoreAMin1, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 44);
+        jPanel13.add(txtEntryThreadBoreBMin1, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 44);
+        jPanel13.add(txtEntryThreadNeckMin1, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
+        jPanel13.add(txtEntryThreadBoreAMax1, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
+        jPanel13.add(txtEntryThreadBoreBMax1, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 8, 28);
+        jPanel13.add(txtEntryThreadNeckMax1, gridBagConstraints);
 
         pnlEditEntry.addTab("Settings设置", jPanel13);
 
@@ -1117,17 +1210,41 @@ public class EntryJFrame extends javax.swing.JFrame {
         if (!this.txtEntryWeightMin.getText().equals("")) {
             currentEntry.setWeightMin(Float.parseFloat(this.txtEntryWeightMin.getText()));
         }
+        if (!this.txtEntryThreadBoreAMax.getText().equals("")) {
+            currentEntry.setThreadBoreAMax(Float.parseFloat(this.txtEntryThreadBoreAMax.getText()));
+        }
+        if (!this.txtEntryThreadBoreAMin.getText().equals("")) {
+            currentEntry.setThreadBoreAMin(Float.parseFloat(this.txtEntryThreadBoreAMin.getText()));
+        }
         if (!this.txtEntryThreadBoreBMax.getText().equals("")) {
-            currentEntry.setThreadBoreMax(Float.parseFloat(this.txtEntryThreadBoreBMax.getText()));
+            currentEntry.setThreadBoreBMax(Float.parseFloat(this.txtEntryThreadBoreBMax.getText()));
         }
         if (!this.txtEntryThreadBoreBMin.getText().equals("")) {
-            currentEntry.setThreadBoreMin(Float.parseFloat(this.txtEntryThreadBoreBMin.getText()));
+            currentEntry.setThreadBoreBMin(Float.parseFloat(this.txtEntryThreadBoreBMin.getText()));
         }
         if (!this.txtEntryThreadNeckMax.getText().equals("")) {
             currentEntry.setThreadNeckMax(Float.parseFloat(this.txtEntryThreadNeckMax.getText()));
         }
         if (!this.txtEntryThreadNeckMin.getText().equals("")) {
             currentEntry.setThreadNeckMin(Float.parseFloat(this.txtEntryThreadNeckMin.getText()));
+        }
+        if (!this.txtEntryThreadBoreAMax1.getText().equals("")) {
+            currentEntry.setThreadBoreAMax1(Float.parseFloat(this.txtEntryThreadBoreAMax1.getText()));
+        }
+        if (!this.txtEntryThreadBoreAMin1.getText().equals("")) {
+            currentEntry.setThreadBoreAMin1(Float.parseFloat(this.txtEntryThreadBoreAMin1.getText()));
+        }
+        if (!this.txtEntryThreadBoreBMax1.getText().equals("")) {
+            currentEntry.setThreadBoreBMax1(Float.parseFloat(this.txtEntryThreadBoreBMax1.getText()));
+        }
+        if (!this.txtEntryThreadBoreBMin1.getText().equals("")) {
+            currentEntry.setThreadBoreBMin1(Float.parseFloat(this.txtEntryThreadBoreBMin1.getText()));
+        }
+        if (!this.txtEntryThreadNeckMax1.getText().equals("")) {
+            currentEntry.setThreadNeckMax1(Float.parseFloat(this.txtEntryThreadNeckMax1.getText()));
+        }
+        if (!this.txtEntryThreadNeckMin1.getText().equals("")) {
+            currentEntry.setThreadNeckMin1(Float.parseFloat(this.txtEntryThreadNeckMin1.getText()));
         }
         if (!this.txtEntryTapPositionMax.getText().equals("")) {
             currentEntry.setTapPositionMax(Float.parseFloat(this.txtEntryTapPositionMax.getText()));
@@ -1297,6 +1414,70 @@ public class EntryJFrame extends javax.swing.JFrame {
                         break;
                 }
             }
+            if(currentProduct.getClosureType()!=null && currentProduct.getClosureType().equals("TWIN")){
+                this.txtEntryThreadBoreAMax1.setVisible(true);
+                this.txtEntryThreadBoreAMin1.setVisible(true);
+                this.txtEntryThreadBoreBMax1.setVisible(true);
+                this.txtEntryThreadBoreBMin1.setVisible(true);
+                this.txtEntryThreadNeckMax1.setVisible(true);
+                this.txtEntryThreadNeckMin1.setVisible(true);
+                if (currentProduct.getThreadBoreA1() != null) {
+                switch (currentProduct.getThreadBoreA1()) {
+                    case 1:
+                        this.txtEntryThreadBoreAMin1.setText(currentMould.getThreadBoreAMin1() == null ? "" : currentMould.getThreadBoreAMin1().toString());
+                        this.txtEntryThreadBoreAMax1.setText(currentMould.getThreadBoreAMax1() == null ? "" : currentMould.getThreadBoreAMax1().toString());
+                        break;
+                    case 2:
+                        this.txtEntryThreadBoreAMin1.setText(currentMould.getThreadBoreAMin2() == null ? "" : currentMould.getThreadBoreAMin2().toString());
+                        this.txtEntryThreadBoreAMax1.setText(currentMould.getThreadBoreAMax2() == null ? "" : currentMould.getThreadBoreAMax2().toString());
+                        break;
+                    case 3:
+                        this.txtEntryThreadBoreAMin1.setText(currentMould.getThreadBoreAMin3() == null ? "" : currentMould.getThreadBoreAMin3().toString());
+                        this.txtEntryThreadBoreAMax1.setText(currentMould.getThreadBoreAMax3() == null ? "" : currentMould.getThreadBoreAMax3().toString());
+                        break;
+                }
+            }
+            if (currentProduct.getThreadBoreB1() != null) {
+                switch (currentProduct.getThreadBoreB1()) {
+                    case 1:
+                        this.txtEntryThreadBoreBMin1.setText(currentMould.getThreadBoreBMin1() == null ? "" : currentMould.getThreadBoreBMin1().toString());
+                        this.txtEntryThreadBoreBMax1.setText(currentMould.getThreadBoreBMax1() == null ? "" : currentMould.getThreadBoreBMax1().toString());
+                        break;
+                    case 2:
+                        this.txtEntryThreadBoreBMin1.setText(currentMould.getThreadBoreBMin2() == null ? "" : currentMould.getThreadBoreBMin2().toString());
+                        this.txtEntryThreadBoreBMax1.setText(currentMould.getThreadBoreBMax2() == null ? "" : currentMould.getThreadBoreBMax2().toString());
+                        break;
+                    case 3:
+                        this.txtEntryThreadBoreBMin1.setText(currentMould.getThreadBoreBMin3() == null ? "" : currentMould.getThreadBoreBMin3().toString());
+                        this.txtEntryThreadBoreBMax1.setText(currentMould.getThreadBoreBMax3() == null ? "" : currentMould.getThreadBoreBMax3().toString());
+                        break;
+                }
+            }
+            if (currentProduct.getThreadNeck1() != null) {
+                switch (currentProduct.getThreadNeck1()) {
+                    case 1:
+                        this.txtEntryThreadNeckMin1.setText(currentMould.getThreadNeckMin1() == null ? "" : currentMould.getThreadNeckMin1().toString());
+                        this.txtEntryThreadNeckMax1.setText(currentMould.getThreadNeckMax1() == null ? "" : currentMould.getThreadNeckMax1().toString());
+                        break;
+                    case 2:
+                        this.txtEntryThreadNeckMin1.setText(currentMould.getThreadNeckMin2() == null ? "" : currentMould.getThreadNeckMin2().toString());
+                        this.txtEntryThreadNeckMax1.setText(currentMould.getThreadNeckMax2() == null ? "" : currentMould.getThreadNeckMax2().toString());
+                        break;
+                    case 3:
+                        this.txtEntryThreadNeckMin1.setText(currentMould.getThreadNeckMin3() == null ? "" : currentMould.getThreadNeckMin3().toString());
+                        this.txtEntryThreadNeckMax1.setText(currentMould.getThreadNeckMax3() == null ? "" : currentMould.getThreadNeckMax3().toString());
+                        break;
+                }
+            }
+            }
+            else{
+                this.txtEntryThreadBoreAMax1.setVisible(false);
+                this.txtEntryThreadBoreAMin1.setVisible(false);
+                this.txtEntryThreadBoreBMax1.setVisible(false);
+                this.txtEntryThreadBoreBMin1.setVisible(false);
+                this.txtEntryThreadNeckMax1.setVisible(false);
+                this.txtEntryThreadNeckMin1.setVisible(false);
+            }
         }
         
     }//GEN-LAST:event_cbEntryProductActionPerformed
@@ -1309,16 +1490,40 @@ public class EntryJFrame extends javax.swing.JFrame {
         txtEntryShift.setText(currentEntry.getShift() == null || currentEntry.getShift() == "- Select -" ? "" : currentEntry.getShift().toString());;
         txtEntryWeightMin.setText(currentEntry.getWeightMin() == null ? "" : currentEntry.getWeightMin().toString());;
         txtEntryWeightMax.setText(currentEntry.getWeightMax() == null ? "" : currentEntry.getWeightMax().toString());;
-        txtEntryThreadBoreBMin.setText(currentEntry.getThreadBoreMin() == null ? "" : currentEntry.getThreadBoreMin().toString());
-        txtEntryThreadBoreBMax.setText(currentEntry.getThreadBoreMax() == null ? "" : currentEntry.getThreadBoreMax().toString());
+        txtEntryThreadBoreAMin.setText(currentEntry.getThreadBoreAMin() == null ? "" : currentEntry.getThreadBoreAMin().toString());
+        txtEntryThreadBoreAMax.setText(currentEntry.getThreadBoreAMax() == null ? "" : currentEntry.getThreadBoreAMax().toString());
+        txtEntryThreadBoreBMin.setText(currentEntry.getThreadBoreBMin() == null ? "" : currentEntry.getThreadBoreBMin().toString());
+        txtEntryThreadBoreBMax.setText(currentEntry.getThreadBoreBMax() == null ? "" : currentEntry.getThreadBoreBMax().toString());
         txtEntryThreadNeckMin.setText(currentEntry.getThreadNeckMin() == null ? "" : currentEntry.getThreadNeckMin().toString());
         txtEntryThreadNeckMax.setText(currentEntry.getThreadNeckMax() == null ? "" : currentEntry.getThreadNeckMax().toString());
+        txtEntryThreadBoreAMin1.setText(currentEntry.getThreadBoreAMin1() == null ? "" : currentEntry.getThreadBoreAMin1().toString());
+        txtEntryThreadBoreAMax1.setText(currentEntry.getThreadBoreAMax1() == null ? "" : currentEntry.getThreadBoreAMax1().toString());
+        txtEntryThreadBoreBMin1.setText(currentEntry.getThreadBoreBMin1() == null ? "" : currentEntry.getThreadBoreBMin1().toString());
+        txtEntryThreadBoreBMax1.setText(currentEntry.getThreadBoreBMax1() == null ? "" : currentEntry.getThreadBoreBMax1().toString());
+        txtEntryThreadNeckMin1.setText(currentEntry.getThreadNeckMin1() == null ? "" : currentEntry.getThreadNeckMin1().toString());
+        txtEntryThreadNeckMax1.setText(currentEntry.getThreadNeckMax1() == null ? "" : currentEntry.getThreadNeckMax1().toString());
         txtEntryTapPositionMin.setText(currentEntry.getTapPositionMin() == null ? "" : currentEntry.getTapPositionMin().toString());
         txtEntryTapPositionMax.setText(currentEntry.getTapPositionMax() == null ? "" : currentEntry.getTapPositionMax().toString());
         //combobox
         this.FillMouldComboBox(this.cbEntryMould, currentEntry.getMouldId() != null ? currentEntry.getMouldId().getId() : 0);
         if (currentEntry.getMouldId() != null) {
             this.FillProductComboBox(this.cbEntryProduct, currentEntry.getProductId() != null ? currentEntry.getProductId().getId() : 0, currentEntry.getMouldId().getId());
+            if(currentEntry.getProductId()!=null && currentEntry.getProductId().getClosureType().equals("TWIN")){
+                this.txtEntryThreadBoreAMax1.setVisible(true);
+                this.txtEntryThreadBoreAMin1.setVisible(true);
+                this.txtEntryThreadBoreBMax1.setVisible(true);
+                this.txtEntryThreadBoreBMin1.setVisible(true);
+                this.txtEntryThreadNeckMax1.setVisible(true);
+                this.txtEntryThreadNeckMin1.setVisible(true);
+            }
+            else{
+                this.txtEntryThreadBoreAMax1.setVisible(false);
+                this.txtEntryThreadBoreAMin1.setVisible(false);
+                this.txtEntryThreadBoreBMax1.setVisible(false);
+                this.txtEntryThreadBoreBMin1.setVisible(false);
+                this.txtEntryThreadNeckMax1.setVisible(false);
+                this.txtEntryThreadNeckMin1.setVisible(false);
+            }
         }
         this.FillMachineComboBox(this.cbEntryMachine, currentEntry.getMachineId() != null ? currentEntry.getMachineId().getId() : 0);
        
@@ -1379,6 +1584,9 @@ public class EntryJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel124;
     private javax.swing.JLabel jLabel125;
     private javax.swing.JLabel jLabel126;
+    private javax.swing.JLabel jLabel127;
+    private javax.swing.JLabel jLabel128;
+    private javax.swing.JLabel jLabel129;
     private javax.swing.JLabel jLabel163;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
@@ -1408,11 +1616,17 @@ public class EntryJFrame extends javax.swing.JFrame {
     private javax.swing.JTextField txtEntryTapPositionMax;
     private javax.swing.JTextField txtEntryTapPositionMin;
     private javax.swing.JTextField txtEntryThreadBoreAMax;
+    private javax.swing.JTextField txtEntryThreadBoreAMax1;
     private javax.swing.JTextField txtEntryThreadBoreAMin;
+    private javax.swing.JTextField txtEntryThreadBoreAMin1;
     private javax.swing.JTextField txtEntryThreadBoreBMax;
+    private javax.swing.JTextField txtEntryThreadBoreBMax1;
     private javax.swing.JTextField txtEntryThreadBoreBMin;
+    private javax.swing.JTextField txtEntryThreadBoreBMin1;
     private javax.swing.JTextField txtEntryThreadNeckMax;
+    private javax.swing.JTextField txtEntryThreadNeckMax1;
     private javax.swing.JTextField txtEntryThreadNeckMin;
+    private javax.swing.JTextField txtEntryThreadNeckMin1;
     private javax.swing.JTextField txtEntryWeightMax;
     private javax.swing.JTextField txtEntryWeightMin;
     private javax.swing.JTextField txtMouldBaseMax;

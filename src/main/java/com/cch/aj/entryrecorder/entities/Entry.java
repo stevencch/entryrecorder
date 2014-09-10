@@ -41,8 +41,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Entry.findByWeightMax", query = "SELECT e FROM Entry e WHERE e.weightMax = :weightMax"),
     @NamedQuery(name = "Entry.findByTapPositionMin", query = "SELECT e FROM Entry e WHERE e.tapPositionMin = :tapPositionMin"),
     @NamedQuery(name = "Entry.findByTapPositionMax", query = "SELECT e FROM Entry e WHERE e.tapPositionMax = :tapPositionMax"),
-    @NamedQuery(name = "Entry.findByThreadBoreMin", query = "SELECT e FROM Entry e WHERE e.threadBoreMin = :threadBoreMin"),
-    @NamedQuery(name = "Entry.findByThreadBoreMax", query = "SELECT e FROM Entry e WHERE e.threadBoreMax = :threadBoreMax"),
+    @NamedQuery(name = "Entry.findByThreadBoreBMin", query = "SELECT e FROM Entry e WHERE e.threadBoreBMin = :threadBoreBMin"),
+    @NamedQuery(name = "Entry.findByThreadBoreBMax", query = "SELECT e FROM Entry e WHERE e.threadBoreBMax = :threadBoreBMax"),
     @NamedQuery(name = "Entry.findByThreadNeckMin", query = "SELECT e FROM Entry e WHERE e.threadNeckMin = :threadNeckMin"),
     @NamedQuery(name = "Entry.findByThreadNeckMax", query = "SELECT e FROM Entry e WHERE e.threadNeckMax = :threadNeckMax"),
     @NamedQuery(name = "Entry.findByInUse", query = "SELECT e FROM Entry e WHERE e.inUse = :inUse"),
@@ -71,7 +71,15 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Entry.findByPalletProducedB", query = "SELECT e FROM Entry e WHERE e.palletProducedB = :palletProducedB"),
     @NamedQuery(name = "Entry.findByOtherQuantity", query = "SELECT e FROM Entry e WHERE e.otherQuantity = :otherQuantity"),
     @NamedQuery(name = "Entry.findByIsChecked", query = "SELECT e FROM Entry e WHERE e.isChecked = :isChecked"),
-    @NamedQuery(name = "Entry.findByMaterial", query = "SELECT e FROM Entry e WHERE e.material = :material")})
+    @NamedQuery(name = "Entry.findByMaterial", query = "SELECT e FROM Entry e WHERE e.material = :material"),
+    @NamedQuery(name = "Entry.findByThreadBoreAMin", query = "SELECT e FROM Entry e WHERE e.threadBoreAMin = :threadBoreAMin"),
+    @NamedQuery(name = "Entry.findByThreadBoreAMax", query = "SELECT e FROM Entry e WHERE e.threadBoreAMax = :threadBoreAMax"),
+    @NamedQuery(name = "Entry.findByThreadBoreAMin1", query = "SELECT e FROM Entry e WHERE e.threadBoreAMin1 = :threadBoreAMin1"),
+    @NamedQuery(name = "Entry.findByThreadBoreAMax1", query = "SELECT e FROM Entry e WHERE e.threadBoreAMax1 = :threadBoreAMax1"),
+    @NamedQuery(name = "Entry.findByThreadBoreBMin1", query = "SELECT e FROM Entry e WHERE e.threadBoreBMin1 = :threadBoreBMin1"),
+    @NamedQuery(name = "Entry.findByThreadBoreBMax1", query = "SELECT e FROM Entry e WHERE e.threadBoreBMax1 = :threadBoreBMax1"),
+    @NamedQuery(name = "Entry.findByThreadNeckMin1", query = "SELECT e FROM Entry e WHERE e.threadNeckMin1 = :threadNeckMin1"),
+    @NamedQuery(name = "Entry.findByThreadNeckMax1", query = "SELECT e FROM Entry e WHERE e.threadNeckMax1 = :threadNeckMax1")})
 public class Entry implements Serializable,SettingEntity {
     private static final long serialVersionUID = 1L;
     @Id
@@ -94,10 +102,10 @@ public class Entry implements Serializable,SettingEntity {
     private Float tapPositionMin;
     @Column(name = "TapPositionMax")
     private Float tapPositionMax;
-    @Column(name = "ThreadBoreMin")
-    private Float threadBoreMin;
-    @Column(name = "ThreadBoreMax")
-    private Float threadBoreMax;
+    @Column(name = "ThreadBoreBMin")
+    private Float threadBoreBMin;
+    @Column(name = "ThreadBoreBMax")
+    private Float threadBoreBMax;
     @Column(name = "ThreadNeckMin")
     private Float threadNeckMin;
     @Column(name = "ThreadNeckMax")
@@ -156,54 +164,70 @@ public class Entry implements Serializable,SettingEntity {
     private Boolean isChecked;
     @Column(name = "Material")
     private String material;
-    @JoinColumn(name = "MachineId", referencedColumnName = "Id")
-    @ManyToOne
-    private Machine machineId;
-    @JoinColumn(name = "Worker1", referencedColumnName = "Id")
-    @ManyToOne
-    private Staff worker1;
+    @Column(name = "ThreadBoreAMin")
+    private Float threadBoreAMin;
+    @Column(name = "ThreadBoreAMax")
+    private Float threadBoreAMax;
+    @Column(name = "ThreadBoreAMin1")
+    private Float threadBoreAMin1;
+    @Column(name = "ThreadBoreAMax1")
+    private Float threadBoreAMax1;
+    @Column(name = "ThreadBoreBMin1")
+    private Float threadBoreBMin1;
+    @Column(name = "ThreadBoreBMax1")
+    private Float threadBoreBMax1;
+    @Column(name = "ThreadNeckMin1")
+    private Float threadNeckMin1;
+    @Column(name = "ThreadNeckMax1")
+    private Float threadNeckMax1;
     @JoinColumn(name = "Worker2", referencedColumnName = "Id")
     @ManyToOne
     private Staff worker2;
-    @JoinColumn(name = "Supervisor3", referencedColumnName = "Id")
+    @JoinColumn(name = "MachineId", referencedColumnName = "Id")
     @ManyToOne
-    private Staff supervisor3;
-    @JoinColumn(name = "Technician2", referencedColumnName = "Id")
+    private Machine machineId;
+    @JoinColumn(name = "Supervisor2", referencedColumnName = "Id")
     @ManyToOne
-    private Staff technician2;
+    private Staff supervisor2;
+    @JoinColumn(name = "Technician1", referencedColumnName = "Id")
+    @ManyToOne
+    private Staff technician1;
+    @JoinColumn(name = "Worker1", referencedColumnName = "Id")
+    @ManyToOne
+    private Staff worker1;
     @JoinColumn(name = "Worker3", referencedColumnName = "Id")
     @ManyToOne
     private Staff worker3;
     @JoinColumn(name = "PolymerId", referencedColumnName = "Id")
     @ManyToOne
     private Polymer polymerId;
-    @JoinColumn(name = "Supervisor2", referencedColumnName = "Id")
-    @ManyToOne
-    private Staff supervisor2;
     @JoinColumn(name = "AdditiveAId", referencedColumnName = "Id")
     @ManyToOne
     private Additive additiveAId;
     @JoinColumn(name = "AdditiveBId", referencedColumnName = "Id")
     @ManyToOne
     private Additive additiveBId;
-    @JoinColumn(name = "Technician3", referencedColumnName = "Id")
-    @ManyToOne
-    private Staff technician3;
     @JoinColumn(name = "AdditiveCId", referencedColumnName = "Id")
     @ManyToOne
     private Additive additiveCId;
+    @JoinColumn(name = "Supervisor3", referencedColumnName = "Id")
+    @ManyToOne
+    private Staff supervisor3;
     @JoinColumn(name = "MouldId", referencedColumnName = "Id")
     @ManyToOne
     private Mould mouldId;
     @JoinColumn(name = "ProductId", referencedColumnName = "Id")
     @ManyToOne
     private Product productId;
+    @JoinColumn(name = "Technician2", referencedColumnName = "Id")
+    @ManyToOne
+    private Staff technician2;
     @JoinColumn(name = "Supervisor1", referencedColumnName = "Id")
     @ManyToOne
     private Staff supervisor1;
-    @JoinColumn(name = "Technician1", referencedColumnName = "Id")
+    @JoinColumn(name = "Technician3", referencedColumnName = "Id")
     @ManyToOne
-    private Staff technician1;
+    private Staff technician3;
 
     public Entry() {
     }
@@ -273,20 +297,20 @@ public class Entry implements Serializable,SettingEntity {
         this.tapPositionMax = tapPositionMax;
     }
 
-    public Float getThreadBoreMin() {
-        return threadBoreMin;
+    public Float getThreadBoreBMin() {
+        return threadBoreBMin;
     }
 
-    public void setThreadBoreMin(Float threadBoreMin) {
-        this.threadBoreMin = threadBoreMin;
+    public void setThreadBoreBMin(Float threadBoreBMin) {
+        this.threadBoreBMin = threadBoreBMin;
     }
 
-    public Float getThreadBoreMax() {
-        return threadBoreMax;
+    public Float getThreadBoreBMax() {
+        return threadBoreBMax;
     }
 
-    public void setThreadBoreMax(Float threadBoreMax) {
-        this.threadBoreMax = threadBoreMax;
+    public void setThreadBoreBMax(Float threadBoreBMax) {
+        this.threadBoreBMax = threadBoreBMax;
     }
 
     public Float getThreadNeckMin() {
@@ -521,20 +545,68 @@ public class Entry implements Serializable,SettingEntity {
         this.material = material;
     }
 
-    public Machine getMachineId() {
-        return machineId;
+    public Float getThreadBoreAMin() {
+        return threadBoreAMin;
     }
 
-    public void setMachineId(Machine machineId) {
-        this.machineId = machineId;
+    public void setThreadBoreAMin(Float threadBoreAMin) {
+        this.threadBoreAMin = threadBoreAMin;
     }
 
-    public Staff getWorker1() {
-        return worker1;
+    public Float getThreadBoreAMax() {
+        return threadBoreAMax;
     }
 
-    public void setWorker1(Staff worker1) {
-        this.worker1 = worker1;
+    public void setThreadBoreAMax(Float threadBoreAMax) {
+        this.threadBoreAMax = threadBoreAMax;
+    }
+
+    public Float getThreadBoreAMin1() {
+        return threadBoreAMin1;
+    }
+
+    public void setThreadBoreAMin1(Float threadBoreAMin1) {
+        this.threadBoreAMin1 = threadBoreAMin1;
+    }
+
+    public Float getThreadBoreAMax1() {
+        return threadBoreAMax1;
+    }
+
+    public void setThreadBoreAMax1(Float threadBoreAMax1) {
+        this.threadBoreAMax1 = threadBoreAMax1;
+    }
+
+    public Float getThreadBoreBMin1() {
+        return threadBoreBMin1;
+    }
+
+    public void setThreadBoreBMin1(Float threadBoreBMin1) {
+        this.threadBoreBMin1 = threadBoreBMin1;
+    }
+
+    public Float getThreadBoreBMax1() {
+        return threadBoreBMax1;
+    }
+
+    public void setThreadBoreBMax1(Float threadBoreBMax1) {
+        this.threadBoreBMax1 = threadBoreBMax1;
+    }
+
+    public Float getThreadNeckMin1() {
+        return threadNeckMin1;
+    }
+
+    public void setThreadNeckMin1(Float threadNeckMin1) {
+        this.threadNeckMin1 = threadNeckMin1;
+    }
+
+    public Float getThreadNeckMax1() {
+        return threadNeckMax1;
+    }
+
+    public void setThreadNeckMax1(Float threadNeckMax1) {
+        this.threadNeckMax1 = threadNeckMax1;
     }
 
     public Staff getWorker2() {
@@ -545,20 +617,36 @@ public class Entry implements Serializable,SettingEntity {
         this.worker2 = worker2;
     }
 
-    public Staff getSupervisor3() {
-        return supervisor3;
+    public Machine getMachineId() {
+        return machineId;
     }
 
-    public void setSupervisor3(Staff supervisor3) {
-        this.supervisor3 = supervisor3;
+    public void setMachineId(Machine machineId) {
+        this.machineId = machineId;
     }
 
-    public Staff getTechnician2() {
-        return technician2;
+    public Staff getSupervisor2() {
+        return supervisor2;
     }
 
-    public void setTechnician2(Staff technician2) {
-        this.technician2 = technician2;
+    public void setSupervisor2(Staff supervisor2) {
+        this.supervisor2 = supervisor2;
+    }
+
+    public Staff getTechnician1() {
+        return technician1;
+    }
+
+    public void setTechnician1(Staff technician1) {
+        this.technician1 = technician1;
+    }
+
+    public Staff getWorker1() {
+        return worker1;
+    }
+
+    public void setWorker1(Staff worker1) {
+        this.worker1 = worker1;
     }
 
     public Staff getWorker3() {
@@ -577,14 +665,6 @@ public class Entry implements Serializable,SettingEntity {
         this.polymerId = polymerId;
     }
 
-    public Staff getSupervisor2() {
-        return supervisor2;
-    }
-
-    public void setSupervisor2(Staff supervisor2) {
-        this.supervisor2 = supervisor2;
-    }
-
     public Additive getAdditiveAId() {
         return additiveAId;
     }
@@ -601,20 +681,20 @@ public class Entry implements Serializable,SettingEntity {
         this.additiveBId = additiveBId;
     }
 
-    public Staff getTechnician3() {
-        return technician3;
-    }
-
-    public void setTechnician3(Staff technician3) {
-        this.technician3 = technician3;
-    }
-
     public Additive getAdditiveCId() {
         return additiveCId;
     }
 
     public void setAdditiveCId(Additive additiveCId) {
         this.additiveCId = additiveCId;
+    }
+
+    public Staff getSupervisor3() {
+        return supervisor3;
+    }
+
+    public void setSupervisor3(Staff supervisor3) {
+        this.supervisor3 = supervisor3;
     }
 
     public Mould getMouldId() {
@@ -633,6 +713,14 @@ public class Entry implements Serializable,SettingEntity {
         this.productId = productId;
     }
 
+    public Staff getTechnician2() {
+        return technician2;
+    }
+
+    public void setTechnician2(Staff technician2) {
+        this.technician2 = technician2;
+    }
+
     public Staff getSupervisor1() {
         return supervisor1;
     }
@@ -641,12 +729,12 @@ public class Entry implements Serializable,SettingEntity {
         this.supervisor1 = supervisor1;
     }
 
-    public Staff getTechnician1() {
-        return technician1;
+    public Staff getTechnician3() {
+        return technician3;
     }
 
-    public void setTechnician1(Staff technician1) {
-        this.technician1 = technician1;
+    public void setTechnician3(Staff technician3) {
+        this.technician3 = technician3;
     }
 
     @Override

@@ -64,13 +64,33 @@ public class RecordValidationServiceImpl implements RecordValidationService {
                     result = false;
                 }
                 break;
-            case THREAD_BORE:
-                if (value < entry.getThreadBoreMin() || value > entry.getThreadBoreMax()) {
+            case THREAD_BORE1:
+                if (value < entry.getThreadBoreAMin() || value > entry.getThreadBoreAMax()) {
+                    result = false;
+                }
+            break;
+                case THREAD_BORE2:
+                if (value < entry.getThreadBoreAMin() || value > entry.getThreadBoreAMax()) {
                     result = false;
                 }
                 break;
             case THREAD_NECK:
                 if (value < entry.getThreadNeckMin() || value > entry.getThreadNeckMax()) {
+                    result = false;
+                }
+                break;
+            case THREAD_BORE1_2:
+                if (value < entry.getThreadBoreAMin1() || value > entry.getThreadBoreAMax1()) {
+                    result = false;
+                }
+            break;
+                case THREAD_BORE2_2:
+                if (value < entry.getThreadBoreAMin1() || value > entry.getThreadBoreAMax1()) {
+                    result = false;
+                }
+                break;
+            case THREAD_NECK_2:
+                if (value < entry.getThreadNeckMin1() || value > entry.getThreadNeckMax1()) {
                     result = false;
                 }
                 break;

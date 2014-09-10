@@ -265,6 +265,20 @@ public class MainJFrame extends javax.swing.JFrame {
             modelBore.addRow(new Object[]{time, name, record.getNumberValue(), pass, staff});
         }
         ((AbstractTableModel) this.tblBore.getModel()).fireTableDataChanged();
+        if(this.currentEntry.getProductId()!=null && this.currentEntry.getProductId().getClosureType().equals("TWIN")){
+            this.txtBore11.setVisible(true);
+            this.txtBore21.setVisible(true);
+            this.txtNeck1.setVisible(true);
+            this.txtBoreStaff1.setVisible(true);
+            this.btnBore1.setVisible(true);
+        }
+        else{
+            this.txtBore11.setVisible(false);
+            this.txtBore21.setVisible(false);
+            this.txtNeck1.setVisible(false);
+            this.txtBoreStaff1.setVisible(false);
+            this.btnBore1.setVisible(false);
+        }
         //Check
         List<Record> recordsCheck = records.stream().filter(x -> x.getRecordKey().startsWith("CHECK_")).collect(Collectors.toList());
         DefaultTableModel modelCheck = (DefaultTableModel) this.tblCheck.getModel();
@@ -604,6 +618,15 @@ public class MainJFrame extends javax.swing.JFrame {
         labBoreImage2 = new javax.swing.JLabel();
         pnlNeckImage = new javax.swing.JPanel();
         labNeckImage = new javax.swing.JLabel();
+        jLabel82 = new javax.swing.JLabel();
+        txtBore11 = new javax.swing.JTextField();
+        txtBore21 = new javax.swing.JTextField();
+        jLabel83 = new javax.swing.JLabel();
+        jLabel84 = new javax.swing.JLabel();
+        txtNeck1 = new javax.swing.JTextField();
+        labBoreStaff1 = new javax.swing.JLabel();
+        txtBoreStaff1 = new javax.swing.JTextField();
+        btnBore1 = new javax.swing.JButton();
         jPanel25 = new javax.swing.JPanel();
         jPanel26 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
@@ -1679,7 +1702,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipadx = 4;
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.insets = new java.awt.Insets(13, 27, 3, 27);
+        gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 0);
         jPanel24.add(labBoreStaff, gridBagConstraints);
 
         btnBore.setText("Add");
@@ -1697,34 +1720,34 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(3, 27, 3, 27);
         jPanel24.add(btnBore, gridBagConstraints);
 
-        jLabel10.setText("BORE DIAMETRE 1直径1");
+        jLabel10.setText("1.BORE DIAMETRE 1直径1");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 4;
         gridBagConstraints.ipady = 4;
-        gridBagConstraints.insets = new java.awt.Insets(3, 27, 3, 27);
+        gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 0);
         jPanel24.add(jLabel10, gridBagConstraints);
 
-        jLabel12.setText("BORE DIAMETRE 2直径2");
+        jLabel12.setText("1.BORE DIAMETRE 2直径2");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 4;
         gridBagConstraints.ipady = 4;
-        gridBagConstraints.insets = new java.awt.Insets(3, 27, 3, 27);
+        gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 0);
         jPanel24.add(jLabel12, gridBagConstraints);
 
-        jLabel14.setText("NECK HEIGHT颈高");
+        jLabel14.setText("1.NECK HEIGHT颈高");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 4;
         gridBagConstraints.ipady = 4;
-        gridBagConstraints.insets = new java.awt.Insets(3, 27, 3, 27);
+        gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 0);
         jPanel24.add(jLabel14, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -1733,7 +1756,6 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipadx = 4;
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(3, 27, 3, 27);
         jPanel24.add(txtBore1, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -1742,7 +1764,6 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipadx = 4;
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(3, 27, 3, 27);
         jPanel24.add(txtBore2, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -1751,7 +1772,6 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipadx = 4;
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(10, 27, 3, 27);
         jPanel24.add(txtBoreStaff, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -1760,7 +1780,6 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.ipadx = 4;
         gridBagConstraints.ipady = 4;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(3, 27, 3, 27);
         jPanel24.add(txtNeck, gridBagConstraints);
 
         pnlBoreImage1.setLayout(new java.awt.GridBagLayout());
@@ -1778,7 +1797,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         jPanel24.add(pnlBoreImage1, gridBagConstraints);
@@ -1798,7 +1817,7 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         jPanel24.add(pnlBoreImage2, gridBagConstraints);
@@ -1818,10 +1837,102 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         jPanel24.add(pnlNeckImage, gridBagConstraints);
+
+        jLabel82.setText("2.BORE DIAMETRE 1直径1");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 0);
+        jPanel24.add(jLabel82, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
+        jPanel24.add(txtBore11, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
+        jPanel24.add(txtBore21, gridBagConstraints);
+
+        jLabel83.setText("2.BORE DIAMETRE 2直径2");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 0);
+        jPanel24.add(jLabel83, gridBagConstraints);
+
+        jLabel84.setText("2.NECK HEIGHT颈高");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 0);
+        jPanel24.add(jLabel84, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
+        jPanel24.add(txtNeck1, gridBagConstraints);
+
+        labBoreStaff1.setText("Check By检查人");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 0);
+        jPanel24.add(labBoreStaff1, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
+        jPanel24.add(txtBoreStaff1, gridBagConstraints);
+
+        btnBore1.setText("Add");
+        btnBore1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBore1ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(3, 27, 3, 27);
+        jPanel24.add(btnBore1, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -3639,8 +3750,8 @@ public class MainJFrame extends javax.swing.JFrame {
         if (this.currentEntry != null) {
             if (AppHelper.CheckTwoDigit(this.txtBore1.getText()) && AppHelper.CheckTwoDigit(this.txtBore2.getText())
                     && AppHelper.CheckTwoDigit(this.txtNeck.getText())) {
-                if (recordValidationService.Validate(currentEntry, RecordKey.THREAD_BORE, Float.parseFloat(this.txtBore1.getText()))
-                        && recordValidationService.Validate(currentEntry, RecordKey.THREAD_BORE, Float.parseFloat(this.txtBore2.getText()))
+                if (recordValidationService.Validate(currentEntry, RecordKey.THREAD_BORE1, Float.parseFloat(this.txtBore1.getText()))
+                        && recordValidationService.Validate(currentEntry, RecordKey.THREAD_BORE2, Float.parseFloat(this.txtBore2.getText()))
                         && recordValidationService.Validate(currentEntry, RecordKey.THREAD_NECK, Float.parseFloat(this.txtNeck.getText()))) {
                     isSave = true;
 
@@ -3671,7 +3782,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 }
                 model.addRow(new Object[]{time, RecordKey.THREAD_BORE1, valueBore1, pass, staff});
                 UpdateEntryData(now, valueBore1, RecordKey.THREAD_BORE1, staff, pass, "");
-                if (recordValidationService.Validate(currentEntry, RecordKey.THREAD_BORE2, valueBore1)) {
+                if (recordValidationService.Validate(currentEntry, RecordKey.THREAD_BORE2, valueBore2)) {
                     pass = "YES";
                 } else {
                     pass = "NO(" + checker + ")";
@@ -4208,6 +4319,69 @@ public class MainJFrame extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnReportActionPerformed
 
+    private void btnBore1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBore1ActionPerformed
+        Boolean isSave = false;
+        String staff = "";
+        String pass = "NO";
+        String checker = "";
+        if (this.currentEntry != null) {
+            if (AppHelper.CheckTwoDigit(this.txtBore11.getText()) && AppHelper.CheckTwoDigit(this.txtBore21.getText())
+                    && AppHelper.CheckTwoDigit(this.txtNeck1.getText())) {
+                if (recordValidationService.Validate(currentEntry, RecordKey.THREAD_BORE1_2, Float.parseFloat(this.txtBore11.getText()))
+                        && recordValidationService.Validate(currentEntry, RecordKey.THREAD_BORE2_2, Float.parseFloat(this.txtBore21.getText()))
+                        && recordValidationService.Validate(currentEntry, RecordKey.THREAD_NECK_2, Float.parseFloat(this.txtNeck1.getText()))) {
+                    isSave = true;
+
+                } else {
+                    checker = JOptionPane.showInputDialog(this, "the value is not within the range, please entry technician name.", "Warning", JOptionPane.OK_OPTION);
+
+                    if (!checker.equals("")) {
+                        isSave = true;
+                    }
+                }
+                staff = this.txtBoreStaff1.getText();
+                this.txtBoreStaff1.setText("");
+            } else {
+                JOptionPane.showMessageDialog(this, "Please entry the valid number like (123.45).", "Warning", JOptionPane.OK_OPTION);
+            }
+
+            if (isSave) {
+                DefaultTableModel model = (DefaultTableModel) this.tblBore.getModel();
+                Date now = new Date();
+                String time = new SimpleDateFormat("HH:mm").format(now);
+                Float valueBore1 = Float.parseFloat(this.txtBore11.getText());
+                Float valueBore2 = Float.parseFloat(this.txtBore21.getText());
+                Float valueNeck = Float.parseFloat(this.txtNeck1.getText());
+                if (recordValidationService.Validate(currentEntry, RecordKey.THREAD_BORE1_2, valueBore1)) {
+                    pass = "YES";
+                } else {
+                    pass = "NO(" + checker + ")";
+                }
+                model.addRow(new Object[]{time, RecordKey.THREAD_BORE1_2, valueBore1, pass, staff});
+                UpdateEntryData(now, valueBore1, RecordKey.THREAD_BORE1_2, staff, pass, "");
+                if (recordValidationService.Validate(currentEntry, RecordKey.THREAD_BORE2_2, valueBore2)) {
+                    pass = "YES";
+                } else {
+                    pass = "NO(" + checker + ")";
+                }
+                model.addRow(new Object[]{time, RecordKey.THREAD_BORE2_2, valueBore1, pass, staff});
+                UpdateEntryData(now, valueBore1, RecordKey.THREAD_BORE2_2, staff, pass, "");
+                if (recordValidationService.Validate(currentEntry, RecordKey.THREAD_NECK_2, valueNeck)) {
+                    pass = "YES";
+                } else {
+                    pass = "NO(" + checker + ")";
+                }
+                model.addRow(new Object[]{time, RecordKey.THREAD_NECK_2, valueBore1, pass, staff});
+                UpdateEntryData(now, valueBore1, RecordKey.THREAD_NECK_2, staff, pass, "");
+
+                ((AbstractTableModel) this.tblBore.getModel()).fireTableDataChanged();
+                this.txtBore11.setText("");
+                this.txtBore21.setText("");
+                this.txtNeck1.setText("");
+            }
+        }
+    }//GEN-LAST:event_btnBore1ActionPerformed
+
     private void UpdateEntryData(Date now, Float valueUnderHandle, RecordKey key, String staff, String pass, String stringValue) {
         int recordId = this.recordService.CreateEntity();
         Record record = this.recordService.FindEntity(recordId);
@@ -4258,6 +4432,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBore;
+    private javax.swing.JButton btnBore1;
     private javax.swing.JButton btnBung;
     private javax.swing.JButton btnCheck;
     private javax.swing.JButton btnCycle;
@@ -4389,6 +4564,9 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel80;
     private javax.swing.JLabel jLabel81;
+    private javax.swing.JLabel jLabel82;
+    private javax.swing.JLabel jLabel83;
+    private javax.swing.JLabel jLabel84;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
@@ -4449,6 +4627,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel labBoreImage2;
     private javax.swing.JLabel labBoreStaff;
+    private javax.swing.JLabel labBoreStaff1;
     private javax.swing.JLabel labBungStaff;
     private javax.swing.JLabel labBungStaff1;
     private javax.swing.JLabel labCheckStaff;
@@ -4493,8 +4672,11 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JTextField txtAdditiveCBatchA;
     private javax.swing.JTextField txtAdditiveCBatchB;
     private javax.swing.JTextField txtBore1;
+    private javax.swing.JTextField txtBore11;
     private javax.swing.JTextField txtBore2;
+    private javax.swing.JTextField txtBore21;
     private javax.swing.JTextField txtBoreStaff;
+    private javax.swing.JTextField txtBoreStaff1;
     private javax.swing.JTextField txtBungStaff;
     private javax.swing.JTextField txtCheckStaff;
     private javax.swing.JTextField txtCycle;
@@ -4504,6 +4686,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JTextField txtLeakFill;
     private javax.swing.JTextArea txtLeakNotes;
     private javax.swing.JTextField txtNeck;
+    private javax.swing.JTextField txtNeck1;
     private javax.swing.JTextField txtOtherQuantity;
     private javax.swing.JTextField txtPalletProducedA;
     private javax.swing.JTextField txtPalletProducedB;
@@ -4532,8 +4715,8 @@ public class MainJFrame extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void UpdateProductInfo(Entry currentEntry) {
-        if (currentEntry.getMouldId().getImageDrawing() != null) {
-            AppHelper.DisplayImage(currentEntry.getMouldId().getImageDrawing(), this.pnlMouldImage, 150);
+        if (currentEntry.getProductId().getProductImage() != null) {
+            AppHelper.DisplayImage(currentEntry.getProductId().getProductImage(), this.pnlMouldImage, 150);
         } else {
             AppHelper.DisplayImageFromResource("/no_photo.png", this.pnlMouldImage, 150);
         }

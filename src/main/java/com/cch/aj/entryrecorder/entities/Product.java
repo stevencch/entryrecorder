@@ -49,8 +49,13 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Product.findByThreadBoreB", query = "SELECT p FROM Product p WHERE p.threadBoreB = :threadBoreB"),
     @NamedQuery(name = "Product.findByThreadNeck", query = "SELECT p FROM Product p WHERE p.threadNeck = :threadNeck"),
     @NamedQuery(name = "Product.findByDgnondg", query = "SELECT p FROM Product p WHERE p.dgnondg = :dgnondg"),
-    @NamedQuery(name = "Product.findByViewLine", query = "SELECT p FROM Product p WHERE p.viewLine = :viewLine")})
-public class Product implements Serializable,SettingEntity {
+    @NamedQuery(name = "Product.findByViewLine", query = "SELECT p FROM Product p WHERE p.viewLine = :viewLine"),
+    @NamedQuery(name = "Product.findByThreadBoreA1", query = "SELECT p FROM Product p WHERE p.threadBoreA1 = :threadBoreA1"),
+    @NamedQuery(name = "Product.findByThreadBoreB1", query = "SELECT p FROM Product p WHERE p.threadBoreB1 = :threadBoreB1"),
+    @NamedQuery(name = "Product.findByThreadNeck1", query = "SELECT p FROM Product p WHERE p.threadNeck1 = :threadNeck1"),
+    @NamedQuery(name = "Product.findByClosureType", query = "SELECT p FROM Product p WHERE p.closureType = :closureType"),
+    @NamedQuery(name = "Product.findByProductImage", query = "SELECT p FROM Product p WHERE p.productImage = :productImage")})
+public class Product implements Serializable ,SettingEntity{
     @OneToMany(mappedBy = "productId")
     private Collection<Entry> entryCollection;
     private static final long serialVersionUID = 1L;
@@ -89,6 +94,16 @@ public class Product implements Serializable,SettingEntity {
     private Integer dgnondg;
     @Column(name = "ViewLine")
     private String viewLine;
+    @Column(name = "ThreadBoreA1")
+    private Integer threadBoreA1;
+    @Column(name = "ThreadBoreB1")
+    private Integer threadBoreB1;
+    @Column(name = "ThreadNeck1")
+    private Integer threadNeck1;
+    @Column(name = "ClosureType")
+    private String closureType;
+    @Column(name = "ProductImage")
+    private String productImage;
     @JoinTable(name = "productcheck", joinColumns = {
         @JoinColumn(name = "Product", referencedColumnName = "Id")}, inverseJoinColumns = {
         @JoinColumn(name = "CheckItem", referencedColumnName = "Id")})
@@ -240,6 +255,46 @@ public class Product implements Serializable,SettingEntity {
 
     public void setViewLine(String viewLine) {
         this.viewLine = viewLine;
+    }
+
+    public Integer getThreadBoreA1() {
+        return threadBoreA1;
+    }
+
+    public void setThreadBoreA1(Integer threadBoreA1) {
+        this.threadBoreA1 = threadBoreA1;
+    }
+
+    public Integer getThreadBoreB1() {
+        return threadBoreB1;
+    }
+
+    public void setThreadBoreB1(Integer threadBoreB1) {
+        this.threadBoreB1 = threadBoreB1;
+    }
+
+    public Integer getThreadNeck1() {
+        return threadNeck1;
+    }
+
+    public void setThreadNeck1(Integer threadNeck1) {
+        this.threadNeck1 = threadNeck1;
+    }
+
+    public String getClosureType() {
+        return closureType;
+    }
+
+    public void setClosureType(String closureType) {
+        this.closureType = closureType;
+    }
+
+    public String getProductImage() {
+        return productImage;
+    }
+
+    public void setProductImage(String productImage) {
+        this.productImage = productImage;
     }
 
     @XmlTransient
