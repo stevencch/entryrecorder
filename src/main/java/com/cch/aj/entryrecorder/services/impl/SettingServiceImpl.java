@@ -8,6 +8,7 @@ package com.cch.aj.entryrecorder.services.impl;
 import com.cch.aj.entryrecorder.common.SettingEntity;
 import com.cch.aj.entryrecorder.entities.Additive;
 import com.cch.aj.entryrecorder.entities.Checkitem;
+import com.cch.aj.entryrecorder.entities.Embossing;
 import com.cch.aj.entryrecorder.entities.Entry;
 import com.cch.aj.entryrecorder.entities.Machine;
 import com.cch.aj.entryrecorder.entities.Mould;
@@ -18,6 +19,7 @@ import com.cch.aj.entryrecorder.entities.Staff;
 import com.cch.aj.entryrecorder.repositories.SettingRepository;
 import com.cch.aj.entryrecorder.repositories.impl.AdditiveRepositoryImpl;
 import com.cch.aj.entryrecorder.repositories.impl.CheckitemRepositoryImpl;
+import com.cch.aj.entryrecorder.repositories.impl.EmbossingRepositoryImpl;
 import com.cch.aj.entryrecorder.repositories.impl.EntryRepositoryImpl;
 import com.cch.aj.entryrecorder.repositories.impl.MachineRepositoryImpl;
 import com.cch.aj.entryrecorder.repositories.impl.MouldRepositoryImpl;
@@ -87,6 +89,9 @@ public class SettingServiceImpl<T extends SettingEntity> implements SettingServi
             }
             if (type == Checkitem.class) {
                 this.repository = new CheckitemRepositoryImpl(this._connectionString);
+            }
+            if (type == Embossing.class) {
+                this.repository = new EmbossingRepositoryImpl(this._connectionString);
             }
         }
         return this.repository;

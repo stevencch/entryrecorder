@@ -56,6 +56,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Product.findByClosureType", query = "SELECT p FROM Product p WHERE p.closureType = :closureType"),
     @NamedQuery(name = "Product.findByProductImage", query = "SELECT p FROM Product p WHERE p.productImage = :productImage")})
 public class Product implements Serializable ,SettingEntity{
+    @JoinColumn(name = "EmbossingId", referencedColumnName = "Id")
+    private Embossing embossingId;
+    @JoinColumn(name = "InsertId", referencedColumnName = "Id")
+    private Embossing insertId;
     @OneToMany(mappedBy = "productId")
     private Collection<Entry> entryCollection;
     private static final long serialVersionUID = 1L;
@@ -383,6 +387,22 @@ public class Product implements Serializable ,SettingEntity{
 
     public void setEntryCollection(Collection<Entry> entryCollection) {
         this.entryCollection = entryCollection;
+    }
+
+    public Embossing getEmbossingId() {
+        return embossingId;
+    }
+
+    public void setEmbossingId(Embossing embossingId) {
+        this.embossingId = embossingId;
+    }
+
+    public Embossing getInsertId() {
+        return insertId;
+    }
+
+    public void setInsertId(Embossing insertId) {
+        this.insertId = insertId;
     }
     
 }

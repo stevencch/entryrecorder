@@ -7,6 +7,7 @@ package com.cch.aj.entryrecorder.common;
 
 import com.cch.aj.entryrecorder.entities.Additive;
 import com.cch.aj.entryrecorder.entities.Checkitem;
+import com.cch.aj.entryrecorder.entities.Embossing;
 import com.cch.aj.entryrecorder.entities.Entry;
 import com.cch.aj.entryrecorder.entities.Machine;
 import com.cch.aj.entryrecorder.entities.Mould;
@@ -100,6 +101,11 @@ public class AppConfig {
     @Bean(name = "staffService")
     public SettingService<Staff> getStaffService() {
         return new SettingServiceImpl<Staff>(Staff.class);
+    }
+    
+    @Bean(name = "embossingService")
+    public SettingService<Embossing> getEmbossingService() {
+        return new SettingServiceImpl<Embossing>(Embossing.class);
     }
 
     @Bean(name = "entryService")

@@ -22,6 +22,7 @@
     <class>com.cch.aj.entryrecorder.entities.Checkitem</class>
     <class>com.cch.aj.entryrecorder.entities.Role</class>
     <class>com.cch.aj.entryrecorder.entities.User</class>
+    <class>com.cch.aj.entryrecorder.entities.Embossing</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/ajrecorder?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="cch"/>

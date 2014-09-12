@@ -11,6 +11,7 @@ import com.cch.aj.entryrecorder.common.ComboBoxItemConvertor;
 import com.cch.aj.entryrecorder.common.ComboBoxRender;
 import com.cch.aj.entryrecorder.entities.Additive;
 import com.cch.aj.entryrecorder.entities.Checkitem;
+import com.cch.aj.entryrecorder.entities.Embossing;
 import com.cch.aj.entryrecorder.entities.Entry;
 import com.cch.aj.entryrecorder.entities.Machine;
 import com.cch.aj.entryrecorder.entities.Mould;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import static java.util.Arrays.stream;
 import java.util.Collection;
+import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparing;
@@ -101,6 +103,8 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
     private SettingService<Checkitem> checkitemService;
     @Autowired
     private SettingService<Staff> staffService;
+    @Autowired
+    private SettingService<Embossing> embossingService;
 
     /**
      * Creates new form SettingsJFrame
@@ -132,7 +136,8 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         this.cbProductAdditive1.setRenderer(new ComboBoxRender());
         this.cbProductAdditive2.setRenderer(new ComboBoxRender());
         this.cbProductAdditive3.setRenderer(new ComboBoxRender());
-        
+        this.cbProductInsert.setRenderer(new ComboBoxRender());
+        this.cbProductEmbossing.setRenderer(new ComboBoxRender());
 
         UpdateTabProduct(0);
         ListSelectionModel model = tblCheck.getSelectionModel();
@@ -142,6 +147,9 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         //load staff
         this.cbStaff.setRenderer(new ComboBoxRender());
         UpdateTabStaff(0);
+        //load embossing
+        this.cbEmbossing.setRenderer(new ComboBoxRender());
+        UpdateTabEmbossing(0);
     }
 
     private void UpdateTabMachine(int id) {
@@ -259,6 +267,32 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
             this.btnMouldUndo.setVisible(true);
         }
     }
+    
+    private void UpdateTabEmbossing(Integer id) {
+        int selectedIndex = FillEmbossingComboBox(this.cbEmbossing, id, "");
+        if (selectedIndex >= 0) {
+            Embossing currentEmbossing = ((ComboBoxItem<Embossing>) this.cbEmbossing.getSelectedItem()).getItem();
+            //
+            this.cbEmbossingType.setSelectedItem(currentEmbossing.getType());
+            this.txtEmbossingName.setText(currentEmbossing.getName());
+        } else {
+            this.cbEmbossing.setModel(new DefaultComboBoxModel(new ComboBoxItem[]{}));
+            this.txtEmbossingName.setText("");
+        }
+
+        if (this.cbEmbossing.getSelectedItem() == null || ((ComboBoxItem<Embossing>) this.cbEmbossing.getSelectedItem()).getId() == 0) {
+            this.pnlEditEmbossing.setVisible(false);
+            this.btnEmbossingDelete.setVisible(false);
+            this.btnEmbossingSave.setVisible(false);
+            this.btnEmbossingUndo.setVisible(false);
+        } else {
+            this.pnlEditEmbossing.setVisible(true);
+            this.btnEmbossingDelete.setVisible(true);
+            this.btnEmbossingSave.setVisible(true);
+            this.btnEmbossingUndo.setVisible(true);
+        }
+        
+    }
 
     private void UpdateTabStaff(int id) {
         int selectedIndex = FillStaffComboBox(this.cbStaff, id, "");
@@ -312,6 +346,31 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
             this.btnProductUndo.setVisible(true);
         }
 
+    }
+    
+    private int FillEmbossingComboBox(JComboBox comboBox, Integer id, String type) {
+        int result = -1;
+        List<Embossing> embossings = this.embossingService.GetAllEntities();
+        if (!type.equals("")) {
+            embossings = embossings.stream().filter(x -> x.getType().equals(type)).collect(Collectors.toList());
+        }
+        if (embossings.size() > 0) {
+            List<ComboBoxItem<Embossing>> embossingNames = embossings.stream().sorted(comparing(x -> x.getType() + " " + x.getName())).map(x -> ComboBoxItemConvertor.ConvertToComboBoxItem(x, x.getType() + " " + x.getName(), x.getId())).collect(Collectors.toList());
+            Embossing embossing = new Embossing();
+            embossing.setId(0);
+            embossing.setName("- Select -");
+            embossingNames.add(0, new ComboBoxItem<Embossing>(embossing, embossing.getName(), embossing.getId()));
+            ComboBoxItem[] embossingNamesArray = embossingNames.toArray(new ComboBoxItem[embossingNames.size()]);
+            comboBox.setModel(new DefaultComboBoxModel(embossingNamesArray));
+            if (id != 0) {
+                ComboBoxItem<Embossing> currentEmbossingName = embossingNames.stream().filter(x -> x.getId() == id).findFirst().get();
+                result = embossingNames.indexOf(currentEmbossingName);
+            } else {
+                result = 0;
+            }
+            comboBox.setSelectedIndex(result);
+        }
+        return result;
     }
 
     private int FillStaffComboBox(JComboBox comboBox, int id, String jobType) {
@@ -711,6 +770,10 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         cbProductNeck1 = new javax.swing.JComboBox();
         jLabel76 = new javax.swing.JLabel();
         cbProductClosureType = new javax.swing.JComboBox();
+        jLabel112 = new javax.swing.JLabel();
+        cbProductInsert = new javax.swing.JComboBox();
+        cbProductEmbossing = new javax.swing.JComboBox();
+        jLabel113 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblCheck = new javax.swing.JTable();
@@ -777,6 +840,20 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         txtStaffName = new javax.swing.JTextField();
         jLabel90 = new javax.swing.JLabel();
         cbStaffJob = new javax.swing.JComboBox();
+        jPanel38 = new javax.swing.JPanel();
+        jPanel39 = new javax.swing.JPanel();
+        btnEmbossingNew = new javax.swing.JButton();
+        cbEmbossing = new javax.swing.JComboBox();
+        btnEmbossingDelete = new javax.swing.JButton();
+        jPanel40 = new javax.swing.JPanel();
+        btnEmbossingUndo = new javax.swing.JButton();
+        btnEmbossingSave = new javax.swing.JButton();
+        jLabel104 = new javax.swing.JLabel();
+        pnlEditEmbossing = new javax.swing.JPanel();
+        jLabel89 = new javax.swing.JLabel();
+        txtEmbossingName = new javax.swing.JTextField();
+        jLabel111 = new javax.swing.JLabel();
+        cbEmbossingType = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(908, 668));
@@ -3117,6 +3194,46 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 9);
         jPanel6.add(cbProductClosureType, gridBagConstraints);
 
+        jLabel112.setText("SPECIAL INSERT");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 12;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 28;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 9);
+        jPanel6.add(jLabel112, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 12;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 28;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 9);
+        jPanel6.add(cbProductInsert, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 13;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 28;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 9);
+        jPanel6.add(cbProductEmbossing, gridBagConstraints);
+
+        jLabel113.setText("SPECIAL EMBOSSING");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 13;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 28;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 9);
+        jPanel6.add(jLabel113, gridBagConstraints);
+
         pnlProductEdit.addTab("General基本", jPanel6);
 
         jPanel7.setLayout(new java.awt.GridBagLayout());
@@ -3783,6 +3900,151 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
 
         pnlEditSetting.addTab("Staff员工", jPanel29);
 
+        jPanel38.setLayout(new java.awt.GridBagLayout());
+
+        jPanel39.setLayout(new java.awt.GridBagLayout());
+
+        btnEmbossingNew.setText("New");
+        btnEmbossingNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEmbossingNewActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.weightx = 0.25;
+        jPanel39.add(btnEmbossingNew, gridBagConstraints);
+
+        cbEmbossing.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbEmbossingActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.5;
+        jPanel39.add(cbEmbossing, gridBagConstraints);
+
+        btnEmbossingDelete.setText("Delete");
+        btnEmbossingDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEmbossingDeleteActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.weightx = 0.25;
+        jPanel39.add(btnEmbossingDelete, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
+        jPanel38.add(jPanel39, gridBagConstraints);
+
+        jPanel40.setLayout(new java.awt.GridBagLayout());
+
+        btnEmbossingUndo.setText("Undo");
+        btnEmbossingUndo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEmbossingUndoActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.weightx = 0.25;
+        jPanel40.add(btnEmbossingUndo, gridBagConstraints);
+
+        btnEmbossingSave.setText("Save");
+        btnEmbossingSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEmbossingSaveActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.weightx = 0.25;
+        jPanel40.add(btnEmbossingSave, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.weightx = 0.5;
+        jPanel40.add(jLabel104, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
+        jPanel38.add(jPanel40, gridBagConstraints);
+
+        pnlEditEmbossing.setLayout(new java.awt.GridBagLayout());
+
+        jLabel89.setText("NAME");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(14, 0, 6, 20);
+        pnlEditEmbossing.add(jLabel89, gridBagConstraints);
+
+        txtEmbossingName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtEmbossingNameActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(14, 0, 6, 55);
+        pnlEditEmbossing.add(txtEmbossingName, gridBagConstraints);
+
+        jLabel111.setText("TYPE");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.insets = new java.awt.Insets(14, 0, 6, 20);
+        pnlEditEmbossing.add(jLabel111, gridBagConstraints);
+
+        cbEmbossingType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "INSERT", "EMBOSSING" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 4;
+        gridBagConstraints.ipady = 4;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(14, 0, 6, 55);
+        pnlEditEmbossing.add(cbEmbossingType, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        jPanel38.add(pnlEditEmbossing, gridBagConstraints);
+
+        pnlEditSetting.addTab("Embossing印花", jPanel38);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -4441,6 +4703,16 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         } else {
             currentProduct.setAdditiveCId(null);
         }
+        if (this.cbProductEmbossing.getSelectedIndex() != 0) {
+            currentProduct.setEmbossingId(((ComboBoxItem<Embossing>) this.cbProductEmbossing.getSelectedItem()).getItem());
+        } else {
+            currentProduct.setEmbossingId(null);
+        }
+        if (this.cbProductInsert.getSelectedIndex() != 0) {
+            currentProduct.setInsertId(((ComboBoxItem<Embossing>) this.cbProductInsert.getSelectedItem()).getItem());
+        } else {
+            currentProduct.setInsertId(null);
+        }
         if (!this.txtProductPerc1.getText().equals("")) {
             currentProduct.setAdditiveAPercentage(this.txtProductPerc1.getText());
         }
@@ -4660,6 +4932,48 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         AppHelper.selectImage(this.pnlDrawingImage1, this.labDrawingImage1);
     }//GEN-LAST:event_btnDrawingImage1ActionPerformed
 
+    private void btnEmbossingNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmbossingNewActionPerformed
+        int newId = this.embossingService.CreateEntity();
+        UpdateTabEmbossing(newId);
+    }//GEN-LAST:event_btnEmbossingNewActionPerformed
+
+    private void cbEmbossingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEmbossingActionPerformed
+        Embossing currentEmbossing = ((ComboBoxItem<Embossing>) this.cbEmbossing.getSelectedItem()).getItem();
+        UpdateTabEmbossing(currentEmbossing.getId());
+    }//GEN-LAST:event_cbEmbossingActionPerformed
+
+    private void btnEmbossingDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmbossingDeleteActionPerformed
+        int result = JOptionPane.showConfirmDialog(this, "Are you sure to delete this item", "Warning", JOptionPane.OK_CANCEL_OPTION);
+        if (result == 0) {
+            Embossing currentEmbossing = ((ComboBoxItem<Embossing>) this.cbEmbossing.getSelectedItem()).getItem();
+            if ("- Select -".equals(currentEmbossing.getName())) {
+                return;
+            }
+            this.embossingService.DeleteEntity(currentEmbossing.getId());
+            this.UpdateTabEmbossing(0);
+        }
+    }//GEN-LAST:event_btnEmbossingDeleteActionPerformed
+
+    private void btnEmbossingUndoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmbossingUndoActionPerformed
+        Embossing currentEmbossing = ((ComboBoxItem<Embossing>) this.cbEmbossing.getSelectedItem()).getItem();
+        this.UpdateTabEmbossing(currentEmbossing.getId());
+    }//GEN-LAST:event_btnEmbossingUndoActionPerformed
+
+    private void btnEmbossingSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmbossingSaveActionPerformed
+        Embossing currentEmbossing = ((ComboBoxItem<Embossing>) this.cbEmbossing.getSelectedItem()).getItem();
+        if ("- Select -".equals(currentEmbossing.getName())) {
+            return;
+        }
+        currentEmbossing.setType((String) this.cbEmbossingType.getSelectedItem());
+        currentEmbossing.setName(this.txtEmbossingName.getText());
+        this.embossingService.UpdateEntity(currentEmbossing);
+        this.UpdateTabEmbossing(currentEmbossing.getId());
+    }//GEN-LAST:event_btnEmbossingSaveActionPerformed
+
+    private void txtEmbossingNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmbossingNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtEmbossingNameActionPerformed
+
     private void UpdateProductUI(Product currentProduct) {
         txtProductCode.setText(currentProduct.getCode() == null || currentProduct.getCode() == "- Select -" ? "" : currentProduct.getCode().toString());;
         txtProductDesc.setText(currentProduct.getDescription() == null ? "" : currentProduct.getDescription().toString());;
@@ -4674,6 +4988,9 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         this.FillAdditiveComboBox(this.cbProductAdditive1, currentProduct.getAdditiveAId() != null ? currentProduct.getAdditiveAId().getId() : 0);
         this.FillAdditiveComboBox(this.cbProductAdditive2, currentProduct.getAdditiveBId() != null ? currentProduct.getAdditiveBId().getId() : 0);
         this.FillAdditiveComboBox(this.cbProductAdditive3, currentProduct.getAdditiveCId() != null ? currentProduct.getAdditiveCId().getId() : 0);
+        
+        FillEmbossingComboBox(this.cbProductInsert,currentProduct.getInsertId()!=null?currentProduct.getInsertId().getId():0,"INSERT");
+        FillEmbossingComboBox(this.cbProductEmbossing,currentProduct.getEmbossingId()!=null?currentProduct.getEmbossingId().getId():0,"EMBOSSING");
         List<String> threadBoresA = new ArrayList<String>();
         threadBoresA.add("- Select -");
         if (settingMould.getThreadBoreASize1() != null && !settingMould.getThreadBoreASize1().equals("")) {
@@ -4848,6 +5165,10 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
     private javax.swing.JButton btnDgImage;
     private javax.swing.JButton btnDrawingImage;
     private javax.swing.JButton btnDrawingImage1;
+    private javax.swing.JButton btnEmbossingDelete;
+    private javax.swing.JButton btnEmbossingNew;
+    private javax.swing.JButton btnEmbossingSave;
+    private javax.swing.JButton btnEmbossingUndo;
     private javax.swing.JButton btnMachineDelete;
     private javax.swing.JButton btnMachineNew;
     private javax.swing.JButton btnMachineSave;
@@ -4873,6 +5194,8 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
     private javax.swing.JButton btnTapImage;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox cbAdditive;
+    private javax.swing.JComboBox cbEmbossing;
+    private javax.swing.JComboBox cbEmbossingType;
     private javax.swing.JComboBox cbMachine;
     private javax.swing.JComboBox cbMould;
     private javax.swing.JComboBox cbPolymer;
@@ -4887,6 +5210,8 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
     private javax.swing.JComboBox cbProductBung;
     private javax.swing.JComboBox cbProductClosureType;
     private javax.swing.JComboBox cbProductDg;
+    private javax.swing.JComboBox cbProductEmbossing;
+    private javax.swing.JComboBox cbProductInsert;
     private javax.swing.JComboBox cbProductMould;
     private javax.swing.JComboBox cbProductNeck;
     private javax.swing.JComboBox cbProductNeck1;
@@ -4901,6 +5226,7 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
     private javax.swing.JLabel jLabel101;
     private javax.swing.JLabel jLabel102;
     private javax.swing.JLabel jLabel103;
+    private javax.swing.JLabel jLabel104;
     private javax.swing.JLabel jLabel105;
     private javax.swing.JLabel jLabel106;
     private javax.swing.JLabel jLabel107;
@@ -4908,6 +5234,9 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
     private javax.swing.JLabel jLabel109;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel110;
+    private javax.swing.JLabel jLabel111;
+    private javax.swing.JLabel jLabel112;
+    private javax.swing.JLabel jLabel113;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
@@ -4992,6 +5321,7 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
     private javax.swing.JLabel jLabel86;
     private javax.swing.JLabel jLabel87;
     private javax.swing.JLabel jLabel88;
+    private javax.swing.JLabel jLabel89;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel jLabel90;
     private javax.swing.JLabel jLabel91;
@@ -5031,7 +5361,10 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
     private javax.swing.JPanel jPanel35;
     private javax.swing.JPanel jPanel36;
     private javax.swing.JPanel jPanel37;
+    private javax.swing.JPanel jPanel38;
+    private javax.swing.JPanel jPanel39;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel40;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
@@ -5053,6 +5386,7 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
     private javax.swing.JPanel pnlDrawingImage;
     private javax.swing.JPanel pnlDrawingImage1;
     private javax.swing.JPanel pnlEditAdditive;
+    private javax.swing.JPanel pnlEditEmbossing;
     private javax.swing.JPanel pnlEditMachine;
     private javax.swing.JTabbedPane pnlEditMould;
     private javax.swing.JPanel pnlEditPolymer;
@@ -5069,6 +5403,7 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
     private javax.swing.JTextField txtAdditiveDesc;
     private javax.swing.JTextField txtAdditiveGrade;
     private javax.swing.JTextField txtCheckDesc;
+    private javax.swing.JTextField txtEmbossingName;
     private javax.swing.JTextField txtMachineCapacity;
     private javax.swing.JTextField txtMachineDesc;
     private javax.swing.JTextField txtMachineManufa;
@@ -5160,5 +5495,9 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
             this.txtCheckDesc.setText(desc);
         }
     }
+
+    
+
+    
 
 }
