@@ -25,4 +25,6 @@ public interface SettingService<T extends SettingEntity> {
     public void DeleteEntity(Integer id);
     
     T FindEntity(Integer id);
+    
+    void ExecuteUpdate(String query);
 }

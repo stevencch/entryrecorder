@@ -258,11 +258,13 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         if (this.cbMould.getSelectedItem() == null || ((ComboBoxItem<Mould>) this.cbMould.getSelectedItem()).getId() == 0) {
             this.pnlEditMould.setVisible(false);
             this.btnMouldDelete.setVisible(false);
+            this.btnMouldDuplicate.setVisible(false);
             this.btnMouldSave.setVisible(false);
             this.btnMouldUndo.setVisible(false);
         } else {
             this.pnlEditMould.setVisible(true);
             this.btnMouldDelete.setVisible(true);
+            this.btnMouldDuplicate.setVisible(true);
             this.btnMouldSave.setVisible(true);
             this.btnMouldUndo.setVisible(true);
         }
@@ -337,11 +339,13 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         if (this.cbProduct.getSelectedItem() == null || ((ComboBoxItem<Product>) this.cbProduct.getSelectedItem()).getId() == 0) {
             this.pnlProductEdit.setVisible(false);
             this.btnProductDelete.setVisible(false);
+            this.btnProductDuplicate.setVisible(false);
             this.btnProductSave.setVisible(false);
             this.btnProductUndo.setVisible(false);
         } else {
             this.pnlProductEdit.setVisible(true);
             this.btnProductDelete.setVisible(true);
+            this.btnProductDuplicate.setVisible(true);
             this.btnProductSave.setVisible(true);
             this.btnProductUndo.setVisible(true);
         }
@@ -707,6 +711,7 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         btnMouldNew = new javax.swing.JButton();
         cbMould = new javax.swing.JComboBox();
         btnMouldDelete = new javax.swing.JButton();
+        btnMouldDuplicate = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         btnMouldUndo = new javax.swing.JButton();
         btnMouldSave = new javax.swing.JButton();
@@ -716,6 +721,7 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         btnProductNew = new javax.swing.JButton();
         cbProduct = new javax.swing.JComboBox();
         btnProductDelete = new javax.swing.JButton();
+        btnProductDuplicate = new javax.swing.JButton();
         jPanel27 = new javax.swing.JPanel();
         btnProductUndo = new javax.swing.JButton();
         btnProductSave = new javax.swing.JButton();
@@ -2526,7 +2532,7 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.weightx = 0.2;
         jPanel5.add(btnMouldNew, gridBagConstraints);
 
         cbMould.addActionListener(new java.awt.event.ActionListener() {
@@ -2538,7 +2544,7 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.weightx = 0.4;
         jPanel5.add(cbMould, gridBagConstraints);
 
         btnMouldDelete.setText("Delete");
@@ -2550,8 +2556,20 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.weightx = 0.2;
         jPanel5.add(btnMouldDelete, gridBagConstraints);
+
+        btnMouldDuplicate.setText("Duplicate");
+        btnMouldDuplicate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMouldDuplicateActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.weightx = 0.2;
+        jPanel5.add(btnMouldDuplicate, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -2617,7 +2635,7 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.weightx = 0.2;
         jPanel26.add(btnProductNew, gridBagConstraints);
 
         cbProduct.addActionListener(new java.awt.event.ActionListener() {
@@ -2629,7 +2647,7 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.weightx = 0.4;
         jPanel26.add(cbProduct, gridBagConstraints);
 
         btnProductDelete.setText("Delete");
@@ -2641,8 +2659,20 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.weightx = 0.2;
         jPanel26.add(btnProductDelete, gridBagConstraints);
+
+        btnProductDuplicate.setText("Duplicate");
+        btnProductDuplicate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProductDuplicateActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.weightx = 0.2;
+        jPanel26.add(btnProductDuplicate, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -4974,6 +5004,31 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
         // TODO add your handling code here:
     }//GEN-LAST:event_txtEmbossingNameActionPerformed
 
+    private void btnProductDuplicateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductDuplicateActionPerformed
+        this.productService.ExecuteUpdate("insert product ("
+                +"Code,Description,MouldId,WeightMin,WeightMax,Bung,Pierced,PolymerId,AdditiveAId,AdditiveBId,AdditiveCId,AdditiveAPercentage,AdditiveBPercentage,AdditiveCPercentage,ThreadBoreA,ThreadBoreB,ThreadNeck,DGNONDG,ViewLine,ThreadBoreA1,ThreadBoreB1,ThreadNeck1,ClosureType,ProductImage,InsertId,EmbossingId"
+                +") select concat(Code,'-1'),Description,MouldId,WeightMin,WeightMax,Bung,Pierced,PolymerId,AdditiveAId,AdditiveBId,AdditiveCId,AdditiveAPercentage,AdditiveBPercentage,AdditiveCPercentage,ThreadBoreA,ThreadBoreB,ThreadNeck,DGNONDG,ViewLine,ThreadBoreA1,ThreadBoreB1,ThreadNeck1,ClosureType,ProductImage,InsertId,EmbossingId"
+                +" from product where Id="+this.settingProduct.getId());
+        this.setVisible(false);
+        this.dispose();
+    }//GEN-LAST:event_btnProductDuplicateActionPerformed
+
+    private void btnMouldDuplicateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMouldDuplicateActionPerformed
+        this.mouldService.ExecuteUpdate("insert mould ("
+        +"Name,Code,Volumn,Manufacturer,Year,ImageDrawing,ImageNonDg,ImageDg,ImageBoreA,ImageBoreB,ImageNeck,ImageTap,WeightNonDgMin,WeightNonDgMax,WeightDgMin,WeightDgMax,TapPositionMin,TapPositionMax,WallNonDgUnderHandleMin,WallNonDgUnderHandleMax,WallNonDgBaseMin,WallNonDgBaseMax,WallNonDgClosureMin,WallNonDgClosureMax,WallNonDgHandleBungMin,WallNonDgHandleBungMax,WallNonDgHandleLeftMin,WallNonDgHandleLeftMax,WallNonDgHandleRightMin,WallNonDgHandleRightMax,WallDgUnderHandleMin,WallDgUnderHandleMax,WallDgBaseMin,WallDgBaseMax,WallDgClosureMin,WallDgClosureMax,WallDgHandleBungMin,WallDgHandleBungMax,WallDgHandleLeftMin,WallDgHandleLeftMax,WallDgHandleRightMin,WallDgHandleRightMax,ThreadBoreASize1,ThreadBoreASize2,ThreadBoreASize3,ThreadBoreBSize1,ThreadBoreBSize2,ThreadBoreBSize3,ThreadBoreAMin1,ThreadBoreAMin2,ThreadBoreAMin3,ThreadBoreAMax1,ThreadBoreAMax2,ThreadBoreAMax3,ThreadBoreBMin1,ThreadBoreBMin2,ThreadBoreBMin3,ThreadBoreBMax1,ThreadBoreBMax2,ThreadBoreBMax3,ThreadNeckSize1,ThreadNeckSize2,ThreadNeckSize3,ThreadNeckMin1,ThreadNeckMin2,ThreadNeckMin3,ThreadNeckMax1,ThreadNeckMax2,ThreadNeckMax3"
+        +") select Name,concat(Code,'-1'),Volumn,Manufacturer,Year,ImageDrawing,ImageNonDg,ImageDg,ImageBoreA,ImageBoreB,ImageNeck,ImageTap,WeightNonDgMin,WeightNonDgMax,WeightDgMin,WeightDgMax,TapPositionMin,TapPositionMax,WallNonDgUnderHandleMin,WallNonDgUnderHandleMax,WallNonDgBaseMin,WallNonDgBaseMax,WallNonDgClosureMin,WallNonDgClosureMax,WallNonDgHandleBungMin,WallNonDgHandleBungMax,WallNonDgHandleLeftMin,WallNonDgHandleLeftMax,WallNonDgHandleRightMin,WallNonDgHandleRightMax,WallDgUnderHandleMin,WallDgUnderHandleMax,WallDgBaseMin,WallDgBaseMax,WallDgClosureMin,WallDgClosureMax,WallDgHandleBungMin,WallDgHandleBungMax,WallDgHandleLeftMin,WallDgHandleLeftMax,WallDgHandleRightMin,WallDgHandleRightMax,ThreadBoreASize1,ThreadBoreASize2,ThreadBoreASize3,ThreadBoreBSize1,ThreadBoreBSize2,ThreadBoreBSize3,ThreadBoreAMin1,ThreadBoreAMin2,ThreadBoreAMin3,ThreadBoreAMax1,ThreadBoreAMax2,ThreadBoreAMax3,ThreadBoreBMin1,ThreadBoreBMin2,ThreadBoreBMin3,ThreadBoreBMax1,ThreadBoreBMax2,ThreadBoreBMax3,ThreadNeckSize1,ThreadNeckSize2,ThreadNeckSize3,ThreadNeckMin1,ThreadNeckMin2,ThreadNeckMin3,ThreadNeckMax1,ThreadNeckMax2,ThreadNeckMax3"
+        + " from mould where Id="+this.settingMouldId);
+        int maxId=this.mouldService.GetAllEntities().stream().mapToInt(x->x.getId()).max().orElse(0);
+        for(Product p : this.settingMould.getProductCollection()){
+            this.productService.ExecuteUpdate("insert product ("
+                +"Code,Description,MouldId,WeightMin,WeightMax,Bung,Pierced,PolymerId,AdditiveAId,AdditiveBId,AdditiveCId,AdditiveAPercentage,AdditiveBPercentage,AdditiveCPercentage,ThreadBoreA,ThreadBoreB,ThreadNeck,DGNONDG,ViewLine,ThreadBoreA1,ThreadBoreB1,ThreadNeck1,ClosureType,ProductImage,InsertId,EmbossingId"
+                +") select concat(Code,'-1'),Description,"+maxId+",WeightMin,WeightMax,Bung,Pierced,PolymerId,AdditiveAId,AdditiveBId,AdditiveCId,AdditiveAPercentage,AdditiveBPercentage,AdditiveCPercentage,ThreadBoreA,ThreadBoreB,ThreadNeck,DGNONDG,ViewLine,ThreadBoreA1,ThreadBoreB1,ThreadNeck1,ClosureType,ProductImage,InsertId,EmbossingId"
+                +" from product where Id="+p.getId());
+        }
+        this.setVisible(false);
+        this.dispose();
+    }//GEN-LAST:event_btnMouldDuplicateActionPerformed
+
     private void UpdateProductUI(Product currentProduct) {
         txtProductCode.setText(currentProduct.getCode() == null || currentProduct.getCode() == "- Select -" ? "" : currentProduct.getCode().toString());;
         txtProductDesc.setText(currentProduct.getDescription() == null ? "" : currentProduct.getDescription().toString());;
@@ -5174,6 +5229,7 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
     private javax.swing.JButton btnMachineSave;
     private javax.swing.JButton btnMachineUndo;
     private javax.swing.JButton btnMouldDelete;
+    private javax.swing.JButton btnMouldDuplicate;
     private javax.swing.JButton btnMouldNew;
     private javax.swing.JButton btnMouldSave;
     private javax.swing.JButton btnMouldUndo;
@@ -5184,6 +5240,7 @@ public class SettingsJFrame extends javax.swing.JFrame implements ListSelectionL
     private javax.swing.JButton btnPolymerSave;
     private javax.swing.JButton btnPolymerUndo;
     private javax.swing.JButton btnProductDelete;
+    private javax.swing.JButton btnProductDuplicate;
     private javax.swing.JButton btnProductNew;
     private javax.swing.JButton btnProductSave;
     private javax.swing.JButton btnProductUndo;

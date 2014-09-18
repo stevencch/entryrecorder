@@ -16,6 +16,7 @@ import com.cch.aj.entryrecorder.entities.Polymer;
 import com.cch.aj.entryrecorder.entities.Product;
 import com.cch.aj.entryrecorder.entities.Record;
 import com.cch.aj.entryrecorder.entities.Staff;
+import com.cch.aj.entryrecorder.repositories.NativeRepository;
 import com.cch.aj.entryrecorder.repositories.SettingRepository;
 import com.cch.aj.entryrecorder.repositories.impl.AdditiveRepositoryImpl;
 import com.cch.aj.entryrecorder.repositories.impl.CheckitemRepositoryImpl;
@@ -23,6 +24,7 @@ import com.cch.aj.entryrecorder.repositories.impl.EmbossingRepositoryImpl;
 import com.cch.aj.entryrecorder.repositories.impl.EntryRepositoryImpl;
 import com.cch.aj.entryrecorder.repositories.impl.MachineRepositoryImpl;
 import com.cch.aj.entryrecorder.repositories.impl.MouldRepositoryImpl;
+import com.cch.aj.entryrecorder.repositories.impl.NativeRepositoryImpl;
 import com.cch.aj.entryrecorder.repositories.impl.PolymerRepositoryImpl;
 import com.cch.aj.entryrecorder.repositories.impl.ProductRepositoryImpl;
 import com.cch.aj.entryrecorder.repositories.impl.RecordRepositoryImpl;
@@ -43,7 +45,7 @@ public class SettingServiceImpl<T extends SettingEntity> implements SettingServi
 
     @Value("${connectionString}")
     protected String _connectionString;
-    
+
     protected SettingRepository repository;
     private T instance;
     private Class<T> type;
@@ -135,6 +137,11 @@ public class SettingServiceImpl<T extends SettingEntity> implements SettingServi
     @Override
     public T FindEntity(Integer id) {
         return (T) this.getRepository().findEntity(id);
+    }
+
+    @Override
+    public void ExecuteUpdate(String query) {
+        (new NativeRepositoryImpl(this._connectionString)).executeUpdate(query);
     }
 
 }
