@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Created-By: 1.0.0 Chao Cao (Steven)
+Main-Class: com.cch.aj.entryrecorder.frame.HomeJFrame
