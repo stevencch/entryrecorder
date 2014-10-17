@@ -3787,15 +3787,15 @@ public class MainJFrame extends javax.swing.JFrame {
                 } else {
                     pass = "NO(" + checker + ")";
                 }
-                model.addRow(new Object[]{time, RecordKey.THREAD_BORE2, valueBore1, pass, staff});
-                UpdateEntryData(now, valueBore1, RecordKey.THREAD_BORE2, staff, pass, "");
+                model.addRow(new Object[]{time, RecordKey.THREAD_BORE2, valueBore2, pass, staff});
+                UpdateEntryData(now, valueBore2, RecordKey.THREAD_BORE2, staff, pass, "");
                 if (recordValidationService.Validate(currentEntry, RecordKey.THREAD_NECK, valueNeck)) {
                     pass = "YES";
                 } else {
                     pass = "NO(" + checker + ")";
                 }
-                model.addRow(new Object[]{time, RecordKey.THREAD_NECK, valueBore1, pass, staff});
-                UpdateEntryData(now, valueBore1, RecordKey.THREAD_NECK, staff, pass, "");
+                model.addRow(new Object[]{time, RecordKey.THREAD_NECK, valueNeck, pass, staff});
+                UpdateEntryData(now, valueNeck, RecordKey.THREAD_NECK, staff, pass, "");
 
                 ((AbstractTableModel) this.tblBore.getModel()).fireTableDataChanged();
                 this.txtBore1.setText("");
@@ -4364,15 +4364,15 @@ public class MainJFrame extends javax.swing.JFrame {
                 } else {
                     pass = "NO(" + checker + ")";
                 }
-                model.addRow(new Object[]{time, RecordKey.THREAD_BORE2_2, valueBore1, pass, staff});
-                UpdateEntryData(now, valueBore1, RecordKey.THREAD_BORE2_2, staff, pass, "");
+                model.addRow(new Object[]{time, RecordKey.THREAD_BORE2_2, valueBore2, pass, staff});
+                UpdateEntryData(now, valueBore2, RecordKey.THREAD_BORE2_2, staff, pass, "");
                 if (recordValidationService.Validate(currentEntry, RecordKey.THREAD_NECK_2, valueNeck)) {
                     pass = "YES";
                 } else {
                     pass = "NO(" + checker + ")";
                 }
-                model.addRow(new Object[]{time, RecordKey.THREAD_NECK_2, valueBore1, pass, staff});
-                UpdateEntryData(now, valueBore1, RecordKey.THREAD_NECK_2, staff, pass, "");
+                model.addRow(new Object[]{time, RecordKey.THREAD_NECK_2, valueNeck, pass, staff});
+                UpdateEntryData(now, valueNeck, RecordKey.THREAD_NECK_2, staff, pass, "");
 
                 ((AbstractTableModel) this.tblBore.getModel()).fireTableDataChanged();
                 this.txtBore11.setText("");
