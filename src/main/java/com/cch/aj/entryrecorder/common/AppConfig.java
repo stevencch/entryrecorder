@@ -60,7 +60,7 @@ public class AppConfig {
 
     @Bean(name = "recordSettingRepository")
     public RecordSettingRepository getRecordSettingRepository() {
-        return new RecordRepositoryImpl(this.environment.getProperty("connectionString"));
+        return new RecordRepositoryImpl(this.environment.getProperty("connectionString"),this.environment.getProperty("server"));
     }
 
     @Bean(name = "entrySearchService")

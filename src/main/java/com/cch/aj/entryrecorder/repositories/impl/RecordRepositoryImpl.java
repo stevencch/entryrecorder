@@ -10,7 +10,9 @@ import com.cch.aj.entryrecorder.entities.Record;
 import com.cch.aj.entryrecorder.repositories.RecordSettingRepository;
 import com.cch.aj.entryrecorder.repositories.SettingRepository;
 import com.cch.aj.entryrecorder.repositories.impl.exceptions.NonexistentEntityException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
@@ -27,8 +29,10 @@ public class RecordRepositoryImpl implements RecordSettingRepository {
 
     RecordJpaController controller;
 
-    public RecordRepositoryImpl(String dbConnectionString) {
-        EntityManagerFactory emf = javax.persistence.Persistence.createEntityManagerFactory(dbConnectionString);
+    public RecordRepositoryImpl(String dbConnectionString,String server) {
+        Map<String, String> properties = new HashMap<String, String>();
+        properties.put("javax.persistence.jdbc.url", "jdbc:mysql://"+server+":3306/ajrecorder?zeroDateTimeBehavior=convertToNull");
+        EntityManagerFactory emf=javax.persistence.Persistence.createEntityManagerFactory(dbConnectionString,properties);
         this.controller = new RecordJpaController(emf);
     }
 

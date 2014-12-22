@@ -10,7 +10,9 @@ import com.cch.aj.entryrecorder.entities.Product;
 import com.cch.aj.entryrecorder.repositories.SettingRepository;
 import com.cch.aj.entryrecorder.repositories.impl.exceptions.IllegalOrphanException;
 import com.cch.aj.entryrecorder.repositories.impl.exceptions.NonexistentEntityException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -24,8 +26,10 @@ public class ProductRepositoryImpl implements SettingRepository<Product>{
 
     ProductJpaController controller;
     
-    public ProductRepositoryImpl(String dbConnectionString) {
-        EntityManagerFactory emf=javax.persistence.Persistence.createEntityManagerFactory(dbConnectionString);
+    public ProductRepositoryImpl(String dbConnectionString,String server) {
+        Map<String, String> properties = new HashMap<String, String>();
+        properties.put("javax.persistence.jdbc.url", "jdbc:mysql://"+server+":3306/ajrecorder?zeroDateTimeBehavior=convertToNull");
+        EntityManagerFactory emf=javax.persistence.Persistence.createEntityManagerFactory(dbConnectionString,properties);
         this.controller=new ProductJpaController(emf);
     }
 

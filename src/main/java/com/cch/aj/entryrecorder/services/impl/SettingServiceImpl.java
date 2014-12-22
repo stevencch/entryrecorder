@@ -45,6 +45,8 @@ public class SettingServiceImpl<T extends SettingEntity> implements SettingServi
 
     @Value("${connectionString}")
     protected String _connectionString;
+    @Value("${server}")
+    protected String _server;
 
     protected SettingRepository repository;
     private T instance;
@@ -66,34 +68,34 @@ public class SettingServiceImpl<T extends SettingEntity> implements SettingServi
     protected SettingRepository getRepository() {
         if (this.repository == null) {
             if (type == Machine.class) {
-                this.repository = new MachineRepositoryImpl(this._connectionString);
+                this.repository = new MachineRepositoryImpl(this._connectionString,_server);
             }
             if (type == Staff.class) {
-                this.repository = new StaffRepositoryImpl(this._connectionString);
+                this.repository = new StaffRepositoryImpl(this._connectionString,_server);
             }
             if (type == Polymer.class) {
-                this.repository = new PolymerRepositoryImpl(this._connectionString);
+                this.repository = new PolymerRepositoryImpl(this._connectionString,_server);
             }
             if (type == Additive.class) {
-                this.repository = new AdditiveRepositoryImpl(this._connectionString);
+                this.repository = new AdditiveRepositoryImpl(this._connectionString,_server);
             }
             if (type == Mould.class) {
-                this.repository = new MouldRepositoryImpl(this._connectionString);
+                this.repository = new MouldRepositoryImpl(this._connectionString,_server);
             }
             if (type == Product.class) {
-                this.repository = new ProductRepositoryImpl(this._connectionString);
+                this.repository = new ProductRepositoryImpl(this._connectionString,_server);
             }
             if (type == Entry.class) {
-                this.repository = new EntryRepositoryImpl(this._connectionString);
+                this.repository = new EntryRepositoryImpl(this._connectionString,_server);
             }
             if (type == Record.class) {
-                this.repository = new RecordRepositoryImpl(this._connectionString);
+                this.repository = new RecordRepositoryImpl(this._connectionString,_server);
             }
             if (type == Checkitem.class) {
-                this.repository = new CheckitemRepositoryImpl(this._connectionString);
+                this.repository = new CheckitemRepositoryImpl(this._connectionString,_server);
             }
             if (type == Embossing.class) {
-                this.repository = new EmbossingRepositoryImpl(this._connectionString);
+                this.repository = new EmbossingRepositoryImpl(this._connectionString,_server);
             }
         }
         return this.repository;
@@ -141,7 +143,7 @@ public class SettingServiceImpl<T extends SettingEntity> implements SettingServi
 
     @Override
     public void ExecuteUpdate(String query) {
-        (new NativeRepositoryImpl(this._connectionString)).executeUpdate(query);
+        (new NativeRepositoryImpl(this._connectionString,this._server)).executeUpdate(query);
     }
 
 }

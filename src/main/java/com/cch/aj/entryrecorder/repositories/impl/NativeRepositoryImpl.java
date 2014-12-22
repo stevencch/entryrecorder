@@ -7,6 +7,8 @@
 package com.cch.aj.entryrecorder.repositories.impl;
 
 import com.cch.aj.entryrecorder.repositories.NativeRepository;
+import java.util.HashMap;
+import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
@@ -18,8 +20,10 @@ import javax.persistence.Query;
 public class NativeRepositoryImpl implements NativeRepository {
 
     EntityManager em;
-    public NativeRepositoryImpl(String dbConnectionString){
-        EntityManagerFactory emf=javax.persistence.Persistence.createEntityManagerFactory(dbConnectionString);
+    public NativeRepositoryImpl(String dbConnectionString,String server){
+        Map<String, String> properties = new HashMap<String, String>();
+        properties.put("javax.persistence.jdbc.url", "jdbc:mysql://"+server+":3306/ajrecorder?zeroDateTimeBehavior=convertToNull");
+        EntityManagerFactory emf=javax.persistence.Persistence.createEntityManagerFactory(dbConnectionString,properties);
         em=emf.createEntityManager();
     }
     @Override

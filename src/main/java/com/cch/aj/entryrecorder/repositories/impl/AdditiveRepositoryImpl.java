@@ -9,7 +9,9 @@ package com.cch.aj.entryrecorder.repositories.impl;
 import com.cch.aj.entryrecorder.entities.Additive;
 import com.cch.aj.entryrecorder.repositories.SettingRepository;
 import com.cch.aj.entryrecorder.repositories.impl.exceptions.NonexistentEntityException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -21,8 +23,10 @@ public class AdditiveRepositoryImpl implements SettingRepository<Additive>{
 
     AdditiveJpaController controller;
     
-    public AdditiveRepositoryImpl(String dbConnectionString) {
-        EntityManagerFactory emf=javax.persistence.Persistence.createEntityManagerFactory(dbConnectionString);
+    public AdditiveRepositoryImpl(String dbConnectionString,String server) {
+        Map<String, String> properties = new HashMap<String, String>();
+        properties.put("javax.persistence.jdbc.url", "jdbc:mysql://"+server+":3306/ajrecorder?zeroDateTimeBehavior=convertToNull");
+        EntityManagerFactory emf=javax.persistence.Persistence.createEntityManagerFactory(dbConnectionString,properties);
         this.controller=new AdditiveJpaController(emf);
     }
 

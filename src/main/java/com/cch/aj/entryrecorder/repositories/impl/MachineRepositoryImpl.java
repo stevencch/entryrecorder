@@ -10,7 +10,9 @@ import com.cch.aj.entryrecorder.repositories.impl.exceptions.NonexistentEntityEx
 import com.cch.aj.entryrecorder.entities.Machine;
 import com.cch.aj.entryrecorder.entities.Staff;
 import com.cch.aj.entryrecorder.repositories.SettingRepository;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -22,8 +24,10 @@ public class MachineRepositoryImpl implements SettingRepository<Machine>{
 
     MachineJpaController controller;
     
-    public MachineRepositoryImpl(String dbConnectionString) {
-        EntityManagerFactory emf=javax.persistence.Persistence.createEntityManagerFactory(dbConnectionString);
+    public MachineRepositoryImpl(String dbConnectionString,String server) {
+        Map<String, String> properties = new HashMap<String, String>();
+        properties.put("javax.persistence.jdbc.url", "jdbc:mysql://"+server+":3306/ajrecorder?zeroDateTimeBehavior=convertToNull");
+        EntityManagerFactory emf=javax.persistence.Persistence.createEntityManagerFactory(dbConnectionString,properties);
         this.controller=new MachineJpaController(emf);
     }
 
